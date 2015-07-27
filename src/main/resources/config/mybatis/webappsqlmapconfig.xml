@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "mybatis-3-config.dtd">
+<configuration>
+	<properties>
+		<property name="dialect" value="MySql"/>
+	</properties>
+	
+	<plugins>
+		<!-- - - - - - - - 物理分页拦截器- - - - - - - -->
+		<plugin interceptor="com.ztesoft.core.db.plugin.PaginationInterceptor">
+			<property name="dialect" value="com.ztesoft.core.db.plugin.MySqlDialect"/>
+		</plugin>
+		
+		
+		<!-- - - - - - - - 缓存分页拦截器- - - - - - - 
+		<plugin interceptor="com.ztesoft.core.mybatis.cache.CacheInterceptor">
+		</plugin>
+		-->
+		
+		
+	</plugins>
+	<!-- - - - - - - -映射文件路径：改到spring-dao.xml里面配置目录了，以后不需要手动增加xml- - - - - - -->
+	
+</configuration>

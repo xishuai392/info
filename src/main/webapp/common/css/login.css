@@ -1,0 +1,26 @@
+/* CSS Document */
+/*登陆页面*/
+.login_head,.benner_img,.benner_login_box{ margin:0 auto; background:#def1f5;}
+.login_img{ padding-top:33px; padding-left:200px; padding-bottom:24px;}
+.login_contact{ background:url(../images/benner_bg_06.gif) repeat; position:absolute; left:0px; right:0px; top:45%; margin-top:-190px; height:380px;}
+.login_contact_top{ background:url(../images/benner_bg_06.gif) repeat;}
+.benner_img{ width:1280px; height:360px; background:url(../images/exe_login_0006.png) no-repeat; margin:0 auto; padding-top:20px;}
+.login_foot{text-align:center; padding-top:35px;bottom: 20px;left: 0;padding-top: 35px;position: fixed;right: 0;}
+.login_foot_nav a{ color:#666666;padding:0 8px; line-height:24px;}
+.login_foot_nav{color:#666666;}
+.login_foot_ban{ color:#999999;}
+.benner_login_box{ background:url(../images/benner_login_bg_10.png) no-repeat; width:492px; height:388px;}
+.benner_text_box{ padding:0 62px; font-family:"微软雅黑"; }
+.benner_text_box h3{ color:#0c4f9d; padding-top:35px;padding-bottom:10px;font-size:20px; font-weight:normal;}
+.benner_text_ipt{ background:url(../images/login_but.png) no-repeat; width:330px; color:#b9b9b9; line-height:40px; font-size:16px; height:40px; margin-top:20px; padding-left:40px;}
+.benner_text_iptbox{ position:relative;}
+.benner_text_but{ background:url(../images/login_but.png) left -48px  no-repeat; font-size:20px; text-decoration:none; display:block; width:368px; height:42px; text-align:center; line-height:42px; color:#fff;}
+.benner_text_people,.benner_text_cipher{ position:absolute; top:28px; left:10px; width:24px; height:24px;}
+.benner_text_people{ background:url(../images/login_ico_10.png) no-repeat;}
+.benner_text_cipher{ background:url(../images/login_ico_13.png) no-repeat;}
+.benner_text_textbox{ height:24px; line-height:24px; font-size:16px; color:#333333;}
+.benner_text_textbox p span{ padding-left:10px;}
+.benner_text_textbox p img{ vertical-align:middle;}
+.benner_text_textbox p a{ padding-left:15px; text-decoration:none; color:#0c4f9d;}
+.benner_text_textchenk{ background: url(../images/login_ico_16.png) no-repeat; width:24px; height:24px; margin:0; padding:0;}
+.benner_text_butbox{ padding:10px 0; margin-top:20px;}

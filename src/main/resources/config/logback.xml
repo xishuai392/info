@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 设置日志级别及是否自动扫描配置文件的修改 时间单位为：milliseconds、seconds、minutes和hours -->
+<configuration debug="false" scan="true" scanPeriod="30 seconds">
+	<Encoding>UTF-8</Encoding>
+	<!-- D:/PROJECT_HOME/log -->
+    <substitutionProperty name="log.base" value="D://ZTESOFT_logs/" />
+    
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+    
+	<appender name="businessLogFile"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.base}/info_businessa.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.base}/info_business-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+			<timeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<maxFileSize>10MB</maxFileSize>
+			</timeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<!-- 独立的pattern -->
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS},%msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- 异步输出 -->  
+	<appender name ="asyncBusinessLogFile" class= "ch.qos.logback.classic.AsyncAppender">  
+		<!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->  
+		<discardingThreshold >0</discardingThreshold>  
+		<!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->  
+		<queueSize>512</queueSize>  
+		<!-- 添加附加的appender,最多只能添加一个 -->  
+		<appender-ref ref ="businessLogFile"/>  
+	</appender> 
+
+	<appender name="sqlLogFile"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.base}/info_sql.log</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<FileNamePattern>${log.base}/info_sql-%d{yyyy-MM-dd}-%i.log</FileNamePattern>
+			<TimeBasedFileNamingAndTriggeringPolicy
+				class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+				<MaxFileSize>10MB</MaxFileSize>
+			</TimeBasedFileNamingAndTriggeringPolicy>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss.SSS},%msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- 异步输出 -->  
+	<appender name ="asyncSqlLogFile" class= "ch.qos.logback.classic.AsyncAppender">  
+		<!-- 不丢失日志.默认的,如果队列的80%已满,则会丢弃TRACT、DEBUG、INFO级别的日志 -->  
+		<discardingThreshold >0</discardingThreshold>  
+		<!-- 更改默认的队列的深度,该值会影响性能.默认值为256 -->  
+		<queueSize>512</queueSize>  
+		<!-- 添加附加的appender,最多只能添加一个 -->  
+		<appender-ref ref ="sqlLogFile"/>  
+	</appender> 
+
+	<root level="INFO">
+		<appender-ref ref="asyncBusinessLogFile" />
+		<appender-ref ref="console" />
+	</root>
+	
+	<!-- business log 使用独立的appender，不继承Root的appender -->
+	<logger name="com.ztesoft" level="DEBUG" additivity="false">
+		<appender-ref ref="asyncBusinessLogFile" />
+		<appender-ref ref="console" />
+	</logger>
+
+	<!--log4jdbc -->
+	<logger name="jdbc.sqltiming" level="DEBUG">
+        <appender-ref ref="sqlLogFile" />
+    </logger>
+    <logger name="jdbc.sqlonly" level="OFF">
+        <appender-ref ref="sqlLogFile" />
+    </logger>
+    <logger name="jdbc.audit" level="OFF">
+        <appender-ref ref="sqlLogFile" />
+    </logger>
+    <logger name="jdbc.resultset" level="OFF" >
+        <appender-ref ref="sqlLogFile" />
+    </logger>
+    <logger name="jdbc.connection" level="OFF">
+        <appender-ref ref="sqlLogFile" />
+    </logger>
+    <logger name="jdbc.resultsettable" level="OFF">
+        <appender-ref ref="sqlLogFile" />
+    </logger>
+</configuration>

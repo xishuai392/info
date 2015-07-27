@@ -1,0 +1,112 @@
+html,body{margin :0;padding:0;overflow-y: hidden;width:100%;height:100%;font-family:Arial;}
+input,button,select,textarea{outline:none}
+ul,li{margin:0;padding:0;list-style:none}
+
+.header{width:100%;height:100px;background:url("../images/portal/headbg.jpg") no-repeat 0 0;border-bottom:1px solid #fff;position:relative}
+.header .logo{width:104px;height:70px;left:28px;top:18px;position:absolute;background:url("../images/portal/newlogo.png") no-repeat}
+.header .menuSeting{width:36px;height:32px;right:16px;top:0;position:absolute;background:#0266c3 url("../images/portal/iconbg.png") no-repeat 11px -436px;cursor:pointer;border-radius:0 0 4px 4px;overflow:hidden;z-index:99}
+.header .menuSeting div{line-height:32px;margin-left:32px;color:#e1f0ff;font-size:12px;background:#0266c3;display:none}
+.header .tabpannel{width:1112px;height:100px;left:210px;top:0;position:absolute}
+.header .tabpannel .toleft,
+.header .tabpannel .toright{width:26px;height:45px;top:30px;position:absolute;background:url("../images/portal/iconbg.png") no-repeat;filter:alpha(opacity=20);opacity:0.2;cursor:pointer;border-radius:10px}
+.header .tabpannel .toleft{background-position:5px -226px;left:5px}
+.header .tabpannel .toright{background-position:-26px -226px;right:5px}
+.header .tabpannel .toleftHover,.header .tabpannel .toleft:hover{background-color:#000;background-position:5px -290px;}
+.header .tabpannel .torightHover,.header .tabpannel .toright:hover{background-color:#000;background-position:-26px -290px;}
+
+.header .tabsbox{width:1060px;height:100px;margin:0 auto;overflow:hidden;position:relative}
+.header .tabsbox .tabs{width:1320px;height:100px;display:block;position:absolute;left:0;top:0}
+.header .tabsbox .tabs li{float:left;height:100px;width:106px;cursor:pointer;}
+.header .tabsbox .tabs li.hover,.header .tabsbox .tabs li:hover{background:url("../images/portal/iconCurbg.png") no-repeat -106px 0;}
+.header .tabsbox .tabs li.current,.header .tabsbox .tabs li.current:hover{background:url("../images/portal/iconCurbg.png") no-repeat 0 0;}
+.header .tabsbox .tabs .tabicon{width:52px;height:52px;margin:16px auto 0;display:block;padding:0}
+.header .tabsbox .tabs .tabname{width:100%;height:28px;line-height:28px;font-size:12px;text-align:center;overflow:hidden;color:#fff;display:block;margin:0;padding:0}
+
+.menuSetWindow{width:613px;border:4px solid #62b4fd;border-radius:6px;position:absolute;left:50%;top:50%;margin-left:-300px;background:#fff;box-shadow:0 0 10px #000;z-index:999}
+.menuSetWindow .closeMenuSet{width:25px;height:25px;position:absolute;top:1px;right:5px;background:url("../images/portal/iconbg.png") no-repeat 7px -475px;cursor:pointer}
+.menuSetWindow .closeMenuSet:hover{background-color:#c33}
+.menuSetWindow .winTit{background:#62b4fd;line-height:28px;height:32px;overflow:hidden;font-size:14px;color:#fff;font-weight:700;padding-left:10px}
+.menuSetWindow .winTit span{font-size:12px;font-weight:100;color:#cee8ff;padding-left:10px}
+.menuSetWindow .winCon{padding:10px}.menuSetWindow .winCon p{padding:0;margin:0}
+.menuSetWindow .iconBox{border:1px dotted #aaa;border-radius:4px;padding:10px 0 8px 10px;display:block;zoom:1}
+.menuSetWindow .willShowIconBox{border:0}
+.menuSetWindow .iconBox:after{content:'\20';height:0;display:block;overflow:hidden;clear:both;line-height:0}
+.menuSetWindow .iconBox li{float:left;width:80px;height:80px;margin:0 2px 2px 0;position:relative;box-sizing:border-box;cursor:move}
+.menuSetWindow .iconBox li .img{width:42px;height:42px;margin:6px auto 0}
+.menuSetWindow .iconBox li .iconname{height:28px;line-height:28px;color:#667c8d;text-align:center;font-size:12px}
+.menuSetWindow .iconBox li .act{height:22px;width:22px;position:absolute;right:-10px;top:-10px;background:url("../images/portal/iconbg.png") no-repeat;visibility:hidden;cursor:default}
+.menuSetWindow .showIconBox li .act{background-position:-68px -443px}
+.menuSetWindow .willShowIconBox li .act{background-position:-68px -471px}
+.menuSetWindow .iconBox li.cur,.menuSetWindow .iconBox li:hover{border:2px dotted #d5d5d5;border-radius:4px;}
+.menuSetWindow .showIconBox li.cur .act,.menuSetWindow .showIconBox li:hover .act,.menuSetWindow .willShowIconBox li.cur .act,.menuSetWindow .willShowIconBox li:hover .act{visibility:visible}
+.menuSetWindow .menuSetOkBtn{width:160px;height:40px;line-height:40px;font-size:16px;font-family:microsoft yahei;color:#fff;background:#3f96e4;text-align:center;margin:10px auto;clear:both;cursor:pointer;display:block;text-decoration:none}
+.menuSetWindow .menuSetOkBtn:hover{background:#217ac9}
+.menuSetWindow .iconBox li.placeHolder{border:2px dotted #FFBBBD;border-radius:4px}
+.menuSetWindow .willShowIconBox li.placeHolder{border:2px dotted #C1DCFF}
+
+.conBox{width:100%;height:70%;background:#fff;position:relative}
+.conBox .leftMenu{width:139px;height:100%;overflow:auto;padding-top:43px;position:absolute;border:1px solid #d5d5d5;background:#fff;border-left:0;border-bottom:0;left:0;font-size:14px;top:0}
+.conBox .leftMenu .title{height:37px;background:#cecece;position:fixed;_position:absolute;color:#666;line-height:37px;padding-left:30px;width:109px;margin-top:-43px}
+.conBox .leftMenu .title .icon{width:13px;height:10px;background:url("../images/portal/iconbg.png") no-repeat 0 -63px;position:absolute;left:8px;top:13px}
+.conBox .leftMenu li{display:block;line-height:24px;padding-left:18px;background:url("../images/portal/xtree-default-line.png") 0 0 no-repeat}
+.conBox .leftMenu li.last{background-position:0 -1762px}
+.conBox .leftMenu li a{font-size:12px;float:left;line-height:24px;text-decoration:none;color:#555;white-space:nowrap}
+.conBox .leftMenu li a:hover{color:#c00}
+.conBox .leftMenu li a.noflow,.conBox .leftMenu li a.noflow:hover{color:#999}
+.conBox .leftMenu li p.add{width:9px;height:9px;float:left;margin:9px 0 0 -16px;background:url("../images/portal/xtree-treeview-default.png") -83px -5px no-repeat;cursor:pointer}
+.conBox .leftMenu li p.dec{background-position:-67px -27px}
+.conBox .leftMenu ul,.conBox .leftMenu li{zoom:1;clear:both}
+.conBox .leftMenu ul:after,.conBox .leftMenu li:after{content:'\20';height:0;display:block;clear:both;line-height:0;overflow:hidden}
+
+.conBox .leftMenuClose{position:absolute;top:50%;left:139px;margin-top:-26px;height:26px;width:8px;background:url("../images/portal/iconbg.png") no-repeat 0 -97px;cursor:pointer}
+.conBox .leftMenuOpen{background-position:0 -122px;left:0}
+
+.conBox .mainBox{width:100%;height:100%}
+.conBox .mainBox .subTabs{height:38px;background:#e7e7e7;border:1px solid #d5d5d5;border-top:0;border-right:0;padding-left:3px;position:relative}
+.conBox .mainBox .subTabs .item{height:32px;line-height:32px;font-size:14px;color:#666;position:relative;padding:0 28px 0 15px;float:left;margin:5px 6px 0 0;border:1px solid #d5d5d5;border-bottom:0;border-radius:4px 4px 0 0;background:#fff url("../images/portal/iconbg.png") repeat-x 0 -13px;cursor:pointer}
+.conBox .mainBox .subTabs .firstItem{padding:0 15px;}
+.conBox .mainBox .subTabs .item .close{width:16px;height:16px;position:absolute;right:5px;top:8px;background:url("../images/portal/iconbg.png") no-repeat 1px -162px}
+.conBox .mainBox .subTabs .item .closeHover,
+.conBox .mainBox .subTabs .item .close:hover{background:url("../images/portal/iconbg.png") no-repeat 1px -185px;}
+.conBox .mainBox .subTabs .itemClick{background:#008dff none;color:#fff;border-color:#008dff}
+.conBox .mainBox .subTabs .itemClick .close{background-position:-25px -162px}
+.conBox .mainBox .subTabs .itemClick .closeHover,
+.conBox .mainBox .subTabs .itemClick .close:hover{background-position:-25px -185px}
+
+.conBox .mainBox .subTabs .sysMenus{height:38px;position:absolute;right:10px;top:0;font-size:14px}
+.conBox .mainBox .subTabs .sysMenus .li{float:left;height:38px;line-height:38px;padding:0 12px 0 32px;background:url("../images/portal/iconbg.png") no-repeat;color:#666;cursor:pointer}
+.conBox .mainBox .subTabs .sysMenus .sysManager{background-position:-61px -154px;margin:0;cursor:auto}
+.conBox .mainBox .subTabs .sysMenus .logout{background-position:-61px -193px}
+.conBox .mainBox .subTabs .sysMenus .pswChg{background-position:-61px -230px}
+.conBox .mainBox .subTabs .sysMenus .platformMng{background-position:-61px -267px;position:relative;padding-right:25px}
+.conBox .mainBox .subTabs .sysMenus .platformMng .arrow{width:9px;height:6px;position:absolute;right:10px;top:17px;background:url("../images/portal/iconbg.png") no-repeat -76px -137px}
+.conBox .mainBox .subTabs .sysMenus .platformMngHover{background-color:#cecece;border:1px solid #c3c3c3;border-top:0;border-bottom:0;margin:0 -1px}
+.conBox .mainBox .subTabs .sysMenus .platformMngHover .arrow{width:9px;height:6px;position:absolute;right:10px;top:17px;background-position:-76px -132px}
+
+.platformMngPop{position:absolute;width:120px;border:1px solid #c3c3c3;overflow:hidden;z-index:5}
+.platformMngPop .node{height:38px;line-height:38px;background:#f8f8f8 url("../images/portal/iconbg.png") no-repeat -64px -80px;padding-left:30px;font-size:12px;color:#838383;border-bottom:1px solid #e7e7e7;cursor:pointer}
+.platformMngPop .nodeLast{border:0}
+.platformMngPop .nodeClick{background-position:-64px -45px;}
+.platformMngPop .nodeChilds{border-top:1px solid #e7e7e7;border-bottom:1px solid #e7e7e7;margin:-1px 0;position:relative;cursor:pointer}
+.platformMngPop .nodeChilds .child{height:26px;line-height:26px;border-bottom:1px dotted #ddd;padding-left:24px;font-size:12px;color:#a1a1a1;background:#fff url("../images/portal/iconbg.png") no-repeat 10px -360px;overflow:hidden}
+.platformMngPop .nodeChilds .childLast{background-position:10px -399px;border:0}
+
+.conBox .mainBox .mainFrame{width:100%;height:60%}
+
+.copyright{width:100%;height:30px;line-height:30px;font-size:14px;text-align:center;background:#0483ec;color:#fff}
+
+.load_mask {width:146px;height:95px;position:absolute;left:50%;top:50%;margin:-30px 0 0 -73px;display:none}
+.mark{position:absolute;width:100%;height:100%;z-index:4;left:0;top:0;zoom:1;background:url("../images/login/changePswbg.png") no-repeat -999px -999px}
+.alert,
+.alert .close{background:url("../images/portal/changePswbg.png") no-repeat}
+.alert{position:absolute;width:316px;height:226px;padding-top:42px;left:50%;top:50%;margin:-130px 0 0 -177px;box-shadow:0 0 0 6px rgba(0,0,0,.3);border-radius:2px;z-index:2}
+.alert .close{display:block;position:absolute;width:22px;height:21px;top:8px;right:8px;background-position:-336px -92px;overflow:hidden;text-indent:-999px}
+.alert .close:hover{background-position:-336px -113px;}
+.alert ul{display:block;width:290px;margin:0 auto}
+.alert ul li{display:block;height:30px;margin-top:13px;}
+.alert ul li i{margin:0;padding:0;font-style:normal;font-size:14px;color:#666;width:80px;height:30px;line-height:30px;text-align:right;float:left;}
+.alert ul li input{width:180px;height:28px;line-height:28px;font-size:14px;font-family:microsoft yahei;border:1px solid #ccc;background:#fff;padding:0 5px}
+.alert .error{color:#D74343;font-size:14px;text-align:center;width:250px;height:38px;line-height:38px;overflow:hidden;margin:0 auto;font-family:microsoft yahei;clear:both}
+.alert .changepswOk,.alert .changepswCancel{display:inline-block;width:110px;height:38px;line-height:38px;background:#f60;text-align:center;font-size:16px;font-family:microsoft yahei;margin:0 auto;color:#fff;text-decoration:none;margin-right:12px}
+.alert .changepswOk:hover{background:#f90}
+.alert .changepswCancel{margin:0;background:#eee;color:#666}

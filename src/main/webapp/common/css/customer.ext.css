@@ -1,0 +1,289 @@
+/* customer ExtJS CSS Document */
+
+/*全部展开*/
+.expandall {
+    background-image: url(../images/icons/nolines_plus.gif) !important;
+}
+
+/*全部收缩*/
+.shrinkall {
+    background-image: url(../images/icons/nolines_minus.gif) !important;
+}
+
+/*帮助*/
+.help {
+    background-image: url(../images/icons/help.png) !important;
+}
+
+/*改密码*/
+.changepasswd {
+    background-image: url(../images/icons/key.png) !important;
+}
+
+/*退出*/
+.exitsys {
+    background-image: url(../images/icons/cancel.png) !important;
+}
+
+/*锁定*/
+.lock {
+    background-image: url(../images/icons/lock.png) !important;
+}
+
+/*解锁*/
+.lock_open {
+    background-image: url(../images/icons/lock_open.png) !important;
+}
+
+/*主页*/
+.home {
+    background-image: url(../images/icons/house.png) !important;
+}
+
+/*文件修复 */
+.folder_wrench {
+    background-image: url(../images/icons/folder_wrench.png) !important;
+}
+
+/*系统导航 */
+.sitemap {
+    background-image: url(../images/icons/sitemap.png) !important;
+}
+
+.tux {
+    background-image: url(../images/icons/tux.png) !important;
+}
+
+.information {
+    background-image: url(../images/icons/information.png) !important;
+}
+
+.note {
+    background-image: url(../images/icons/note.png) !important;
+}
+
+/*放大镜-查询 */
+.magnifier {
+    background-image: url(../images/icons/magnifier.png) !important;
+}
+
+/** 上传upload **/
+.arrow_up {
+    background-image: url(../images/icons/arrow_up.png) !important;
+}
+
+/** 下载 download **/
+.arrow_down {
+    background-image: url(../images/icons/arrow_down.png) !important;
+}
+
+/**删除 delete **/
+.delete {
+    background-image: url(../images/icons/delete.png) !important;
+}
+
+/**添加 add **/
+.add {
+    background-image: url(../images/icons/add.png) !important;
+}
+
+/**修改 edit**/
+.edit {
+    background-image: url(../images/icons/edit.png) !important;
+}
+
+/**关闭close**/
+.close {
+    background-image: url(../images/icons/cross.png) !important;
+}
+
+/**配置 config**/
+.config {
+    background-image: url(../images/icons/cog.png) !important;
+}
+
+/**查看 detail**/
+.detail {
+    background-image: url(../images/icons/application_view_detail.png) !important;
+}
+
+/** 刷新**/
+.arrow_refresh {
+    background-image: url(../images/icons/arrow_refresh.png) !important;
+}
+
+/** 返回、取消**/
+.arrow_undo {
+    background-image: url(../images/icons/arrow_undo.png) !important;
+}
+
+/** 重置**/
+.arrow_rotate_anticlockwise {
+    background-image: url(../images/icons/arrow_rotate_anticlockwise.png) !important;
+}
+
+/** 预览  **/
+.preview {
+    background-image: url(../images/icons/preview.png) !important;
+}
+
+/** 消息提示**/
+.comment {
+    background-image: url(../images/icons/comment.png) !important;
+}
+
+/** 确认、保存、确定**/
+.accept {
+    background-image: url(../images/icons/accept.png) !important;
+}
+
+/** 标记、确定**/
+.tick {
+    background-image: url(../images/icons/tick.png) !important;
+}
+
+/** 用户**/
+.userIcon {
+    background-image: url(../images/icons/user.png) !important;
+}
+
+/** 组织架构**/
+.chart_organisationIcon {
+    background-image: url(../images/icons/chart_organisation.png) !important;
+}
+
+/** 群组**/
+.group {
+    background-image: url(../images/icons/group.png) !important;
+}
+
+/** 时钟**/
+.clock {
+    background-image: url(../images/icons/clock.png) !important;
+}
+
+/** Excel图标excel16x16**/
+.excel16x16 {
+    background-image: url(../images/icons/excel16x16.png) !important;
+}
+
+/** Excel图标excel48x48**/
+.excel48x48 {
+    background-image: url(../images/icons/excel48x48.png) !important;
+}
+
+/** Excel图标excel16x16**/
+.excel16x16 {
+    background-image: url(../images/icons/excel16x16.png) !important;
+}
+
+/** Excel图标excel48x48**/
+.excel48x48 {
+    background-image: url(../images/icons/excel48x48.png) !important;
+}
+
+/** Word图标word16x16**/
+.word16x16 {
+    background-image: url(../images/icons/word16x16.png) !important;
+}
+
+/** Word图标word48x48**/
+.word48x48 {
+    background-image: url(../images/icons/word48x48.png) !important;
+}
+
+
+/** 警告提示**/
+.bullet_error {
+    background-image: url(../images/icons/bullet_error.png) !important;
+}
+
+/** 打印**/
+.printer {
+    background-image: url(../images/icons/printer.png) !important;
+}
+
+/** 数据库来源**/
+.database {
+    background-image: url(../images/icons/database.png) !important;
+}
+
+/** 惊叹号**/
+.exclamation {
+    background-image: url(../images/icons/exclamation.png) !important;
+}
+
+/** 提醒**/
+.exclamation {
+    background-image: url(../images/icons/bell.png) !important;
+}
+
+/*启动应用 */
+.run {
+    background-image: url(../images/icons/run.png) !important;
+}
+
+/*停止应用 */
+.uninstall {
+    background-image: url(../images/icons/stop.png) !important;
+}
+
+/*解除绑定*/
+.unbound {
+    background-image: url(../images/icons/unbound.png) !important;
+}
+
+.update {
+    background-image: url(../images/icons/update.png) !important;
+}
+
+
+
+/*打开锁*/
+.lock_open {
+    background-image: url(../images/icons/lock-open.png) !important;
+}
+
+/*关闭锁 */
+.lock_closed {
+    background-image: url(../images/icons/lock-closed.png) !important;
+}
+
+/*开始*/
+.play {
+    background-image: url(../images/icons/play.png) !important;
+}
+
+/*停止 */
+.pause {
+    background-image: url(../images/icons/pause.png) !important;
+}
+
+/*资源配置 */
+.resource {
+    background-image: url(../images/icons/application_side_tree.png) !important;
+}
+
+/**表单失效时的样式 */
+.custom-x-item-disabled {
+    cursor: default;
+    opacity: .9;
+    -moz-opacity: .9;
+    filter: alpha(opacity=90);
+}
+
+.custom-x-item-disabled .x-form-field, .custom-x-item-disabled .x-form-display-field, .custom-x-item-disabled .x-form-cb-label, .custom-x-item-disabled .x-form-trigger {
+    filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=30);
+    opacity: 0.3;
+}
+
+.pagebar_left {
+    width: 22;
+    display: block;
+}
+
+
+.readOnlyCls {
+    background: #E6E6E6;
+}
+

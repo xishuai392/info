@@ -1,0 +1,1 @@
+web专用的，用于controller\service\model等com.ztesoft.web包下的常量类

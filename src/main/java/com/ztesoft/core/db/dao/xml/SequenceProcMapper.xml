@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztesoft.core.db.dao.mapper.ISequenceProcMapper">
+	<!-- 调用序列生成函数，生成 序列号  -->
+	<select id="selectSequence" resultType="String" parameterType="map"  statementType="CALLABLE" >
+	<![CDATA[
+		   call SequenceProc(#{tableName,jdbcType=VARCHAR,mode=IN},#{columnName,jdbcType=VARCHAR,mode=IN},
+		   #{schemaName,jdbcType=VARCHAR,mode=IN},#{count,jdbcType=INTEGER,mode=IN},#{resultStr,jdbcType=VARCHAR,mode=OUT})
+	]]>
+	</select>
+    
+</mapper>

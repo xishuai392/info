@@ -1,0 +1,19 @@
+html,body{margin :0;padding:0;overflow: hidden;}
+input,button,select,textarea{outline:none}
+#mainDiv{position: absolute;top: 0px;left: 0px;width: 100%;height: 100%;z-index: 2}
+#bgImg{position: absolute;top: 0px;left: 0px;z-index: 1}
+#logo{position: absolute;left: 30px;top: 20px;background: url("../images/logo_icon.png");width:213px;height:108px;}
+#btns{position: absolute;right: 30px;top: 40px;height:19px;}
+#buttom_logo{position: absolute;bottom: 10px;height:19px;width: 250px;font-size: 14px;color: white;}
+.metaDiv{position: absolute;font-size: 14px;z-index: 3}
+.metaDiv img{position: absolute;}
+.metaName{position: absolute;z-index: 4;bottom:10px;left:20px;color: white;}
+.metaDetail{position: absolute;z-index: 5;top:0px;lef:0px;width:100%;height: 100%;background: url("../images/transparent20.png");display: none;color:white;cursor: pointer;}
+.metaDetail div{padding:10px;}
+.mask{position: absolute;z-index: 6;top:0px;left: 0px;width:100%;height: 100%;background: url("../images/transparent20.png");}
+.alert{position: absolute;background: white;}
+.alert .close{position: absolute;width:40px;height:37px;top:0px;right: 0px;background: url("../images/Close_button.png");cursor:pointer;}
+.alert .line{height:38px;color:black;margin-left: 20px;margin-top: 18px;}
+.alert .cipher_icon{width:16px;height:16px;background: url("../images/cipher_icon.png");margin:9px;float: left;}
+.alert .user_icon{width:16px;height:16px;background: url("../images/user_icon.png");margin:9px;float: left;}
+.alert input{width:270px;height:38px;font-size: 30px;border: 0;vertical-align:middle;}

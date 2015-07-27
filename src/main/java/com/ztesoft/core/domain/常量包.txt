@@ -1,0 +1,3 @@
+常量包
+core专用的，用于com.ztesoft.core包下的常量类,
+com.ztesoft.web的也可以使用这里的常量类

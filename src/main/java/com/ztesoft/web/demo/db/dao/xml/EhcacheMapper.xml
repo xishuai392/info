@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztesoft.web.demo.db.dao.mapper.IEhcacheMapper" >
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache"   > 
+	</cache>
+    
+	<resultMap id="BaseResultMap" type="com.ztesoft.web.demo.db.po.EhcachePO">
+		<id column="emp_id" property="empId" jdbcType="INTEGER" />
+		<result column="emp_name" property="empName" jdbcType="VARCHAR" />
+		<result column="emp_age" property="empAge" jdbcType="INTEGER" />
+		<result column="emp_sex" property="empSex" jdbcType="VARCHAR" />
+		<result column="emp_birthday" property="empBirthday" jdbcType="DATE" />
+	</resultMap>
+	<sql id="Base_Column_List" >
+  	emp_id,emp_name,emp_age,emp_sex,emp_birthday
+	</sql>
+	<sql id="Arg_Where_Clause" >
+		<where >
+			<foreach collection="oredCriteria" item="criteria" separator="or" >
+				<if test="criteria.valid" >
+					<trim prefix="(" suffix=")" prefixOverrides="and" >
+						<foreach collection="criteria.criteria" item="criterion" >
+							<choose >
+								<when test="criterion.noValue" >
+                  and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue" >
+                  and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>
+	<sql id="Update_By_Arg_Where_Clause" >
+		<where >
+			<foreach collection="arg.oredCriteria" item="criteria" separator="or" >
+				<if test="criteria.valid" >
+					<trim prefix="(" suffix=")" prefixOverrides="and" >
+						<foreach collection="criteria.criteria" item="criterion" >
+							<choose >
+								<when test="criterion.noValue" >
+                  and ${criterion.condition}
+								</when>
+								<when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+								</when>
+								<when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+								</when>
+								<when test="criterion.listValue" >
+                  and ${criterion.condition}
+									<foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+									</foreach>
+								</when>
+							</choose>
+						</foreach>
+					</trim>
+				</if>
+			</foreach>
+		</where>
+	</sql>  
+	<select id="selectByArg" resultMap="BaseResultMap" parameterType="com.ztesoft.web.demo.db.arg.EhcacheArg" >
+    select
+		<if test="distinct" >
+      distinct
+		</if>
+		<include refid="Base_Column_List" />
+    from EHCACHE
+		<if test="_parameter != null" >
+			<include refid="Arg_Where_Clause" />
+		</if>
+		<if test="orderByClause != null" >
+      order by ${orderByClause}
+		</if>
+	</select>  
+	<select id="selectByArgAndPage" resultMap="BaseResultMap" parameterType="com.ztesoft.web.demo.db.arg.EhcacheArg" useCache="true">
+    select
+		<if test="distinct" >
+      distinct
+		</if>
+		<if test="columns == null" >
+			<include refid="Base_Column_List" />
+		</if>
+		<if test="columns != null" >
+    	${columns}
+		</if>
+    from EHCACHE
+		<if test="_parameter != null" >
+			<include refid="Arg_Where_Clause" />
+		</if>
+		<if test="groupByClause != null" >
+      group by ${groupByClause}
+		</if>
+		<if test="orderByClause != null" >
+      order by ${orderByClause}
+		</if>
+	</select>
+	<select id="countByArg" parameterType="com.ztesoft.web.demo.db.arg.EhcacheArg" resultType="java.lang.Integer" >
+		<if test="countsql1 != null" >
+    	${countsql1}
+			<if test="_parameter != null" >
+				<include refid="Arg_Where_Clause" />
+			</if>
+		${countsql2}
+		</if>
+		<if test="countsql1 == null" >
+		select count(*) from EHCACHE
+			<if test="_parameter != null" >
+				<include refid="Arg_Where_Clause" />
+			</if>
+		</if>
+	</select>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+	select
+		<include refid="Base_Column_List" />
+	from EHCACHE
+	where emp_id = #{empId,jdbcType=INTEGER}
+	</select>
+	<insert id="insert" parameterType="com.ztesoft.web.demo.db.po.EhcachePO"  >
+		insert into EHCACHE(emp_id,emp_name,emp_age,emp_sex,emp_birthday)
+		values (#{empId,jdbcType=INTEGER},#{empName,jdbcType=VARCHAR},#{empAge,jdbcType=INTEGER},#{empSex,jdbcType=VARCHAR},#{empBirthday,jdbcType=DATE})
+	</insert>
+	<insert id="insertSelective" parameterType="com.ztesoft.web.demo.db.po.EhcachePO">
+		insert into EHCACHE
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="empId != null" >
+			emp_id,
+			</if>
+			<if test="empName != null" >
+			emp_name,
+			</if>
+			<if test="empAge != null" >
+			emp_age,
+			</if>
+			<if test="empSex != null" >
+			emp_sex,
+			</if>
+			<if test="empBirthday != null" >
+			emp_birthday,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="empId != null" >
+			#{empId,jdbcType=INTEGER},
+			</if>
+			<if test="empName != null" >
+			#{empName,jdbcType=VARCHAR},
+			</if>
+			<if test="empAge != null" >
+			#{empAge,jdbcType=INTEGER},
+			</if>
+			<if test="empSex != null" >
+			#{empSex,jdbcType=VARCHAR},
+			</if>
+			<if test="empBirthday != null" >
+			#{empBirthday,jdbcType=DATE},
+			</if>
+		</trim> 	
+	</insert>	
+	<insert id="insertBatch" parameterType="list"  >
+	insert into EHCACHE(emp_id,emp_name,emp_age,emp_sex,emp_birthday)
+	 values 
+		<foreach collection="list" item="item" index="index" separator=",">
+	 		(#{item.empId,jdbcType=INTEGER},#{item.empName,jdbcType=VARCHAR},#{item.empAge,jdbcType=INTEGER},#{item.empSex,jdbcType=VARCHAR},#{item.empBirthday,jdbcType=DATE})
+		</foreach>
+	</insert>
+	<update id="updateByArgSelective" parameterType="map" >
+    update EHCACHE
+		<set>
+			<if test="record.empName != null" >
+			emp_name= #{record.empName,jdbcType=VARCHAR},
+			</if>
+			<if test="record.empAge != null" >
+			emp_age= #{record.empAge,jdbcType=INTEGER},
+			</if>
+			<if test="record.empSex != null" >
+			emp_sex= #{record.empSex,jdbcType=VARCHAR},
+			</if>
+			<if test="record.empBirthday != null" >
+			emp_birthday= #{record.empBirthday,jdbcType=DATE}
+			</if>
+		</set>
+		<if test="_parameter != null" >
+			<include refid="Update_By_Arg_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByArg" parameterType="map" >
+    update EHCACHE
+    set 
+		emp_id = #{record.empId,jdbcType=INTEGER},
+		emp_name = #{record.empName,jdbcType=VARCHAR},
+		emp_age = #{record.empAge,jdbcType=INTEGER},
+		emp_sex = #{record.empSex,jdbcType=VARCHAR},
+		emp_birthday = #{record.empBirthday,jdbcType=DATE}
+		<if test="_parameter != null" >
+			<include refid="Update_By_Arg_Where_Clause" />
+		</if>
+	</update>
+	<update id="updateByPrimaryKeySelective" parameterType="com.ztesoft.web.demo.db.po.EhcachePO" >
+		update EHCACHE
+		<set >
+			<if test="empName != null" >
+		emp_name = #{empName,jdbcType=VARCHAR},
+			</if>
+			<if test="empAge != null" >
+		emp_age = #{empAge,jdbcType=INTEGER},
+			</if>
+			<if test="empSex != null" >
+		emp_sex = #{empSex,jdbcType=VARCHAR},
+			</if>
+		emp_birthday = #{empBirthday,jdbcType=DATE}
+		</set >
+	 where emp_id = #{empId,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.ztesoft.web.demo.db.po.EhcachePO" >
+		update EHCACHE
+		set 
+			emp_name = #{empName,jdbcType=VARCHAR},
+			emp_age = #{empAge,jdbcType=INTEGER},
+			emp_sex = #{empSex,jdbcType=VARCHAR},
+			emp_birthday = #{empBirthday,jdbcType=DATE}
+	 where emp_id = #{empId,jdbcType=INTEGER}
+	</update>
+	<delete id="deleteByArg" parameterType="com.ztesoft.web.demo.db.arg.EhcacheArg" >
+    delete from EHCACHE
+		<if test="_parameter != null" >
+			<include refid="Arg_Where_Clause" />
+		</if>
+	</delete>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+	 delete from EHCACHE
+	 where emp_id = #{empId,jdbcType=INTEGER}
+	</delete>
+</mapper>  

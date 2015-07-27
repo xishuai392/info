@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:cache="http://www.springframework.org/schema/cache" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+        http://www.springframework.org/schema/cache  
+    	http://www.springframework.org/schema/cache/spring-cache.xsd  
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<!-- Cache配置 -->
+	<cache:annotation-driven cache-manager="frameworkEhCacheManager"
+		key-generator="hashCodeKeyGenerator" />
+
+	<bean id="frameworkEhCacheManagerFactory"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"
+		p:configLocation="classpath:config/cache/ehcache.xml" />
+
+	<bean id="frameworkEhCacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+		<property name="cacheManager" ref="frameworkEhCacheManagerFactory"></property>
+		<property name="transactionAware" value="true"></property>
+	</bean>
+
+	<!-- ehcache缓存服务 -->
+	<bean id="frameworkEhCacheService" class="com.ztesoft.core.cache.EhCacheService">
+		<property name="ehCacheCacheManager" ref="frameworkEhCacheManager"></property>
+	</bean>
+
+	<!-- 自定义缓存主键策略 ,HashCode类型的 -->
+	<bean id="hashCodeKeyGenerator" class="com.ztesoft.core.spring.cache.HashCodeKeyGenerator" />
+
+	<!-- 自定义缓存主键策略 ,String类型的 -->
+	<bean id="stringKeyGenerator" class="com.ztesoft.core.spring.cache.StringKeyGenerator" />
+
+</beans>

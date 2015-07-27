@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
+        http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<mvc:default-servlet-handler />
+
+	<!-- properties配置文件 -->
+	<bean id="propertyConfigurer"
+		class="com.ztesoft.core.spring.context.CustomPropertyConfigurer">
+		<property name="order" value="1" />
+		<!-- 是否忽略不可解析的 -->
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+		<!-- 多个locations， 单个location <value> -->
+		<property name="locations">
+			<list>
+				<value>classpath:config/props/jdbc.properties</value>
+			</list>
+		</property>
+	</bean>
+
+
+	<!-- Spring的上下文对象 -->
+	<bean class="com.ztesoft.core.spring.context.SpringApplicationContextHolder" />
+
+
+
+	<!-- 使用conversion-service来注册自定义的converter DataBinder实现了PropertyEditorRegistry, 
+		TypeConverter这两个interface，而在spring mvc实际处理时，返回值都是return binder.convertIfNecessary(见HandlerMethodInvoker中的具体处理逻辑)。 
+		因此可以使用customer conversionService来实现自定义的类型转换。 -->
+	<bean id="conversionService"
+		class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+		<property name="converters">
+			<list>
+				<bean class="com.ztesoft.core.convert.DateConverter">
+					<constructor-arg index="0" value="" />
+					<constructor-arg index="1" value="true" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<mvc:annotation-driven conversion-service="conversionService">
+		<!-- spring返回的时候会根据这里的bean的顺序去匹配 -->
+		<mvc:message-converters register-defaults="false">
+			<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>text/plain;charset=UTF-8</value>
+					</list>
+				</property>
+			</bean>
+			<!-- 修改为以下配置即可 -->
+			<bean
+				class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+				<property name="supportedMediaTypes">
+					<list>
+						<value>application/json;charset=UTF-8</value>
+					</list>
+				</property>
+				<property name="objectMapper">
+					<bean class="com.ztesoft.core.common.JsonObjectMapper">
+					</bean>
+				</property>
+			</bean>
+			<bean
+				class="org.springframework.http.converter.ByteArrayHttpMessageConverter" />
+			<bean class="org.springframework.http.converter.FormHttpMessageConverter" />
+			<bean
+				class="org.springframework.http.converter.xml.SourceHttpMessageConverter" />
+		</mvc:message-converters>
+	</mvc:annotation-driven>
+
+	<!-- 配置使Spring采用CGLIB代理 -->
+	<aop:aspectj-autoproxy proxy-target-class="true" />
+</beans>

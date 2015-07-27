@@ -1,0 +1,582 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztesoft.web.cache.db.dao.mapper.IAmUserTmpMapper" >
+	<cache type="org.mybatis.caches.ehcache.LoggingEhcache" > 
+        <property name="timeToIdleSeconds" value="3600"/><!--1 hour-->
+        <property name="timeToLiveSeconds" value="3600"/><!--1 hour-->
+        <property name="maxEntriesLocalHeap" value="1000"/>
+        <property name="maxEntriesLocalDisk" value="10000000"/>
+        <property name="memoryStoreEvictionPolicy" value="LRU"/>
+    </cache>
+    
+  <resultMap id="BaseResultMap" type="com.ztesoft.web.cache.db.po.AmUserTmpPO">
+  	<id column="USER_ID" property="userId" jdbcType="INTEGER" />
+  	<result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+  	<result column="NICK_NAME" property="nickName" jdbcType="VARCHAR" />
+  	<result column="USER_CODE" property="userCode" jdbcType="VARCHAR" />
+  	<result column="TELEPHONE" property="telephone" jdbcType="VARCHAR" />
+  	<result column="EMAIL" property="email" jdbcType="VARCHAR" />
+  	<result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+  	<result column="AGE" property="age" jdbcType="INTEGER" />
+  	<result column="STATE" property="state" jdbcType="CHAR" />
+  	<result column="CREATED_DATE" property="createdDate" jdbcType="DATE" />
+  	<result column="TEST_NUMBER_ONE" property="testNumberOne" jdbcType="DECIMAL" />
+  	<result column="TEST_NUMBER_TWO" property="testNumberTwo" jdbcType="DECIMAL" />
+  	<result column="TEST_DOUBLE_ONE" property="testDoubleOne" jdbcType="DOUBLE" />
+  	<result column="TEST_DOUBLE_TWO" property="testDoubleTwo" jdbcType="DOUBLE" />
+  	<result column="PHOTO" property="photo" jdbcType="VARCHAR" />
+  	<result column="TEST_TEXT" property="testText" jdbcType="VARCHAR" />
+  	<result column="acct_item_id" property="acctItemId" jdbcType="DECIMAL" />
+  	<result column="serv_id" property="servId" jdbcType="DECIMAL" />
+  	<result column="amount" property="amount" jdbcType="DECIMAL" />
+  	<result column="fee_cycle_id" property="feeCycleId" jdbcType="DECIMAL" />
+  	<result column="state_date" property="stateDate" jdbcType="DATE" />
+  	<result column="balance_paid" property="balancePaid" jdbcType="DECIMAL" />
+  	<result column="deal_source" property="dealSource" jdbcType="INTEGER" />
+  	<result column="meter_reading" property="meterReading" jdbcType="DECIMAL" />
+  	<result column="pseudo_flag" property="pseudoFlag" jdbcType="VARCHAR" />
+  	<result column="partition_charge" property="partitionCharge" jdbcType="DECIMAL" />
+  	<result column="cpid" property="cpid" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+  	USER_ID,USER_NAME,NICK_NAME,USER_CODE,TELEPHONE,EMAIL,PASSWORD,AGE,STATE,CREATED_DATE,TEST_NUMBER_ONE,TEST_NUMBER_TWO,TEST_DOUBLE_ONE,TEST_DOUBLE_TWO,PHOTO,TEST_TEXT,acct_item_id,serv_id,amount,fee_cycle_id,state_date,balance_paid,deal_source,meter_reading,pseudo_flag,partition_charge,cpid
+  </sql>
+  <sql id="Arg_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Arg_Where_Clause" >
+    <where >
+      <foreach collection="arg.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>  
+  <select id="selectByArg" resultMap="BaseResultMap" parameterType="com.ztesoft.web.cache.db.arg.AmUserTmpArg" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from AM_USER_TMP
+    <if test="_parameter != null" >
+      <include refid="Arg_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>  
+  <select id="selectByArgAndPage" resultMap="BaseResultMap" parameterType="com.ztesoft.web.cache.db.arg.AmUserTmpArg" useCache="false">
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+     <if test="columns == null" >
+    	<include refid="Base_Column_List" />
+    </if>
+    <if test="columns != null" >
+    	${columns}
+   	</if>
+    from AM_USER_TMP
+    <if test="_parameter != null" >
+      <include refid="Arg_Where_Clause" />
+    </if>
+	<if test="groupByClause != null" >
+      group by ${groupByClause}
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="countByArg" parameterType="com.ztesoft.web.cache.db.arg.AmUserTmpArg" resultType="java.lang.Integer" >
+    <if test="countsql1 != null" >
+    	${countsql1}
+    	<if test="_parameter != null" >
+		  <include refid="Arg_Where_Clause" />
+		</if>
+		${countsql2}
+    </if>
+	<if test="countsql1 == null" >
+		select count(*) from AM_USER_TMP
+		<if test="_parameter != null" >
+		  <include refid="Arg_Where_Clause" />
+		</if>
+	</if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+	select
+	<include refid="Base_Column_List" />
+	from AM_USER_TMP
+	where USER_ID = #{userId,jdbcType=INTEGER}
+  </select>
+  <insert id="insert" parameterType="com.ztesoft.web.cache.db.po.AmUserTmpPO"  >
+		insert into AM_USER_TMP(USER_ID,USER_NAME,NICK_NAME,USER_CODE,TELEPHONE,EMAIL,PASSWORD,AGE,STATE,CREATED_DATE,TEST_NUMBER_ONE,TEST_NUMBER_TWO,TEST_DOUBLE_ONE,TEST_DOUBLE_TWO,PHOTO,TEST_TEXT,acct_item_id,serv_id,amount,fee_cycle_id,state_date,balance_paid,deal_source,meter_reading,pseudo_flag,partition_charge,cpid)
+		values (#{userId,jdbcType=INTEGER},#{userName,jdbcType=VARCHAR},#{nickName,jdbcType=VARCHAR},#{userCode,jdbcType=VARCHAR},#{telephone,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{age,jdbcType=INTEGER},#{state,jdbcType=CHAR},#{createdDate,jdbcType=DATE},#{testNumberOne,jdbcType=DECIMAL},#{testNumberTwo,jdbcType=DECIMAL},#{testDoubleOne,jdbcType=DOUBLE},#{testDoubleTwo,jdbcType=DOUBLE},#{photo,jdbcType=VARCHAR},#{testText,jdbcType=VARCHAR},#{acctItemId,jdbcType=DECIMAL},#{servId,jdbcType=DECIMAL},#{amount,jdbcType=DECIMAL},#{feeCycleId,jdbcType=DECIMAL},#{stateDate,jdbcType=DATE},#{balancePaid,jdbcType=DECIMAL},#{dealSource,jdbcType=INTEGER},#{meterReading,jdbcType=DECIMAL},#{pseudoFlag,jdbcType=VARCHAR},#{partitionCharge,jdbcType=DECIMAL},#{cpid,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztesoft.web.cache.db.po.AmUserTmpPO">
+		insert into AM_USER_TMP
+	<trim prefix="(" suffix=")" suffixOverrides="," >
+		<if test="userId != null" >
+			USER_ID,
+		</if>
+		<if test="userName != null" >
+			USER_NAME,
+		</if>
+		<if test="nickName != null" >
+			NICK_NAME,
+		</if>
+		<if test="userCode != null" >
+			USER_CODE,
+		</if>
+		<if test="telephone != null" >
+			TELEPHONE,
+		</if>
+		<if test="email != null" >
+			EMAIL,
+		</if>
+		<if test="password != null" >
+			PASSWORD,
+		</if>
+		<if test="age != null" >
+			AGE,
+		</if>
+		<if test="state != null" >
+			STATE,
+		</if>
+		<if test="createdDate != null" >
+			CREATED_DATE,
+		</if>
+		<if test="testNumberOne != null" >
+			TEST_NUMBER_ONE,
+		</if>
+		<if test="testNumberTwo != null" >
+			TEST_NUMBER_TWO,
+		</if>
+		<if test="testDoubleOne != null" >
+			TEST_DOUBLE_ONE,
+		</if>
+		<if test="testDoubleTwo != null" >
+			TEST_DOUBLE_TWO,
+		</if>
+		<if test="photo != null" >
+			PHOTO,
+		</if>
+		<if test="testText != null" >
+			TEST_TEXT,
+		</if>
+		<if test="acctItemId != null" >
+			acct_item_id,
+		</if>
+		<if test="servId != null" >
+			serv_id,
+		</if>
+		<if test="amount != null" >
+			amount,
+		</if>
+		<if test="feeCycleId != null" >
+			fee_cycle_id,
+		</if>
+		<if test="stateDate != null" >
+			state_date,
+		</if>
+		<if test="balancePaid != null" >
+			balance_paid,
+		</if>
+		<if test="dealSource != null" >
+			deal_source,
+		</if>
+		<if test="meterReading != null" >
+			meter_reading,
+		</if>
+		<if test="pseudoFlag != null" >
+			pseudo_flag,
+		</if>
+		<if test="partitionCharge != null" >
+			partition_charge,
+		</if>
+		<if test="cpid != null" >
+			cpid,
+		</if>
+ 	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides="," >
+		<if test="userId != null" >
+			#{userId,jdbcType=INTEGER},
+		</if>
+		<if test="userName != null" >
+			#{userName,jdbcType=VARCHAR},
+		</if>
+		<if test="nickName != null" >
+			#{nickName,jdbcType=VARCHAR},
+		</if>
+		<if test="userCode != null" >
+			#{userCode,jdbcType=VARCHAR},
+		</if>
+		<if test="telephone != null" >
+			#{telephone,jdbcType=VARCHAR},
+		</if>
+		<if test="email != null" >
+			#{email,jdbcType=VARCHAR},
+		</if>
+		<if test="password != null" >
+			#{password,jdbcType=VARCHAR},
+		</if>
+		<if test="age != null" >
+			#{age,jdbcType=INTEGER},
+		</if>
+		<if test="state != null" >
+			#{state,jdbcType=CHAR},
+		</if>
+		<if test="createdDate != null" >
+			#{createdDate,jdbcType=DATE},
+		</if>
+		<if test="testNumberOne != null" >
+			#{testNumberOne,jdbcType=DECIMAL},
+		</if>
+		<if test="testNumberTwo != null" >
+			#{testNumberTwo,jdbcType=DECIMAL},
+		</if>
+		<if test="testDoubleOne != null" >
+			#{testDoubleOne,jdbcType=DOUBLE},
+		</if>
+		<if test="testDoubleTwo != null" >
+			#{testDoubleTwo,jdbcType=DOUBLE},
+		</if>
+		<if test="photo != null" >
+			#{photo,jdbcType=VARCHAR},
+		</if>
+		<if test="testText != null" >
+			#{testText,jdbcType=VARCHAR},
+		</if>
+		<if test="acctItemId != null" >
+			#{acctItemId,jdbcType=DECIMAL},
+		</if>
+		<if test="servId != null" >
+			#{servId,jdbcType=DECIMAL},
+		</if>
+		<if test="amount != null" >
+			#{amount,jdbcType=DECIMAL},
+		</if>
+		<if test="feeCycleId != null" >
+			#{feeCycleId,jdbcType=DECIMAL},
+		</if>
+		<if test="stateDate != null" >
+			#{stateDate,jdbcType=DATE},
+		</if>
+		<if test="balancePaid != null" >
+			#{balancePaid,jdbcType=DECIMAL},
+		</if>
+		<if test="dealSource != null" >
+			#{dealSource,jdbcType=INTEGER},
+		</if>
+		<if test="meterReading != null" >
+			#{meterReading,jdbcType=DECIMAL},
+		</if>
+		<if test="pseudoFlag != null" >
+			#{pseudoFlag,jdbcType=VARCHAR},
+		</if>
+		<if test="partitionCharge != null" >
+			#{partitionCharge,jdbcType=DECIMAL},
+		</if>
+		<if test="cpid != null" >
+			#{cpid,jdbcType=VARCHAR},
+		</if>
+ 	</trim> 	
+  </insert>	
+  <insert id="insertBatch" parameterType="list"  >
+	insert into AM_USER_TMP(USER_ID,USER_NAME,NICK_NAME,USER_CODE,TELEPHONE,EMAIL,PASSWORD,AGE,STATE,CREATED_DATE,TEST_NUMBER_ONE,TEST_NUMBER_TWO,TEST_DOUBLE_ONE,TEST_DOUBLE_TWO,PHOTO,TEST_TEXT,acct_item_id,serv_id,amount,fee_cycle_id,state_date,balance_paid,deal_source,meter_reading,pseudo_flag,partition_charge,cpid)
+	 values 
+	 <foreach collection="list" item="item" index="index" separator=",">
+	 		(#{item.userId,jdbcType=INTEGER},#{item.userName,jdbcType=VARCHAR},#{item.nickName,jdbcType=VARCHAR},#{item.userCode,jdbcType=VARCHAR},#{item.telephone,jdbcType=VARCHAR},#{item.email,jdbcType=VARCHAR},#{item.password,jdbcType=VARCHAR},#{item.age,jdbcType=INTEGER},#{item.state,jdbcType=CHAR},#{item.createdDate,jdbcType=DATE},#{item.testNumberOne,jdbcType=DECIMAL},#{item.testNumberTwo,jdbcType=DECIMAL},#{item.testDoubleOne,jdbcType=DOUBLE},#{item.testDoubleTwo,jdbcType=DOUBLE},#{item.photo,jdbcType=VARCHAR},#{item.testText,jdbcType=VARCHAR},#{item.acctItemId,jdbcType=DECIMAL},#{item.servId,jdbcType=DECIMAL},#{item.amount,jdbcType=DECIMAL},#{item.feeCycleId,jdbcType=DECIMAL},#{item.stateDate,jdbcType=DATE},#{item.balancePaid,jdbcType=DECIMAL},#{item.dealSource,jdbcType=INTEGER},#{item.meterReading,jdbcType=DECIMAL},#{item.pseudoFlag,jdbcType=VARCHAR},#{item.partitionCharge,jdbcType=DECIMAL},#{item.cpid,jdbcType=VARCHAR})
+	 </foreach>
+  </insert>
+  <update id="updateByArgSelective" parameterType="map" >
+    update AM_USER_TMP
+    <set>
+		<if test="record.userName != null" >
+			USER_NAME= #{record.userName,jdbcType=VARCHAR},
+		</if>
+		<if test="record.nickName != null" >
+			NICK_NAME= #{record.nickName,jdbcType=VARCHAR},
+		</if>
+		<if test="record.userCode != null" >
+			USER_CODE= #{record.userCode,jdbcType=VARCHAR},
+		</if>
+		<if test="record.telephone != null" >
+			TELEPHONE= #{record.telephone,jdbcType=VARCHAR},
+		</if>
+		<if test="record.email != null" >
+			EMAIL= #{record.email,jdbcType=VARCHAR},
+		</if>
+		<if test="record.password != null" >
+			PASSWORD= #{record.password,jdbcType=VARCHAR},
+		</if>
+		<if test="record.age != null" >
+			AGE= #{record.age,jdbcType=INTEGER},
+		</if>
+		<if test="record.state != null" >
+			STATE= #{record.state,jdbcType=CHAR},
+		</if>
+		<if test="record.createdDate != null" >
+			CREATED_DATE= #{record.createdDate,jdbcType=DATE},
+		</if>
+		<if test="record.testNumberOne != null" >
+			TEST_NUMBER_ONE= #{record.testNumberOne,jdbcType=DECIMAL},
+		</if>
+		<if test="record.testNumberTwo != null" >
+			TEST_NUMBER_TWO= #{record.testNumberTwo,jdbcType=DECIMAL},
+		</if>
+		<if test="record.testDoubleOne != null" >
+			TEST_DOUBLE_ONE= #{record.testDoubleOne,jdbcType=DOUBLE},
+		</if>
+		<if test="record.testDoubleTwo != null" >
+			TEST_DOUBLE_TWO= #{record.testDoubleTwo,jdbcType=DOUBLE},
+		</if>
+		<if test="record.photo != null" >
+			PHOTO= #{record.photo,jdbcType=VARCHAR},
+		</if>
+		<if test="record.testText != null" >
+			TEST_TEXT= #{record.testText,jdbcType=VARCHAR},
+		</if>
+		<if test="record.acctItemId != null" >
+			acct_item_id= #{record.acctItemId,jdbcType=DECIMAL},
+		</if>
+		<if test="record.servId != null" >
+			serv_id= #{record.servId,jdbcType=DECIMAL},
+		</if>
+		<if test="record.amount != null" >
+			amount= #{record.amount,jdbcType=DECIMAL},
+		</if>
+		<if test="record.feeCycleId != null" >
+			fee_cycle_id= #{record.feeCycleId,jdbcType=DECIMAL},
+		</if>
+		<if test="record.stateDate != null" >
+			state_date= #{record.stateDate,jdbcType=DATE},
+		</if>
+		<if test="record.balancePaid != null" >
+			balance_paid= #{record.balancePaid,jdbcType=DECIMAL},
+		</if>
+		<if test="record.dealSource != null" >
+			deal_source= #{record.dealSource,jdbcType=INTEGER},
+		</if>
+		<if test="record.meterReading != null" >
+			meter_reading= #{record.meterReading,jdbcType=DECIMAL},
+		</if>
+		<if test="record.pseudoFlag != null" >
+			pseudo_flag= #{record.pseudoFlag,jdbcType=VARCHAR},
+		</if>
+		<if test="record.partitionCharge != null" >
+			partition_charge= #{record.partitionCharge,jdbcType=DECIMAL},
+		</if>
+		<if test="record.cpid != null" >
+			cpid= #{record.cpid,jdbcType=VARCHAR}
+		</if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Arg_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByArg" parameterType="map" >
+    update AM_USER_TMP
+    set 
+		USER_ID = #{record.userId,jdbcType=INTEGER},
+		USER_NAME = #{record.userName,jdbcType=VARCHAR},
+		NICK_NAME = #{record.nickName,jdbcType=VARCHAR},
+		USER_CODE = #{record.userCode,jdbcType=VARCHAR},
+		TELEPHONE = #{record.telephone,jdbcType=VARCHAR},
+		EMAIL = #{record.email,jdbcType=VARCHAR},
+		PASSWORD = #{record.password,jdbcType=VARCHAR},
+		AGE = #{record.age,jdbcType=INTEGER},
+		STATE = #{record.state,jdbcType=CHAR},
+		CREATED_DATE = #{record.createdDate,jdbcType=DATE},
+		TEST_NUMBER_ONE = #{record.testNumberOne,jdbcType=DECIMAL},
+		TEST_NUMBER_TWO = #{record.testNumberTwo,jdbcType=DECIMAL},
+		TEST_DOUBLE_ONE = #{record.testDoubleOne,jdbcType=DOUBLE},
+		TEST_DOUBLE_TWO = #{record.testDoubleTwo,jdbcType=DOUBLE},
+		PHOTO = #{record.photo,jdbcType=VARCHAR},
+		TEST_TEXT = #{record.testText,jdbcType=VARCHAR},
+		acct_item_id = #{record.acctItemId,jdbcType=DECIMAL},
+		serv_id = #{record.servId,jdbcType=DECIMAL},
+		amount = #{record.amount,jdbcType=DECIMAL},
+		fee_cycle_id = #{record.feeCycleId,jdbcType=DECIMAL},
+		state_date = #{record.stateDate,jdbcType=DATE},
+		balance_paid = #{record.balancePaid,jdbcType=DECIMAL},
+		deal_source = #{record.dealSource,jdbcType=INTEGER},
+		meter_reading = #{record.meterReading,jdbcType=DECIMAL},
+		pseudo_flag = #{record.pseudoFlag,jdbcType=VARCHAR},
+		partition_charge = #{record.partitionCharge,jdbcType=DECIMAL},
+		cpid = #{record.cpid,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Arg_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztesoft.web.cache.db.po.AmUserTmpPO" >
+		update AM_USER_TMP
+	<set >
+	<if test="userName != null" >
+		USER_NAME = #{userName,jdbcType=VARCHAR},
+	</if>
+	<if test="nickName != null" >
+		NICK_NAME = #{nickName,jdbcType=VARCHAR},
+	</if>
+	<if test="userCode != null" >
+		USER_CODE = #{userCode,jdbcType=VARCHAR},
+	</if>
+	<if test="telephone != null" >
+		TELEPHONE = #{telephone,jdbcType=VARCHAR},
+	</if>
+	<if test="email != null" >
+		EMAIL = #{email,jdbcType=VARCHAR},
+	</if>
+	<if test="password != null" >
+		PASSWORD = #{password,jdbcType=VARCHAR},
+	</if>
+	<if test="age != null" >
+		AGE = #{age,jdbcType=INTEGER},
+	</if>
+	<if test="state != null" >
+		STATE = #{state,jdbcType=CHAR},
+	</if>
+	<if test="createdDate != null" >
+		CREATED_DATE = #{createdDate,jdbcType=DATE},
+	</if>
+	<if test="testNumberOne != null" >
+		TEST_NUMBER_ONE = #{testNumberOne,jdbcType=DECIMAL},
+	</if>
+	<if test="testNumberTwo != null" >
+		TEST_NUMBER_TWO = #{testNumberTwo,jdbcType=DECIMAL},
+	</if>
+	<if test="testDoubleOne != null" >
+		TEST_DOUBLE_ONE = #{testDoubleOne,jdbcType=DOUBLE},
+	</if>
+	<if test="testDoubleTwo != null" >
+		TEST_DOUBLE_TWO = #{testDoubleTwo,jdbcType=DOUBLE},
+	</if>
+	<if test="photo != null" >
+		PHOTO = #{photo,jdbcType=VARCHAR},
+	</if>
+	<if test="testText != null" >
+		TEST_TEXT = #{testText,jdbcType=VARCHAR},
+	</if>
+	<if test="acctItemId != null" >
+		acct_item_id = #{acctItemId,jdbcType=DECIMAL},
+	</if>
+	<if test="servId != null" >
+		serv_id = #{servId,jdbcType=DECIMAL},
+	</if>
+	<if test="amount != null" >
+		amount = #{amount,jdbcType=DECIMAL},
+	</if>
+	<if test="feeCycleId != null" >
+		fee_cycle_id = #{feeCycleId,jdbcType=DECIMAL},
+	</if>
+	<if test="stateDate != null" >
+		state_date = #{stateDate,jdbcType=DATE},
+	</if>
+	<if test="balancePaid != null" >
+		balance_paid = #{balancePaid,jdbcType=DECIMAL},
+	</if>
+	<if test="dealSource != null" >
+		deal_source = #{dealSource,jdbcType=INTEGER},
+	</if>
+	<if test="meterReading != null" >
+		meter_reading = #{meterReading,jdbcType=DECIMAL},
+	</if>
+	<if test="pseudoFlag != null" >
+		pseudo_flag = #{pseudoFlag,jdbcType=VARCHAR},
+	</if>
+	<if test="partitionCharge != null" >
+		partition_charge = #{partitionCharge,jdbcType=DECIMAL},
+	</if>
+		cpid = #{cpid,jdbcType=VARCHAR}
+	</set >
+	 where USER_ID = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztesoft.web.cache.db.po.AmUserTmpPO" >
+		update AM_USER_TMP
+		set 
+			USER_NAME = #{userName,jdbcType=VARCHAR},
+			NICK_NAME = #{nickName,jdbcType=VARCHAR},
+			USER_CODE = #{userCode,jdbcType=VARCHAR},
+			TELEPHONE = #{telephone,jdbcType=VARCHAR},
+			EMAIL = #{email,jdbcType=VARCHAR},
+			PASSWORD = #{password,jdbcType=VARCHAR},
+			AGE = #{age,jdbcType=INTEGER},
+			STATE = #{state,jdbcType=CHAR},
+			CREATED_DATE = #{createdDate,jdbcType=DATE},
+			TEST_NUMBER_ONE = #{testNumberOne,jdbcType=DECIMAL},
+			TEST_NUMBER_TWO = #{testNumberTwo,jdbcType=DECIMAL},
+			TEST_DOUBLE_ONE = #{testDoubleOne,jdbcType=DOUBLE},
+			TEST_DOUBLE_TWO = #{testDoubleTwo,jdbcType=DOUBLE},
+			PHOTO = #{photo,jdbcType=VARCHAR},
+			TEST_TEXT = #{testText,jdbcType=VARCHAR},
+			acct_item_id = #{acctItemId,jdbcType=DECIMAL},
+			serv_id = #{servId,jdbcType=DECIMAL},
+			amount = #{amount,jdbcType=DECIMAL},
+			fee_cycle_id = #{feeCycleId,jdbcType=DECIMAL},
+			state_date = #{stateDate,jdbcType=DATE},
+			balance_paid = #{balancePaid,jdbcType=DECIMAL},
+			deal_source = #{dealSource,jdbcType=INTEGER},
+			meter_reading = #{meterReading,jdbcType=DECIMAL},
+			pseudo_flag = #{pseudoFlag,jdbcType=VARCHAR},
+			partition_charge = #{partitionCharge,jdbcType=DECIMAL},
+			cpid = #{cpid,jdbcType=VARCHAR}
+	 where USER_ID = #{userId,jdbcType=INTEGER}
+   </update>
+  <delete id="deleteByArg" parameterType="com.ztesoft.web.cache.db.arg.AmUserTmpArg" >
+    delete from AM_USER_TMP
+    <if test="_parameter != null" >
+      <include refid="Arg_Where_Clause" />
+    </if>
+  </delete>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+	 delete from AM_USER_TMP
+	 where USER_ID = #{userId,jdbcType=INTEGER}
+  </delete>
+</mapper>  

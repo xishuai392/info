@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztesoft.web.common.db.dao.mapper.GeneralTreeMapper" >
+  	<select id="menuTree" resultType="map" parameterType="map">
+  		select  
+  		sub_sys_id as "subSysId",menu_item_id as "menuItemId",menu_item_name as "menuItemName",menu_item_url as "menuItemUrl"
+  		from menu_item 
+  		where status='00A' and menu_type != '3' and sub_sys_id=#{subSysId} and partner_item_id=#{menuItemId}
+  		order by DISP_SEQ
+  	</select>
+  	
+  	<select id="menuSubSysTree" resultType="map" parameterType="map">
+  		select  '/common/images/icons/package_link.png' as "icon",
+  		A.*,B.*
+  		from menu_item A left join sub_sys_conf B on A.sub_sys_id=B.sub_sys_id
+  		where A.status='00A'  and menu_type != '3' and partner_item_id=#{menuItemId}
+  		order by DISP_SEQ
+  	</select>
+  	
+  	<select id="organizationAndUserTree" resultType="map" parameterType="map">
+  		select 'true' as "expandable",'/common/images/icons/chart_organisation.png' as "icon",org.ORG_ID as "orgId",org.ORG_NAME as "name",'0' as "isUser" 
+  		from organization org where state='00A' and parent_org_id=#{orgId} and #{isUser}!='1' 
+  		UNION
+		select 'false' as "expandable",'/common/images/icons/user.png' as "icon",STAFF_ID as "orgId",STAFF_NAME as "name",'1' as "isUser"
+		from staff_t t where staff_state='00A' and org_id=#{orgId} and #{isUser}!='1'
+  	</select>
+  	
+  	<select id="organizationAndUserTree2" resultType="map" parameterType="map">
+  		select 'true' as "expandable",'/common/images/icons/chart_organisation.png' as "icon",org.ORG_ID as "orgId",org.ORG_NAME as "staffName",'0' as "isUser"
+  		from organization org where state='00A' and parent_org_id=#{orgId}  
+  		UNION
+		select 'false' as "expandable",'/common/images/icons/user.png' as "icon",STAFF_ID as "orgId",STAFF_NAME as "staffName",'1' as "isUser"
+		from staff_t t where staff_state='00A' and org_id=#{orgId} 
+  	</select>
+  	
+  	<select id="organizationTree" resultType="map" parameterType="map">
+  		select org.ORG_ID as "orgId",org.ORG_NAME as "orgName"
+  		from organization org where state='00A' and parent_org_id=#{orgId} 
+  	</select>
+  	
+  	<select id="groupTree" resultType="map" parameterType="map">
+		select
+			 A.GROUP_ID "groupId",A.GROUP_NAME "groupName",A.GROUP_DESC "groupDesc"
+		from GROUPS A
+		where A.PARENT_GROUP_ID=#{groupId} and A.STATE = '00A'
+		order by GROUP_ID
+  	</select>
+  	
+  	<select id="knowledgeTypeTree" resultType="map" parameterType="map">
+		select
+			 A.KNOWLEDGE_TYPE_ID "knowledgeTypeId",A.KNOWLEDGE_TYPE_NAME "knowledgeTypeName",A.IS_AUDIT "isAudit"
+		from KNOWLEDGE_TYPE A
+		where A.PARENT_KNOWLEDGE_TYPE_ID=#{knowledgeTypeId} and A.STATE != '00X'
+		order by seq_id
+  	</select>
+  	
+  	<select id="rolesTree" resultType="map" parameterType="map">
+		select
+			A.ROLE_ID "roleId",A.ROLE_NAME "roleName",A.ROLE_DESC "roleDesc"
+		from ROLES A
+		where A.PARENT_ROLE_ID=#{roleId} and A.ROLE_STATE = '00A'
+		order by ROLE_ID
+  	</select>
+  	
+  	<select id="privilegeTree2" resultType="map" parameterType="map">
+		select
+			A.PRIVILEGE_ID "privilegeId",A.PRIVILEGE_NAME "privilegeName",A.PRIVILEGE_DESC "privilegeDesc"
+		from PRIVILEGE A
+		where A.PARENT_PRIVILEGE_ID=#{privilegeId} and A.STATE = '00A'
+		order by A.PRIVILEGE_ID
+  	</select>
+  	
+  	<select id="privilegeTree" resultType="map" parameterType="map">
+		select
+			'/common/images/icons/key_power_16.png' as "icon",A.*,(select PRIVILEGE_NAME from PRIVILEGE where PRIVILEGE_ID=#{privilegeId}) as PARENT_PRIVILEGE_NAME
+		from PRIVILEGE A
+		where A.PARENT_PRIVILEGE_ID=#{privilegeId}  and A.STATE = '00A'
+		order by A.PRIVILEGE_ID
+  	</select>
+  	
+  	<select id="groupTreeForUser" resultType="map" parameterType="map">
+		select
+			 A.GROUP_ID "groupId",A.GROUP_NAME "groupName",A.GROUP_DESC "groupDesc",D.STAFF_GROUP_ID "relateId"
+		from GROUPS A
+		left join (select C.STAFF_GROUP_ID,C.GROUP_ID from STAFF_T B,STAFF_GROUP C where C.STATE = '00A' and  B.STAFF_ID = C.STAFF_ID AND B.STAFF_ID=#{relateId}) D
+		on A.GROUP_ID = D.GROUP_ID
+		where A.PARENT_GROUP_ID=#{groupId} and A.STATE = '00A'
+		order by A.GROUP_ID
+  	</select>
+  	
+  	<select id="groupTreeForRoles" resultType="map" parameterType="map">
+		select
+			A.GROUP_ID "groupId",A.GROUP_NAME "groupName",A.GROUP_DESC "groupDesc",D.GROUP_ROLE_ID "relateId"
+		from GROUPS A
+		left join (select C.GROUP_ROLE_ID,C.GROUP_ID from ROLES B,GROUP_ROLE C where  C.STATE = '00A' and B.ROLE_ID = C.ROLE_ID AND B.ROLE_ID=#{relateId}) D
+		on A.GROUP_ID = D.GROUP_ID
+		where A.PARENT_GROUP_ID=#{groupId} and A.STATE = '00A'
+		order by A.GROUP_ID
+  	</select>
+  	
+  	<select id="rolesTreeForUser" resultType="map" parameterType="map">
+		select
+			A.ROLE_ID "roleId",A.ROLE_NAME "roleName",A.ROLE_DESC "roleDesc",D.STAFF_ROLE_ID "relateId"
+		from ROLES A
+		left join (select C.STAFF_ROLE_ID,C.ROLE_ID from STAFF_T B,STAFF_ROLE C where  C.STATE = '00A' and B.STAFF_ID = C.STAFF_ID AND B.STAFF_ID=#{relateId}) D
+		on A.ROLE_ID = D.ROLE_ID
+		where A.PARENT_ROLE_ID=#{roleId} and A.ROLE_STATE = '00A'
+		order by A.ROLE_ID
+  	</select>
+  	
+  	<select id="rolesTreeForGroup" resultType="map" parameterType="map">
+		select
+			 A.ROLE_ID "roleId",A.ROLE_NAME "roleName",A.ROLE_DESC "roleDesc",D.GROUP_ROLE_ID "relateId"
+		from ROLES A
+		left join (select C.GROUP_ROLE_ID,C.ROLE_ID from GROUPS B,GROUP_ROLE C where  C.STATE = '00A' and B.GROUP_ID = C.GROUP_ID AND B.GROUP_ID=#{relateId}) D
+		on A.ROLE_ID = D.ROLE_ID
+		where A.PARENT_ROLE_ID=#{roleId} and A.ROLE_STATE = '00A'
+		order by A.ROLE_ID
+  	</select>
+  	
+  	<select id="privilegeTreeForUser" resultType="map" parameterType="map">
+		select
+			A.PRIVILEGE_ID "privilegeId",A.PRIVILEGE_NAME "privilegeName",A.PRIVILEGE_DESC "privilegeDesc", PRIVILEGE_TYPE "privilegeType",D.STAFF_PRIVILEGE_ID "relateId"
+		from PRIVILEGE A
+		left join (select C.STAFF_PRIVILEGE_ID,C.PRIVILEGE_ID from STAFF_T B,STAFF_PRIVILEGE C where  C.STATE = '00A' and B.STAFF_ID = C.STAFF_ID AND B.STAFF_ID=#{relateId}) D
+		on A.PRIVILEGE_ID = D.PRIVILEGE_ID
+		where A.PARENT_PRIVILEGE_ID=#{privilegeId} and A.STATE = '00A'
+		order by A.PRIVILEGE_ID
+  	</select>
+  	
+  	<select id="privilegeTreeForRole" resultType="map" parameterType="map">
+		select
+			A.PRIVILEGE_ID "privilegeId",A.PRIVILEGE_NAME "privilegeName",A.PRIVILEGE_DESC "privilegeDesc", PRIVILEGE_TYPE "privilegeType",D.ROLE_PRIVILEGE_ID "relateId"
+		from PRIVILEGE A
+		left join (select C.ROLE_PRIVILEGE_ID,C.PRIVILEGE_ID from ROLES B,ROLE_PRIVILEGE C where  C.STATE = '00A' and B.ROLE_ID = C.ROLE_ID AND B.ROLE_ID=#{relateId}) D
+		on A.PRIVILEGE_ID = D.PRIVILEGE_ID
+		where A.PARENT_PRIVILEGE_ID=#{privilegeId} and A.STATE = '00A'
+		order by A.PRIVILEGE_ID
+  	</select>
+  	
+  	<select id="privilegeTreeForGroup" resultType="map" parameterType="map">
+		select
+			A.PRIVILEGE_ID "privilegeId",A.PRIVILEGE_NAME "privilegeName",A.PRIVILEGE_DESC "privilegeDesc", PRIVILEGE_TYPE "privilegeType",D.GROUP_PRIVILEGE_ID "relateId"
+		from PRIVILEGE A
+		left join (select C.GROUP_PRIVILEGE_ID,C.PRIVILEGE_ID from GROUPS B,GROUP_PRIVILEGE C where  C.STATE = '00A' and B.GROUP_ID = C.GROUP_ID AND B.GROUP_ID=#{relateId}) D
+		on A.PRIVILEGE_ID = D.PRIVILEGE_ID
+		where A.PARENT_PRIVILEGE_ID=#{privilegeId} and A.STATE = '00A'
+		order by A.PRIVILEGE_ID
+  	</select>
+  	
+  	<!-- 数据管理大师 -->
+  	<!-- 主机分组 -->
+  	<select id="hostGroupTree" resultType="map" parameterType="map">
+		select 'true' as 'expandable', 0 as 'isDetail', dm_host_group_id as 'valueId', name as 'name' from dm_host_group
+  	</select>
+  	<!-- 主机分组明细 -->
+  	<select id="hostGroupDetailTree" resultType="map" parameterType="map">
+		select 'false' as 'expandable', 1 as 'isDetail', DM_HOST_GROUP_DETAIL_ID as 'valueId', DM_A_HOST_ID as 'name' from dm_host_group_detail WHERE DM_HOST_GROUP_ID = #{valueId}
+  	</select>
+  	
+</mapper>  

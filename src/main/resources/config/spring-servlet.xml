@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd
+		http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.1.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+	<mvc:default-servlet-handler />
+
+
+
+
+	<!-- spring扫描包use-default-filters：false 不会去扫描service注解 -->
+	<context:component-scan base-package="com.ztesoft"
+		use-default-filters="false">
+		<context:include-filter type="annotation"
+			expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
+
+
+
+	<bean
+		class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+		<property name="prefix" value="/" />
+		<property name="suffix" value=".jsp" />
+	</bean>
+
+	<!-- 根据请求的参数确定调用的方法 -->
+	<bean id="parameterMethodNameResolver"
+		class="org.springframework.web.servlet.mvc.multiaction.ParameterMethodNameResolver">
+		<property name="paramName" value="method"></property>
+		<property name="defaultMethodName" value="index"></property>
+	</bean>
+
+
+	<!-- 统一异常捕获 -->
+	<bean id="handlerExceptionResolver"
+		class="com.ztesoft.core.spring.web.servlet.handler.CustomMappingExceptionResolver" p:order="1">
+		<property name="exceptionMappings">
+			<props>
+				<prop key="java.lang.Throwable">/common/404</prop>
+			</props>
+		</property>
+	</bean>
+
+
+
+
+
+
+
+	<!-- 国际化资源文件绑定，该文件放置在src下 <bean id="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource"> 
+		<property name="basename" value="error_code"></property> <property name="defaultEncoding" 
+		value="UTF-8"></property> </bean> -->
+	<bean id="multipartResolver"
+		class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+		<!--大小 500 * 1024 * 1024 M -->
+		<property name="maxUploadSize" value="52428800" />
+		<property name="defaultEncoding" value="UTF-8" />
+	</bean>
+</beans>
+
+

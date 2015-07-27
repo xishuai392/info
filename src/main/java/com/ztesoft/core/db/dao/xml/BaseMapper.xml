@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztesoft.core.db.dao.mapper.IBaseMapper">
+	<select id="selectOne" resultType="map" parameterType="map">${sql}</select>
+	<select id="selectList" resultType="map" parameterType="map">${sql}</select>
+	<insert id="insert" parameterType="map">${sql}</insert>
+	<update id="update" parameterType="map" >${sql}</update>
+	<delete id="delete" parameterType="map" >${sql}</delete>
+</mapper>

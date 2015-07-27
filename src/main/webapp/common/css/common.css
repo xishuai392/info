@@ -1,0 +1,23 @@
+/* CSS Document */
+html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em, font, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td,input {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: Arial, Microsoft Yahei;
+	/**vertical-align:baseline;*/
+}
+body {
+	line-height: 1;
+	 font-size:12px;}
+ol, ul {
+	list-style: none;
+}
+.color_red{ color:#ff0900;}
+.color_gray{ color:#9b9b9b;}
+.color_bule{color:#015a9f;}
+.clear{clear:both;}
+.font18{ font-size:18px;}
+.font14{ font-size:14px;}

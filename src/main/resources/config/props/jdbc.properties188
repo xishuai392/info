@@ -1,0 +1,17 @@
+#Created by JInto - www.guh-software.de
+#Fri Jan 23 14:15:36 CST 2015
+framework.jdbc.driverClassName=com.mysql.jdbc.Driver
+framework.jdbc.initialSize=10
+framework.jdbc.logAbandoned=true
+framework.jdbc.maxActive=90
+framework.jdbc.maxIdle=45
+framework.jdbc.minIdle=5
+framework.jdbc.password=root123\#
+framework.jdbc.removeAbandoned=true
+framework.jdbc.removeAbandonedTimeout=180
+framework.jdbc.testOnBorrow=true
+framework.jdbc.testOnReturn=true
+framework.jdbc.testWhileIdle=true
+framework.jdbc.url=jdbc\:mysql\://10.45.44.188\:3306/webframework
+framework.jdbc.username=root
+framework.jdbc.validationQuery=SELECT 1
