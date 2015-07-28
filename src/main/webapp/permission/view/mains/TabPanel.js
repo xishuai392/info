@@ -6,7 +6,7 @@ Ext.define('PM.view.mains.TabPanel', {
         Ext.apply(this, {
             id : 'main_content_panel',
             activeTab : 0,
-            bodyStyle : 'border-top:0;border-left:0;border-right:0;border-bottom:0',
+            bodyStyle : 'border-top:0;border-left:0;border-right:0;border-bottom:0'
             /**
              * 增加页签右键功能
              */
@@ -38,15 +38,15 @@ Ext.define('PM.view.mains.TabPanel', {
 //                    }
 //                }
 //            }),
-            items : [{
-                id : 'ZTEtab-AuditIndexPage',
-                title : '计费审核首页',
-                iconCls : 'home',
-                closable : true,
-                layout : 'fit',
-                html : '<iframe scrolling="auto" name="HomePage" frameborder="1" width="100%" height="100%" src="' + webRoot
-                        + '/audit/index/index.do"></iframe>'
-            }]
+//            items : [{
+//                id : 'ZTEtab-AuditIndexPage',
+//                title : '首页',
+//                iconCls : 'home',
+//                closable : true,
+//                layout : 'fit',
+//                html : '<iframe scrolling="auto" name="HomePage" frameborder="1" width="100%" height="100%" src="' + webRoot
+//                        + '/audit/index/index.do"></iframe>'
+//            }]
         });
         this.callParent(arguments);
     }
