@@ -5,9 +5,9 @@
  * 
  */
 
-Ext.define('component..demo.store.EhcacheStore', {
+Ext.define('component.demo.store.EhcacheStore', {
     extend : 'Ext.data.Store',
-    model : 'component..demo.model.EhcacheModel',
+    model : 'component.demo.model.EhcacheModel',
     proxy : {
         type : 'ajax',
         url : webRoot + '/demo/ehcache/queryRecordByPage.do',

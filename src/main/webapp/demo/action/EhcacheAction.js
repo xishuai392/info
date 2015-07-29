@@ -4,7 +4,7 @@
  * @author codeCreater
  */
 
-Ext.define("component..demo.action.EhcacheAction", {
+Ext.define("component.demo.action.EhcacheAction", {
 
     /**
      * 新增记录

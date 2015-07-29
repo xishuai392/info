@@ -8,10 +8,10 @@
 Ext.onReady(function() {
     var thizStore, thizGrid, thizDetailForm, thizSearchForm;
     var actionType = WEBConstants.ACTIONTYPE.VIEW;// 动作标记
-    var thizAction = Ext.create("component..demo.action.EhcacheAction");
+    var thizAction = Ext.create("component.demo.action.EhcacheAction");
 
     // 数据源
-    thizStore = Ext.create('component..demo.store.EhcacheStore', {
+    thizStore = Ext.create('component.demo.store.EhcacheStore', {
         // 定义分页大小
         pageSize : WEBConstants.DEFAULT_PAGE_SIZE,
         listeners : {
@@ -169,7 +169,7 @@ Ext.onReady(function() {
             if (actionType == WEBConstants.ACTIONTYPE.NEW) {
                 thizAction.addRecord(params, function(result) {
                     ExtUtils.info(StrConstants.HINT_ADD_SUCCESS);
-                    var thizModel = Ext.create("component..demo.model.EhcacheModel");
+                    var thizModel = Ext.create("component.demo.model.EhcacheModel");
                     thizModel.data = result;
                     thizGrid.getStore().add(thizModel);
                     thizGrid.select(thizModel);

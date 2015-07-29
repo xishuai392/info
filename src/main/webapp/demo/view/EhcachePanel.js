@@ -3,13 +3,13 @@
  * @author codeCreater
  * @date 2014年11月19日
  */
-Ext.define('component..demo.view.EhcachePanel', {
+Ext.define('component.demo.view.EhcachePanel', {
     extend : 'Ext.panel.Panel',
     layout : "border",
-    requires : ['component..demo.model.EhcacheModel', 'ZTEsoft.button.AddButton', 'ZTEsoft.button.EditButton', 'ZTEsoft.button.DelButton'],
+    requires : ['component.demo.model.EhcacheModel', 'ZTEsoft.button.AddButton', 'ZTEsoft.button.EditButton', 'ZTEsoft.button.DelButton'],
     config : {
         busizGrid : null,
-        action : Ext.create("component..demo.action.EhcacheAction")
+        action : Ext.create("component.demo.action.EhcacheAction")
     },
     constructor : function(config) {
         var me = this;
@@ -66,7 +66,7 @@ Ext.define('component..demo.view.EhcachePanel', {
 
     // 创建数据源
     createStore : function() {
-        return Ext.create('component..demo.store.EhcacheStore', {
+        return Ext.create('component.demo.store.EhcacheStore', {
         		autoLoad : true,
             // 定义分页大小
             pageSize : WEBConstants.DEFAULT_PAGE_SIZE
@@ -146,11 +146,11 @@ Ext.define('component..demo.view.EhcachePanel', {
     // 新增 按钮的事件
     addBtnHandler : function() {
         var me = this;
-        var win = Ext.create('component..demo.view.EhcacheWin', {
+        var win = Ext.create('component.demo.view.EhcacheWin', {
             winType : WEBConstants.ACTIONTYPE.NEW,
             callback : function(result) {
                 ExtUtils.info(StrConstants.HINT_ADD_SUCCESS);
-                var model = Ext.create("component..demo.model.EhcacheModel");
+                var model = Ext.create("component.demo.model.EhcacheModel");
                 model.data = result;
                 me.busizGrid.getStore().add(model);
                 me.busizGrid.select(model);
@@ -168,7 +168,7 @@ Ext.define('component..demo.view.EhcachePanel', {
         }
         var item = me.busizGrid.getSelectedItem();
         var pkFiledId = item.get("empId");
-        var win = Ext.create('component..demo.view.EhcacheWin', {
+        var win = Ext.create('component.demo.view.EhcacheWin', {
             pkFiledId : pkFiledId,
             winType : WEBConstants.ACTIONTYPE.EDIT,
             callback : function(result) {

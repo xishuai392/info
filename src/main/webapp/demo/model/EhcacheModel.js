@@ -3,7 +3,7 @@
  * 
  * @author codeCreater
  */
-Ext.define('component..demo.model.EhcacheModel', {
+Ext.define('component.demo.model.EhcacheModel', {
     extend : 'Ext.data.Model',
     fields : [
        		{

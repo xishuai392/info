@@ -9,7 +9,7 @@ Ext.onReady(function() {
     var thizPanel, thizSearchForm;;
 
     // 记录表格
-    thizPanel = Ext.create('component..demo.view.EhcachePanel', {
+    thizPanel = Ext.create('component.demo.view.EhcachePanel', {
         region : "center",
         // isPage : true,
         title : "Ehcache列表"
