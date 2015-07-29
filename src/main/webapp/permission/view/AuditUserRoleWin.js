@@ -4,11 +4,11 @@
  * @date 2014年11月20日
  */
 
-Ext.define('component..permission.view.AuditUserRoleWin', {
+Ext.define('component.permission.view.AuditUserRoleWin', {
     extend : 'ZTEsoft.window.PopWindow',
     config : {
         formPanel : null,
-        action : Ext.create("component..permission.action.AuditUserRoleAction")
+        action : Ext.create("component.permission.action.AuditUserRoleAction")
     },
     /**
      * 构造函数，用于初始化界面
@@ -58,7 +58,7 @@ Ext.define('component..permission.view.AuditUserRoleWin', {
             // TODO 隐藏或显示某些字段
             // me.formPanel.getForm().findField("createdDate").setVisible(false);
             me.getAction().qryRecord(me.pkFiledId, function(result) {
-                var model = Ext.create("component..permission.model.AuditUserRoleModel");
+                var model = Ext.create("component.permission.model.AuditUserRoleModel");
                 model.data = result;
                 me.formPanel.getForm().loadRecord(model);
             });
@@ -72,7 +72,7 @@ Ext.define('component..permission.view.AuditUserRoleWin', {
         // 详情
         if (me.winType == WEBConstants.ACTIONTYPE.VIEW) {
             me.getAction().qryRecord(me.pkFiledId, function(result) {
-                var model = Ext.create("component..permission.modelAuditUserRoleModel");
+                var model = Ext.create("component.permission.model.AuditUserRoleModel");
                 model.data = result;
                 me.formPanel.getForm().loadRecord(model);
                 me.formPanel.disableFields();

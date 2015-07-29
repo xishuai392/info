@@ -39,8 +39,8 @@ Ext.define('component..permission.view.AuditUserWin', {
             config.title = '编辑';
         }
         Ext.applyIf(config, {
-            width : '30%',
-            height : '50%',
+            width : '40%',
+            height : '70%',
             layout : 'fit',
             maximizable : true,
             items : [me.formPanel],
@@ -58,7 +58,7 @@ Ext.define('component..permission.view.AuditUserWin', {
             // TODO 隐藏或显示某些字段
             // me.formPanel.getForm().findField("createdDate").setVisible(false);
             me.getAction().qryRecord(me.pkFiledId, function(result) {
-                var model = Ext.create("component..permission.model.AuditUserModel");
+                var model = Ext.create("component.permission.model.AuditUserModel");
                 model.data = result;
                 me.formPanel.getForm().loadRecord(model);
             });
@@ -72,7 +72,7 @@ Ext.define('component..permission.view.AuditUserWin', {
         // 详情
         if (me.winType == WEBConstants.ACTIONTYPE.VIEW) {
             me.getAction().qryRecord(me.pkFiledId, function(result) {
-                var model = Ext.create("component..permission.modelAuditUserModel");
+                var model = Ext.create("component.permission.modelAuditUserModel");
                 model.data = result;
                 me.formPanel.getForm().loadRecord(model);
                 me.formPanel.disableFields();
@@ -92,16 +92,19 @@ Ext.define('component..permission.view.AuditUserWin', {
 	      	{
 	            fieldLabel : "userId",
 	            xtype : "textfield",
+	            hidden : true,
 	            name : "userId"
         	},
 	      	{
-	            fieldLabel : "userName",
+	            fieldLabel : "用户名称",
 	            xtype : "textfield",
+	            allowBlank : false,
 	            name : "userName"
         	},
 	      	{
 	            fieldLabel : "userCode",
 	            xtype : "textfield",
+	            allowBlank : false,
 	            name : "userCode"
         	},
 	      	{
@@ -115,27 +118,23 @@ Ext.define('component..permission.view.AuditUserWin', {
 	            name : "email"
         	},
 	      	{
-	            fieldLabel : "password",
+	            fieldLabel : "密码",
 	            xtype : "textfield",
+	            allowBlank : false,
 	            name : "password"
         	},
 	      	{
-	            fieldLabel : "age",
-	            xtype : "textfield",
+	            fieldLabel : "年龄",
+	            xtype : "number",
 	            name : "age"
         	},
 	      	{
-	            fieldLabel : "state",
+	            fieldLabel : "状态",
 	            xtype : "textfield",
 	            name : "state"
         	},
 	      	{
-	            fieldLabel : "createdDate",
-	            xtype : "textfield",
-	            name : "createdDate"
-        	},
-	      	{
-	            fieldLabel : "orgId",
+	            fieldLabel : "所属组织",
 	            xtype : "textfield",
 	            name : "orgId"
         	}	       

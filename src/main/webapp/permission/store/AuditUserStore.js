@@ -5,9 +5,9 @@
  * 
  */
 
-Ext.define('component..permission.store.AuditUserStore', {
+Ext.define('component.permission.store.AuditUserStore', {
     extend : 'Ext.data.Store',
-    model : 'component..permission.model.AuditUserModel',
+    model : 'component.permission.model.AuditUserModel',
     proxy : {
         type : 'ajax',
         url : webRoot + '/permission/audituser/queryRecordByPage.do',

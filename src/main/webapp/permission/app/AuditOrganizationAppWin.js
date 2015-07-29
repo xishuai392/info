@@ -9,7 +9,8 @@ Ext.onReady(function() {
     var thizPanel, thizSearchForm;;
 
     // 记录表格
-    thizPanel = Ext.create('component..permission.view.AuditOrganizationPanel', {
+    thizPanel = Ext.create('component.permission.view.AuditOrganizationPanel', {
+
         region : "center",
         // isPage : true,
         title : "AuditOrganization列表"

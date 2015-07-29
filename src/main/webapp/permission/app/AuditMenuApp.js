@@ -8,10 +8,11 @@
 Ext.onReady(function() {
     var thizStore, thizGrid, thizDetailForm, thizSearchForm;
     var actionType = WEBConstants.ACTIONTYPE.VIEW;// 动作标记
-    var thizAction = Ext.create("component..permission.action.AuditMenuAction");
+    var thizAction = Ext.create("component.permission.action.AuditMenuAction");
 
     // 数据源
-    thizStore = Ext.create('component..permission.store.AuditMenuStore', {
+    thizStore = Ext.create('component.permission.store.AuditMenuStore', {
+
         // 定义分页大小
         pageSize : WEBConstants.DEFAULT_PAGE_SIZE,
         listeners : {
@@ -199,7 +200,7 @@ Ext.onReady(function() {
             if (actionType == WEBConstants.ACTIONTYPE.NEW) {
                 thizAction.addRecord(params, function(result) {
                     ExtUtils.info(StrConstants.HINT_ADD_SUCCESS);
-                    var thizModel = Ext.create("component..permission.model.AuditMenuModel");
+                    var thizModel = Ext.create("component.permission.model.AuditMenuModel");
                     thizModel.data = result;
                     thizGrid.getStore().add(thizModel);
                     thizGrid.select(thizModel);

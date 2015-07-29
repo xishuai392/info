@@ -83,52 +83,42 @@ Ext.define('component..permission.view.AuditUserPanel', {
             store : me.createStore(),
             columns : [
 	        {
-	        	text : "userId",
-	            dataIndex : "userId",
-	            flex : 1
-	        },
-	        {
-	        	text : "userName",
+	        	text : "用户名称",
 	            dataIndex : "userName",
 	            flex : 1
 	        },
 	        {
-	        	text : "userCode",
+	        	text : "用户编码",
 	            dataIndex : "userCode",
 	            flex : 1
 	        },
 	        {
-	        	text : "telephone",
+	        	text : "电话",
 	            dataIndex : "telephone",
 	            flex : 1
 	        },
 	        {
-	        	text : "email",
+	        	text : "邮箱",
 	            dataIndex : "email",
 	            flex : 1
 	        },
 	        {
-	        	text : "password",
-	            dataIndex : "password",
-	            flex : 1
-	        },
-	        {
-	        	text : "age",
+	        	text : "年龄",
 	            dataIndex : "age",
 	            flex : 1
 	        },
 	        {
-	        	text : "state",
+	        	text : "状态",
 	            dataIndex : "state",
 	            flex : 1
 	        },
 	        {
-	        	text : "createdDate",
+	        	text : "创建时间",
 	            dataIndex : "createdDate",
 	            flex : 1
 	        },
 	        {
-	        	text : "orgId",
+	        	text : "所属组织",
 	            dataIndex : "orgId",
 	            flex : 1
 	        }       
@@ -200,7 +190,7 @@ Ext.define('component..permission.view.AuditUserPanel', {
                 ExtUtils.info(StrConstants.HINT_MOD_SUCCESS);
 
                 // TODO 设置要更新的字段
-                var changedColumns = ['userName' ,'userCode' ,'telephone' ,'email' ,'password' ,'age' ,'state' ,'createdDate' ,'orgId' ];
+                var changedColumns = ['userName' ,'telephone' ,'email' ,'age' ,'state' ,'orgId' ];
                 for (var colKey in changedColumns) {
                     var colValue = changedColumns[colKey];
                     item.set(colValue, result[colValue]);

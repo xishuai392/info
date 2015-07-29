@@ -11,7 +11,7 @@ Ext.onReady(function() {
     var thizAction = Ext.create("component..permission.action.AuditUserAction");
 
     // 数据源
-    thizStore = Ext.create('component..permission.store.AuditUserStore', {
+    thizStore = Ext.create('component.permission.store.AuditUserStore', {
         // 定义分页大小
         pageSize : WEBConstants.DEFAULT_PAGE_SIZE,
         listeners : {

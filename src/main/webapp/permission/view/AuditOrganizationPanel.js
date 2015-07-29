@@ -3,13 +3,15 @@
  * @author codeCreater
  * @date 2014年11月19日
  */
-Ext.define('component..permission.view.AuditOrganizationPanel', {
+Ext.define('component.permission.view.AuditOrganizationPanel', {
     extend : 'Ext.panel.Panel',
     layout : "border",
-    requires : ['component..permission.model.AuditOrganizationModel', 'ZTEsoft.button.AddButton', 'ZTEsoft.button.EditButton', 'ZTEsoft.button.DelButton'],
+    requires : ['component.permission.model.AuditOrganizationModel', 'ZTEsoft.button.AddButton', 'ZTEsoft.button.EditButton', 'ZTEsoft.button.DelButton'],
+
     config : {
         busizGrid : null,
-        action : Ext.create("component..permission.action.AuditOrganizationAction")
+        action : Ext.create("component.permission.action.AuditOrganizationAction")
+
     },
     constructor : function(config) {
         var me = this;
@@ -66,7 +68,8 @@ Ext.define('component..permission.view.AuditOrganizationPanel', {
 
     // 创建数据源
     createStore : function() {
-        return Ext.create('component..permission.store.AuditOrganizationStore', {
+    	return Ext.create('component.permission.store.AuditOrganizationStore', {
+
         		autoLoad : true,
             // 定义分页大小
             pageSize : WEBConstants.DEFAULT_PAGE_SIZE
@@ -166,11 +169,13 @@ Ext.define('component..permission.view.AuditOrganizationPanel', {
     // 新增 按钮的事件
     addBtnHandler : function() {
         var me = this;
-        var win = Ext.create('component..permission.view.AuditOrganizationWin', {
+        var win = Ext.create('component.permission.view.AuditOrganizationWin', {
+
             winType : WEBConstants.ACTIONTYPE.NEW,
             callback : function(result) {
                 ExtUtils.info(StrConstants.HINT_ADD_SUCCESS);
-                var model = Ext.create("component..permission.model.AuditOrganizationModel");
+                var model = Ext.create("component.permission.model.AuditOrganizationModel");
+
                 model.data = result;
                 me.busizGrid.getStore().add(model);
                 me.busizGrid.select(model);
@@ -188,7 +193,7 @@ Ext.define('component..permission.view.AuditOrganizationPanel', {
         }
         var item = me.busizGrid.getSelectedItem();
         var pkFiledId = item.get("orgId");
-        var win = Ext.create('component..permission.view.AuditOrganizationWin', {
+        var win = Ext.create('component.permission.view.AuditOrganizationWin', {
             pkFiledId : pkFiledId,
             winType : WEBConstants.ACTIONTYPE.EDIT,
             callback : function(result) {

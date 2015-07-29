@@ -4,11 +4,11 @@
  * @date 2014年11月20日
  */
 
-Ext.define('component..permission.view.AuditMenuWin', {
+Ext.define('component.permission.view.AuditMenuWin', {
     extend : 'ZTEsoft.window.PopWindow',
     config : {
         formPanel : null,
-        action : Ext.create("component..permission.action.AuditMenuAction")
+        action : Ext.create("component.permission.action.AuditMenuAction")
     },
     /**
      * 构造函数，用于初始化界面
@@ -58,7 +58,7 @@ Ext.define('component..permission.view.AuditMenuWin', {
             // TODO 隐藏或显示某些字段
             // me.formPanel.getForm().findField("createdDate").setVisible(false);
             me.getAction().qryRecord(me.pkFiledId, function(result) {
-                var model = Ext.create("component..permission.model.AuditMenuModel");
+                var model = Ext.create("component.permission.model.AuditMenuModel");
                 model.data = result;
                 me.formPanel.getForm().loadRecord(model);
             });
@@ -72,7 +72,7 @@ Ext.define('component..permission.view.AuditMenuWin', {
         // 详情
         if (me.winType == WEBConstants.ACTIONTYPE.VIEW) {
             me.getAction().qryRecord(me.pkFiledId, function(result) {
-                var model = Ext.create("component..permission.modelAuditMenuModel");
+                var model = Ext.create("component.permission.model.AuditMenuModel");
                 model.data = result;
                 me.formPanel.getForm().loadRecord(model);
                 me.formPanel.disableFields();

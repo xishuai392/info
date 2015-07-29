@@ -3,13 +3,15 @@
  * @author codeCreater
  * @date 2014年11月19日
  */
-Ext.define('component..permission.view.AuditMenuPanel', {
+Ext.define('component.permission.view.AuditMenuPanel', {
     extend : 'Ext.panel.Panel',
     layout : "border",
-    requires : ['component..permission.model.AuditMenuModel', 'ZTEsoft.button.AddButton', 'ZTEsoft.button.EditButton', 'ZTEsoft.button.DelButton'],
+    requires : ['component.permission.model.AuditMenuModel', 'ZTEsoft.button.AddButton', 'ZTEsoft.button.EditButton', 'ZTEsoft.button.DelButton'],
+
     config : {
         busizGrid : null,
-        action : Ext.create("component..permission.action.AuditMenuAction")
+        action : Ext.create("component.permission.action.AuditMenuAction")
+
     },
     constructor : function(config) {
         var me = this;
@@ -66,7 +68,8 @@ Ext.define('component..permission.view.AuditMenuPanel', {
 
     // 创建数据源
     createStore : function() {
-        return Ext.create('component..permission.store.AuditMenuStore', {
+    	return Ext.create('component.permission.store.AuditMenuStore', {
+
         		autoLoad : true,
             // 定义分页大小
             pageSize : WEBConstants.DEFAULT_PAGE_SIZE
@@ -161,11 +164,13 @@ Ext.define('component..permission.view.AuditMenuPanel', {
     // 新增 按钮的事件
     addBtnHandler : function() {
         var me = this;
-        var win = Ext.create('component..permission.view.AuditMenuWin', {
+        var win = Ext.create('component.permission.view.AuditMenuWin', {
+
             winType : WEBConstants.ACTIONTYPE.NEW,
             callback : function(result) {
                 ExtUtils.info(StrConstants.HINT_ADD_SUCCESS);
-                var model = Ext.create("component..permission.model.AuditMenuModel");
+                var model = Ext.create("component.permission.model.AuditMenuModel");
+
                 model.data = result;
                 me.busizGrid.getStore().add(model);
                 me.busizGrid.select(model);
@@ -183,7 +188,7 @@ Ext.define('component..permission.view.AuditMenuPanel', {
         }
         var item = me.busizGrid.getSelectedItem();
         var pkFiledId = item.get("menuId");
-        var win = Ext.create('component..permission.view.AuditMenuWin', {
+        var win = Ext.create('component.permission.view.AuditMenuWin', {
             pkFiledId : pkFiledId,
             winType : WEBConstants.ACTIONTYPE.EDIT,
             callback : function(result) {

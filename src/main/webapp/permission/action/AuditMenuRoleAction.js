@@ -4,7 +4,7 @@
  * @author codeCreater
  */
 
-Ext.define("component..permission.action.AuditMenuRoleAction", {
+Ext.define("component.permission.action.AuditMenuRoleAction", {
 
     /**
      * 新增记录

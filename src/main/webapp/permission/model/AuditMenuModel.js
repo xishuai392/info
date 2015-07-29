@@ -3,7 +3,7 @@
  * 
  * @author codeCreater
  */
-Ext.define('component..permission.model.AuditMenuModel', {
+Ext.define('component.permission.model.AuditMenuModel', {
     extend : 'Ext.data.Model',
     fields : [
        		{

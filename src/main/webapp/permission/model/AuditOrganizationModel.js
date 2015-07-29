@@ -3,7 +3,7 @@
  * 
  * @author codeCreater
  */
-Ext.define('component..permission.model.AuditOrganizationModel', {
+Ext.define('component.permission.model.AuditOrganizationModel', {
     extend : 'Ext.data.Model',
     fields : [
        		{

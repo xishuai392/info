@@ -12,7 +12,7 @@ Ext.onReady(function() {
     thizPanel = Ext.create('component..permission.view.AuditUserPanel', {
         region : "center",
         // isPage : true,
-        title : "AuditUser列表"
+        title : "用户列表"
     });
 
     // 查询条件框
@@ -21,52 +21,31 @@ Ext.onReady(function() {
         store : thizPanel.getBusizGrid().getStore(),
         items : [
 	      	{
-	            fieldLabel : "userId",
+	            fieldLabel : "用户名称",
 	            xtype : "textfield",
-	            name : "userId"
-        	},
-	      	{
-	            fieldLabel : "userName",
-	            xtype : "textfield",
+	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
 	            name : "userName"
         	},
 	      	{
-	            fieldLabel : "userCode",
+	            fieldLabel : "用户编码",
 	            xtype : "textfield",
+	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
 	            name : "userCode"
         	},
 	      	{
-	            fieldLabel : "telephone",
-	            xtype : "textfield",
-	            name : "telephone"
-        	},
+	            fieldLabel : "状态",
+	            xtype : "combo",
+	            name : "state",
+	            displayField : 'text',
+	            valueField : 'value',
+	            editable : false,
+	            store : new Ext.data.ArrayStore({
+	                fields : ['value', 'text'],
+	                data : [['00A', '有效'], ['00X', '无效']]
+	            })
+	        },
 	      	{
-	            fieldLabel : "email",
-	            xtype : "textfield",
-	            name : "email"
-        	},
-	      	{
-	            fieldLabel : "password",
-	            xtype : "textfield",
-	            name : "password"
-        	},
-	      	{
-	            fieldLabel : "age",
-	            xtype : "textfield",
-	            name : "age"
-        	},
-	      	{
-	            fieldLabel : "state",
-	            xtype : "textfield",
-	            name : "state"
-        	},
-	      	{
-	            fieldLabel : "createdDate",
-	            xtype : "textfield",
-	            name : "createdDate"
-        	},
-	      	{
-	            fieldLabel : "orgId",
+	            fieldLabel : "所属组织",
 	            xtype : "textfield",
 	            name : "orgId"
         	}	       

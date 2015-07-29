@@ -3,13 +3,15 @@
  * @author codeCreater
  * @date 2014年11月19日
  */
-Ext.define('component..permission.view.AuditUserRolePanel', {
+Ext.define('component.permission.view.AuditUserRolePanel', {
     extend : 'Ext.panel.Panel',
     layout : "border",
-    requires : ['component..permission.model.AuditUserRoleModel', 'ZTEsoft.button.AddButton', 'ZTEsoft.button.EditButton', 'ZTEsoft.button.DelButton'],
+    requires : ['component.permission.model.AuditUserRoleModel', 'ZTEsoft.button.AddButton', 'ZTEsoft.button.EditButton', 'ZTEsoft.button.DelButton'],
+
     config : {
         busizGrid : null,
-        action : Ext.create("component..permission.action.AuditUserRoleAction")
+        action : Ext.create("component.permission.action.AuditUserRoleAction")
+
     },
     constructor : function(config) {
         var me = this;
@@ -66,7 +68,8 @@ Ext.define('component..permission.view.AuditUserRolePanel', {
 
     // 创建数据源
     createStore : function() {
-        return Ext.create('component..permission.store.AuditUserRoleStore', {
+    	return Ext.create('component.permission.store.AuditUserRoleStore', {
+
         		autoLoad : true,
             // 定义分页大小
             pageSize : WEBConstants.DEFAULT_PAGE_SIZE
@@ -151,11 +154,13 @@ Ext.define('component..permission.view.AuditUserRolePanel', {
     // 新增 按钮的事件
     addBtnHandler : function() {
         var me = this;
-        var win = Ext.create('component..permission.view.AuditUserRoleWin', {
+        var win = Ext.create('component.permission.view.AuditUserRoleWin', {
+
             winType : WEBConstants.ACTIONTYPE.NEW,
             callback : function(result) {
                 ExtUtils.info(StrConstants.HINT_ADD_SUCCESS);
-                var model = Ext.create("component..permission.model.AuditUserRoleModel");
+                var model = Ext.create("component.permission.model.AuditUserRoleModel");
+
                 model.data = result;
                 me.busizGrid.getStore().add(model);
                 me.busizGrid.select(model);
@@ -173,7 +178,7 @@ Ext.define('component..permission.view.AuditUserRolePanel', {
         }
         var item = me.busizGrid.getSelectedItem();
         var pkFiledId = item.get("userRoleId");
-        var win = Ext.create('component..permission.view.AuditUserRoleWin', {
+        var win = Ext.create('component.permission.view.AuditUserRoleWin', {
             pkFiledId : pkFiledId,
             winType : WEBConstants.ACTIONTYPE.EDIT,
             callback : function(result) {

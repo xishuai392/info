@@ -3,7 +3,7 @@
  * 
  * @author codeCreater
  */
-Ext.define('component..permission.model.AuditUserRoleModel', {
+Ext.define('component.permission.model.AuditUserRoleModel', {
     extend : 'Ext.data.Model',
     fields : [
        		{

@@ -4,10 +4,9 @@
  * @author codeCreater
  * 
  */
-
-Ext.define('component..permission.store.AuditRoleStore', {
+Ext.define('component.permission.store.AuditRoleStore', {
     extend : 'Ext.data.Store',
-    model : 'component..permission.model.AuditRoleModel',
+    model : 'component.permission.model.AuditRoleModel',
     proxy : {
         type : 'ajax',
         url : webRoot + '/permission/auditrole/queryRecordByPage.do',
