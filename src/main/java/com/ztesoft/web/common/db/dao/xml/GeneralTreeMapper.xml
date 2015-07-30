@@ -1,13 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
 <mapper namespace="com.ztesoft.web.common.db.dao.mapper.GeneralTreeMapper" >
-  	<select id="menuTree" resultType="map" parameterType="map">
-  		select  
-  		sub_sys_id as "subSysId",menu_item_id as "menuItemId",menu_item_name as "menuItemName",menu_item_url as "menuItemUrl"
-  		from menu_item 
-  		where status='00A' and menu_type != '3' and sub_sys_id=#{subSysId} and partner_item_id=#{menuItemId}
-  		order by DISP_SEQ
-  	</select>
+	
+	
+	<select id="menuTree" resultType="map" parameterType="map">
+	
+	SELECT MENU_ID as "menuId",MENU_TITLE as "title",MENU_ICON_PATH as "icon",
+    	URL_STRING as "url",PARENT_MENU_ID as "pId"
+	FROM AUDIT_MENU WHERE PARENT_MENU_ID=#{menuId} AND MENU_ID IN
+    (
+        SELECT MENU_ID FROM audit_menu_role  mr left join audit_role r on mr.role_id=r.role_id
+        WHERE r.STATE='00A' and mr.role_id IN
+            (
+                SELECT role_id FROM audit_user_role WHERE USER_ID IN
+                    (
+                        SELECT user_id FROM audit_user WHERE USER_CODE='admin'
+                    )
+            )
+    )order by DISPLAY_INDEX
+	</select>
+	
+	
+	
+	
+	
   	
   	<select id="menuSubSysTree" resultType="map" parameterType="map">
   		select  '/common/images/icons/package_link.png' as "icon",
