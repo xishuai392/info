@@ -264,6 +264,12 @@
     background-image: url(../images/icons/application_side_tree.png) !important;
 }
 
+/*退出系统*/
+.loginOut {
+    background-image: url(../images/main_escimg_13.png) !important;
+}
+
+
 /**表单失效时的样式 */
 .custom-x-item-disabled {
     cursor: default;
