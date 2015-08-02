@@ -7,7 +7,7 @@
 	<head>
 		<title>AuditUser管理 </title>
 		<script type="text/javascript"
-			src="${ctx}//permission/app/AuditUserAppWin.js">
+			src="${ctx}//permission/app/AuditUserApp.js">
 		</script>
 	</head>
 	</body>

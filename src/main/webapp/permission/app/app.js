@@ -11,5 +11,8 @@ ZTEsoft_Application = new Ext.application({
         'PM.view.mains.Menu',
         'PM.view.mains.TabPanel',
         'PM.view.mains.South'],
-    controllers : ['MainCtrl', 'MenuCtrl']
+    controllers : ['MainCtrl', 'MenuCtrl'],
+    launch : function(){
+    	Ext.create('PM.view.mains.Viewport').show();
+    }
 });

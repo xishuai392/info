@@ -99,10 +99,11 @@ Ext.define('component..permission.view.AuditUserWin', {
 	            fieldLabel : "用户名称",
 	            xtype : "textfield",
 	            allowBlank : false,
+	            maxLength : 30,
 	            name : "userName"
         	},
 	      	{
-	            fieldLabel : "userCode",
+	            fieldLabel : "用户编码",
 	            xtype : "textfield",
 	            allowBlank : false,
 	            name : "userCode"
@@ -130,8 +131,16 @@ Ext.define('component..permission.view.AuditUserWin', {
         	},
 	      	{
 	            fieldLabel : "状态",
-	            xtype : "textfield",
-	            name : "state"
+	            xtype : "combo",
+	            name : "state",
+	            displayField : 'text',
+	            valueField : 'value',
+	            allowBlank : false,
+	            editable : false,
+	            store : new Ext.data.ArrayStore({
+	                fields : ['value', 'text'],
+	                data : [['00A', '有效'], ['00X', '无效']]
+	            })
         	},
 	      	{
 	            fieldLabel : "所属组织",

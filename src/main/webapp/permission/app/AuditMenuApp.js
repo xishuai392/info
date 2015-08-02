@@ -310,11 +310,29 @@ Ext.onReady(function() {
         thizDetailForm.getForm().loadRecord(items[0]);
 
     });
+    
+    var treePnl = Ext.create('ZTEsoft.tree.GeneralTree',{
+							region:'center',
+							//split:false,
+							//width:treeWidth,
+							title:'菜单',
+							//renderTo : 'menuDivId',
+							//border:true,
+							displayName : "菜单名称",
+							//searchUrl : webRoot+"privilege/stafft/queryOrgTree.do",
+					    	paramMap:{
+						    	sqlKey : 'com.ztesoft.web.common.db.dao.mapper.GeneralTreeMapper.menuTree',
+								//stateField : 'staffState',
+								//searchField : 'staffName',
+								valueField:'menuId',
+								displayField:'title'
+					    	}});
+				    
 
     // 整体页面布局
     Ext.create('Ext.container.Viewport', {
         layout : 'border',
-        items : [thizSearchForm, thizGrid, thizDetailForm]
+        items : [thizSearchForm, treePnl, thizDetailForm]
     });
 
     // 开始查询

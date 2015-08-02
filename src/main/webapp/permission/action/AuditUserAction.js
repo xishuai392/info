@@ -79,4 +79,4 @@ Ext.define("component.permission.action.AuditUserAction", {
         ExtUtils.doAjax(config);
     }
 
-})
+});

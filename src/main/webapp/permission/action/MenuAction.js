@@ -13,7 +13,7 @@ Ext.define("PM.action.MenuAction", {
      */
     qryMenuListByLoginUser : function(callbackFunction) {
         var config = {
-            url : "server/menus.localjson",
+            url : "base/getGeneralTree.do?sqlKey=com.ztesoft.web.common.db.dao.mapper.GeneralTreeMapper.menuTree",
             callback : callbackFunction
         };
         ExtUtils.doAjaxQuerySync(config);
