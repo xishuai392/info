@@ -39,4 +39,5 @@ public interface IAuditMenuMapper {
     
     int deleteByPrimaryKey(Integer id);
     
+    List<AuditMenuPO> selectMenuTree4User(Map<String,Object> map);
 }

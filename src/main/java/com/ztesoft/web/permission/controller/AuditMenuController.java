@@ -1,7 +1,10 @@
 package com.ztesoft.web.permission.controller;
 
-import java.math.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -11,9 +14,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ztesoft.core.common.Page;
+import com.ztesoft.core.common.TreeNode;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
+import com.ztesoft.web.domain.IConstants;
 import com.ztesoft.web.permission.db.po.AuditMenuPO;
+import com.ztesoft.web.permission.db.po.AuditUserPO;
 import com.ztesoft.web.permission.service.IAuditMenuService;
 
 /**
@@ -86,4 +92,30 @@ public class AuditMenuController {
         return record;
     }
 
+    @RequestMapping("findByPid1")
+    @ResponseBody
+    public List<TreeNode> findByPid1(AuditMenuPO record)
+            throws BaseAppException {
+        logger.debug("findByPid  record begin...record=[{0}]", record);
+        List<TreeNode> result = new ArrayList<TreeNode>();
+        TreeNode p = new TreeNode();
+        p.setId("1");
+        p.setText("dddddd");
+        p.setExpandable(true);
+        p.setLeaf(false);
+        result.add(p);
+        return result;
+    }
+
+    @RequestMapping("findByPid")
+    @ResponseBody
+    public List<AuditMenuPO> findByPid(HttpServletRequest request,
+            AuditMenuPO record) throws BaseAppException {
+        logger.debug("findByPid  record begin...record=[{0}]", record);
+        HttpSession session = request.getSession(true);
+
+        AuditUserPO userInfo = (AuditUserPO) session
+                .getAttribute(IConstants.SESSIONUSER);
+        return auditMenuService.selectMenuTree4User(userInfo, record);
+    }
 }

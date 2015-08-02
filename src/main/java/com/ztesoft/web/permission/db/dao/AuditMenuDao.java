@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import com.ztesoft.core.common.Page;
 import com.ztesoft.framework.exception.SysRuntimeException;
 import com.ztesoft.framework.util.StringUtils;
-
 import com.ztesoft.web.permission.db.arg.AuditMenuArg;
 import com.ztesoft.web.permission.db.arg.AuditMenuArg.AuditMenuCriteria;
 import com.ztesoft.web.permission.db.dao.mapper.IAuditMenuMapper;
@@ -83,6 +82,11 @@ public class AuditMenuDao extends SqlSessionDaoSupport {
     public int updateByPrimaryKey(AuditMenuPO record) {
         return getMapper().updateByPrimaryKey(record);
     }
+    
+    public List<AuditMenuPO> selectMenuTree4User(Map<String,Object> map){
+        return getMapper().selectMenuTree4User(map);
+    }
+    
 
     /**
      * 根据传入的Map条件进行查询，当前仅支持所有Map中Key字段的EqualTo查询

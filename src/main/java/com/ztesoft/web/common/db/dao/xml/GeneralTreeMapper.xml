@@ -20,8 +20,13 @@
     )order by DISPLAY_INDEX
 	</select>
 	
+	<select id="orgTree" resultType="map" parameterType="map">
+		SELECT ORG_ID,PARENT_ORG_ID,ORG_CODE,ORG_NAME,ORG_LEVEL,CREATED_TIME,ORG_DESC,STATE,STATE_TIME
+		FROM AUDIT_ORGANIZATION 
+		WHERE PARENT_ORG_ID=#{orgId,jdbcType=BIGINT}
+		
 	
-	
+	</select>
 	
 	
   	

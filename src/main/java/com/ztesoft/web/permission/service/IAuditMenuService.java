@@ -3,13 +3,12 @@
  */
 package com.ztesoft.web.permission.service;
 
-import java.math.*;
-import java.util.*;
+import java.util.List;
 
 import com.ztesoft.core.common.Page;
 import com.ztesoft.framework.exception.BaseAppException;
-
 import com.ztesoft.web.permission.db.po.AuditMenuPO;
+import com.ztesoft.web.permission.db.po.AuditUserPO;
 
 /**
  * <Description> <br>
@@ -37,4 +36,5 @@ public interface IAuditMenuService {
 
     int delete(AuditMenuPO record) throws BaseAppException;
 
+    List<AuditMenuPO> selectMenuTree4User(AuditUserPO sessionUserPO,AuditMenuPO qryRecord);
 }

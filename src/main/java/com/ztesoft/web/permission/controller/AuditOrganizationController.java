@@ -28,7 +28,7 @@ import com.ztesoft.web.permission.service.IAuditOrganizationService;
  */
 
 @Controller
-@RequestMapping("//permission/auditorganization")
+@RequestMapping("/permission/auditorganization")
 public class AuditOrganizationController {
 
     private static final ZTEsoftLogManager logger = ZTEsoftLogManager
@@ -45,6 +45,16 @@ public class AuditOrganizationController {
         // ///////
 
         return "/permission/jsp/auditOrganization";
+    }
+    
+    @RequestMapping("managerAuditOrgUser")
+    public String managerAuditOrgUser(Model model) {
+        // ///////
+        // TODO 根据业务场景，进行条件分支跳转、设置页面默认值等
+
+        // ///////
+
+        return "/permission/jsp/managerAuditOrgUser";
     }
 
     @RequestMapping("queryRecordByPage")

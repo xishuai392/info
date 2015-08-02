@@ -232,7 +232,9 @@
 	<if test="state != null" >
 		STATE = #{state,jdbcType=CHAR},
 	</if>
+	<if test="CREATED_DATE != null" >
 		CREATED_DATE = #{createdDate,jdbcType=DATE}
+	</if>
 	</set >
 	 where ROLE_ID = #{roleId,jdbcType=INTEGER}
   </update>

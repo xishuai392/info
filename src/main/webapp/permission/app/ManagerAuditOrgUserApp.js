@@ -1,18 +1,20 @@
 /**
- * AUDIT_ROLE管理<br>
+ * 组织架构人员管理<br>
  * 布局方式：上（north，查询Form）、中（center，带分页数据Grid）、下（south，操作Form）
  * 
  * @author codeCreater
  */
 
 Ext.onReady(function() {
-    var thizStore, thizGrid, thizDetailForm, thizSearchForm;
+    var thizStore, thizGrid, thizDetailForm, thizSearchForm,orgTree,pswChanged=false;
     var actionType = WEBConstants.ACTIONTYPE.VIEW;// 动作标记
-    var thizAction = Ext.create("component.permission.action.AuditRoleAction");
+    var thizAction = Ext.create("component.permission.action.AuditUserAction");
 
+    
+    
+    
     // 数据源
-    thizStore = Ext.create('component.permission.store.AuditRoleStore', {
-
+    thizStore = Ext.create('component.permission.store.AuditUserStore', {
         // 定义分页大小
         pageSize : WEBConstants.DEFAULT_PAGE_SIZE,
         listeners : {
@@ -24,7 +26,22 @@ Ext.onReady(function() {
                 } else {
                     thizGrid.select(0);
                 }
+                pswChanged = true;
+            },
+            "beforeload" : function(thiz, records) {
+            	var models = orgTree.getSelectionModel().getSelection();
+            	if(null==models || models === undefined || models.length==0){
+            		ExtUtils.error("请先选择所属组织！");
+            		return false;
+            	}else{
+	            	var thizOrgId = models[0].data.attributeMap['orgId'];
+	    			// 开始查询
+	    			Ext.getCmp('userGridId').getStore().getProxy().setExtraParam('orgId',thizOrgId);
+            	}
+            	
+            	
             }
+            
         }
     });
 
@@ -34,12 +51,18 @@ Ext.onReady(function() {
         store : thizStore,
         items : [
 	      	{
-	            fieldLabel : "角色名称",
+	            fieldLabel : "用户名称",
 	            xtype : "textfield",
 	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
-	            name : "roleName"
+	            name : "userName"
         	},
-        	{
+	      	{
+	            fieldLabel : "用户编码",
+	            xtype : "textfield",
+	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
+	            name : "userCode"
+        	},
+	      	{
 	            fieldLabel : "状态",
 	            xtype : "combo",
 	            name : "state",
@@ -50,46 +73,56 @@ Ext.onReady(function() {
 	                fields : ['value', 'text'],
 	                data : [['00A', '有效'], ['00X', '无效']]
 	            })
-	        }]
+	        }
+        ]
     });
 
     // 记录表格
     thizGrid = Ext.create('ZTEsoft.grid.Panel', {
         region : "center",
-        title : "AUDIT_ROLE列表",
+        id : 'userGridId',
+        title : "AUDIT_USER列表",
         store : thizStore,
         isPage : true,
         columns : [
 	        {
-	            text : "roleId",
-	            dataIndex : "roleId",
+	            text : "用户名称",
+	            dataIndex : "userName",
 	            flex : 1
 	        },
 	        {
-	            text : "roleName",
-	            dataIndex : "roleName",
+	            text : "用户编码",
+	            dataIndex : "userCode",
 	            flex : 1
 	        },
 	        {
-	            text : "comments",
-	            dataIndex : "comments",
+	            text : "电话",
+	            dataIndex : "telephone",
 	            flex : 1
 	        },
 	        {
-	            text : "stateDate",
-	            dataIndex : "stateDate",
+	            text : "邮箱",
+	            dataIndex : "email",
 	            flex : 1
 	        },
 	        {
-	            text : "state",
+	            text : "年龄",
+	            dataIndex : "age",
+	            flex : 1
+	        },
+	        {
+	            text : "状态",
 	            dataIndex : "state",
-	            flex : 1
+	            renderer : function(value, meta, record) {
+	                return value == '00A' ? '有效' : '无效';
+	            },
+	            flex : 0.5
 	        },
-	      	{
-	            text : "createdDate",
+	        {
+	            text : "创建时间",
 	            dataIndex : "createdDate",
 	            flex : 1
-        	}	       
+	        }	       
 		]
     });
 
@@ -100,9 +133,10 @@ Ext.onReady(function() {
          */
         onClickAdd : function() {
             actionType = WEBConstants.ACTIONTYPE.NEW;
+            pswChanged = false;
             thizDetailForm.enableFields();
             thizDetailForm.getForm().reset();
-            thizDetailForm.getForm().findField("roleId").selectText();
+            thizDetailForm.getForm().findField("userId").selectText();
         },
 
         /**
@@ -110,8 +144,9 @@ Ext.onReady(function() {
          */
         onClickEdit : function() {
             actionType = WEBConstants.ACTIONTYPE.EDIT;
+            pswChanged = false;
             thizDetailForm.enableFields();
-            thizDetailForm.getForm().findField("roleId").selectText();
+            thizDetailForm.getForm().findField("userId").selectText();
         },
 
         /**
@@ -141,10 +176,11 @@ Ext.onReady(function() {
          */
         onClickDel : function() {
             var item = thizGrid.getSelectedItem();
+            pswChanged = false;
 
             // 获取当前选中条目在store中的index，删除之后要选中当前记录的上一条记录
             var index = thizStore.indexOf(item);
-            var fieldPK = item.get('roleId');// TODO 获取记录的主键，后台根据主键删除该记录
+            var fieldPK = item.get('userId');// TODO 获取记录的主键，后台根据主键删除该记录
             thizAction.delRecord(fieldPK, function(result) {
                 ExtUtils.info(StrConstants.HINT_DEL_SUCCESS);
                 thizGrid.removeItemToNext(item);
@@ -165,9 +201,19 @@ Ext.onReady(function() {
 
             // 新增：保存到数据库；动态加载数据到store不刷新界面；后台要返回当前新增的对象（包括主键ID）
             if (actionType == WEBConstants.ACTIONTYPE.NEW) {
+            	var models = orgTree.getSelectionModel().getSelection();
+            	if(null==models || models === undefined || models.length==0){
+            		ExtUtils.error("请先选择所属组织！");
+            		return false;
+            	}else{
+	            	var thizOrgId = models[0].data.attributeMap['orgId'];
+	    			params.orgId = thizOrgId;
+            	}
+            	
                 thizAction.addRecord(params, function(result) {
                     ExtUtils.info(StrConstants.HINT_ADD_SUCCESS);
-                    var thizModel = Ext.create("component.permission.model.AuditRoleModel");
+                    var thizModel = Ext.create("component.permission.model.AuditUserModel");
+                    pswChanged = false;
                     thizModel.data = result;
                     thizGrid.getStore().add(thizModel);
                     thizGrid.select(thizModel);
@@ -178,11 +224,11 @@ Ext.onReady(function() {
              */
             else if (actionType == WEBConstants.ACTIONTYPE.EDIT) {
                 var item = thizGrid.getSelectedItem();
-                params.roleId = item.get("roleId");
+                params.userId = item.get("userId");
                 thizAction.modRecord(params, function(result) {
                     ExtUtils.info(StrConstants.HINT_MOD_SUCCESS);
                     // TODO  设置要更新的字段
-                    var changedColumns = ['roleName' ,'comments' ,'stateDate' ,'state' ,'createdDate' ];
+                    var changedColumns = ['userName' ,'userCode' ,'telephone' ,'email' ,'password' ,'age' ,'state' ,'createdDate' ,'orgId' ];
                     for (var colKey in changedColumns) {
                         var colValue = changedColumns[colKey];
                         item.set(colValue, result[colValue]);
@@ -214,35 +260,92 @@ Ext.onReady(function() {
         columnNum : 4,// 每行的列数，如果没设置，默认为4
         items : [
 	        {
-	            fieldLabel : "roleId",
+	            fieldLabel : "userId",
+	            hidden : true,
 	            xtype : "textfield",
-	            name : "roleId"
+	            name : "userId"
 	        },
 	        {
-	            fieldLabel : "roleName",
+	            fieldLabel : "用户名称",
 	            xtype : "textfield",
-	            name : "roleName"
+	            allowBlank : false,
+	            name : "userName"
 	        },
 	        {
-	            fieldLabel : "comments",
+	            fieldLabel : "用户编码",
 	            xtype : "textfield",
-	            name : "comments"
+	            allowBlank : false,
+	            name : "userCode"
 	        },
 	        {
-	            fieldLabel : "stateDate",
+	            fieldLabel : "电话",
 	            xtype : "textfield",
-	            name : "stateDate"
+	            vtype : "phone",
+	            name : "telephone"
 	        },
 	        {
-	            fieldLabel : "state",
+	            fieldLabel : "邮箱",
 	            xtype : "textfield",
-	            name : "state"
+	            vtype : "email",
+	            name : "email"
 	        },
 	        {
-	            fieldLabel : "createdDate",
+	            fieldLabel : "密码",
 	            xtype : "textfield",
-	            name : "createdDate"
-	        }       
+	            allowBlank : false,
+	            name : "password",
+	            trigger1Cls : Ext.baseCSSPrefix + 'form-setting-trigger',
+				name:'password',
+				minLength : 6,
+				maxLength : 32,
+				//value:'*******',
+				inputType:'password',
+				onTrigger1Click:function(){
+					console.log("onTrigger1Click");
+				},
+				enableKeyEvents : true,
+				listeners: {
+			        'focus': function(thiz,event,opts){
+			        	//console.log("focus");
+			        	thiz.selectText();
+			        },
+			        'keypress' : function(thiz,event,opts){
+			        	console.log("keypress");
+			        	pswChanged = true;
+			        },
+			        'blur' : function(thiz,event,opts){
+			        	//console.log("blur"+pswChanged);
+			        	if(!pswChanged)return;
+			        	if(thiz.isDisabled( ))return;
+			        	var val = thiz.getValue();
+			        	if(val == '' || val==null){
+			        		return ;
+			        	}
+			        	if(val.length<6)return;
+			        	thiz.setValue(MD5(val));
+			        	pswChanged = false;
+			        }
+			    }
+	        },
+	        {
+	            fieldLabel : "年龄",
+	            xtype : "numberfield",
+	            vtype : 'age',
+	            name : "age"
+	        },
+	        {
+	            fieldLabel : "状态",
+	            xtype : "combo",
+	            name : "state",
+	            displayField : 'text',
+	            valueField : 'value',
+	            editable : false,
+	            allowBlank : false,
+	            store : new Ext.data.ArrayStore({
+	                fields : ['value', 'text'],
+	                data : [['00A', '有效'], ['00X', '无效']]
+	            })
+	        }
 		],
         fbar : fbar
     });
@@ -254,6 +357,7 @@ Ext.onReady(function() {
      * 3、加载表单详情 <br>
      */
     thizGrid.getSelectionModel().on("selectionchange", function(sm, items) {
+    	pswChanged = false;
         actionType = WEBConstants.ACTIONTYPE.VIEW;
         thizDetailForm.disableFields();
         thizDetailForm.getForm().reset();
@@ -267,14 +371,52 @@ Ext.onReady(function() {
         thizDetailForm.getForm().loadRecord(items[0]);
 
     });
+    
+    //机构树
+    orgTree = Ext.create('ZTEsoft.tree.GeneralTree', {
+        region : 'west',
+        // split:false,
+        // width:treeWidth,
+        title : '组织架构',
+        renderTo : Ext.getBody(),
+        border : true,
+        showSearch : false,
+        displayName : "组织名称",
+        nodeParam : 'parentOrgId',
+        paramMap : {
+            sqlKey : 'com.ztesoft.web.common.db.dao.mapper.GeneralTreeMapper.orgTree',
+            // stateField : 'staffState',
+            // searchField : 'staffName',
+            valueField : 'orgId',
+            parentField : 'parentOrgId',
+            //parentField : 'parentOrgId',
+            //nodeParam : 'parentOrgId',
+            displayField : 'orgName'
+        },
+        listeners : {
+        	afterrender : function(){
+        		this.getSelectionModel().select(1);
+        	},
+    		select : function(dataview, record, index, e){
+    			Ext.getCmp('userGridId').getStore().removeAll();
+    			var thizOrgId = record.data.attributeMap['orgId'];
+    			// 开始查询
+    			Ext.getCmp('userGridId').getStore().getProxy().setExtraParam('orgId',thizOrgId);
+    			Ext.getCmp('userGridId').getStore().load();
+    		}
+    	}
+    });
 
-    // 整体页面布局
-    Ext.create('Ext.container.Viewport', {
+    var userPanel = Ext.create('Ext.panel.Panel', {
+    	region : 'center',
         layout : 'border',
         items : [thizSearchForm, thizGrid, thizDetailForm]
     });
 
-    // 开始查询
-    thizGrid.getStore().load();
+    // 整体页面布局
+    Ext.create('Ext.container.Viewport', {
+        layout : 'border',
+        items : [userPanel,orgTree]
+    });
 
 });

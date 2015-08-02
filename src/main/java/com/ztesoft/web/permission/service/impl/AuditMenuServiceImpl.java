@@ -16,11 +16,11 @@ import com.ztesoft.core.convert.IArgConversionService;
 import com.ztesoft.core.idproduce.ISequenceGenerator;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
-
 import com.ztesoft.web.permission.db.arg.AuditMenuArg;
 import com.ztesoft.web.permission.db.arg.AuditMenuArg.AuditMenuCriteria;
 import com.ztesoft.web.permission.db.dao.AuditMenuDao;
 import com.ztesoft.web.permission.db.po.AuditMenuPO;
+import com.ztesoft.web.permission.db.po.AuditUserPO;
 import com.ztesoft.web.permission.service.IAuditMenuService;
 
 /**
@@ -148,6 +148,18 @@ public class AuditMenuServiceImpl implements IAuditMenuService {
         // ///////
 
         return auditMenuDao.deleteByPrimaryKey(record.getMenuId());
+    }
+
+    /* (non-Javadoc)
+     * @see com.ztesoft.web.permission.service.IAuditMenuService#selectMenuTree4User(com.ztesoft.web.permission.db.po.AuditUserPO, com.ztesoft.web.permission.db.po.AuditMenuPO)
+     */
+    @Override
+    public List<AuditMenuPO> selectMenuTree4User(AuditUserPO sessionUserPO,
+            AuditMenuPO qryRecord) {
+        Map<String,Object> paramMap = new HashMap<String, Object>();
+        paramMap.put("userCode", sessionUserPO.getUserCode());
+        paramMap.put("parentMenuId", qryRecord.getParentMenuId());
+        return auditMenuDao.selectMenuTree4User(paramMap);
     }
 
 }

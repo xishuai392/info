@@ -1,15 +1,22 @@
 Ext.define('PM.controller.MenuCtrl', {
     extend : 'Ext.app.Controller',
 
+    views: [
+        'PM.view.mains.Menu'
+    ],
+    
     init : function() {
+    	console.log('Initialized Users! This happens before the Application launch function is called');
         this.control({
-        
+        	
         });
 
-        var action = Ext.create("PM.action.MenuAction");
+        
         /**
-         * 查询用户的所有有权限的菜单，返回格式为目录下面挂children的菜单列表，直接循环目录去创建treePanel
-         */
+        var action = Ext.create("PM.action.MenuAction");
+        
+        //查询用户的所有有权限的菜单，返回格式为目录下面挂children的菜单列表，直接循环目录去创建treePanel
+        
         action.qryMenuListByLoginUser(function(records) {
             if (Ext.isEmpty(records)) {
                 return;
@@ -79,7 +86,10 @@ Ext.define('PM.controller.MenuCtrl', {
                 
                 Ext.getCmp('main_west_menupanel').add(treePnl);
             }
-
         });
+        **/
+    },
+    onPanelRendered: function() {
+        console.log('The panel was rendered');
     }
 });

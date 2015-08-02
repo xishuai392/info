@@ -39,8 +39,8 @@ Ext.define('component.permission.view.AuditRoleWin', {
             config.title = '编辑';
         }
         Ext.applyIf(config, {
-            width : '30%',
-            height : '50%',
+            width : 400,
+            height : 200,
             layout : 'fit',
             maximizable : true,
             items : [me.formPanel],
@@ -92,33 +92,41 @@ Ext.define('component.permission.view.AuditRoleWin', {
 	      	{
 	            fieldLabel : "roleId",
 	            xtype : "textfield",
+	            hidden : true,
 	            name : "roleId"
         	},
 	      	{
-	            fieldLabel : "roleName",
+	            fieldLabel : "角色名称",
 	            xtype : "textfield",
+	            allowBlank : false,
+	            maxLength : 30,
 	            name : "roleName"
         	},
 	      	{
-	            fieldLabel : "comments",
-	            xtype : "textfield",
+	            fieldLabel : "备注",
+	            xtype : "textarea",
+	            grow  : true,
 	            name : "comments"
         	},
 	      	{
 	            fieldLabel : "stateDate",
 	            xtype : "textfield",
+	            hidden : true,
 	            name : "stateDate"
         	},
 	      	{
-	            fieldLabel : "state",
-	            xtype : "textfield",
-	            name : "state"
-        	},
-	      	{
-	            fieldLabel : "createdDate",
-	            xtype : "textfield",
-	            name : "createdDate"
-        	}	       
+	            fieldLabel : "状态",
+	            xtype : "combo",
+	            name : "state",
+	            displayField : 'text',
+	            valueField : 'value',
+	            allowBlank : false,
+	            editable : false,
+	            store : new Ext.data.ArrayStore({
+	                fields : ['value', 'text'],
+	                data : [['00A', '有效'], ['00X', '无效']]
+	            })
+        	}       
         ]
         });
         return formPanel;

@@ -7,7 +7,7 @@
 	<head>
 		<title>AuditMenu管理 </title>
 		<script type="text/javascript"
-			src="${ctx}//permission/app/AuditMenuAppWin.js">
+			src="${ctx}//permission/app/AuditMenuApp.js">
 		</script>
 	</head>
 	</body>

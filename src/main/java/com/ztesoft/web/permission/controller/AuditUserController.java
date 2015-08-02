@@ -28,7 +28,7 @@ import com.ztesoft.web.permission.service.IAuditUserService;
  */
 
 @Controller
-@RequestMapping("//permission/audituser")
+@RequestMapping("/permission/audituser")
 public class AuditUserController {
 
     private static final ZTEsoftLogManager logger = ZTEsoftLogManager

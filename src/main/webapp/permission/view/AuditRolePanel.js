@@ -87,31 +87,30 @@ Ext.define('component.permission.view.AuditRolePanel', {
             columns : [
 	        {
 	        	text : "roleId",
+	        	hidden : true,
 	            dataIndex : "roleId",
 	            flex : 1
 	        },
 	        {
-	        	text : "roleName",
+	        	text : "角色名称",
 	            dataIndex : "roleName",
 	            flex : 1
 	        },
 	        {
-	        	text : "comments",
+	        	text : "备注",
 	            dataIndex : "comments",
 	            flex : 1
 	        },
 	        {
-	        	text : "stateDate",
-	            dataIndex : "stateDate",
-	            flex : 1
-	        },
-	        {
-	        	text : "state",
+	        	text : "状态",
 	            dataIndex : "state",
+	            renderer : function(value, meta, record) {
+	                return value == 'A' ? '有效' : '无效';
+	            },
 	            flex : 1
 	        },
 	        {
-	        	text : "createdDate",
+	        	text : "创建时间",
 	            dataIndex : "createdDate",
 	            flex : 1
 	        }       

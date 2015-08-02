@@ -286,4 +286,21 @@
 	 delete from AUDIT_MENU
 	 where MENU_ID = #{menuId,jdbcType=INTEGER}
   </delete>
+  
+  <select id="selectMenuTree4User" resultMap="BaseResultMap" parameterType="map">
+	
+	SELECT 
+	<include refid="Base_Column_List" />
+	FROM AUDIT_MENU WHERE PARENT_MENU_ID=#{parentMenuId} AND MENU_ID IN
+    (
+        SELECT MENU_ID FROM audit_menu_role  mr left join audit_role r on mr.role_id=r.role_id
+        WHERE r.STATE='00A' and mr.role_id IN
+            (
+                SELECT role_id FROM audit_user_role WHERE USER_ID IN
+                    (
+                        SELECT user_id FROM audit_user WHERE USER_CODE=#{userCode}
+                    )
+            )
+    )order by DISPLAY_INDEX
+	</select>
 </mapper>  

@@ -3,13 +3,13 @@
  * @author codeCreater
  * @date 2014年11月19日
  */
-Ext.define('component..permission.view.AuditUserPanel', {
+Ext.define('component.permission.view.AuditUserPanel', {
     extend : 'Ext.panel.Panel',
     layout : "border",
-    requires : ['component..permission.model.AuditUserModel', 'ZTEsoft.button.AddButton', 'ZTEsoft.button.EditButton', 'ZTEsoft.button.DelButton'],
+    requires : ['component.permission.model.AuditUserModel', 'ZTEsoft.button.AddButton', 'ZTEsoft.button.EditButton', 'ZTEsoft.button.DelButton'],
     config : {
         busizGrid : null,
-        action : Ext.create("component..permission.action.AuditUserAction")
+        action : Ext.create("component.permission.action.AuditUserAction")
     },
     constructor : function(config) {
         var me = this;
@@ -66,7 +66,7 @@ Ext.define('component..permission.view.AuditUserPanel', {
 
     // 创建数据源
     createStore : function() {
-        return Ext.create('component..permission.store.AuditUserStore', {
+        return Ext.create('component.permission.store.AuditUserStore', {
         		autoLoad : true,
             // 定义分页大小
             pageSize : WEBConstants.DEFAULT_PAGE_SIZE
@@ -161,11 +161,11 @@ Ext.define('component..permission.view.AuditUserPanel', {
     // 新增 按钮的事件
     addBtnHandler : function() {
         var me = this;
-        var win = Ext.create('component..permission.view.AuditUserWin', {
+        var win = Ext.create('component.permission.view.AuditUserWin', {
             winType : WEBConstants.ACTIONTYPE.NEW,
             callback : function(result) {
                 ExtUtils.info(StrConstants.HINT_ADD_SUCCESS);
-                var model = Ext.create("component..permission.model.AuditUserModel");
+                var model = Ext.create("component.permission.model.AuditUserModel");
                 model.data = result;
                 me.busizGrid.getStore().add(model);
                 me.busizGrid.select(model);
@@ -183,7 +183,7 @@ Ext.define('component..permission.view.AuditUserPanel', {
         }
         var item = me.busizGrid.getSelectedItem();
         var pkFiledId = item.get("userId");
-        var win = Ext.create('component..permission.view.AuditUserWin', {
+        var win = Ext.create('component.permission.view.AuditUserWin', {
             pkFiledId : pkFiledId,
             winType : WEBConstants.ACTIONTYPE.EDIT,
             callback : function(result) {

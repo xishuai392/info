@@ -5,7 +5,7 @@
 
 <html>
 	<head>
-		<title>阳光计费透明化系统</title>
+		<title>人口信息查询服务管理系统</title>
 		<script type="text/javascript" src="${ctx}/permission/app/app.js">
 </script>
 	</head>

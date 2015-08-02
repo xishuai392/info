@@ -128,11 +128,11 @@
 	select
 	<include refid="Base_Column_List" />
 	from AUDIT_ORGANIZATION
-	where ORG_ID = #{orgId,jdbcType=LONG}
+	where ORG_ID = #{orgId,jdbcType=BIGINT}
   </select>
   <insert id="insert" parameterType="com.ztesoft.web.permission.db.po.AuditOrganizationPO"  >
 		insert into AUDIT_ORGANIZATION(ORG_ID,PARENT_ORG_ID,ORG_CODE,ORG_NAME,ORG_LEVEL,CREATED_TIME,ORG_DESC,STATE,STATE_TIME)
-		values (#{orgId,jdbcType=LONG},#{parentOrgId,jdbcType=LONG},#{orgCode,jdbcType=VARCHAR},#{orgName,jdbcType=VARCHAR},#{orgLevel,jdbcType=LONG},#{createdTime,jdbcType=DATE},#{orgDesc,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{stateTime,jdbcType=DATE})
+		values (#{orgId,jdbcType=BIGINT},#{parentOrgId,jdbcType=BIGINT},#{orgCode,jdbcType=VARCHAR},#{orgName,jdbcType=VARCHAR},#{orgLevel,jdbcType=BIGINT},#{createdTime,jdbcType=DATE},#{orgDesc,jdbcType=VARCHAR},#{state,jdbcType=VARCHAR},#{stateTime,jdbcType=DATE})
   </insert>
   <insert id="insertSelective" parameterType="com.ztesoft.web.permission.db.po.AuditOrganizationPO">
 		insert into AUDIT_ORGANIZATION
@@ -167,10 +167,10 @@
  	</trim>
 	<trim prefix="values (" suffix=")" suffixOverrides="," >
 		<if test="orgId != null" >
-			#{orgId,jdbcType=LONG},
+			#{orgId,jdbcType=BIGINT},
 		</if>
 		<if test="parentOrgId != null" >
-			#{parentOrgId,jdbcType=LONG},
+			#{parentOrgId,jdbcType=BIGINT},
 		</if>
 		<if test="orgCode != null" >
 			#{orgCode,jdbcType=VARCHAR},
@@ -179,7 +179,7 @@
 			#{orgName,jdbcType=VARCHAR},
 		</if>
 		<if test="orgLevel != null" >
-			#{orgLevel,jdbcType=LONG},
+			#{orgLevel,jdbcType=BIGINT},
 		</if>
 		<if test="createdTime != null" >
 			#{createdTime,jdbcType=DATE},
@@ -199,14 +199,14 @@
 	insert into AUDIT_ORGANIZATION(ORG_ID,PARENT_ORG_ID,ORG_CODE,ORG_NAME,ORG_LEVEL,CREATED_TIME,ORG_DESC,STATE,STATE_TIME)
 	 values 
 	 <foreach collection="list" item="item" index="index" separator=",">
-	 		(#{item.orgId,jdbcType=LONG},#{item.parentOrgId,jdbcType=LONG},#{item.orgCode,jdbcType=VARCHAR},#{item.orgName,jdbcType=VARCHAR},#{item.orgLevel,jdbcType=LONG},#{item.createdTime,jdbcType=DATE},#{item.orgDesc,jdbcType=VARCHAR},#{item.state,jdbcType=VARCHAR},#{item.stateTime,jdbcType=DATE})
+	 		(#{item.orgId,jdbcType=BIGINT},#{item.parentOrgId,jdbcType=BIGINT},#{item.orgCode,jdbcType=VARCHAR},#{item.orgName,jdbcType=VARCHAR},#{item.orgLevel,jdbcType=BIGINT},#{item.createdTime,jdbcType=DATE},#{item.orgDesc,jdbcType=VARCHAR},#{item.state,jdbcType=VARCHAR},#{item.stateTime,jdbcType=DATE})
 	 </foreach>
   </insert>
   <update id="updateByArgSelective" parameterType="map" >
     update AUDIT_ORGANIZATION
     <set>
 		<if test="record.parentOrgId != null" >
-			PARENT_ORG_ID= #{record.parentOrgId,jdbcType=LONG},
+			PARENT_ORG_ID= #{record.parentOrgId,jdbcType=BIGINT},
 		</if>
 		<if test="record.orgCode != null" >
 			ORG_CODE= #{record.orgCode,jdbcType=VARCHAR},
@@ -215,7 +215,7 @@
 			ORG_NAME= #{record.orgName,jdbcType=VARCHAR},
 		</if>
 		<if test="record.orgLevel != null" >
-			ORG_LEVEL= #{record.orgLevel,jdbcType=LONG},
+			ORG_LEVEL= #{record.orgLevel,jdbcType=BIGINT},
 		</if>
 		<if test="record.createdTime != null" >
 			CREATED_TIME= #{record.createdTime,jdbcType=DATE},
@@ -237,11 +237,11 @@
   <update id="updateByArg" parameterType="map" >
     update AUDIT_ORGANIZATION
     set 
-		ORG_ID = #{record.orgId,jdbcType=LONG},
-		PARENT_ORG_ID = #{record.parentOrgId,jdbcType=LONG},
+		ORG_ID = #{record.orgId,jdbcType=BIGINT},
+		PARENT_ORG_ID = #{record.parentOrgId,jdbcType=BIGINT},
 		ORG_CODE = #{record.orgCode,jdbcType=VARCHAR},
 		ORG_NAME = #{record.orgName,jdbcType=VARCHAR},
-		ORG_LEVEL = #{record.orgLevel,jdbcType=LONG},
+		ORG_LEVEL = #{record.orgLevel,jdbcType=BIGINT},
 		CREATED_TIME = #{record.createdTime,jdbcType=DATE},
 		ORG_DESC = #{record.orgDesc,jdbcType=VARCHAR},
 		STATE = #{record.state,jdbcType=VARCHAR},
@@ -254,7 +254,7 @@
 		update AUDIT_ORGANIZATION
 	<set >
 	<if test="parentOrgId != null" >
-		PARENT_ORG_ID = #{parentOrgId,jdbcType=LONG},
+		PARENT_ORG_ID = #{parentOrgId,jdbcType=BIGINT},
 	</if>
 	<if test="orgCode != null" >
 		ORG_CODE = #{orgCode,jdbcType=VARCHAR},
@@ -263,7 +263,7 @@
 		ORG_NAME = #{orgName,jdbcType=VARCHAR},
 	</if>
 	<if test="orgLevel != null" >
-		ORG_LEVEL = #{orgLevel,jdbcType=LONG},
+		ORG_LEVEL = #{orgLevel,jdbcType=BIGINT},
 	</if>
 	<if test="createdTime != null" >
 		CREATED_TIME = #{createdTime,jdbcType=DATE},
@@ -276,20 +276,20 @@
 	</if>
 		STATE_TIME = #{stateTime,jdbcType=DATE}
 	</set >
-	 where ORG_ID = #{orgId,jdbcType=LONG}
+	 where ORG_ID = #{orgId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.ztesoft.web.permission.db.po.AuditOrganizationPO" >
 		update AUDIT_ORGANIZATION
 		set 
-			PARENT_ORG_ID = #{parentOrgId,jdbcType=LONG},
+			PARENT_ORG_ID = #{parentOrgId,jdbcType=BIGINT},
 			ORG_CODE = #{orgCode,jdbcType=VARCHAR},
 			ORG_NAME = #{orgName,jdbcType=VARCHAR},
-			ORG_LEVEL = #{orgLevel,jdbcType=LONG},
+			ORG_LEVEL = #{orgLevel,jdbcType=BIGINT},
 			CREATED_TIME = #{createdTime,jdbcType=DATE},
 			ORG_DESC = #{orgDesc,jdbcType=VARCHAR},
 			STATE = #{state,jdbcType=VARCHAR},
 			STATE_TIME = #{stateTime,jdbcType=DATE}
-	 where ORG_ID = #{orgId,jdbcType=LONG}
+	 where ORG_ID = #{orgId,jdbcType=BIGINT}
    </update>
   <delete id="deleteByArg" parameterType="com.ztesoft.web.permission.db.arg.AuditOrganizationArg" >
     delete from AUDIT_ORGANIZATION
@@ -299,6 +299,6 @@
   </delete>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
 	 delete from AUDIT_ORGANIZATION
-	 where ORG_ID = #{orgId,jdbcType=LONG}
+	 where ORG_ID = #{orgId,jdbcType=BIGINT}
   </delete>
 </mapper>  

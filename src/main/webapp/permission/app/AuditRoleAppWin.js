@@ -13,7 +13,7 @@ Ext.onReady(function() {
 
         region : "center",
         // isPage : true,
-        title : "AuditRole列表"
+        title : "角色列表"
     });
 
     // 查询条件框
@@ -22,36 +22,23 @@ Ext.onReady(function() {
         store : thizPanel.getBusizGrid().getStore(),
         items : [
 	      	{
-	            fieldLabel : "roleId",
+	            fieldLabel : "角色名称",
 	            xtype : "textfield",
-	            name : "roleId"
-        	},
-	      	{
-	            fieldLabel : "roleName",
-	            xtype : "textfield",
+	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
 	            name : "roleName"
         	},
-	      	{
-	            fieldLabel : "comments",
-	            xtype : "textfield",
-	            name : "comments"
-        	},
-	      	{
-	            fieldLabel : "stateDate",
-	            xtype : "textfield",
-	            name : "stateDate"
-        	},
-	      	{
-	            fieldLabel : "state",
-	            xtype : "textfield",
-	            name : "state"
-        	},
-	      	{
-	            fieldLabel : "createdDate",
-	            xtype : "textfield",
-	            name : "createdDate"
-        	}	       
-        ]
+        	{
+	            fieldLabel : "状态",
+	            xtype : "combo",
+	            name : "state",
+	            displayField : 'text',
+	            valueField : 'value',
+	            editable : false,
+	            store : new Ext.data.ArrayStore({
+	                fields : ['value', 'text'],
+	                data : [['00A', '有效'], ['00X', '无效']]
+	            })
+	        }]       
 
     });
 

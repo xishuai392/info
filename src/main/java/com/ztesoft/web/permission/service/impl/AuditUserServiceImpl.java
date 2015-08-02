@@ -3,8 +3,8 @@
  */
 package com.ztesoft.web.permission.service.impl;
 
-import java.math.*;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -16,7 +16,8 @@ import com.ztesoft.core.convert.IArgConversionService;
 import com.ztesoft.core.idproduce.ISequenceGenerator;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
-
+import com.ztesoft.framework.util.Utils;
+import com.ztesoft.web.domain.TableInfoConstants;
 import com.ztesoft.web.permission.db.arg.AuditUserArg;
 import com.ztesoft.web.permission.db.arg.AuditUserArg.AuditUserCriteria;
 import com.ztesoft.web.permission.db.dao.AuditUserDao;
@@ -42,7 +43,6 @@ public class AuditUserServiceImpl implements IAuditUserService {
 
     @Autowired
     private AuditUserDao auditUserDao;
-    
 
     /**
      * 查询条件转换成Arg类的服务接口
@@ -55,7 +55,6 @@ public class AuditUserServiceImpl implements IAuditUserService {
      */
     @Resource(name = "sequenceProcGenerator")
     private ISequenceGenerator sequenceGenerator;
-    
 
     @Override
     public AuditUserPO selectByPrimaryKey(Integer key) throws BaseAppException {
@@ -67,16 +66,18 @@ public class AuditUserServiceImpl implements IAuditUserService {
     }
 
     @Override
-    public List<AuditUserPO> selectByArg(AuditUserPO record) throws BaseAppException {
+    public List<AuditUserPO> selectByArg(AuditUserPO record)
+            throws BaseAppException {
         logger.debug("selectByArg begin...record={0}", record);
 
         // 第一种方式：自己创建arg，自行设置查询条件及操作符
-        //AuditUserArg arg = new AuditUserArg();
-        //AuditUserCriteria criteria = arg.createCriteria();
-        
+        // AuditUserArg arg = new AuditUserArg();
+        // AuditUserCriteria criteria = arg.createCriteria();
+
         // 第二种方式：利用arg转换服务，转换出arg，带上查询条件及操作符，
         // 转换后，还可以自行对arg进行设置修改
-        AuditUserArg arg = argConversionService.invokeArg(AuditUserArg.class, record);
+        AuditUserArg arg = argConversionService.invokeArg(AuditUserArg.class,
+                record);
 
         // ///////
         // TODO 根据业务场景，设置查询条件，示例
@@ -89,8 +90,8 @@ public class AuditUserServiceImpl implements IAuditUserService {
     }
 
     @Override
-    public Page<AuditUserPO> selectByArgAndPage(AuditUserPO record, Page<AuditUserPO> resultPage)
-            throws BaseAppException {
+    public Page<AuditUserPO> selectByArgAndPage(AuditUserPO record,
+            Page<AuditUserPO> resultPage) throws BaseAppException {
         logger.debug("selectByArgAndPage begin...record={0}", record);
 
         // 第一种方式：自己创建arg，自行设置查询条件及操作符
@@ -103,10 +104,17 @@ public class AuditUserServiceImpl implements IAuditUserService {
 
         // 第二种方式：利用arg转换服务，转换出arg，带上查询条件及操作符，
         // 转换后，还可以自行对arg进行设置修改
-        AuditUserArg arg = argConversionService.invokeArg(AuditUserArg.class, record);
+        AuditUserArg arg = argConversionService.invokeArg(AuditUserArg.class,
+                record);
+        if (arg.getOredCriteria().size() == 0) {
+            arg.createCriteria();
+        }
+        AuditUserCriteria criteria = arg.getOredCriteria().get(0);
+        if (Utils.notEmpty(record.getOrgId())) {
+            criteria.andOrgIdEqualTo(record.getOrgId());
+        }
 
         resultPage = auditUserDao.selectByArgAndPage(arg, resultPage);
-
 
         return resultPage;
     }
@@ -118,9 +126,12 @@ public class AuditUserServiceImpl implements IAuditUserService {
         // ///////
         // TODO 根据业务场景，进行重名校验、设置主键、设置属性默认值等
         // 获取主键
-        // int pkId = sequenceGenerator.sequenceIntValue("表名","主键名");
-        // record.setUserId(pkId);
-        // record.setCreatedDate(new Date());
+        int pkId = sequenceGenerator.sequenceIntValue(
+                TableInfoConstants.AUDIT_USER,
+                TableInfoConstants.AUDIT_USER_PKFIELD);
+        record.setUserId(pkId);
+        record.setCreatedDate(new Date());
+
         // ///////
 
         return auditUserDao.insertSelective(record);
