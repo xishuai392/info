@@ -11,44 +11,25 @@ Ext.define('PM.view.mains.Header', {
             xtype : 'box',
             cls : 'header',
             region : 'north',
-            // html : '<h1>阳光计费稽核系统</h1>',
             bodyStyle : 'border-bottom:0',
-            height : 59,
+            height : 80,
             dockedItems : [{
                 xtype : 'toolbar',
-                height : 59,
-                style : 'background-image: url(' + ctx + '/common/images/logo.png) !important; background-repeat: no-repeat;background-position:center left;',
+                height : 80,
+                style : 'background-image: url(' + ctx + '/common/images/logo.jpg) !important; background-repeat: no-repeat;background-position:center left;background-size:100% 100%;',
                 dock : 'top',
                 items : ['->', {
-                    xtype : 'box',
-                    html : '<img src="' + ctx + '/common/images/icons/user.png" style="width:16px;height:16px;"></img>'
-                }, {
-                    xtype : 'label',
-                    name : 'staffInfo',
-                    text : userSession.userName + '(' + userSession.userCode + '),欢迎登陆!'
-                }, {
-                    xtype : 'label',
-                    text : '当前时间:'
-                }, {
-                    xtype : 'label',
-                    name : 'clock',
-                    style : 'margin-right:20px;',
-                    // text:Ext.Date.format(new Date(), Date.patterns.LongTime),
-                    listeners : {
-                        'render' : function() {
-                            var me = this;
-                            var task = {
-                                run : function() {
-                                    me.setText(Ext.util.Format.date(new Date(), 'Y-m-d H:i:s A'));
-                                },
-                                interval : 1000
-                            };
-                            Ext.TaskManager.start(task);
-                        }
-                    }
-                }, {
+                    iconCls : 'changepasswd',
+                    scale : 'medium',
+                    textAlign : 'left',
+                    text : '修改密码',
+                    handler : me.updPassword,
+                    scope : me
+                },'-', {
                     iconCls : 'loginOut',
-                    scale : 'large',
+                    scale : 'medium',
+                    textAlign : 'left',
+                    text : '退出系统',
                     handler : me.loginOut,
                     scope : me
                 }]
@@ -87,9 +68,11 @@ Ext.define('PM.view.mains.Header', {
 
     },
     updPassword : function() {
+    	Ext.getBody().mask();
         Ext.create('Ext.window.Window', {
             id : 'updPassWordWin',
-            title : '密码修改',
+            title : '修改密码',
+            iconCls : 'changepasswd',
             height : 150,
             width : 300,
             layout : 'fit',
@@ -118,8 +101,15 @@ Ext.define('PM.view.mains.Header', {
                     allowBlank : false
                 }]
             },
+            listeners : {
+            	'close' : function(thiz,opts){
+            		Ext.getBody().unmask();
+            	}
+            
+            },
             buttons : [{
                 text : '确定',
+                iconCls : 'accept',
                 handler : function() {
                     var form = Ext.getCmp('updPassWordForm').getForm();
                     if (form.isValid()) {
@@ -133,6 +123,7 @@ Ext.define('PM.view.mains.Header', {
                                 oldPassword : form.findField('oldPassword').getValue()
                             },
                             success : function(response) {
+                            	Ext.getBody().unmask();
                                 var text = response.responseText;
                                 if (text == 0) {
                                     Ext.Msg.alert('结果', '密码修改失败--你输入的旧密码错误');
@@ -140,11 +131,18 @@ Ext.define('PM.view.mains.Header', {
                                     Ext.Msg.alert('结果', '密码修改成功');
                                     Ext.getCmp('updPassWordWin').close();
                                 }
-                                Ext.getBody().unmask();
+                                
                             }
                         });
                     }
                 }
+            },{
+	            xtype : 'button',
+	            text : '取消',
+	            iconCls : 'arrow_undo',
+	            handler : function() {
+	            	Ext.getCmp('updPassWordWin').close();
+	            }
             }]
         }).show();
     }

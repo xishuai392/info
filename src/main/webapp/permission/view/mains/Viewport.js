@@ -10,7 +10,7 @@ Ext.define('PM.view.mains.Viewport', {
         // 基本布局
         var topHTML1 = '<div class="top-banner">' + '<div class="user-info"></div>' + '<div class="title"></div>' + '<span class="show-time" id="show_time"></span>'
                 + '<div class="slice"></div>' + '<div class="top-tool-bar" id="topToolBar">' + '<a id="tool-a"></a>' + '<a id="tool-b"></a>' + '<a id="tool-c"></a>' + '</div>'
-                + '</div>' + '<h1>阳光计费稽核系统</h1>';
+                + '</div>' + '<h1>系统</h1>';
 
         var topHTML = '<Div class="login_contact">'
                 + '<div class="main_head">'
@@ -34,26 +34,24 @@ Ext.define('PM.view.mains.Viewport', {
                 items : [{
                     xtype : 'zteheader'
                     // region : 'north',
-                // height : 59,
-                // bodyStyle : 'border-bottom:0',
-                // html : '<iframe scrolling="auto" frameborder="0" width="100%"
-                // height="100%" src="' + webRoot +
-                // '/permission/jsp/top.jsp"></iframe>'
-            }   , {
-                    xtype : 'ztemenu',
-                    region : 'west'
-                }, {
-                    xtype : 'ztetabpanel',
-                    id : 'main_center_region',
-                    region : 'center'
-                }
-                // ,
-                // {
-                // xtype : 'ztesouth',
-                // region : 'south',
-                // height : 31,
-                // html : footerHTML
-                // }
+	                // height : 59,
+	                // bodyStyle : 'border-bottom:0',
+	                // html : '<iframe scrolling="auto" frameborder="0" width="100%"
+	                // height="100%" src="' + webRoot +
+	                // '/permission/jsp/top.jsp"></iframe>'
+	            	}, {
+	                    xtype : 'ztemenu',
+	                    region : 'west'
+	                }, {
+	                    xtype : 'ztetabpanel',
+	                    id : 'main_center_region',
+	                    region : 'center'
+	                },{
+		                xtype : 'ztesouth'
+//		                title : 'dddd',
+//		                region : 'south',
+//		                height : 310
+	                }
 
                 ]
             }]

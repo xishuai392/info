@@ -17,18 +17,90 @@ Ext.define('PM.view.mains.Menu', {
             containerScroll : true,
             collapsible : true,
             autoScroll : false,
-            layout : 'accordion',
+            layout : 'border',
+            html : '<div id="menuDivId"></div>',
             defaults : {
                 bodyPadding : '5 15 5 5' // 配置下面的节点node间隔大小
             },
+            dockedItems : [{
+                xtype : 'treepanel',
+                dock : 'top',
+                region : 'center',
+                id : 'menuTree',
+                frame : true,
+                displayField : 'title',
+                width : 200,
+                height : 800,
+                border : false,
+                title : '菜单列表',
+                store : Ext.create('component.permission.store.AuditMenuTreeStore'),
+                collapsible : false,
+                header : false,
+                hideHeaders : true,
+                useArrows : true,
+                rootVisible : false,
+                viewConfig : {
+                    plugins : {
+                        ptype : 'treeviewdragdrop',
+                        appendOnly : true
+                    }
+                },
+                columns : [{
+                    xtype : 'treecolumn', // this is so we know which column
+                                            // will show the tree
+                    text : 'Forum',
+                    flex : 2.5,
+                    sortable : true,
+                    dataIndex : 'menuTitle'
+                }],
+                listeners : {
+                    'itemclick' : function(view, record) {
+                    	//console.log("menu click");
+                    	//console.log(record);
+                        if (Ext.isEmpty(record.data.urlString)) {
+                            return;
+                        }
+
+                        var contentPanel = Ext.getCmp('main_content_panel');
+                        var pnl = contentPanel.getComponent('ZTEtab-' + record.data.menuId);
+                        if (!pnl) {
+                            pnl = contentPanel.add({
+                                xtype : 'component',
+                                id : 'ZTEtab-' + record.data.menuId,
+                                title : record.data.menuTitle,
+                                closable : true,
+                                layout : 'fit',
+                                border : false,
+                                autoEl : {
+                                    tag : 'iframe',
+                                    name : 'ZTEtab-' + record.data.menuId,
+                                    style : 'height: 100%; width: 100%; border: none;',
+                                    src : webRoot + record.data.urlString
+                                },
+                                listeners : {
+                                    load : {
+                                        element : 'el',
+                                        fn : function() {
+                                            Ext.getBody().unmask();
+                                        }
+                                    },
+                                    render : function() {
+                                        Ext.getBody().mask('页面载入中......');
+                                    }
+                                }
+                            });
+                        }
+                        contentPanel.setActiveTab(pnl);
+                    } // itemclick
+                } // listeners
+            }],
+
             listeners : {
-                //收缩后 添加mouseover事件
+                // 收缩后 添加mouseover事件
                 'collapse' : function() {
                     Ext.getDom("main_west_menupanel-placeholder").onmouseover = function() {
-                        console.log('mouseover');
                         var menupanel = Ext.getCmp('main_west_menupanel');
-                        console.log('menupanel.getCollapsed() -->' + menupanel.getCollapsed());
-                        if(menupanel.getCollapsed()) {
+                        if (menupanel.getCollapsed()) {
                             menupanel.expand();
                         }
                     };
