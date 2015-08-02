@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 	<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
 	<%@include file="/common/common.inc.jsp"%>
     <head>
@@ -11,7 +11,7 @@
     </head>
 
 
-    <body style="background: #def1f5;" onkeypress="enter()" >
+    <body style="background: #def1f5;" >
         <div class="login_head">
             <div class="login_img">
                 

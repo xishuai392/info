@@ -1,24 +1,11 @@
+/**
+ * 显示错误提示信息
+ */
+function showError(msg) {
+    $("#error_text").html(msg);
+}
 
-
-$(document).ready(function() {
-    function onLoad() {
-        var userCode = $('#userCode');
-        userCode.focus();
-    }
-
-    $('#userCode').delay(100, onLoad);
-
-    /**
-     * 显示错误提示信息
-     */
-    function showError(msg) {
-        $("#error_text").html(msg);
-    }
-
-    $('#loginBtn').click(function(e) {
-        console.log('button loginBtn');
-        login();
-    });
+$(document).keypress(function() {
 
     /**
      * 登陆方法
@@ -27,7 +14,7 @@ $(document).ready(function() {
         var userCode = $('#userCode').val();
         var password = $('#password').val();
 
-        if (userCode==undefined || userCode=="" || userCode==null) {
+        if (userCode == undefined || userCode == "" || userCode == null) {
             showError('请填写用户名!');
             $('#userCode').focus();
             return;
@@ -59,4 +46,20 @@ $(document).ready(function() {
         }
         return null;
     }
+
+    enter();
+});
+
+$(document).ready(function() {
+    function onLoad() {
+        var userCode = $('#userCode');
+        userCode.focus();
+    }
+
+    $('#userCode').delay(100, onLoad);
+
+    $('#loginBtn').click(function(e) {
+        login();
+    });
+
 });
