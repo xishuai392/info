@@ -81,9 +81,28 @@ Ext.onReady(function() {
     thizGrid = Ext.create('ZTEsoft.grid.Panel', {
         region : "center",
         id : 'userGridId',
-        title : "AUDIT_USER列表",
+        title : "系统用户列表",
         store : thizStore,
         isPage : true,
+        tbar : Ext.create('Ext.toolbar.Toolbar', {
+        	items: ['->',
+	        {
+	            // xtype: 'button', // 默认的工具栏类型
+	            text: '分配角色',
+	            iconCls : 'addRole',
+	            listeners: {
+			        click: function() {
+			            var items = thizGrid.getSelectedItems();
+			            if (Ext.isEmpty(items)) {
+			                ExtUtils.info(StrConstants.HINT_SELECT_FIRST);
+			                return false;
+			            }
+			
+			            var item = items[0];
+			        }
+			    }
+	        }]
+        }),
         columns : [
 	        {
 	            text : "用户名称",

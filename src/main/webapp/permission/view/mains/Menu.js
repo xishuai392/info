@@ -38,26 +38,26 @@ Ext.define('PM.view.mains.Menu', {
                 header : false,
                 hideHeaders : true,
                 useArrows : true,
-                rootVisible : false,
-                viewConfig : {
-                    plugins : {
-                        ptype : 'treeviewdragdrop',
-                        appendOnly : true
-                    }
-                },
+                rootVisible : true,
+//                viewConfig : {
+//                    plugins : {
+//                        ptype : 'treeviewdragdrop',
+//                        appendOnly : true
+//                    }
+//                },
                 columns : [{
                     xtype : 'treecolumn', // this is so we know which column
                                             // will show the tree
                     text : 'Forum',
                     flex : 2.5,
                     sortable : true,
-                    dataIndex : 'menuTitle'
+                    dataIndex : 'text'
                 }],
                 listeners : {
                     'itemclick' : function(view, record) {
                     	//console.log("menu click");
                     	//console.log(record);
-                        if (Ext.isEmpty(record.data.urlString)) {
+                        if (Ext.isEmpty(record.data.attributeMap.urlString)) {
                             return;
                         }
 
@@ -75,7 +75,7 @@ Ext.define('PM.view.mains.Menu', {
                                     tag : 'iframe',
                                     name : 'ZTEtab-' + record.data.menuId,
                                     style : 'height: 100%; width: 100%; border: none;',
-                                    src : webRoot + record.data.urlString
+                                    src : webRoot + record.data.attributeMap.urlString
                                 },
                                 listeners : {
                                     load : {

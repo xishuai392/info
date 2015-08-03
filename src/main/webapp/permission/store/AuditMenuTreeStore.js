@@ -4,7 +4,7 @@
  */
 Ext.define('component.permission.store.AuditMenuTreeStore', {
     extend : 'Ext.data.TreeStore',
-    model : 'component.permission.model.AuditMenuModel',
+    model : 'component.permission.model.AuditMenuTreeModel',
     nodeParam : 'parentMenuId',
     proxy : {
         type : 'ajax',
