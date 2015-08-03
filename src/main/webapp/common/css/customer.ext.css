@@ -269,6 +269,10 @@
     background-image: url(../images/main_escimg_13.png) !important;
 }
 
+/*添加角色*/
+.addRole {
+    background-image: url(../images/icons/addRole.png) !important;
+}
 
 /**表单失效时的样式 */
 .custom-x-item-disabled {
