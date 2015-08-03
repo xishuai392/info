@@ -5,23 +5,23 @@ function showError(msg) {
     $("#error_text").html(msg);
 }
 
-$(document).keypress(function() {
+/**
+ * 登陆方法
+ */
+function login() {
+    var userCode = $('#userCode').val();
+    var password = $('#password').val();
 
-    /**
-     * 登陆方法
-     */
-    function login() {
-        var userCode = $('#userCode').val();
-        var password = $('#password').val();
-
-        if (userCode == undefined || userCode == "" || userCode == null) {
-            showError('请填写用户名!');
-            $('#userCode').focus();
-            return;
-        }
-
-        $('#loginForm').submit();
+    if (userCode == undefined || userCode == "" || userCode == null) {
+        showError('请填写用户名!');
+        $('#userCode').focus();
+        return;
     }
+
+    $('#loginForm').submit();
+}
+
+$(document).keypress(function() {
 
     function enter() {
         var event = getEvent();
