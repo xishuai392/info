@@ -4,11 +4,11 @@
  * @date 2014年11月20日
  */
 
-Ext.define('component..permission.view.AuditUserWin', {
+Ext.define('component.permission.view.AuditUserWin', {
     extend : 'ZTEsoft.window.PopWindow',
     config : {
         formPanel : null,
-        action : Ext.create("component..permission.action.AuditUserAction")
+        action : Ext.create("component.permission.action.AuditUserAction")
     },
     /**
      * 构造函数，用于初始化界面

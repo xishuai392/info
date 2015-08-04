@@ -66,14 +66,14 @@ Ext.define('PM.view.mains.Menu', {
                         if (!pnl) {
                             pnl = contentPanel.add({
                                 xtype : 'component',
-                                id : 'ZTEtab-' + record.data.menuId,
-                                title : record.data.menuTitle,
+                                id : 'ZTEtab-' + record.data.attributeMap.menuId,
+                                title : record.data.attributeMap.menuTitle,
                                 closable : true,
                                 layout : 'fit',
                                 border : false,
                                 autoEl : {
                                     tag : 'iframe',
-                                    name : 'ZTEtab-' + record.data.menuId,
+                                    name : 'ZTEtab-' + record.data.attributeMap.menuId,
                                     style : 'height: 100%; width: 100%; border: none;',
                                     src : webRoot + record.data.attributeMap.urlString
                                 },
