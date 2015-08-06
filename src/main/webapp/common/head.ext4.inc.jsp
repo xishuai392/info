@@ -31,7 +31,7 @@
         paths : {
         	// 各项目中，按大模块划分下层目录，再划分MVC，包含model、store、view、action、controller、busiz等
             'component' : webRoot,
-            
+            'Ext.ux' : webRoot + 'common/jslibs/extjs/ext-4.2.1/examples/ux',
             
             // 框架提供的组件
             'ZTEsoft' : webRoot + 'common/public/ztesoft'
