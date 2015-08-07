@@ -1,11 +1,16 @@
 package com.ztesoft.web.permission.controller;
 
+import java.beans.IntrospectionException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +22,7 @@ import com.ztesoft.core.common.Page;
 import com.ztesoft.core.common.TreeNode;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
+import com.ztesoft.framework.util.MapUtils;
 import com.ztesoft.web.domain.IConstants;
 import com.ztesoft.web.permission.db.po.AuditMenuPO;
 import com.ztesoft.web.permission.db.po.AuditUserPO;
@@ -109,13 +115,40 @@ public class AuditMenuController {
 
     @RequestMapping("findByPid")
     @ResponseBody
-    public List<AuditMenuPO> findByPid(HttpServletRequest request,
-            AuditMenuPO record) throws BaseAppException {
+    public List<TreeNode> findByPid(HttpServletRequest request,
+            AuditMenuPO record) throws BaseAppException,
+            IllegalAccessException, InvocationTargetException,
+            IntrospectionException {
         logger.debug("findByPid  record begin...record=[{0}]", record);
         HttpSession session = request.getSession(true);
 
         AuditUserPO userInfo = (AuditUserPO) session
                 .getAttribute(IConstants.SESSIONUSER);
-        return auditMenuService.selectMenuTree4User(userInfo, record);
+        List<AuditMenuPO> munuList = auditMenuService.selectMenuTree4User(
+                userInfo, record);
+
+        return buildTreeNodeList(munuList);
+    }
+
+    private List<TreeNode> buildTreeNodeList(List<AuditMenuPO> munuList)
+            throws IllegalAccessException, InvocationTargetException,
+            IntrospectionException {
+        List<TreeNode> treeNodeList = new ArrayList<TreeNode>();
+        if (null == munuList || munuList.size() == 0) {
+            return treeNodeList;
+        }
+        for (AuditMenuPO menuPO : munuList) {
+            TreeNode tn = new TreeNode();
+            tn.setId(String.valueOf(menuPO.getMenuId()));
+            tn.setText(menuPO.getMenuTitle());
+            tn.setIcon(menuPO.getMenuIconPath());
+            tn.setExpandable(true);
+            Map<String, Object> map = new HashMap<String, Object>();
+            BeanUtils.populate(menuPO, map);
+            map = MapUtils.convertBean(menuPO);
+            tn.setAttributeMap(map);
+            treeNodeList.add(tn);
+        }
+        return treeNodeList;
     }
 }

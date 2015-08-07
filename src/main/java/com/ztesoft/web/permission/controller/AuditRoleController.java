@@ -1,7 +1,6 @@
 package com.ztesoft.web.permission.controller;
 
-import java.math.*;
-import java.util.*;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -84,6 +83,12 @@ public class AuditRoleController {
             required = true) Integer roleId) throws BaseAppException {
         AuditRolePO record = auditRoleService.selectByPrimaryKey(roleId);
         return record;
+    }
+    
+    @RequestMapping("qryRecordList")
+    @ResponseBody
+    public List<AuditRolePO> qryRecordList(AuditRolePO record) throws BaseAppException {
+        return auditRoleService.selectByArg(record);
     }
 
 }

@@ -3,6 +3,9 @@ package com.ztesoft.web.permission.controller;
 import java.math.*;
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ztesoft.core.common.Page;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
+import com.ztesoft.web.domain.IConstants;
+import com.ztesoft.web.permission.db.po.AuditRolePO;
+import com.ztesoft.web.permission.db.po.AuditUserPO;
 import com.ztesoft.web.permission.db.po.AuditUserRolePO;
 import com.ztesoft.web.permission.service.IAuditUserRoleService;
 
@@ -28,7 +34,7 @@ import com.ztesoft.web.permission.service.IAuditUserRoleService;
  */
 
 @Controller
-@RequestMapping("//permission/audituserrole")
+@RequestMapping("/permission/audituserrole")
 public class AuditUserRoleController {
 
     private static final ZTEsoftLogManager logger = ZTEsoftLogManager
@@ -51,7 +57,8 @@ public class AuditUserRoleController {
     @ResponseBody
     public Page<AuditUserRolePO> queryRecordByPage(AuditUserRolePO record,
             Page<AuditUserRolePO> resultPage) throws BaseAppException {
-        resultPage = auditUserRoleService.selectByArgAndPage(record, resultPage);
+        resultPage = auditUserRoleService
+                .selectByArgAndPage(record, resultPage);
         return resultPage;
     }
 
@@ -65,7 +72,8 @@ public class AuditUserRoleController {
 
     @RequestMapping("update")
     @ResponseBody
-    public AuditUserRolePO update(AuditUserRolePO record) throws BaseAppException {
+    public AuditUserRolePO update(AuditUserRolePO record)
+            throws BaseAppException {
         logger.debug("modify record begin...record=[{0}]", record);
         auditUserRoleService.update(record);
         return record;
@@ -82,8 +90,27 @@ public class AuditUserRoleController {
     @ResponseBody
     public AuditUserRolePO qryRecordInfo(@RequestParam(value = "userRoleId",
             required = true) Integer userRoleId) throws BaseAppException {
-        AuditUserRolePO record = auditUserRoleService.selectByPrimaryKey(userRoleId);
+        AuditUserRolePO record = auditUserRoleService
+                .selectByPrimaryKey(userRoleId);
         return record;
+    }
+
+    @RequestMapping("qryRecordList")
+    @ResponseBody
+    public List<AuditUserRolePO> qryRecordList(AuditUserRolePO record)
+            throws BaseAppException {
+        return auditUserRoleService.selectByArg(record);
+    }
+
+    @RequestMapping("updateUserRole")
+    @ResponseBody
+    public boolean updateUserRole(int userId, String addListJSON,
+            String delListJSON) throws BaseAppException {
+        logger.debug("updateUserRole begin...userId=[{0}],addListJSON=[{1}]",
+                userId, addListJSON);
+
+        return auditUserRoleService.insertBatch(userId,
+                addListJSON.replaceAll("\\[", "").replaceAll("\\]", "").split(","));
     }
 
 }

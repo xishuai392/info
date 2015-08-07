@@ -36,5 +36,7 @@ public interface IAuditUserRoleService {
     int update(AuditUserRolePO record) throws BaseAppException;
 
     int delete(AuditUserRolePO record) throws BaseAppException;
+    
+    boolean insertBatch(int userId,String[] roleIds)throws BaseAppException;
 
 }

@@ -15,6 +15,7 @@ import com.ztesoft.core.common.Page;
 import com.ztesoft.core.convert.IArgConversionService;
 import com.ztesoft.core.idproduce.ISequenceGenerator;
 import com.ztesoft.framework.exception.BaseAppException;
+import com.ztesoft.framework.exception.ExceptionHandler;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
 import com.ztesoft.framework.util.Utils;
 import com.ztesoft.web.domain.TableInfoConstants;
@@ -122,6 +123,15 @@ public class AuditUserServiceImpl implements IAuditUserService {
     @Override
     public int add(AuditUserPO record) throws BaseAppException {
         logger.debug("add begin...record={0}", record);
+
+        // 判断该用户编码是否已经存在
+        AuditUserArg arg = new AuditUserArg();
+        AuditUserCriteria criteria = arg.createCriteria();
+        criteria.andUserCodeEqualTo(record.getUserCode());
+
+        List<AuditUserPO> existList = auditUserDao.selectByArg(arg);
+        if (existList.size() > 0)
+            ExceptionHandler.publish("APP-01-0001", "用户名已经存在");
 
         // ///////
         // TODO 根据业务场景，进行重名校验、设置主键、设置属性默认值等

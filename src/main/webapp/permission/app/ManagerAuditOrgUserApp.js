@@ -85,7 +85,7 @@ Ext.onReady(function() {
         store : thizStore,
         isPage : true,
         tbar : Ext.create('Ext.toolbar.Toolbar', {
-        	items: ['->',
+        	items: [
 	        {
 	            // xtype: 'button', // 默认的工具栏类型
 	            text: '分配角色',
@@ -99,6 +99,34 @@ Ext.onReady(function() {
 			            }
 			
 			            var item = items[0];
+			            //console.log(item);
+			            var userRoleStore = Ext.create('component.permission.store.AuditUserRoleStore',{
+			            	
+				            proxy : {
+				            	type: 'ajax',
+					            url : webRoot + 'permission/audituserrole/qryRecordList.do?userId='+item.data.userId,
+					            reader: {
+					            	type: 'json'
+					            }
+						    }
+			            });
+			            
+			            userRoleStore.load(function(records, operation, success) {
+						    var userRoleWin = Ext.create('component.permission.view.UserRoleWindow',{});
+						    var toValues = [];
+						    //toVaules
+						    Ext.Array.each(records, function(record, index, countriesItSelf) {
+							    //console.log(record.data.roleId);
+							    toValues.push(record.data.roleId);
+							});
+							userRoleWin.userId = item.data.userId;
+							userRoleWin.toValues = toValues;
+							userRoleWin.title = "分配用户["+item.data.userName+"]的角色"+toValues;
+						    userRoleWin.loadView();
+			            	userRoleWin.show();
+						});
+			            
+			            
 			        }
 			    }
 	        }]
