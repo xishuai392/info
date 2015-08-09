@@ -206,6 +206,8 @@ Ext.onReady(function() {
         }
     });
     
+    
+    
     //fbat添加按钮
     /**
     leftItems : [{
