@@ -12,7 +12,7 @@ Ext.define('PM.view.mains.South',{
             //frame:true,
             region:"south",
             bodyStyle : 'border-bottom:0',
-            height:35,
+            height:30,
             //collapsed:true,
             dockedItems : [{
                 xtype : 'toolbar',
