@@ -425,7 +425,7 @@ Ext.onReady(function() {
         // split:false,
         // width:treeWidth,
         title : '组织架构',
-        renderTo : Ext.getBody(),
+        //renderTo : Ext.getBody(),
         border : true,
         showSearch : false,
         displayName : "组织名称",

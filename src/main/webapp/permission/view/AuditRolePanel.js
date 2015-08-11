@@ -135,6 +135,34 @@ Ext.define('component.permission.view.AuditRolePanel', {
                 xtype : "ztedelbutton"
             }, '-']
         });
+        
+        tbar.insert(0,{
+	    	xtype: 'button',
+	    	text : '分配菜单',
+	        icon : ctx + '/common/images/icons/folder_user.png',
+	        listeners : {
+                click : function() {
+                    var items = this.up('toolbar').up('panel').getBusizGrid().getSelectedItems();
+                    if (Ext.isEmpty(items)) {
+                        ExtUtils.info(StrConstants.HINT_SELECT_FIRST);
+                        return false;
+                    }
+
+                    var item = items[0];
+                    
+                    
+                    var menuRoleWin = Ext.create('component.permission.view.AuditMenuRoleTreeWin', {
+                    	title : "分配角色[" + item.data.roleName + "]的菜单",
+                    	roleId : item.data.roleId
+                    });
+                    
+                    menuRoleWin.show();
+                    return;
+
+                }
+            }
+	    });
+        
         return tbar;
     },
     // 给按钮绑定事件

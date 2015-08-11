@@ -211,13 +211,25 @@ public class BaseServiceImpl implements IBaseService {
 			}
 		}
 		if (!StringUtils.isEmpty(checked)) {
-			if (checked.indexOf(",") != -1) {
-				for (String d : checked.split(",")) {
-					if (path == Integer.parseInt(d))
-						node.setChecked(false);
-				}
-			} else {
-				node.setChecked(false);
+//			if (checked.indexOf(",") != -1) {
+//				for (String d : checked.split(",")) {
+//					if (path == Integer.parseInt(d))
+//						node.setChecked(false);
+//				}
+//			} else {
+//				node.setChecked(false);
+//			}
+			if (!StringUtils.isEmpty(params.getCheckField())) {
+			    if (!StringUtils.isEmpty(obj.get(params.getCheckField()))) {
+			        if(Boolean.TRUE==Boolean.valueOf(String.valueOf(obj.get(params.getCheckField())))){
+			            node.setChecked(true);
+			        }else{
+			            node.setChecked(false);
+			        }
+			        
+	            }else{
+	                
+	            }
 			}
 		}
 		if (icons.length > path) {

@@ -51,7 +51,8 @@ public class AuditMenuRoleController {
     @ResponseBody
     public Page<AuditMenuRolePO> queryRecordByPage(AuditMenuRolePO record,
             Page<AuditMenuRolePO> resultPage) throws BaseAppException {
-        resultPage = auditMenuRoleService.selectByArgAndPage(record, resultPage);
+        resultPage = auditMenuRoleService
+                .selectByArgAndPage(record, resultPage);
         return resultPage;
     }
 
@@ -65,7 +66,8 @@ public class AuditMenuRoleController {
 
     @RequestMapping("update")
     @ResponseBody
-    public AuditMenuRolePO update(AuditMenuRolePO record) throws BaseAppException {
+    public AuditMenuRolePO update(AuditMenuRolePO record)
+            throws BaseAppException {
         logger.debug("modify record begin...record=[{0}]", record);
         auditMenuRoleService.update(record);
         return record;
@@ -82,8 +84,19 @@ public class AuditMenuRoleController {
     @ResponseBody
     public AuditMenuRolePO qryRecordInfo(@RequestParam(value = "menuRoleId",
             required = true) Integer menuRoleId) throws BaseAppException {
-        AuditMenuRolePO record = auditMenuRoleService.selectByPrimaryKey(menuRoleId);
+        AuditMenuRolePO record = auditMenuRoleService
+                .selectByPrimaryKey(menuRoleId);
         return record;
+    }
+
+    @RequestMapping("saveMenuRole")
+    @ResponseBody
+    public boolean saveMenuRole(int roleId, Integer[] menuIds)
+            throws BaseAppException {
+        logger.debug("saveMenuRole  begin...roleId=[{0}],menuIds=[{1}]",
+                roleId, menuIds);
+
+        return auditMenuRoleService.saveMenuIdsByRoleId(roleId, menuIds);
     }
 
 }

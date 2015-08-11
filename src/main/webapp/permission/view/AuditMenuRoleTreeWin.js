@@ -82,7 +82,7 @@ Ext.define('component.permission.view.AuditMenuRoleTreeWin', {
 	        		this.expandAll();
 	        	},
 	    		select : function(dataview, record, index, e){
-	    			console.log('menu tree selected');
+	    			//console.log('menu tree selected');
 	    		},
 	    		checkchange : function(node, checked, eOpts ){
 	    			
@@ -115,10 +115,15 @@ Ext.define('component.permission.view.AuditMenuRoleTreeWin', {
         var me = this;
         
         var nodes = me.down('treepanel').getChecked( );
+        var menuIds = [];
+        Ext.Array.each(nodes, function(node, index, allItems) {
+		    menuIds.push(node.data.id);
+		});
         
-        
-        console.log(nodes.length);
-        console.log(nodes);
+        me.getAction().saveMenuRole(me.roleId,menuIds,function(result){
+        	ExtUtils.info(StrConstants.HINT_SAVE_SUCCESS);
+        	me.close();
+        });
         
 
     }

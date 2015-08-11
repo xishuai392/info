@@ -36,5 +36,7 @@ public interface IAuditMenuRoleService {
     int update(AuditMenuRolePO record) throws BaseAppException;
 
     int delete(AuditMenuRolePO record) throws BaseAppException;
+    
+    boolean saveMenuIdsByRoleId(int roleId,Integer[]menuIds) throws BaseAppException;
 
 }

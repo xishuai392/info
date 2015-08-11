@@ -167,7 +167,7 @@ public class AuditUserRoleServiceImpl implements IAuditUserRoleService {
         criteria.andUserIdEqualTo(userId);
         auditUserRoleDao.deleteByArg(arg);
 
-        if (roleIds.length == 0)
+        if (null == roleIds || roleIds.length == 0)
             return true;
         List<AuditUserRolePO> newRecords = new ArrayList<AuditUserRolePO>();
         Integer[] keys = sequenceGenerator.sequenceBatchIntValue(

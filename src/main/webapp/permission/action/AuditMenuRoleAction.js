@@ -77,6 +77,25 @@ Ext.define("component.permission.action.AuditMenuRoleAction", {
         };
 
         ExtUtils.doAjax(config);
+    },
+    
+    /**
+     * 保存选中的菜单节点
+     * @param {} roleId
+     * @param {} menuIds
+     * @param {} callbackFunction
+     */
+    saveMenuRole :function(roleId,menuIds,callbackFunction){
+    	var config = {
+            url : '/permission/auditmenurole/saveMenuRole.do',
+            params : {
+                'roleId' : roleId,
+                'menuIds' : menuIds
+            },
+            callback : callbackFunction
+        };
+
+        ExtUtils.doAjax(config);
     }
 
-})
+});

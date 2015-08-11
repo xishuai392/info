@@ -24,10 +24,16 @@
 		SELECT ORG_ID,PARENT_ORG_ID,ORG_CODE,ORG_NAME,ORG_LEVEL,CREATED_TIME,ORG_DESC,STATE,STATE_TIME
 		FROM AUDIT_ORGANIZATION 
 		WHERE PARENT_ORG_ID=#{orgId,jdbcType=BIGINT}
-		
-	
 	</select>
 	
+	<select id="menuRoleTree" resultType="map" parameterType="map">
+		SELECT m.MENU_ID AS 'menuId',m.MENU_TITLE AS 'menuTitle',m.MENU_ICON_PATH as "icon",
+			case when 
+			(select count(*) from audit_menu_role mr 
+			where mr.role_id=#{roleId} and mr.menu_id=m.menu_id) =0 then 'false' else 'true' end as 'checked'  
+		FROM AUDIT_MENU m WHERE m.PARENT_MENU_ID=#{menuId}
+		order by m.DISPLAY_INDEX
+	</select>
 	
   	
   	<select id="menuSubSysTree" resultType="map" parameterType="map">

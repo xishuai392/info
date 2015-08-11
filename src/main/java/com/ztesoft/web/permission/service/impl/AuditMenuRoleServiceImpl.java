@@ -8,6 +8,7 @@ import java.util.*;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +17,13 @@ import com.ztesoft.core.convert.IArgConversionService;
 import com.ztesoft.core.idproduce.ISequenceGenerator;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
-
+import com.ztesoft.framework.util.FrameWorkConstants;
+import com.ztesoft.web.domain.TableInfoConstants;
 import com.ztesoft.web.permission.db.arg.AuditMenuRoleArg;
 import com.ztesoft.web.permission.db.arg.AuditMenuRoleArg.AuditMenuRoleCriteria;
 import com.ztesoft.web.permission.db.dao.AuditMenuRoleDao;
 import com.ztesoft.web.permission.db.po.AuditMenuRolePO;
+import com.ztesoft.web.permission.db.po.AuditUserRolePO;
 import com.ztesoft.web.permission.service.IAuditMenuRoleService;
 
 /**
@@ -42,7 +45,6 @@ public class AuditMenuRoleServiceImpl implements IAuditMenuRoleService {
 
     @Autowired
     private AuditMenuRoleDao auditMenuRoleDao;
-    
 
     /**
      * 查询条件转换成Arg类的服务接口
@@ -55,10 +57,10 @@ public class AuditMenuRoleServiceImpl implements IAuditMenuRoleService {
      */
     @Resource(name = "sequenceProcGenerator")
     private ISequenceGenerator sequenceGenerator;
-    
 
     @Override
-    public AuditMenuRolePO selectByPrimaryKey(Integer key) throws BaseAppException {
+    public AuditMenuRolePO selectByPrimaryKey(Integer key)
+            throws BaseAppException {
         // ///////
         // TODO 根据业务场景，设置查询条件、数据校验等
 
@@ -67,16 +69,18 @@ public class AuditMenuRoleServiceImpl implements IAuditMenuRoleService {
     }
 
     @Override
-    public List<AuditMenuRolePO> selectByArg(AuditMenuRolePO record) throws BaseAppException {
+    public List<AuditMenuRolePO> selectByArg(AuditMenuRolePO record)
+            throws BaseAppException {
         logger.debug("selectByArg begin...record={0}", record);
 
         // 第一种方式：自己创建arg，自行设置查询条件及操作符
-        //AuditMenuRoleArg arg = new AuditMenuRoleArg();
-        //AuditMenuRoleCriteria criteria = arg.createCriteria();
-        
+        // AuditMenuRoleArg arg = new AuditMenuRoleArg();
+        // AuditMenuRoleCriteria criteria = arg.createCriteria();
+
         // 第二种方式：利用arg转换服务，转换出arg，带上查询条件及操作符，
         // 转换后，还可以自行对arg进行设置修改
-        AuditMenuRoleArg arg = argConversionService.invokeArg(AuditMenuRoleArg.class, record);
+        AuditMenuRoleArg arg = argConversionService.invokeArg(
+                AuditMenuRoleArg.class, record);
 
         // ///////
         // TODO 根据业务场景，设置查询条件，示例
@@ -89,8 +93,8 @@ public class AuditMenuRoleServiceImpl implements IAuditMenuRoleService {
     }
 
     @Override
-    public Page<AuditMenuRolePO> selectByArgAndPage(AuditMenuRolePO record, Page<AuditMenuRolePO> resultPage)
-            throws BaseAppException {
+    public Page<AuditMenuRolePO> selectByArgAndPage(AuditMenuRolePO record,
+            Page<AuditMenuRolePO> resultPage) throws BaseAppException {
         logger.debug("selectByArgAndPage begin...record={0}", record);
 
         // 第一种方式：自己创建arg，自行设置查询条件及操作符
@@ -103,10 +107,10 @@ public class AuditMenuRoleServiceImpl implements IAuditMenuRoleService {
 
         // 第二种方式：利用arg转换服务，转换出arg，带上查询条件及操作符，
         // 转换后，还可以自行对arg进行设置修改
-        AuditMenuRoleArg arg = argConversionService.invokeArg(AuditMenuRoleArg.class, record);
+        AuditMenuRoleArg arg = argConversionService.invokeArg(
+                AuditMenuRoleArg.class, record);
 
         resultPage = auditMenuRoleDao.selectByArgAndPage(arg, resultPage);
-
 
         return resultPage;
     }
@@ -148,6 +152,40 @@ public class AuditMenuRoleServiceImpl implements IAuditMenuRoleService {
         // ///////
 
         return auditMenuRoleDao.deleteByPrimaryKey(record.getMenuRoleId());
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see com.ztesoft.web.permission.service.IAuditMenuRoleService#saveMenuIdsByRoleId(int, java.lang.Integer[])
+     */
+    @Override
+    public boolean saveMenuIdsByRoleId(int roleId, Integer[] menuIds)
+            throws BaseAppException {
+        AuditMenuRoleArg arg = new AuditMenuRoleArg();
+        AuditMenuRoleCriteria criteria = arg.createCriteria();
+        criteria.andRoleIdEqualTo(roleId);
+
+        // 删除原来的
+        auditMenuRoleDao.deleteByArg(arg);
+
+        if (null == menuIds || menuIds.length == 0)
+            return true;
+        
+        List<AuditMenuRolePO> newRecords = new ArrayList<AuditMenuRolePO>();
+        Integer[] keys = sequenceGenerator.sequenceBatchIntValue(
+                TableInfoConstants.AUDIT_MENU_ROLE,
+                TableInfoConstants.AUDIT_MENU_ROLE_PKFIELD, menuIds.length);
+        int i = 0;
+        for (int menuId : menuIds) {
+            AuditMenuRolePO tmp = new AuditMenuRolePO();
+                tmp.setMenuRoleId(keys[i++]);
+                tmp.setRoleId(roleId);
+                tmp.setMenuId(menuId);
+                newRecords.add(tmp);
+        }
+        auditMenuRoleDao.insertBatch(newRecords);
+
+        return true;
     }
 
 }
