@@ -61,7 +61,7 @@ Ext.define('PM.view.mains.Menu', {
                             return;
                         }
 
-                        console.log("record.data.menuId:"+record.data.attributeMap.menuId);
+                        //console.log("record.data.menuId:"+record.data.attributeMap.menuId);
                         var contentPanel = Ext.getCmp('main_content_panel');
                         var pnl = contentPanel.getComponent('ZTEtab-' + record.data.attributeMap.menuId);
                         if (!pnl) {
