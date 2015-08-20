@@ -8,7 +8,6 @@ import java.util.*;
 
 import com.ztesoft.core.common.Page;
 import com.ztesoft.framework.exception.BaseAppException;
-
 import com.ztesoft.web.permission.db.po.AuditUserPO;
 
 /**
@@ -37,4 +36,5 @@ public interface IAuditUserService {
 
     int delete(AuditUserPO record) throws BaseAppException;
 
+    boolean updPassword(String userCode,String newPassword,String oldPassword)throws BaseAppException;
 }

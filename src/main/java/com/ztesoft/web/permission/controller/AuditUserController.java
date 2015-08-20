@@ -3,6 +3,9 @@ package com.ztesoft.web.permission.controller;
 import java.math.*;
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ztesoft.core.common.Page;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
+import com.ztesoft.web.domain.IConstants;
 import com.ztesoft.web.permission.db.po.AuditUserPO;
 import com.ztesoft.web.permission.service.IAuditUserService;
 
@@ -84,6 +88,16 @@ public class AuditUserController {
             required = true) Integer userId) throws BaseAppException {
         AuditUserPO record = auditUserService.selectByPrimaryKey(userId);
         return record;
+    }
+
+    @RequestMapping("updPassword")
+    @ResponseBody
+    public boolean updPassword(HttpServletRequest request, String newPassword,
+            String oldPassword) throws BaseAppException {
+        HttpSession session = request.getSession(true);
+        String userCode = (String) session
+                .getAttribute(IConstants.SESSIONUSERCODE);
+        return auditUserService.updPassword(userCode, newPassword, oldPassword);
     }
 
 }

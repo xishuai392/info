@@ -3,12 +3,10 @@
  */
 package com.ztesoft.web.permission.service;
 
-import java.math.*;
-import java.util.*;
+import java.util.List;
 
 import com.ztesoft.core.common.Page;
 import com.ztesoft.framework.exception.BaseAppException;
-
 import com.ztesoft.web.permission.db.po.AuditOrganizationPO;
 
 /**
@@ -26,15 +24,19 @@ public interface IAuditOrganizationService {
 
     AuditOrganizationPO selectByPrimaryKey(Long key) throws BaseAppException;
 
-    List<AuditOrganizationPO> selectByArg(AuditOrganizationPO record) throws BaseAppException;
-
-    Page<AuditOrganizationPO> selectByArgAndPage(AuditOrganizationPO record, Page<AuditOrganizationPO> resultPage)
+    List<AuditOrganizationPO> selectByArg(AuditOrganizationPO record)
             throws BaseAppException;
+
+    Page<AuditOrganizationPO> selectByArgAndPage(AuditOrganizationPO record,
+            Page<AuditOrganizationPO> resultPage) throws BaseAppException;
 
     int add(AuditOrganizationPO record) throws BaseAppException;
 
     int update(AuditOrganizationPO record) throws BaseAppException;
 
     int delete(AuditOrganizationPO record) throws BaseAppException;
+
+    boolean changeOrgParent(Long orgId, Long newParentId)
+            throws BaseAppException;
 
 }

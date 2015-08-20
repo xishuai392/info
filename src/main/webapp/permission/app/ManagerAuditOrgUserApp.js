@@ -9,7 +9,7 @@ Ext.onReady(function() {
     var thizStore, thizGrid, thizDetailForm, thizSearchForm,orgTree,pswChanged=false;
     var actionType = WEBConstants.ACTIONTYPE.VIEW;// 动作标记
     var thizAction = Ext.create("component.permission.action.AuditUserAction");
-
+	var auditOrganizationAction = Ext.create("component.permission.action.AuditOrganizationAction");
     
     
     
@@ -440,16 +440,255 @@ Ext.onReady(function() {
             //nodeParam : 'parentOrgId',
             displayField : 'orgName'
         },
+        viewConfig: {
+            plugins: {
+                ptype: 'treeviewdragdrop',
+                containerScroll: true
+            },
+            listeners : {
+	    		select : function(dataview, record, index, e){
+	    			//console.log("select");
+	    		},
+	    		drop : function(node, data, dropRec, dropPosition) {
+	    			//console.log("drop");
+	                dropRec.dirty = true;
+	            },
+	            beforedrop : function(node, data, overModel, dropPosition, dropHandlers) {
+//	            	console.log("beforedrop");
+//	            	console.log("node:"+node);
+//	            	console.log("data:"+data);
+//	            	console.log("overModel:"+overModel);
+//	            	console.log("dropPosition:"+dropPosition);
+//	            	console.log("dropHandlers:"+dropHandlers);
+//	            	var fromPId = data.records[0].raw.parentId;
+//	            	var toPId = overModel.raw.parentId;
+//		            	console.info(fromPId,toPId,dropPosition);
+//	            	if(fromPId == -1 && toPId != -1){
+//	            		dropHandlers.cancelDrop();
+//	            		ExtUtils.tip(null,'系统根节点不能放到子菜单中！');
+//	            		return false;
+//	            	}else if(fromPId == -1 && toPId == -1 && dropPosition == 'append'){
+//	            		ExtUtils.tip(null,'系统根节点不能放到子菜单中！');
+//	            		dropHandlers.cancelDrop();
+//	            		return false;
+//	            	}else if(fromPId != -1 && toPId == -1 && dropPosition != 'append'){
+//	            		ExtUtils.tip(null,'系统菜单不能变为系统根节点！');
+//	            		dropHandlers.cancelDrop();
+//	            		return false;
+//	            	}
+//	            	var fromSubSys = data.records[0].raw.treeData.subSysId;
+//	            	var toSubSys = overModel.raw.treeData.subSysId;
+//	            	if(fromSubSys != toSubSys){
+//	            		ExtUtils.tip(null,'不同子系统下的菜单不能移动！');
+//	            		dropHandlers.cancelDrop();
+//	            		return false;
+//	            	}
+	            	
+	            	dropHandlers.wait = true;
+	            	var fromId = data.records[0].raw.id;
+	            	var toId = overModel.raw.id;
+	            	
+	            	var config = {
+			            url : '/permission/auditorganization/changeOrgParent.do',
+			            params : {
+			            	'fromId' : fromId,
+			            	'toId' : toId
+			            },
+			            callback : function(){
+			            	dropHandlers.processDrop();
+			            },
+			            failureCallback : function(){
+			            	dropHandlers.cancelDrop();
+			            },
+			            exceptionCallback : function(){
+			            	dropHandlers.cancelDrop();
+			            }
+			        };
+			
+			        ExtUtils.doAjaxSync(config);
+	            	
+	            	
+	            },
+	    		nodedragover : function(targetNode, position, dragData){
+	    			console.log("nodedragover");
+//	                var rec = dragData.records[0],
+//	                    isFirst = targetNode.isFirst(),
+//	                    canDropFirst = rec.get('canDropOnFirst'),
+//	                    canDropSecond = rec.get('canDropOnSecond');
+//	                    
+//	                return isFirst ? canDropFirst : canDropSecond;
+	            }
+	    	}
+        },
+        dockedItems: [{
+	        xtype: 'toolbar',
+	        dock : 'left',
+	        items: [{
+		            itemId: 'addButton',
+		            iconCls: 'add',
+		            tooltip: '添加子部门',
+		            disabled: true,
+		            handler : function(){
+		            	//console.log("addButton");
+		            	var models = orgTree.getSelectionModel().getSelection();
+		            	if(null==models || models === undefined || models.length==0){
+		            		ExtUtils.error("请先选择父组织！");
+		            		return false;
+		            	}
+		            	var parentOrgId = models[0].data.attributeMap['orgId'];
+		            	var parentOrgName = models[0].data.attributeMap['orgName'];
+			    			
+		            	
+		            	var win = Ext.create('component.permission.view.AuditOrganizationWin',{
+		            		winType : WEBConstants.ACTIONTYPE.NEW,
+		            		parentOrgId : parentOrgId,
+		            		parentOrgName : parentOrgName,
+		            		callback : function(result) {
+				                ExtUtils.info(StrConstants.HINT_ADD_SUCCESS);
+				                
+				                //console.log("after add");
+				                var record = Ext.create(orgTree.store.getProxy().getModel());
+				                var newNode={
+				                	attributeMap:{
+				                	
+				                	}
+				                };
+				                //console.log("record1:"+Ext.encode(record));
+				                var root;
+				                newNode.text = result.orgName;
+				                newNode.id = result.orgId;
+				                newNode.attributeMap.orgId=result.orgId;
+				                newNode.attributeMap.orgName=result.orgName;
+				                newNode.attributeMap.orgCode=result.orgCode;
+				                newNode.attributeMap.orgDesc=result.orgDesc;
+				                
+				                record.set(newNode);
+				                record.setId(newNode.id);
+				                //console.log("newNode:"+Ext.encode(newNode));
+				                //console.log("result:"+Ext.encode(result));
+								if(orgTree.getSelectionModel().getSelection().length > 0) {
+									root = orgTree.getSelectionModel().getSelection()[0];
+								} else {
+									root = orgTree.getRootNode();
+								}
+								//console.log(root,root.text);
+								root.appendChild(record);
+				            }
+		            	});
+		            	
+		            	win.show();
+		            }
+		        }, '-', {
+		            itemId: 'updateButton',
+		            icon: ctx + '/common/images/icons/edit.png',
+		            tooltip: '修改',
+		            disabled: true,
+		            handler : function(){
+		            	//console.log("updateButton");
+		            	
+		            	var models = orgTree.getSelectionModel().getSelection();
+		            	if(null==models || models === undefined || models.length==0){
+		            		ExtUtils.error("请先选择一个组织机构！");
+		            		return false;
+		            	}
+		            	
+		            	var record = models[0];
+		            	//console.log("record:"+ record );
+		            	
+		            	//var beforeModifyRecord = Ext.create('component.permission.model.AuditOrganizationModel');
+						//beforeModifyRecord.set(record.data.attributeMap);
+		            	
+		            	//var parentOrgId = models[0].data.attributeMap['orgId'];
+		            	//var parentOrgName = models[0].data.attributeMap['orgName'];
+		            	
+		            	var win = Ext.create('component.permission.view.AuditOrganizationWin',{
+		            		winType : WEBConstants.ACTIONTYPE.EDIT,
+		            		pkFiledId : record.data.attributeMap.orgId,
+		            		//parentOrgId : parentOrgId,
+		            		//parentOrgName : parentOrgName,
+		            		//beforeModifyRecord : beforeModifyRecord,
+		            		callback : function(result) {
+				                ExtUtils.info(StrConstants.HINT_MOD_SUCCESS);
+				                
+				                var record = Ext.create(orgTree.store.getProxy().getModel());
+				                var newNode={
+				                	attributeMap:{
+				                	
+				                	}
+				                };
+				                //console.log("record1:"+Ext.encode(record));
+				                var root;
+				                newNode.text = result.orgName;
+				                newNode.id = result.orgId;
+				                newNode.attributeMap.orgId=result.orgId;
+				                newNode.attributeMap.orgName=result.orgName;
+				                newNode.attributeMap.orgCode=result.orgCode;
+				                newNode.attributeMap.orgDesc=result.orgDesc;
+				                
+				                //record.set(newNode);
+				                //record.setId(newNode.id);
+				                //console.log("newNode:"+Ext.encode(newNode));
+				                //console.log("result:"+Ext.encode(result));
+								if(orgTree.getSelectionModel().getSelection().length > 0) {
+									root = orgTree.getSelectionModel().getSelection()[0];
+									root.set(newNode);
+									root.set('text', result.orgName);
+								} else {
+									root = orgTree.getRootNode();
+								}
+								
+								//console.log(root,root.text);
+								//root.appendChild(record);
+				            }
+		            	});
+		            	
+		            	win.show();
+		            	
+		            }
+		        }, '-', {
+		            itemId: 'removeButton',
+		            icon : ctx + '/common/images/icons/delete.png',
+		            tooltip: '删除',
+		            disabled: true,
+		            handler : function(){
+		            	console.log("removeButton");
+		            	var models = orgTree.getSelectionModel().getSelection();
+		            	if(null==models || models === undefined || models.length==0){
+		            		ExtUtils.error("请先选择一个组织机构！");
+		            		return false;
+		            	}
+		            	Ext.MessageBox.confirm(StrConstants.HINT, StrConstants.HINT_DEL_CONFIRM, function(btn) {
+                            if (btn == 'yes') {
+                                var record = models[0];
+				            	var pkFiledId = record.data.attributeMap.orgId;
+				            	
+				            	auditOrganizationAction.delRecord({orgId : pkFiledId}, function(result) {
+					                ExtUtils.info(StrConstants.HINT_DEL_SUCCESS);
+					                orgTree.getSelectionModel().getSelection()[0].remove();
+					            });
+                            }
+
+                        });
+                        
+		            	
+		            }
+		        }]
+	    }],
         listeners : {
         	afterrender : function(){
         		this.getSelectionModel().select(1);
         	},
     		select : function(dataview, record, index, e){
+    			//console.log("select");
     			Ext.getCmp('userGridId').getStore().removeAll();
     			var thizOrgId = record.data.attributeMap['orgId'];
     			// 开始查询
     			Ext.getCmp('userGridId').getStore().getProxy().setExtraParam('orgId',thizOrgId);
     			Ext.getCmp('userGridId').getStore().load();
+    			
+		    	orgTree.down('#removeButton').setDisabled(false);
+		    	orgTree.down('#updateButton').setDisabled(false);
+		    	orgTree.down('#addButton').setDisabled(false);
     		}
     	}
     });

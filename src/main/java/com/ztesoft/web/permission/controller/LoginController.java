@@ -87,9 +87,10 @@ public class LoginController implements IConstants {
         HttpSession session = request.getSession(true);
         logger.info("用户退出:userName=" + session.getAttribute(SESSIONUSERNAME)
                 + ",userCode=" + session.getAttribute(SESSIONUSERCODE));
-        session.removeAttribute(SESSIONUSER);
-        session.removeAttribute(SESSIONUSERNAME);
-        session.removeAttribute(SESSIONUSERCODE);
+//        session.removeAttribute(SESSIONUSER);
+//        session.removeAttribute(SESSIONUSERNAME);
+//        session.removeAttribute(SESSIONUSERCODE);
+        session.invalidate();
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("success", true);
         return result;

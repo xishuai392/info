@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ztesoft.core.common.Page;
 import com.ztesoft.framework.exception.BaseAppException;
+import com.ztesoft.framework.exception.ExceptionHandler;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
 import com.ztesoft.web.permission.db.po.AuditOrganizationPO;
 import com.ztesoft.web.permission.service.IAuditOrganizationService;
@@ -46,7 +47,7 @@ public class AuditOrganizationController {
 
         return "/permission/jsp/auditOrganization";
     }
-    
+
     @RequestMapping("managerAuditOrgUser")
     public String managerAuditOrgUser(Model model) {
         // ///////
@@ -59,15 +60,18 @@ public class AuditOrganizationController {
 
     @RequestMapping("queryRecordByPage")
     @ResponseBody
-    public Page<AuditOrganizationPO> queryRecordByPage(AuditOrganizationPO record,
-            Page<AuditOrganizationPO> resultPage) throws BaseAppException {
-        resultPage = auditOrganizationService.selectByArgAndPage(record, resultPage);
+    public Page<AuditOrganizationPO> queryRecordByPage(
+            AuditOrganizationPO record, Page<AuditOrganizationPO> resultPage)
+            throws BaseAppException {
+        resultPage = auditOrganizationService.selectByArgAndPage(record,
+                resultPage);
         return resultPage;
     }
 
     @RequestMapping("add")
     @ResponseBody
-    public AuditOrganizationPO add(AuditOrganizationPO record) throws BaseAppException {
+    public AuditOrganizationPO add(AuditOrganizationPO record)
+            throws BaseAppException {
         logger.debug("add record begin...record=[{0}]", record);
         auditOrganizationService.add(record);
         return record;
@@ -75,7 +79,8 @@ public class AuditOrganizationController {
 
     @RequestMapping("update")
     @ResponseBody
-    public AuditOrganizationPO update(AuditOrganizationPO record) throws BaseAppException {
+    public AuditOrganizationPO update(AuditOrganizationPO record)
+            throws BaseAppException {
         logger.debug("modify record begin...record=[{0}]", record);
         auditOrganizationService.update(record);
         return record;
@@ -92,8 +97,18 @@ public class AuditOrganizationController {
     @ResponseBody
     public AuditOrganizationPO qryRecordInfo(@RequestParam(value = "orgId",
             required = true) Long orgId) throws BaseAppException {
-        AuditOrganizationPO record = auditOrganizationService.selectByPrimaryKey(orgId);
+        AuditOrganizationPO record = auditOrganizationService
+                .selectByPrimaryKey(orgId);
         return record;
+    }
+
+    @RequestMapping("changeOrgParent")
+    @ResponseBody
+    public boolean changeOrgParent(@RequestParam(value = "fromId",
+            required = true) Long orgId, @RequestParam(value = "toId",
+            required = true) Long newParentId) throws BaseAppException {
+        
+        return auditOrganizationService.changeOrgParent(orgId, newParentId);
     }
 
 }

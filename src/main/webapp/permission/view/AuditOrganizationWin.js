@@ -1,6 +1,6 @@
 /**
  * @description 新增修改共用弹出窗口，嵌入一个EditForm，实现对AuditOrganization的新增、修改
- * @author codeCreater
+ * @author pan.xiaobo
  * @date 2014年11月20日
  */
 
@@ -10,6 +10,7 @@ Ext.define('component.permission.view.AuditOrganizationWin', {
         formPanel : null,
         action : Ext.create("component.permission.action.AuditOrganizationAction")
     },
+    //closeAction : 'destroy',
     /**
      * 构造函数，用于初始化界面
      * 
@@ -23,6 +24,9 @@ Ext.define('component.permission.view.AuditOrganizationWin', {
 
         // TODO 设置额外的参数
         me.pkFiledId = config.pkFiledId;
+        me.parentOrgId = config.parentOrgId;
+        me.parentOrgName = config.parentOrgName;
+        me.beforeModifyRecord = config.beforeModifyRecord;
 
         me.winType = config.winType;
 
@@ -34,13 +38,14 @@ Ext.define('component.permission.view.AuditOrganizationWin', {
         }
         if (me.winType == WEBConstants.ACTIONTYPE.NEW) {
             config.title = '新增';
+            
         }
         if (me.winType == WEBConstants.ACTIONTYPE.EDIT) {
             config.title = '编辑';
         }
         Ext.applyIf(config, {
-            width : '30%',
-            height : '50%',
+            width : 400,
+            height : 240,
             layout : 'fit',
             maximizable : true,
             items : [me.formPanel],
@@ -52,8 +57,12 @@ Ext.define('component.permission.view.AuditOrganizationWin', {
     initComponent : function() {
         var me = this;
 
+       
         // 编辑
         if (me.winType == WEBConstants.ACTIONTYPE.EDIT) {
+        	//me.formPanel.loadRecord(me.beforeModifyRecord);
+        	me.formPanel.getForm().findField("winParentOrgId").setVisible(false);
+        	me.formPanel.getForm().findField("winParentOrgName").setVisible(false);
 
             // TODO 隐藏或显示某些字段
             // me.formPanel.getForm().findField("createdDate").setVisible(false);
@@ -78,6 +87,9 @@ Ext.define('component.permission.view.AuditOrganizationWin', {
                 me.formPanel.disableFields();
             });
         }
+        
+        me.formPanel.getForm().findField("winParentOrgId").setValue(me.parentOrgId);
+        me.formPanel.getForm().findField("winParentOrgName").setValue(me.parentOrgName);
 
         this.callParent();
     },
@@ -92,52 +104,52 @@ Ext.define('component.permission.view.AuditOrganizationWin', {
 	      	{
 	            fieldLabel : "orgId",
 	            xtype : "textfield",
+	            hidden : true,
 	            name : "orgId"
         	},
-	      	{
-	            fieldLabel : "parentOrgId",
+        	{
+	            fieldLabel : "父组织ID",
 	            xtype : "textfield",
+	            readOnly : true,
+	            id : 'winParentOrgId',
 	            name : "parentOrgId"
         	},
-	      	{
-	            fieldLabel : "orgCode",
+        	{
+	            fieldLabel : "父组织",
 	            xtype : "textfield",
-	            name : "orgCode"
+	            readOnly : true,
+	            id : 'winParentOrgName',
+	            name : "parentOrgName"
         	},
+	      	
 	      	{
-	            fieldLabel : "orgName",
+	            fieldLabel : "组织名称",
 	            xtype : "textfield",
+	            allowBlank : false,
 	            name : "orgName"
         	},
 	      	{
-	            fieldLabel : "orgLevel",
+	            fieldLabel : "组织编码",
 	            xtype : "textfield",
-	            name : "orgLevel"
+	            maxLength : 32,
+	            name : "orgCode"
         	},
 	      	{
-	            fieldLabel : "createdTime",
-	            xtype : "textfield",
-	            name : "createdTime"
-        	},
-	      	{
-	            fieldLabel : "orgDesc",
-	            xtype : "textfield",
+	            fieldLabel : "备注",
+	            xtype : "textarea",
 	            name : "orgDesc"
-        	},
-	      	{
-	            fieldLabel : "state",
-	            xtype : "textfield",
-	            name : "state"
-        	},
-	      	{
-	            fieldLabel : "stateTime",
-	            xtype : "textfield",
-	            name : "stateTime"
-        	}	       
-        ]
+        	}
+        	]
         });
         return formPanel;
     },
+    listeners : {
+    	'close' : function(panel,opts){
+    		var me = this;
+    		me.formPanel.destroy();
+    	}
+    },
+    
     // 确定按钮回调函数，在此处理新增、修改操作
     okHandler : function() {
         var me = this;

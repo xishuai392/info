@@ -79,9 +79,8 @@ Ext.define('PM.view.mains.Header', {
             items : { // Let's put an empty grid in just to illustrate fit
                 // layout
                 id : 'updPassWordForm',
-                xtype : 'form',
+                xtype : 'zteeditform',
                 layout : 'anchor',
-                url : ctx + '/user/saveUser.do',
                 frame : true,
                 // layout:'form',
                 // The fields
@@ -98,6 +97,15 @@ Ext.define('PM.view.mains.Header', {
                     fieldLabel : '新密码',
                     name : 'newPassword',
                     inputType : 'password',
+                    minLength : 6,
+                    allowBlank : false
+                }, {
+                    fieldLabel : '确认密码',
+                    name : 'newPassword2',
+                    inputType : 'password',
+                    initialPassField : 'newPassword',
+                    vtype : "password",
+                    minLength : 6,
                     allowBlank : false
                 }]
             },
@@ -113,7 +121,27 @@ Ext.define('PM.view.mains.Header', {
                 handler : function() {
                     var form = Ext.getCmp('updPassWordForm').getForm();
                     if (form.isValid()) {
-                        Ext.getBody().mask("请稍等，密码修改中...", "x-mask-loading");
+                        //Ext.getBody().mask("请稍等，密码修改中...", "x-mask-loading");
+                        
+                        var config = {
+				            url : '/permission/audituser/updPassword.do',
+				            params : {
+				            	newPassword : form.findField('newPassword').getValue(),
+                                oldPassword : form.findField('oldPassword').getValue()
+				            },
+				            callback : function(){
+				            	//Ext.getBody().unmask();
+				            	ExtUtils.info('密码修改成功.');
+				            	Ext.getCmp('updPassWordWin').close();
+				            },
+				            exceptionCallback : function(){
+				            	//Ext.getBody().unmask();
+				            }
+				        };
+				
+				        ExtUtils.doAjaxSync(config);
+			        
+				        /**
                         Ext.Ajax.request({
                             url : ctx + '/user/updPassword.do',
                             method : 'post',
@@ -134,6 +162,8 @@ Ext.define('PM.view.mains.Header', {
                                 
                             }
                         });
+                        **/
+                        
                     }
                 }
             },{

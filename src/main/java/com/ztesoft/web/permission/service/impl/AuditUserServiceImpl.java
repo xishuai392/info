@@ -17,6 +17,8 @@ import com.ztesoft.core.idproduce.ISequenceGenerator;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.exception.ExceptionHandler;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
+import com.ztesoft.framework.util.AssertUtils;
+import com.ztesoft.framework.util.MD5Utils;
 import com.ztesoft.framework.util.Utils;
 import com.ztesoft.web.domain.TableInfoConstants;
 import com.ztesoft.web.permission.db.arg.AuditUserArg;
@@ -169,6 +171,35 @@ public class AuditUserServiceImpl implements IAuditUserService {
         // ///////
 
         return auditUserDao.deleteByPrimaryKey(record.getUserId());
+    }
+
+    /* (non-Javadoc)
+     * @see com.ztesoft.web.permission.service.IAuditUserService#updPassword(java.lang.String, java.lang.String, java.lang.String)
+     */
+    @Override
+    public boolean updPassword(String userCode, String newPassword,
+            String oldPassword) throws BaseAppException {
+        AssertUtils.isNotEmpty(userCode, "用户名不能为空！");
+        AssertUtils.isNotEmpty(newPassword, "密码不能为空！");
+        
+        
+        // 判断该用户密码是否正确
+        AuditUserArg arg = new AuditUserArg();
+        AuditUserCriteria criteria = arg.createCriteria();
+        criteria.andUserCodeEqualTo(userCode);
+        String pasEncode = MD5Utils.MD5(oldPassword).toLowerCase();
+        criteria.andPasswordEqualTo(pasEncode);
+        List<AuditUserPO> result = auditUserDao.selectByArg(arg);
+        if(null==result||result.size()==0){
+            throw ExceptionHandler.publish("APP-01-0004", "您输入的旧密码错误！");
+        }
+        
+        AuditUserPO record = new AuditUserPO();
+        record.setUserId(result.get(0).getUserId());
+        record.setPassword(MD5Utils.MD5(newPassword).toLowerCase());
+        auditUserDao.updateByPrimaryKeySelective(record);
+        
+        return true;
     }
 
 }

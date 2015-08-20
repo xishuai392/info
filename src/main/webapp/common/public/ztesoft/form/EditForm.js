@@ -57,6 +57,10 @@ Ext.define("ZTEsoft.form.EditForm", {
         config.columnNum = columnNum;
         // 所有的id-fieldLabel对应集合
         var idMap = {};
+        for (var indexChild in config.items) {
+            var childItem = config.items[indexChild];
+            idMap[childItem.name] = childItem.name;
+        }
 
         var columnWidthNum = (1 / columnNum).toFixed(2);
         for (var indexChild in config.items) {
@@ -105,7 +109,7 @@ Ext.define("ZTEsoft.form.EditForm", {
                     } else if (!childItem.min && childItem.max) {
                         childItem.vtypeText = childItem.fieldLabel + "必须小于等于" + childItem.max + "，请重新输入！";
                     }
-                } else if ("compare") {
+                } else if ("compare" == childItem.vtype) {
                     if (childItem.target && childItem.operation && idMap[childItem.target]) {
                         var targetFieldLabel = idMap[childItem.target];
                         var operation = childItem.operation;
