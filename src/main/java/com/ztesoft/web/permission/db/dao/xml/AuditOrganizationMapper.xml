@@ -274,7 +274,9 @@
 	<if test="state != null" >
 		STATE = #{state,jdbcType=VARCHAR},
 	</if>
+	<if test="stateTime != null" >
 		STATE_TIME = #{stateTime,jdbcType=DATE}
+	</if>
 	</set >
 	 where ORG_ID = #{orgId,jdbcType=BIGINT}
   </update>
