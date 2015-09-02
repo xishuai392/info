@@ -16,7 +16,8 @@ Ext.define('PM.view.mains.Header', {
             dockedItems : [{
                 xtype : 'toolbar',
                 height : 80,
-                style : 'background-image: url(' + ctx + '/common/images/logo.jpg) !important; background-repeat: no-repeat;background-position:center left;background-size:100% 100%;',
+                style : 'background-image: url(' + ctx + '/common/images/logo.jpg) !important; background-repeat: no-repeat;background-position:center left;background-size:100% 100%;background-size:  cover;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader( src="' + ctx + '/common/images/logo.jpg",sizingMethod="scale");',
+                // filter:progid:DXImageTransform.Microsoft.AlphaImageLoader( src=' + ctx + '/common/images/logo.jpg,sizingMethod='scale');
                 dock : 'top',
                 items : ['->', {
                     iconCls : 'changepasswd',
