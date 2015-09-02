@@ -38,7 +38,7 @@ Ext.define('PM.view.mains.Menu', {
                 header : false,
                 hideHeaders : true,
                 useArrows : true,
-                rootVisible : true,
+                rootVisible : false,
 //                viewConfig : {
 //                    plugins : {
 //                        ptype : 'treeviewdragdrop',
