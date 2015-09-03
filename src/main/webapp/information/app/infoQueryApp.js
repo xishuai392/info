@@ -152,7 +152,7 @@ Ext.onReady(function() {
     });
     
     
-     // 4、被查询人信息填写
+     // 4、被查询人信息填写 
     bcxrxxPanel = Ext.create("ZTEsoft.form.SearchForm", {
     	id : 'card0',
         layout : 'column',

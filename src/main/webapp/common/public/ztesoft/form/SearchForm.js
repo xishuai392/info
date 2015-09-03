@@ -40,7 +40,10 @@ Ext.define('ZTEsoft.form.SearchForm', {
 //						xtype : 'zteresetbutton',
 //						handler : Ext.bind(me.formResetHandler, me)
 //					});
-			config.items.push({
+			
+			//是否显示button，默认是显示的
+			if(typeof(config.hiddenBtns) == "undefined"||!config.hiddenBtns){
+				config.items.push({
 						xtype : 'panel',
 						layout : 'table',
 						border :false,
@@ -60,6 +63,7 @@ Ext.define('ZTEsoft.form.SearchForm', {
 									handler : Ext.bind(me.formResetHandler, me)
 								}]
 					});
+			}
 		}
 		me.callParent([config]);
 	},
