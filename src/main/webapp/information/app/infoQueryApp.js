@@ -2,7 +2,7 @@
  * 人口信息查询首页
  */
 Ext.onReady(function() {
-    var step1SearchForm,sfzsmPanel,infoMainPanel;
+    var sqrxxPanel,zjPanel,ssxzlPanel,infoMainPanel;
     
     var cardNav = function (incr) { 
     	
@@ -21,8 +21,8 @@ Ext.onReady(function() {
 	    	case 0 : 
 	    		//填写申请人信息
 	    		console.log('当前是填写申请人信息');
-	    		if(step1SearchForm.getForm().isValid()){
-	    			ExtUtils.info('dddd');
+	    		if(sqrxxPanel.getForm().isValid()){
+	    			ExtUtils.info('通过表单校验');
 	    			Ext.getCmp('cardPrev').setDisabled(false);
 	   				Ext.getCmp('cardNext').setDisabled(false);
 	   				layout.setActiveItem(nextId);
@@ -53,10 +53,11 @@ Ext.onReady(function() {
 	    //Ext.getCmp('cardNext').setDisabled(next === 2); 
 	}; 
 
-    // 首页、第一步查询条件框
-    step1SearchForm = Ext.create("Ext.form.Panel", {
+    // 1、申请人信息填写
+    sqrxxPanel = Ext.create("ZTEsoft.form.SearchForm", {
     	id : 'card0',
         layout : 'column',
+        hiddenBtns : true,
         frame : true,
         title : '填写申请人信息',
         defaults : {
@@ -71,6 +72,8 @@ Ext.onReady(function() {
             fieldLabel : "证件号",
             xtype : "textfield",
             operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
+            allowBlank : false,
+            width: 500,
             name : "userName"
         }, {
             fieldLabel : "证件类型",
@@ -79,6 +82,8 @@ Ext.onReady(function() {
             displayField : 'text',
             valueField : 'value',
             editable : false,
+            allowBlank : false,
+            value : '10',
             store : new Ext.data.ArrayStore({
                 fields : ['value', 'text'],
                 data : [['10', '身份证'], ['20', '其他']]
@@ -86,6 +91,7 @@ Ext.onReady(function() {
         },{
             fieldLabel : "姓名",
             xtype : "textfield",
+            allowBlank : false,
             operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
             name : "userName"
         },{
@@ -95,6 +101,8 @@ Ext.onReady(function() {
             displayField : 'text',
             valueField : 'value',
             editable : false,
+            allowBlank : false,
+            value : '50',
             store : new Ext.data.ArrayStore({
                 fields : ['value', 'text'],
                 data : [['10', '律师'],['20', '党政军机关'],['30', '司法机关'],
@@ -117,17 +125,55 @@ Ext.onReady(function() {
 
     });
     
-    //身份证扫描
-    sfzsmPanel = Ext.create('Ext.Panel', { 
+    //2、证件扫描
+    zjPanel = Ext.create('Ext.Panel', { 
 	    title: '证件扫描', 
 	    id : 'card1', 
 	    items: [],
 	    tbar: [ {
-	        text: '证件扫描', 
+	        text: '开始扫描', 
 	        handler: function(){
-	        	
+	        	ExtUtils.info('开始扫描证件');
 	        } 
 	    }]
+    });
+    
+    //3、介绍信及相关资料扫描
+    ssxzlPanel = Ext.create('Ext.Panel', { 
+	    title: '介绍信及相关资料扫描', 
+	    id : 'card2', 
+	    items: [],
+	    tbar: [ {
+	        text: '开始扫描', 
+	        handler: function(){
+	        	ExtUtils.info('开始扫描介绍信及相关资料');
+	        } 
+	    }]
+    });
+    
+    
+     // 4、被查询人信息填写
+    bcxrxxPanel = Ext.create("ZTEsoft.form.SearchForm", {
+    	id : 'card0',
+        layout : 'column',
+        hiddenBtns : true,
+        frame : true,
+        title : '被申请人信息',
+        defaults : {
+            labelAlign : 'right',
+            labelWidth : 100,
+            //xtype : 'textfield',
+            style : 'margin-left:5px;margin-top:2px;margin-bottom:2px;'
+        },
+        items : [
+        {
+            fieldLabel : "身份证号码",
+            xtype : "textfield",
+            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
+            allowBlank : false,
+            width: 500,
+            name : "userName"
+        }]
     });
     
     //人口信息查询主要面板
@@ -137,7 +183,7 @@ Ext.onReady(function() {
 	    region : "center",
 	    activeItem: 0,    //默认活动项 
 	    id: 'cardPanel', 
-	    items: [step1SearchForm,sfzsmPanel],
+	    items: [sqrxxPanel,zjPanel,ssxzlPanel],
 	    tbar: ['->', { 
 	        id: 'cardPrev', 
 	        text: '« 上一步', 
