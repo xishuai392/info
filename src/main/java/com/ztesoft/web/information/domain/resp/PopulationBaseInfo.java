@@ -30,17 +30,37 @@ public class PopulationBaseInfo {
 	private String birthDate;
 	private String idCardNum;
 	private String photoGif;
-	private Address nativePlace;
-	private Address birthPlace;
-	//户籍
-	private Address householdRegister;
+	//籍贯国家
+	private String  nativePlaceNation;
+	//籍贯省市县
+	private String  nativePlaceProvince;
+	//籍贯详细地址
+	private String  nativePlaceDetailAddress;
+	//出生地国家
+	private String birthPlaceNation;
+	//出生地省市县
+	private String birthPlaceProvince;
+	//出生地详细地址
+	private String birthPlaceDetailAddress;
+	
 	//身份证签发机关
 	private String  idCardIssuneOffice;
-	//身份证有效期限
+		//身份证有效期限
 	private String  idCardExciptyTime;
-	private Address liveAddress;
-	//分发暂住证派出所
+		
+		//住址
+	private String liveAddress;
+		//分发暂住证派出所
 	private String  policeStation;
+	
+	/**暂住人口信息展示字段*****/
+	
+	private String nativePlace;
+	//户籍省市县
+	private String householdRegisterProviceAddress;
+	//户籍详细地址
+	private String householdRegisterDetailAddress;
+	
 	public String getName() {
 		return name;
 	}
@@ -83,24 +103,6 @@ public class PopulationBaseInfo {
 	public void setPhotoGif(String photoGif) {
 		this.photoGif = photoGif;
 	}
-	public Address getNativePlace() {
-		return nativePlace;
-	}
-	public void setNativePlace(Address nativePlace) {
-		this.nativePlace = nativePlace;
-	}
-	public Address getBirthPlace() {
-		return birthPlace;
-	}
-	public void setBirthPlace(Address birthPlace) {
-		this.birthPlace = birthPlace;
-	}
-	public Address getHouseholdRegister() {
-		return householdRegister;
-	}
-	public void setHouseholdRegister(Address householdRegister) {
-		this.householdRegister = householdRegister;
-	}
 	public String getIdCardIssuneOffice() {
 		return idCardIssuneOffice;
 	}
@@ -113,18 +115,74 @@ public class PopulationBaseInfo {
 	public void setIdCardExciptyTime(String idCardExciptyTime) {
 		this.idCardExciptyTime = idCardExciptyTime;
 	}
-	public Address getLiveAddress() {
-		return liveAddress;
-	}
-	public void setLiveAddress(Address liveAddress) {
-		this.liveAddress = liveAddress;
-	}
 	public String getPoliceStation() {
 		return policeStation;
 	}
 	public void setPoliceStation(String policeStation) {
 		this.policeStation = policeStation;
 	}
+	public String getNativePlaceNation() {
+		return nativePlaceNation;
+	}
+	public void setNativePlaceNation(String nativePlaceNation) {
+		this.nativePlaceNation = nativePlaceNation;
+	}
+	public String getNativePlaceProvince() {
+		return nativePlaceProvince;
+	}
+	public void setNativePlaceProvince(String nativePlaceProvince) {
+		this.nativePlaceProvince = nativePlaceProvince;
+	}
+	public String getNativePlaceDetailAddress() {
+		return nativePlaceDetailAddress;
+	}
+	public void setNativePlaceDetailAddress(String nativePlaceDetailAddress) {
+		this.nativePlaceDetailAddress = nativePlaceDetailAddress;
+	}
+	public String getBirthPlaceNation() {
+		return birthPlaceNation;
+	}
+	public void setBirthPlaceNation(String birthPlaceNation) {
+		this.birthPlaceNation = birthPlaceNation;
+	}
+	public String getBirthPlaceProvince() {
+		return birthPlaceProvince;
+	}
+	public void setBirthPlaceProvince(String birthPlaceProvince) {
+		this.birthPlaceProvince = birthPlaceProvince;
+	}
+	public String getBirthPlaceDetailAddress() {
+		return birthPlaceDetailAddress;
+	}
+	public void setBirthPlaceDetailAddress(String birthPlaceDetailAddress) {
+		this.birthPlaceDetailAddress = birthPlaceDetailAddress;
+	}
+	public String getHouseholdRegisterProviceAddress() {
+		return householdRegisterProviceAddress;
+	}
+	public void setHouseholdRegisterProviceAddress(String householdRegisterProviceAddress) {
+		this.householdRegisterProviceAddress = householdRegisterProviceAddress;
+	}
+	public String getHouseholdRegisterDetailAddress() {
+		return householdRegisterDetailAddress;
+	}
+	public void setHouseholdRegisterDetailAddress(String householdRegisterDetailAddress) {
+		this.householdRegisterDetailAddress = householdRegisterDetailAddress;
+	}
+	public String getLiveAddress() {
+		return liveAddress;
+	}
+	public void setLiveAddress(String liveAddress) {
+		this.liveAddress = liveAddress;
+	}
+	public String getNativePlace() {
+		return nativePlace;
+	}
+	public void setNativePlace(String nativePlace) {
+		this.nativePlace = nativePlace;
+	}
+	
+	
 	
 	
 	
