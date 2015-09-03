@@ -109,7 +109,7 @@ public class PopulationBaseInfo {
 	public void setIdCardIssuneOffice(String idCardIssuneOffice) {
 		this.idCardIssuneOffice = idCardIssuneOffice;
 	}
-	public String getIdCardExciptyTime() {
+	public String  getIdCardExciptyTime() {
 		return idCardExciptyTime;
 	}
 	public void setIdCardExciptyTime(String idCardExciptyTime) {

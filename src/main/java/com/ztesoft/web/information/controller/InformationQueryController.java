@@ -13,6 +13,7 @@ import com.ztesoft.framework.log.ZTEsoftLogManager;
 import com.ztesoft.framework.util.UuidUtils;
 import com.ztesoft.web.information.domain.req.query.QueryByOtherPeopleReqInfo;
 import com.ztesoft.web.information.domain.req.query.QueryPeopleReqInfo;
+import com.ztesoft.web.information.domain.resp.Address;
 import com.ztesoft.web.information.domain.resp.PopulationBaseInfo;
 import com.ztesoft.web.information.domain.resp.QueryResultInfo;
 import com.ztesoft.web.permission.controller.AuditMenuController;
@@ -77,6 +78,8 @@ public class InformationQueryController {
     public PopulationBaseInfo queryBasePopulation(QueryByOtherPeopleReqInfo reqInfo){
     	//暂时手工组装信息
     	PopulationBaseInfo baseInfo=new PopulationBaseInfo();
+    	baseInfo.setAliaName("smile");
+    	baseInfo.setBirthDate("1991");
     	return baseInfo;  	
     }
     
