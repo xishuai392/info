@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
-<mapper namespace="com.ztesoft.web.information.db.dao.mapper.ICxrzMapper" >
+<mapper  namespace="com.ztesoft.web.information.db.dao.mapper.ICxrzMapper" >
   <resultMap id="BaseResultMap" type="com.ztesoft.web.information.db.po.CxrzPO">
   	<id column="ID" property="id" jdbcType="VARCHAR" />
   	<result column="SQR_ID" property="sqrId" jdbcType="VARCHAR" />

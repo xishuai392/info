@@ -4,7 +4,7 @@ import java.util.*;
 import java.math.*;
 import org.apache.commons.lang.*;
 
-public class CxrzArg {
+public class  CxrzArg {
     private String pk_name = "ID";
 
     private String orderByClause;

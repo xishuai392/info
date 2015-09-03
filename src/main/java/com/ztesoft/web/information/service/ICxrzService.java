@@ -22,7 +22,7 @@ import com.ztesoft.web.information.db.po.CxrzPO;
  * @see com.ztesoft.web.information.service <br>
  */
 
-public interface ICxrzService {
+public interface  ICxrzService {
 
     CxrzPO selectByPrimaryKey(String key) throws BaseAppException;
 

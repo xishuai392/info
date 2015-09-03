@@ -36,7 +36,7 @@ import com.ztesoft.web.information.service.ICxrzService;
  */
 
 @Service("cxrzService")
-public class CxrzServiceImpl implements ICxrzService {
+public class CxrzServiceImpl  implements ICxrzService {
 
     private static final ZTEsoftLogManager logger = ZTEsoftLogManager
             .getLogger(CxrzServiceImpl.class);

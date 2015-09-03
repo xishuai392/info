@@ -21,7 +21,7 @@ import com.ztesoft.web.information.db.dao.mapper.ICxrzMapper;
 import com.ztesoft.web.information.db.po.CxrzPO;
 
 @Repository
-public class CxrzDao extends SqlSessionDaoSupport {
+public class  CxrzDao extends SqlSessionDaoSupport {
 
     @Resource(name = "majorSqlSessionTemplate")
     public void setSqlSessionTemplate(SqlSessionTemplate sqlSessionTemplate) {

@@ -9,7 +9,7 @@ import java.util.*;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.session.RowBounds;
 
-public interface ICxrzMapper {
+public interface  ICxrzMapper {
     
     List<Integer> countByArg(CxrzArg arg);
 
