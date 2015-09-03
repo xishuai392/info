@@ -2,7 +2,7 @@
  * 人口信息查询首页
  */
 Ext.onReady(function() {
-    var sqrxxPanel,zjPanel,ssxzlPanel,bcxrxxPanel,bcxrGrid,infoMainPanel;
+    var sqrxxPanel,zjPanel,ssxzlPanel,bcxrxxPanel,bcxrStore,bcxrGrid,infoMainPanel;
     
     var cardNav = function (incr) { 
     	
@@ -138,7 +138,7 @@ Ext.onReady(function() {
 	        handler: function() {
 	            var form = this.up('form').getForm();
 	            if (form.isValid()) {
-	            	ExtUtils.info('通过表单校验');
+	            	//ExtUtils.info('通过表单校验');
 	            	var layout = infoMainPanel.getLayout();
 	            	layout.setActiveItem(1);//下一步：证件扫描
 	            	
@@ -171,7 +171,7 @@ Ext.onReady(function() {
 	        icon : ctx + '/common/images/icons/arrow_rotate_anticlockwise.png',
 	        formBind: true, //only enabled once the form is valid
 	        handler: function() {
-	            ExtUtils.info('介绍信及相关资料扫描');
+	            //ExtUtils.info('介绍信及相关资料扫描');
 	            var layout = infoMainPanel.getLayout();
 	            layout.setActiveItem(2);//下一步：介绍信及相关资料扫描
 	        }
@@ -194,16 +194,16 @@ Ext.onReady(function() {
 	        icon : ctx + '/common/images/icons/arrow_rotate_anticlockwise.png',
 	        handler: function() {
 	            var layout = infoMainPanel.getLayout();
-	            layout.setActiveItem(1);//上一步：证件扫描
+	            layout.setActiveItem(2);//上一步：证件扫描
 	        }
 	    }, {
 	        text: '下一步',
 	        icon : ctx + '/common/images/icons/arrow_rotate_anticlockwise.png',
 	        formBind: true, //only enabled once the form is valid
 	        handler: function() {
-	            ExtUtils.info('被查询人信息');
+	            //ExtUtils.info('被查询人信息');
 	            var layout = infoMainPanel.getLayout();
-	            layout.setActiveItem(2);//下一步：被查询人信息
+	            layout.setActiveItem(3);//下一步：被查询人信息
 	        }
 	    }]
     });
@@ -230,7 +230,7 @@ Ext.onReady(function() {
             operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
             allowBlank : false,
             width: 500,
-            name : "sfzhm"
+            name : "idCardNum"
         }],
         // 重置 和下一步 按钮.
 	    buttons: [{
@@ -248,19 +248,29 @@ Ext.onReady(function() {
 	            if (form.isValid()) {
 	            	ExtUtils.info('通过表单校验');
 	            	var layout = infoMainPanel.getLayout();
-	            	layout.setActiveItem(3);//下一步：显示查询结果
+	            	layout.setActiveItem(4);//下一步：显示查询结果
 	            	
+	            	bcxrStore.getProxy().extraParams = {
+			        	//查询日志表的id
+						cxrzId : '',
+						//被查询人的身份证信息
+						idCardNum : bcxrxxPanel.getForm().findField("idCardNum").getValue(),
+				
+			        };
+			        bcxrStore.load();
 	            }
 	        }
 	    }]
     });
     
-    //显示被查询人表格信息
+    bcxrStore = Ext.create('component.information.store.QueryResultInfoStore');
+    
+    //5\显示被查询人表格信息
     bcxrGrid = Ext.create('ZTEsoft.grid.Panel', {
-        region : "center",
+        id : 'card4',
         title : "被查询人信息",
         store : bcxrStore,
-        isPage : true,
+        isPage : false,
         columns : [{
             text : "姓名",
             dataIndex : "name",
@@ -307,7 +317,8 @@ Ext.onReady(function() {
 	    region : "center",
 	    activeItem: 0,    //默认活动项 
 	    id: 'cardPanel', 
-	    items: [sqrxxPanel,zjPanel,ssxzlPanel,bcxrxxPanel,bcxrGrid],
+	    items: [sqrxxPanel,zjPanel,ssxzlPanel,bcxrxxPanel,bcxrGrid]
+	    /**
 	    tbar: ['->', { 
 	        id: 'cardPrev', 
 	        text: '« 上一步', 
@@ -318,6 +329,7 @@ Ext.onReady(function() {
 	        text: '下一步 »', 
 	        handler: Ext.Function.bind(cardNav, this, [1]) 
 	    }]
+	    */
     });
     
     // 整体页面布局

@@ -7,7 +7,7 @@
 	<head>
 		<title>AuditUser管理 </title>
 		<script type="text/javascript"
-			src="${ctx}/information/app/infoQueryApp.js">
+			src="${ctx}/information/app/InfoQueryApp.js">
 		</script>
 	</head>
 	</body>
