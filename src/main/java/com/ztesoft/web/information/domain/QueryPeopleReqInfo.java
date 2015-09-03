@@ -32,7 +32,7 @@ public class QueryPeopleReqInfo {
 	public String getIdCardNum() {
 		return idCardNum;
 	}
-	public void setIdCardNum(String idCardNum) {
+	public void  setIdCardNum(String idCardNum) {
 		this.idCardNum = idCardNum;
 	}
 	public String getIndentyType() {
