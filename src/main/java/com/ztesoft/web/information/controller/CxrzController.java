@@ -30,7 +30,7 @@ import com.ztesoft.web.information.service.ICxrzService;
 @Controller
 @RequestMapping("/information/information/cxrz")
 public class CxrzController {
-
+  
     private static final ZTEsoftLogManager logger = ZTEsoftLogManager
             .getLogger(CxrzController.class);
 
