@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ztesoft.framework.log.ZTEsoftLogManager;
+import com.ztesoft.web.information.domain.req.query.QueryPeopleReqInfo;
 import com.ztesoft.web.permission.controller.AuditMenuController;
 
 /**
@@ -23,11 +24,19 @@ public class InformationQueryController {
         return "/information/jsp/infoQuery";
     }
     
-    @RequestMapping("query")
-    public String index(String hello){
+    @RequestMapping("applicantQuery")
+    /**
+     * 记录查询日志，返回view
+     * @param hello
+     * @return
+     */
+    public String applicantQuery(QueryPeopleReqInfo reqInfo){
     	
-    	System.out.println(hello);
+    	
     	return null;
     }
+    
+  /*  @RequestMapping("")
+    public String */
     
 }
