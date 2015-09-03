@@ -23,4 +23,11 @@ public class InformationQueryController {
         return "/information/jsp/infoQuery";
     }
     
+    @RequestMapping("query")
+    public String index(String hello){
+    	
+    	System.out.println(hello);
+    	return null;
+    }
+    
 }
