@@ -25,7 +25,7 @@ public class QueryPeopleReqInfo {
 	private String idCardNum;
 	private String indentyType;
 	private String name;
-	private String  applicantQueryType;
+	private String applicantQueryType;
 	private String applicantCompany;
 	private String queryResult;
 	private String cxbs;
