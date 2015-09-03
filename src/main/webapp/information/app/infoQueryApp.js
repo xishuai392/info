@@ -117,6 +117,7 @@ Ext.onReady(function() {
 
     });
     
+    //身份证扫描
     sfzsmPanel = Ext.create('Ext.Panel', { 
 	    title: '证件扫描', 
 	    id : 'card1', 
@@ -129,9 +130,9 @@ Ext.onReady(function() {
 	    }]
     });
     
-    
+    //人口信息查询主要面板
     infoMainPanel = Ext.create('Ext.Panel', { 
-	    title: '容器面板', 
+	    title: '人口信息查询', 
 	    layout: 'card', 
 	    region : "center",
 	    activeItem: 0,    //默认活动项 
