@@ -40,8 +40,7 @@ public class CxrzController {
     @RequestMapping("index")
     public String index(Model model) {
         // ///////
-        // TODO 根据业务场景，进行条件分支跳转、设置页面默认值等
-
+        // TODO 根据业务场景，进行条件分支跳转、设置页面默认值
         // ///////
 
         return "information/information/jsp/cxrz";
