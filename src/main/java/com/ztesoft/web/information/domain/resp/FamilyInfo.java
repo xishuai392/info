@@ -9,6 +9,8 @@ import com.ztesoft.framework.dto.AbstractDto;
  *
  */
 public class FamilyInfo extends AbstractDto{
+	//与本人关系的类型。即是父母
+	private String relationType;
 	//与本人关系
 	private String relationShip;
 	private String idCardNum;
