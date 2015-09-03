@@ -1,4 +1,4 @@
-package com.ztesoft.web.information.domain;
+package com.ztesoft.web.information.domain.resp;
 
 /**
  * 身份证查询返回结果对象类

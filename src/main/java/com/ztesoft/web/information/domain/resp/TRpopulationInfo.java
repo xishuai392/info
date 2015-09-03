@@ -1,4 +1,4 @@
-package com.ztesoft.web.information.domain;
+package com.ztesoft.web.information.domain.resp;
 import java.util.List;
 /**
  * 暂住人口信息

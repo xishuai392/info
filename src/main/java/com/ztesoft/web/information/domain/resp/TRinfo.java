@@ -1,4 +1,4 @@
-package com.ztesoft.web.information.domain;
+package com.ztesoft.web.information.domain.resp;
 /**
  * 暂住信息。包含 :序号 、暂住证编号  、起始日期、截止日期、间隔时间、签发机构、登记单位、填报日期、暂住地址
  * @author Ocean

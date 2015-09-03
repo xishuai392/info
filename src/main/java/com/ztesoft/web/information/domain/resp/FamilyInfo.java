@@ -1,4 +1,4 @@
-package com.ztesoft.web.information.domain;
+package com.ztesoft.web.information.domain.resp;
 
 import com.ztesoft.framework.dto.AbstractDto;
 

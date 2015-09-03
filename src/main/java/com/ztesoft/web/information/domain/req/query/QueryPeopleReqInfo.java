@@ -1,4 +1,4 @@
-package com.ztesoft.web.information.domain;
+package com.ztesoft.web.information.domain.req.query;
 /**
  * 查询人请求对象信息
  * 

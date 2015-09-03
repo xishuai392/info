@@ -1,4 +1,4 @@
-package com.ztesoft.web.information.domain;
+package com.ztesoft.web.information.domain.resp;
 /**
  * 人口基本信息。常驻人口信息和暂住人口信息包含
  * 
