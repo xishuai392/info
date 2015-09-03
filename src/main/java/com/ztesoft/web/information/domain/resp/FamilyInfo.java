@@ -9,7 +9,7 @@ import com.ztesoft.framework.dto.AbstractDto;
  *
  */
 public class FamilyInfo extends AbstractDto{
-	//与本人关系的类型。即是父母
+	//与本人关系的类型。即是父母    子女  配偶  监护人  子女
 	private String relationType;
 	//与本人关系
 	private String relationShip;
@@ -71,6 +71,12 @@ public class FamilyInfo extends AbstractDto{
 	}
 	public void setTelephoneNum(String telephoneNum) {
 		this.telephoneNum = telephoneNum;
+	}
+	public String getRelationType() {
+		return relationType;
+	}
+	public void setRelationType(String relationType) {
+		this.relationType = relationType;
 	}
 	
 

@@ -14,6 +14,8 @@ import com.ztesoft.framework.util.UuidUtils;
 import com.ztesoft.web.information.domain.req.query.QueryByOtherPeopleReqInfo;
 import com.ztesoft.web.information.domain.req.query.QueryPeopleReqInfo;
 import com.ztesoft.web.information.domain.resp.Address;
+import com.ztesoft.web.information.domain.resp.FamilyInfo;
+import com.ztesoft.web.information.domain.resp.MigrateInfo;
 import com.ztesoft.web.information.domain.resp.PopulationBaseInfo;
 import com.ztesoft.web.information.domain.resp.QueryResultInfo;
 import com.ztesoft.web.permission.controller.AuditMenuController;
@@ -85,49 +87,20 @@ public class InformationQueryController {
     
     @RequestMapping("queryFamilyInfo")
     @ResponseBody
-    public List<QueryResultInfo> queryFamilyInfo(QueryByOtherPeopleReqInfo reqInfo){
-    	List<QueryResultInfo> queryResultInfoList=new ArrayList<QueryResultInfo>();
+    public List<FamilyInfo> queryFamilyInfo(QueryByOtherPeopleReqInfo reqInfo){
+    	List<FamilyInfo> familyInfoList=new ArrayList<FamilyInfo>();
     	//暂时自己手工拼装
-    	QueryResultInfo resultInfoOne=new QueryResultInfo();
-    	resultInfoOne.setAddress("中国厦门");
-    	resultInfoOne.setBirthDate("19911999");
-    	resultInfoOne.setIdCardNum("1589399399393999");
-    	resultInfoOne.setIsHavingTR("已办证");
-    	resultInfoOne.setName("徐鑫");
-    	resultInfoOne.setPopulationType("暂住人口");
-    	QueryResultInfo resultInfoTwo=new QueryResultInfo();
-    	resultInfoTwo.setAddress("中国厦门");
-    	resultInfoTwo.setBirthDate("19911999");
-    	resultInfoTwo.setIdCardNum("1589399399393999");
-    	resultInfoTwo.setIsHavingTR("");
-    	resultInfoTwo.setName("徐鑫");
-    	resultInfoTwo.setPopulationType("常住人口");
-    	queryResultInfoList.add(resultInfoOne);
-    	queryResultInfoList.add(resultInfoTwo);
-    	return queryResultInfoList;  	
+    	FamilyInfo familyInfoFather=new FamilyInfo();
+ 
+    	return familyInfoList;  	
     }
     
     @RequestMapping("queryMigrateInfo")
     @ResponseBody
-    public List<QueryResultInfo> queryMigrateInfo(QueryByOtherPeopleReqInfo reqInfo){
-    	List<QueryResultInfo> queryResultInfoList=new ArrayList<QueryResultInfo>();
-    	//暂时自己手工拼装
-    	QueryResultInfo resultInfoOne=new QueryResultInfo();
-    	resultInfoOne.setAddress("中国厦门");
-    	resultInfoOne.setBirthDate("19911999");
-    	resultInfoOne.setIdCardNum("1589399399393999");
-    	resultInfoOne.setIsHavingTR("已办证");
-    	resultInfoOne.setName("徐鑫");
-    	resultInfoOne.setPopulationType("暂住人口");
-    	QueryResultInfo resultInfoTwo=new QueryResultInfo();
-    	resultInfoTwo.setAddress("中国厦门");
-    	resultInfoTwo.setBirthDate("19911999");
-    	resultInfoTwo.setIdCardNum("1589399399393999");
-    	resultInfoTwo.setIsHavingTR("");
-    	resultInfoTwo.setName("徐鑫");
-    	resultInfoTwo.setPopulationType("常住人口");
-    	queryResultInfoList.add(resultInfoOne);
-    	queryResultInfoList.add(resultInfoTwo);
-    	return queryResultInfoList;  	
+    public MigrateInfo queryMigrateInfo(QueryByOtherPeopleReqInfo reqInfo){
+    	MigrateInfo migrateInfo=new MigrateInfo();
+    	migrateInfo.setTimeAndResultForMigrateLocal("smile forever,hhaha");
+    	migrateInfo.setTimeAndResultForMigrateOtherPlace(" 你猜");
+    	return migrateInfo;  	
     }
 }

@@ -9,6 +9,20 @@ public class MigrateInfo {
 	private String timeAndResultForMigrateLocal;
 	//何时何因迁往何地
 	private String timeAndResultForMigrateOtherPlace;
+	public String getTimeAndResultForMigrateLocal() {
+		return timeAndResultForMigrateLocal;
+	}
+	public void setTimeAndResultForMigrateLocal(String timeAndResultForMigrateLocal) {
+		this.timeAndResultForMigrateLocal = timeAndResultForMigrateLocal;
+	}
+	public String getTimeAndResultForMigrateOtherPlace() {
+		return timeAndResultForMigrateOtherPlace;
+	}
+	public void setTimeAndResultForMigrateOtherPlace(String timeAndResultForMigrateOtherPlace) {
+		this.timeAndResultForMigrateOtherPlace = timeAndResultForMigrateOtherPlace;
+	}
+	
+	
 	
 
 }
