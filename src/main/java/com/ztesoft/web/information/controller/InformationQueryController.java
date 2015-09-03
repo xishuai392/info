@@ -1,5 +1,6 @@
 package com.ztesoft.web.information.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -12,6 +13,7 @@ import com.ztesoft.framework.log.ZTEsoftLogManager;
 import com.ztesoft.framework.util.UuidUtils;
 import com.ztesoft.web.information.domain.req.query.QueryByOtherPeopleReqInfo;
 import com.ztesoft.web.information.domain.req.query.QueryPeopleReqInfo;
+import com.ztesoft.web.information.domain.resp.PopulationBaseInfo;
 import com.ztesoft.web.information.domain.resp.QueryResultInfo;
 import com.ztesoft.web.permission.controller.AuditMenuController;
 
@@ -47,9 +49,82 @@ public class InformationQueryController {
     @RequestMapping("queryByOther")
     @ResponseBody
     public List<QueryResultInfo> queryByOtherPeople(QueryByOtherPeopleReqInfo reqInfo){
-    	
-    	return null;
-    	
+    	List<QueryResultInfo> queryResultInfoList=new ArrayList<QueryResultInfo>();
+    	//暂时自己手工拼装
+    	QueryResultInfo resultInfoOne=new QueryResultInfo();
+    	resultInfoOne.setAddress("中国厦门");
+    	resultInfoOne.setBirthDate("19911999");
+    	resultInfoOne.setIdCardNum("1589399399393999");
+    	resultInfoOne.setIsHavingTR("已办证");
+    	resultInfoOne.setName("徐鑫");
+    	resultInfoOne.setPopulationType("暂住人口");
+    	QueryResultInfo resultInfoTwo=new QueryResultInfo();
+    	resultInfoTwo.setAddress("中国厦门");
+    	resultInfoTwo.setBirthDate("19911999");
+    	resultInfoTwo.setIdCardNum("1589399399393999");
+    	resultInfoTwo.setIsHavingTR("");
+    	resultInfoTwo.setName("徐鑫");
+    	resultInfoTwo.setPopulationType("常住人口");
+    	queryResultInfoList.add(resultInfoOne);
+    	queryResultInfoList.add(resultInfoTwo);
+    	return queryResultInfoList;  	
     }
     
+    
+    
+    @RequestMapping("queryBasePopulation")
+    @ResponseBody
+    public PopulationBaseInfo queryBasePopulation(QueryByOtherPeopleReqInfo reqInfo){
+    	//暂时手工组装信息
+    	PopulationBaseInfo baseInfo=new PopulationBaseInfo();
+    	return baseInfo;  	
+    }
+    
+    @RequestMapping("queryFamilyInfo")
+    @ResponseBody
+    public List<QueryResultInfo> queryFamilyInfo(QueryByOtherPeopleReqInfo reqInfo){
+    	List<QueryResultInfo> queryResultInfoList=new ArrayList<QueryResultInfo>();
+    	//暂时自己手工拼装
+    	QueryResultInfo resultInfoOne=new QueryResultInfo();
+    	resultInfoOne.setAddress("中国厦门");
+    	resultInfoOne.setBirthDate("19911999");
+    	resultInfoOne.setIdCardNum("1589399399393999");
+    	resultInfoOne.setIsHavingTR("已办证");
+    	resultInfoOne.setName("徐鑫");
+    	resultInfoOne.setPopulationType("暂住人口");
+    	QueryResultInfo resultInfoTwo=new QueryResultInfo();
+    	resultInfoTwo.setAddress("中国厦门");
+    	resultInfoTwo.setBirthDate("19911999");
+    	resultInfoTwo.setIdCardNum("1589399399393999");
+    	resultInfoTwo.setIsHavingTR("");
+    	resultInfoTwo.setName("徐鑫");
+    	resultInfoTwo.setPopulationType("常住人口");
+    	queryResultInfoList.add(resultInfoOne);
+    	queryResultInfoList.add(resultInfoTwo);
+    	return queryResultInfoList;  	
+    }
+    
+    @RequestMapping("queryMigrateInfo")
+    @ResponseBody
+    public List<QueryResultInfo> queryMigrateInfo(QueryByOtherPeopleReqInfo reqInfo){
+    	List<QueryResultInfo> queryResultInfoList=new ArrayList<QueryResultInfo>();
+    	//暂时自己手工拼装
+    	QueryResultInfo resultInfoOne=new QueryResultInfo();
+    	resultInfoOne.setAddress("中国厦门");
+    	resultInfoOne.setBirthDate("19911999");
+    	resultInfoOne.setIdCardNum("1589399399393999");
+    	resultInfoOne.setIsHavingTR("已办证");
+    	resultInfoOne.setName("徐鑫");
+    	resultInfoOne.setPopulationType("暂住人口");
+    	QueryResultInfo resultInfoTwo=new QueryResultInfo();
+    	resultInfoTwo.setAddress("中国厦门");
+    	resultInfoTwo.setBirthDate("19911999");
+    	resultInfoTwo.setIdCardNum("1589399399393999");
+    	resultInfoTwo.setIsHavingTR("");
+    	resultInfoTwo.setName("徐鑫");
+    	resultInfoTwo.setPopulationType("常住人口");
+    	queryResultInfoList.add(resultInfoOne);
+    	queryResultInfoList.add(resultInfoTwo);
+    	return queryResultInfoList;  	
+    }
 }

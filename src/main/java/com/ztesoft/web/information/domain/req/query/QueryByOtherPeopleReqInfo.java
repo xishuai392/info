@@ -9,6 +9,8 @@ public class QueryByOtherPeopleReqInfo {
 	private String cxrzId;
 	//被查询人的身份证信息
 	private String idCardNum;
+	
+	private String populationType;
 	public String getCxrzId() {
 		return cxrzId;
 	}
@@ -20,6 +22,12 @@ public class QueryByOtherPeopleReqInfo {
 	}
 	public void setIdCardNum(String idCardNum) {
 		this.idCardNum = idCardNum;
+	}
+	public String getPopulationType() {
+		return populationType;
+	}
+	public void setPopulationType(String populationType) {
+		this.populationType = populationType;
 	}
 	
 	
