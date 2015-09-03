@@ -3,21 +3,12 @@ package com.ztesoft.web.information.domain.req.query;
  * 查询人请求对象信息
  * 
 查询申请人信息
-
 证件号：
-
 证件类型：
-
-下一步
-
 查询申请人类型：
-
 申请查询人单位：
-
 姓名：
-
 查询事由：
-
  * @author Ocean
  *
  */
