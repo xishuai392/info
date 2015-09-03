@@ -1,13 +1,14 @@
 package com.ztesoft.web.information.domain;
 
-import org.apache.commons.lang3.StringUtils;
+import com.ztesoft.framework.dto.AbstractDto;
+
 
 /**
  * 人口地址信息。包含国家，市区。详细地址
  * @author Ocean
  *
  */
-public class Address {
+public class Address extends AbstractDto{
 	private String  nation;
 	private String  provinces;
 	private String  detailAddress;

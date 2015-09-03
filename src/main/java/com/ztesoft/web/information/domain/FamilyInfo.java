@@ -1,11 +1,14 @@
 package com.ztesoft.web.information.domain;
+
+import com.ztesoft.framework.dto.AbstractDto;
+
 /**
  * 家庭成员基本信息及与本人关系
  * 成员信息：、、关系、 、  、、公民身份证号码、 、  、、姓名、 、  、、证件种类、 、  、、证件号码、 、  、、外文姓、 、  、、外文名、 、  、、联系电话、
  * @author Ocean
  *
  */
-public class FamilyInfo {
+public class FamilyInfo extends AbstractDto{
 	//与本人关系
 	private String relationShip;
 	private String idCardNum;
