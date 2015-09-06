@@ -173,7 +173,7 @@ public class InformationQueryController {
     }
     @RequestMapping("queryCZRKinfo")
     @ResponseBody
-    public PermanetPopulationInfo queryPermanetPopulationInfo(QueryByOtherPeopleReqInfo reqInfo){
+    public  PermanetPopulationInfo queryPermanetPopulationInfo(QueryByOtherPeopleReqInfo reqInfo){
     	PermanetPopulationInfo permanentPopulationInfo=new PermanetPopulationInfo();
     	List<FamilyInfo> familyInfoList=queryFamilyInfo(reqInfo);
     	PopulationBaseInfo baseInfo=queryBasePopulation(reqInfo);
