@@ -181,7 +181,6 @@ public class InformationQueryController {
     	permanentPopulationInfo.setBaseInfo(baseInfo);
     	permanentPopulationInfo.setFamilyInfoList(familyInfoList);
     	permanentPopulationInfo.setMigrateInfo(migrateInfo);
-    	
     	return permanentPopulationInfo;
     }
 }
