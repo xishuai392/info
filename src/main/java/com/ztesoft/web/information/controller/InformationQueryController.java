@@ -16,6 +16,7 @@ import com.ztesoft.web.information.domain.req.query.QueryPeopleReqInfo;
 import com.ztesoft.web.information.domain.resp.Address;
 import com.ztesoft.web.information.domain.resp.FamilyInfo;
 import com.ztesoft.web.information.domain.resp.MigrateInfo;
+import com.ztesoft.web.information.domain.resp.PermanetPopulationInfo;
 import com.ztesoft.web.information.domain.resp.PopulationBaseInfo;
 import com.ztesoft.web.information.domain.resp.QueryResultInfo;
 import com.ztesoft.web.permission.controller.AuditMenuController;
@@ -82,6 +83,24 @@ public class InformationQueryController {
     	PopulationBaseInfo baseInfo=new PopulationBaseInfo();
     	baseInfo.setAliaName("smile");
     	baseInfo.setBirthDate("1991");
+    	baseInfo.setBirthPlaceDetailAddress("益阳市沅江县");
+    	baseInfo.setBirthPlaceNation("中国");
+    	baseInfo.setBirthPlaceProvince("湖南省");
+    	baseInfo.setHouseholdRegisterDetailAddress("沅江市");
+    	baseInfo.setHouseholdRegisterProviceAddress("湖南省");
+    	baseInfo.setIdCardExciptyTime("10");
+    	baseInfo.setIdCardIssuneOffice("沅江市派出所");
+    	baseInfo.setIdCardNum("1234342398732987398");
+    	baseInfo.setLiveAddress("厦门双十");
+    	baseInfo.setName("Mir.xu");
+    	baseInfo.setNation("中国");
+    	baseInfo.setNativePlace("厦门湖里区");
+    	baseInfo.setNativePlaceDetailAddress("望海路108号");
+    	baseInfo.setNativePlaceNation("中国");
+    	baseInfo.setNativePlaceProvince("厦门");
+    	baseInfo.setPhotoGif("a.gif");
+    	baseInfo.setPoliceStation("厦门思明派出所");
+    	baseInfo.setSex("男");
     	return baseInfo;  	
     }
     
@@ -91,7 +110,55 @@ public class InformationQueryController {
     	List<FamilyInfo> familyInfoList=new ArrayList<FamilyInfo>();
     	//暂时自己手工拼装
     	FamilyInfo familyInfoFather=new FamilyInfo();
- 
+    	familyInfoFather.setRelationType("父母");
+    	familyInfoFather.setRelationType("父亲");
+    	familyInfoFather.setCertificateType("身份证");
+    	familyInfoFather.setCertificateNum("238732874923738287");
+    	familyInfoFather.setForeignFirstName("x");
+    	familyInfoFather.setForeignLastName("x");
+    	familyInfoFather.setName("felicity");
+    	familyInfoFather.setTelephoneNum("13283084732423");
+    	
+    	FamilyInfo familyInfoMother=new FamilyInfo();
+    	familyInfoMother.setRelationType("父母");
+    	familyInfoMother.setRelationType("母亲");
+    	familyInfoMother.setCertificateType("身份证");
+    	familyInfoMother.setCertificateNum("238732874923738287");
+    	familyInfoMother.setForeignFirstName("x");
+    	familyInfoMother.setForeignLastName("x");
+    	familyInfoMother.setName("felicity");
+    	familyInfoMother.setTelephoneNum("13283084732423");
+    	
+    	FamilyInfo familyInfoSpouse=new FamilyInfo();
+    	familyInfoSpouse.setRelationType("配偶");
+    	familyInfoSpouse.setRelationType("妻子");
+    	familyInfoSpouse.setCertificateType("身份证");
+    	familyInfoSpouse.setCertificateNum("238732874923738287");
+    	familyInfoSpouse.setForeignFirstName("x");
+    	familyInfoSpouse.setForeignLastName("x");
+    	familyInfoSpouse.setName("felicity");
+    	familyInfoSpouse.setTelephoneNum("13283084732423");
+    	
+    	FamilyInfo familyInfoKeeper=new FamilyInfo();
+    	familyInfoKeeper.setRelationType("监护人");
+    	familyInfoKeeper.setRelationType("someOne");
+    	familyInfoKeeper.setCertificateType("身份证");
+    	familyInfoKeeper.setCertificateNum("238732874923738287");
+    	familyInfoKeeper.setForeignFirstName("x");
+    	familyInfoKeeper.setForeignLastName("x");
+    	familyInfoKeeper.setName("felicity");
+    	familyInfoKeeper.setTelephoneNum("13283084732423");
+    	
+    	FamilyInfo familyInfoSon=new FamilyInfo();
+    	familyInfoSon.setRelationType("子女");
+    	familyInfoSon.setRelationType("儿子");
+    	familyInfoSon.setCertificateType("身份证");
+    	familyInfoSon.setCertificateNum("238732874923738287");
+    	familyInfoSon.setForeignFirstName("x");
+    	familyInfoSon.setForeignLastName("x");
+    	familyInfoSon.setName("felicity");
+    	familyInfoSon.setTelephoneNum("13283084732423");
+    	
     	return familyInfoList;  	
     }
     
@@ -100,7 +167,21 @@ public class InformationQueryController {
     public MigrateInfo queryMigrateInfo(QueryByOtherPeopleReqInfo reqInfo){
     	MigrateInfo migrateInfo=new MigrateInfo();
     	migrateInfo.setTimeAndResultForMigrateLocal("smile forever,hhaha");
+    	migrateInfo.setTimeAndResultForMigrateNative("xm");
     	migrateInfo.setTimeAndResultForMigrateOtherPlace(" 你猜");
     	return migrateInfo;  	
+    }
+    @RequestMapping("queryCZRKinfo")
+    @ResponseBody
+    public PermanetPopulationInfo queryPermanetPopulationInfo(QueryByOtherPeopleReqInfo reqInfo){
+    	PermanetPopulationInfo permanentPopulationInfo=new PermanetPopulationInfo();
+    	List<FamilyInfo> familyInfoList=queryFamilyInfo(reqInfo);
+    	PopulationBaseInfo baseInfo=queryBasePopulation(reqInfo);
+    	MigrateInfo migrateInfo=queryMigrateInfo(reqInfo);
+    	permanentPopulationInfo.setBaseInfo(baseInfo);
+    	permanentPopulationInfo.setFamilyInfoList(familyInfoList);
+    	permanentPopulationInfo.setMigrateInfo(migrateInfo);
+    	
+    	return permanentPopulationInfo;
     }
 }
