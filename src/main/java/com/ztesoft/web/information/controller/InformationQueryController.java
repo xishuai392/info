@@ -111,7 +111,7 @@ public class InformationQueryController {
     	//暂时自己手工拼装
     	FamilyInfo familyInfoFather=new FamilyInfo();
     	familyInfoFather.setRelationType("父母");
-    	familyInfoFather.setRelationType("父亲");
+    	familyInfoFather.setRelationShip("父亲");
     	familyInfoFather.setCertificateType("身份证");
     	familyInfoFather.setCertificateNum("238732874923738287");
     	familyInfoFather.setForeignFirstName("x");
@@ -121,7 +121,7 @@ public class InformationQueryController {
     	
     	FamilyInfo familyInfoMother=new FamilyInfo();
     	familyInfoMother.setRelationType("父母");
-    	familyInfoMother.setRelationType("母亲");
+    	familyInfoMother.setRelationShip("母亲");
     	familyInfoMother.setCertificateType("身份证");
     	familyInfoMother.setCertificateNum("238732874923738287");
     	familyInfoMother.setForeignFirstName("x");
@@ -131,7 +131,7 @@ public class InformationQueryController {
     	
     	FamilyInfo familyInfoSpouse=new FamilyInfo();
     	familyInfoSpouse.setRelationType("配偶");
-    	familyInfoSpouse.setRelationType("妻子");
+    	familyInfoSpouse.setRelationShip("妻子");
     	familyInfoSpouse.setCertificateType("身份证");
     	familyInfoSpouse.setCertificateNum("238732874923738287");
     	familyInfoSpouse.setForeignFirstName("x");
@@ -141,7 +141,7 @@ public class InformationQueryController {
     	
     	FamilyInfo familyInfoKeeper=new FamilyInfo();
     	familyInfoKeeper.setRelationType("监护人");
-    	familyInfoKeeper.setRelationType("someOne");
+    	familyInfoKeeper.setRelationShip("someOne");
     	familyInfoKeeper.setCertificateType("身份证");
     	familyInfoKeeper.setCertificateNum("238732874923738287");
     	familyInfoKeeper.setForeignFirstName("x");
@@ -151,7 +151,7 @@ public class InformationQueryController {
     	
     	FamilyInfo familyInfoSon=new FamilyInfo();
     	familyInfoSon.setRelationType("子女");
-    	familyInfoSon.setRelationType("儿子");
+    	familyInfoSon.setRelationShip("儿子");
     	familyInfoSon.setCertificateType("身份证");
     	familyInfoSon.setCertificateNum("238732874923738287");
     	familyInfoSon.setForeignFirstName("x");
