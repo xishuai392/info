@@ -6,10 +6,13 @@
 <html>
 	<head>
 		<title>AuditUser管理 </title>
+		<link rel="stylesheet" type="text/css"
+			href="<%=request.getContextPath()%>/common/css/info.css">
 		<script type="text/javascript"
 			src="${ctx}/information/app/InfoQueryApp.js">
 		</script>
 	</head>
+	<body>
 	</body>
 </html>
 
