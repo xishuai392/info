@@ -98,7 +98,7 @@ public class InformationQueryController {
     	baseInfo.setNativePlaceDetailAddress("望海路108号");
     	baseInfo.setNativePlaceNation("中国");
     	baseInfo.setNativePlaceProvince("厦门");
-    	baseInfo.setPhotoGif("a.gpg");
+    	baseInfo.setPhotoGif("a.jpg");
     	baseInfo.setPoliceStation("厦门思明派出所");
     	baseInfo.setSex("男");
     	return baseInfo;  	
@@ -193,4 +193,6 @@ public class InformationQueryController {
     	permanentPopulationInfo.setMigrateInfo(migrateInfo);
     	return permanentPopulationInfo;
     }
+    
+    
 }
