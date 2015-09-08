@@ -61,7 +61,7 @@ public class InformationQueryController {
     	resultInfoOne.setIdCardNum("1589399399393999");
     	resultInfoOne.setIsHavingTR("已办证");
     	resultInfoOne.setName("徐鑫");
-    	resultInfoOne.setPopulationType("暂住人口");
+    	resultInfoOne.setPopulationType("户籍人口");
     	QueryResultInfo resultInfoTwo=new QueryResultInfo();
     	resultInfoTwo.setAddress("中国厦门");
     	resultInfoTwo.setBirthDate("19911999");
@@ -158,6 +158,11 @@ public class InformationQueryController {
     	familyInfoSon.setForeignLastName("x");
     	familyInfoSon.setName("felicity");
     	familyInfoSon.setTelephoneNum("13283084732423");
+    	familyInfoList.add(familyInfoFather);
+    	familyInfoList.add(familyInfoMother);
+    	familyInfoList.add(familyInfoSpouse);
+    	familyInfoList.add(familyInfoKeeper);
+    	familyInfoList.add(familyInfoSon);
     	
     	return familyInfoList;  	
     }
