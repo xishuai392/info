@@ -112,6 +112,7 @@ public class InformationQueryController {
     	FamilyInfo familyInfoFather=new FamilyInfo();
     	familyInfoFather.setRelationType("父母");
     	familyInfoFather.setRelationShip("父亲");
+    	familyInfoFather.setIdCardNum("238732874923738287");
     	familyInfoFather.setCertificateType("身份证");
     	familyInfoFather.setCertificateNum("238732874923738287");
     	familyInfoFather.setForeignFirstName("x");
@@ -122,6 +123,7 @@ public class InformationQueryController {
     	FamilyInfo familyInfoMother=new FamilyInfo();
     	familyInfoMother.setRelationType("父母");
     	familyInfoMother.setRelationShip("母亲");
+    	familyInfoMother.setIdCardNum("238732874923738287");
     	familyInfoMother.setCertificateType("身份证");
     	familyInfoMother.setCertificateNum("238732874923738287");
     	familyInfoMother.setForeignFirstName("x");
@@ -131,6 +133,7 @@ public class InformationQueryController {
     	
     	FamilyInfo familyInfoSpouse=new FamilyInfo();
     	familyInfoSpouse.setRelationType("配偶");
+    	familyInfoSpouse.setIdCardNum("238732874923738287");
     	familyInfoSpouse.setRelationShip("妻子");
     	familyInfoSpouse.setCertificateType("身份证");
     	familyInfoSpouse.setCertificateNum("238732874923738287");
@@ -142,6 +145,7 @@ public class InformationQueryController {
     	FamilyInfo familyInfoKeeper=new FamilyInfo();
     	familyInfoKeeper.setRelationType("监护人");
     	familyInfoKeeper.setRelationShip("someOne");
+    	familyInfoKeeper.setIdCardNum("238732874923738287");
     	familyInfoKeeper.setCertificateType("身份证");
     	familyInfoKeeper.setCertificateNum("238732874923738287");
     	familyInfoKeeper.setForeignFirstName("x");
@@ -152,6 +156,7 @@ public class InformationQueryController {
     	FamilyInfo familyInfoSon=new FamilyInfo();
     	familyInfoSon.setRelationType("子女");
     	familyInfoSon.setRelationShip("儿子");
+    	familyInfoSon.setIdCardNum("238732874923738287");
     	familyInfoSon.setCertificateType("身份证");
     	familyInfoSon.setCertificateNum("238732874923738287");
     	familyInfoSon.setForeignFirstName("x");
