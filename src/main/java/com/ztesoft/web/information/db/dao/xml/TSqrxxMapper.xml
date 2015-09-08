@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "mybatis-3-mapper.dtd" >
+<mapper namespace="com.ztesoft.web.information.db.dao.mapper.ITSqrxxMapper" >
+  <resultMap id="BaseResultMap" type="com.ztesoft.web.information.db.po.TSqrxxPO">
+  	<id column="ID" property="id" jdbcType="VARCHAR" />
+  	<result column="ZJH" property="zjh" jdbcType="VARCHAR" />
+  	<result column="ZJLX" property="zjlx" jdbcType="VARCHAR" />
+  	<result column="XM" property="xm" jdbcType="VARCHAR" />
+  	<result column="CXSQRLX" property="cxsqrlx" jdbcType="VARCHAR" />
+  	<result column="CXRDW" property="cxrdw" jdbcType="VARCHAR" />
+  	<result column="CXSY" property="cxsy" jdbcType="VARCHAR" />
+  	<result column="CXRQ" property="cxrq" jdbcType="VARCHAR" />
+  	<result column="CZDW" property="czdw" jdbcType="VARCHAR" />
+  	<result column="CZR" property="czr" jdbcType="VARCHAR" />
+  	<result column="CXBS" property="cxbs" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+  	ID,ZJH,ZJLX,XM,CXSQRLX,CXRDW,CXSY,CXRQ,CZDW,CZR,CXBS
+  </sql>
+  <sql id="Arg_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Arg_Where_Clause" >
+    <where >
+      <foreach collection="arg.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>  
+  <select id="selectByArg" resultMap="BaseResultMap" parameterType="com.ztesoft.web.information.db.arg.TSqrxxArg" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from T_SQRXX
+    <if test="_parameter != null" >
+      <include refid="Arg_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>  
+  <select id="selectByArgAndPage" resultMap="BaseResultMap" parameterType="com.ztesoft.web.information.db.arg.TSqrxxArg" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+     <if test="columns == null" >
+    	<include refid="Base_Column_List" />
+    </if>
+    <if test="columns != null" >
+    	${columns}
+   	</if>
+    from T_SQRXX
+    <if test="_parameter != null" >
+      <include refid="Arg_Where_Clause" />
+    </if>
+	<if test="groupByClause != null" >
+      group by ${groupByClause}
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="countByArg" parameterType="com.ztesoft.web.information.db.arg.TSqrxxArg" resultType="java.lang.Integer" >
+    <if test="countsql1 != null" >
+    	${countsql1}
+    	<if test="_parameter != null" >
+		  <include refid="Arg_Where_Clause" />
+		</if>
+		${countsql2}
+    </if>
+	<if test="countsql1 == null" >
+		select count(*) from T_SQRXX
+		<if test="_parameter != null" >
+		  <include refid="Arg_Where_Clause" />
+		</if>
+	</if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+	select
+	<include refid="Base_Column_List" />
+	from T_SQRXX
+	where ID = #{id,jdbcType=VARCHAR}
+  </select>
+  <insert id="insert" parameterType="com.ztesoft.web.information.db.po.TSqrxxPO"  >
+		insert into T_SQRXX(ID,ZJH,ZJLX,XM,CXSQRLX,CXRDW,CXSY,CXRQ,CZDW,CZR,CXBS)
+		values (#{id,jdbcType=VARCHAR},#{zjh,jdbcType=VARCHAR},#{zjlx,jdbcType=VARCHAR},#{xm,jdbcType=VARCHAR},#{cxsqrlx,jdbcType=VARCHAR},#{cxrdw,jdbcType=VARCHAR},#{cxsy,jdbcType=VARCHAR},#{cxrq,jdbcType=VARCHAR},#{czdw,jdbcType=VARCHAR},#{czr,jdbcType=VARCHAR},#{cxbs,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.ztesoft.web.information.db.po.TSqrxxPO">
+		insert into T_SQRXX
+	<trim prefix="(" suffix=")" suffixOverrides="," >
+		<if test="id != null" >
+			ID,
+		</if>
+		<if test="zjh != null" >
+			ZJH,
+		</if>
+		<if test="zjlx != null" >
+			ZJLX,
+		</if>
+		<if test="xm != null" >
+			XM,
+		</if>
+		<if test="cxsqrlx != null" >
+			CXSQRLX,
+		</if>
+		<if test="cxrdw != null" >
+			CXRDW,
+		</if>
+		<if test="cxsy != null" >
+			CXSY,
+		</if>
+		<if test="cxrq != null" >
+			CXRQ,
+		</if>
+		<if test="czdw != null" >
+			CZDW,
+		</if>
+		<if test="czr != null" >
+			CZR,
+		</if>
+		<if test="cxbs != null" >
+			CXBS,
+		</if>
+ 	</trim>
+	<trim prefix="values (" suffix=")" suffixOverrides="," >
+		<if test="id != null" >
+			#{id,jdbcType=VARCHAR},
+		</if>
+		<if test="zjh != null" >
+			#{zjh,jdbcType=VARCHAR},
+		</if>
+		<if test="zjlx != null" >
+			#{zjlx,jdbcType=VARCHAR},
+		</if>
+		<if test="xm != null" >
+			#{xm,jdbcType=VARCHAR},
+		</if>
+		<if test="cxsqrlx != null" >
+			#{cxsqrlx,jdbcType=VARCHAR},
+		</if>
+		<if test="cxrdw != null" >
+			#{cxrdw,jdbcType=VARCHAR},
+		</if>
+		<if test="cxsy != null" >
+			#{cxsy,jdbcType=VARCHAR},
+		</if>
+		<if test="cxrq != null" >
+			#{cxrq,jdbcType=VARCHAR},
+		</if>
+		<if test="czdw != null" >
+			#{czdw,jdbcType=VARCHAR},
+		</if>
+		<if test="czr != null" >
+			#{czr,jdbcType=VARCHAR},
+		</if>
+		<if test="cxbs != null" >
+			#{cxbs,jdbcType=VARCHAR},
+		</if>
+ 	</trim> 	
+  </insert>	
+  <insert id="insertBatch" parameterType="list"  >
+	insert into T_SQRXX(ID,ZJH,ZJLX,XM,CXSQRLX,CXRDW,CXSY,CXRQ,CZDW,CZR,CXBS)
+	 values 
+	 <foreach collection="list" item="item" index="index" separator=",">
+	 		(#{item.id,jdbcType=VARCHAR},#{item.zjh,jdbcType=VARCHAR},#{item.zjlx,jdbcType=VARCHAR},#{item.xm,jdbcType=VARCHAR},#{item.cxsqrlx,jdbcType=VARCHAR},#{item.cxrdw,jdbcType=VARCHAR},#{item.cxsy,jdbcType=VARCHAR},#{item.cxrq,jdbcType=VARCHAR},#{item.czdw,jdbcType=VARCHAR},#{item.czr,jdbcType=VARCHAR},#{item.cxbs,jdbcType=VARCHAR})
+	 </foreach>
+  </insert>
+  <update id="updateByArgSelective" parameterType="map" >
+    update T_SQRXX
+    <set>
+		<if test="record.zjh != null" >
+			ZJH= #{record.zjh,jdbcType=VARCHAR},
+		</if>
+		<if test="record.zjlx != null" >
+			ZJLX= #{record.zjlx,jdbcType=VARCHAR},
+		</if>
+		<if test="record.xm != null" >
+			XM= #{record.xm,jdbcType=VARCHAR},
+		</if>
+		<if test="record.cxsqrlx != null" >
+			CXSQRLX= #{record.cxsqrlx,jdbcType=VARCHAR},
+		</if>
+		<if test="record.cxrdw != null" >
+			CXRDW= #{record.cxrdw,jdbcType=VARCHAR},
+		</if>
+		<if test="record.cxsy != null" >
+			CXSY= #{record.cxsy,jdbcType=VARCHAR},
+		</if>
+		<if test="record.cxrq != null" >
+			CXRQ= #{record.cxrq,jdbcType=VARCHAR},
+		</if>
+		<if test="record.czdw != null" >
+			CZDW= #{record.czdw,jdbcType=VARCHAR},
+		</if>
+		<if test="record.czr != null" >
+			CZR= #{record.czr,jdbcType=VARCHAR},
+		</if>
+		<if test="record.cxbs != null" >
+			CXBS= #{record.cxbs,jdbcType=VARCHAR}
+		</if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Arg_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByArg" parameterType="map" >
+    update T_SQRXX
+    set 
+		ID = #{record.id,jdbcType=VARCHAR},
+		ZJH = #{record.zjh,jdbcType=VARCHAR},
+		ZJLX = #{record.zjlx,jdbcType=VARCHAR},
+		XM = #{record.xm,jdbcType=VARCHAR},
+		CXSQRLX = #{record.cxsqrlx,jdbcType=VARCHAR},
+		CXRDW = #{record.cxrdw,jdbcType=VARCHAR},
+		CXSY = #{record.cxsy,jdbcType=VARCHAR},
+		CXRQ = #{record.cxrq,jdbcType=VARCHAR},
+		CZDW = #{record.czdw,jdbcType=VARCHAR},
+		CZR = #{record.czr,jdbcType=VARCHAR},
+		CXBS = #{record.cxbs,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Arg_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.ztesoft.web.information.db.po.TSqrxxPO" >
+		update T_SQRXX
+	<set >
+	<if test="zjh != null" >
+		ZJH = #{zjh,jdbcType=VARCHAR},
+	</if>
+	<if test="zjlx != null" >
+		ZJLX = #{zjlx,jdbcType=VARCHAR},
+	</if>
+	<if test="xm != null" >
+		XM = #{xm,jdbcType=VARCHAR},
+	</if>
+	<if test="cxsqrlx != null" >
+		CXSQRLX = #{cxsqrlx,jdbcType=VARCHAR},
+	</if>
+	<if test="cxrdw != null" >
+		CXRDW = #{cxrdw,jdbcType=VARCHAR},
+	</if>
+	<if test="cxsy != null" >
+		CXSY = #{cxsy,jdbcType=VARCHAR},
+	</if>
+	<if test="cxrq != null" >
+		CXRQ = #{cxrq,jdbcType=VARCHAR},
+	</if>
+	<if test="czdw != null" >
+		CZDW = #{czdw,jdbcType=VARCHAR},
+	</if>
+	<if test="czr != null" >
+		CZR = #{czr,jdbcType=VARCHAR},
+	</if>
+		CXBS = #{cxbs,jdbcType=VARCHAR}
+	</set >
+	 where ID = #{id,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.ztesoft.web.information.db.po.TSqrxxPO" >
+		update T_SQRXX
+		set 
+			ZJH = #{zjh,jdbcType=VARCHAR},
+			ZJLX = #{zjlx,jdbcType=VARCHAR},
+			XM = #{xm,jdbcType=VARCHAR},
+			CXSQRLX = #{cxsqrlx,jdbcType=VARCHAR},
+			CXRDW = #{cxrdw,jdbcType=VARCHAR},
+			CXSY = #{cxsy,jdbcType=VARCHAR},
+			CXRQ = #{cxrq,jdbcType=VARCHAR},
+			CZDW = #{czdw,jdbcType=VARCHAR},
+			CZR = #{czr,jdbcType=VARCHAR},
+			CXBS = #{cxbs,jdbcType=VARCHAR}
+	 where ID = #{id,jdbcType=VARCHAR}
+   </update>
+  <delete id="deleteByArg" parameterType="com.ztesoft.web.information.db.arg.TSqrxxArg" >
+    delete from T_SQRXX
+    <if test="_parameter != null" >
+      <include refid="Arg_Where_Clause" />
+    </if>
+  </delete>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+	 delete from T_SQRXX
+	 where ID = #{id,jdbcType=VARCHAR}
+  </delete>
+</mapper>  
