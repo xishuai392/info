@@ -19,6 +19,8 @@ import com.ztesoft.web.information.domain.resp.MigrateInfo;
 import com.ztesoft.web.information.domain.resp.PermanetPopulationInfo;
 import com.ztesoft.web.information.domain.resp.PopulationBaseInfo;
 import com.ztesoft.web.information.domain.resp.QueryResultInfo;
+import com.ztesoft.web.information.domain.resp.TRinfo;
+import com.ztesoft.web.information.domain.resp.TRpopulationInfo;
 import com.ztesoft.web.permission.controller.AuditMenuController;
 
 /**
@@ -68,7 +70,7 @@ public class InformationQueryController {
     	resultInfoTwo.setIdCardNum("1589399399393999");
     	resultInfoTwo.setIsHavingTR("");
     	resultInfoTwo.setName("徐鑫");
-    	resultInfoTwo.setPopulationType("常住人口");
+    	resultInfoTwo.setPopulationType("暂住人口");
     	queryResultInfoList.add(resultInfoOne);
     	queryResultInfoList.add(resultInfoTwo);
     	return queryResultInfoList;  	
@@ -193,6 +195,38 @@ public class InformationQueryController {
     	permanentPopulationInfo.setMigrateInfo(migrateInfo);
     	return permanentPopulationInfo;
     }
+    @RequestMapping("queryZZRKinfo")
+    @ResponseBody
+    public  TRpopulationInfo queryTRPopulationInfo(QueryByOtherPeopleReqInfo reqInfo){
+    	TRpopulationInfo trPopulationInfo=new TRpopulationInfo();
+    	trPopulationInfo.setBaseInfo(queryBasePopulation(reqInfo));
+    	trPopulationInfo.setTrInfoList(queryTRInfoList(reqInfo));
+    	return trPopulationInfo;
+    }
     
+    private List<TRinfo> queryTRInfoList(QueryByOtherPeopleReqInfo reqInfo){
+    	List<TRinfo> trInfoList=new ArrayList<TRinfo>();
+    	TRinfo infoOne=new TRinfo();
+    	infoOne.setEndDate("20150903");
+    	infoOne.setFillDate("1");
+    	infoOne.setIntervalTime("10");
+    	infoOne.setStartDate("20140101");
+    	infoOne.setTrAddress("厦门市思明区软件园二期");
+    	infoOne.setTrCardCompany("中兴");
+    	infoOne.setTrCardIssuneOffice("思明区派出所");
+    	infoOne.setTrNum("23424398778838");
+    	trInfoList.add(infoOne);
+    	TRinfo infoTwo=new TRinfo();
+    	infoTwo.setEndDate("20150903");
+    	infoTwo.setFillDate("1");
+    	infoTwo.setIntervalTime("10");
+    	infoTwo.setStartDate("20140101");
+    	infoTwo.setTrAddress("厦门市思明区软件园二期");
+    	infoTwo.setTrCardCompany("中兴");
+    	infoTwo.setTrCardIssuneOffice("思明区派出所");
+    	infoTwo.setTrNum("23424398778838");
+    	trInfoList.add(infoTwo);
+    	return trInfoList;
+    }
     
 }
