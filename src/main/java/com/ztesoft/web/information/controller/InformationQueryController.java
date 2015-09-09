@@ -18,6 +18,7 @@ import com.ztesoft.web.information.domain.resp.FamilyInfo;
 import com.ztesoft.web.information.domain.resp.MigrateInfo;
 import com.ztesoft.web.information.domain.resp.PermanetPopulationInfo;
 import com.ztesoft.web.information.domain.resp.PopulationBaseInfo;
+import com.ztesoft.web.information.domain.resp.QueryRespInfo;
 import com.ztesoft.web.information.domain.resp.QueryResultInfo;
 import com.ztesoft.web.information.domain.resp.TRinfo;
 import com.ztesoft.web.information.domain.resp.TRpopulationInfo;
@@ -46,10 +47,12 @@ public class InformationQueryController {
      * @param hello
      * @return
      */
-    public String applicantQuery(QueryPeopleReqInfo reqInfo){
+    public QueryRespInfo applicantQuery(QueryPeopleReqInfo reqInfo){
+    	QueryRespInfo respInfo=new QueryRespInfo();
     	String uuid=UuidUtils.generatorUUID();
     	//记录查询日志，生成日志操作记录信息表
-    	return uuid;
+    	respInfo.setUuid(uuid);
+    	return respInfo;
     }
     
     @RequestMapping("queryByOther")
