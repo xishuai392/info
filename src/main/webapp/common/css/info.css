@@ -1,7 +1,6 @@
 /* CSS Document #d5e5fa*/
 
 .frame_normal {
-  	border-top: #99cccc 1px solid ;
   	margin-top:5px;
 	margin-left:50px;
 	PADDING-TOP: 10px; 
@@ -76,7 +75,7 @@
 	background-color:#f2f6fb;
 }
 
-.tbl td.textInfo{
+.tbl td.textInfoLeft{
 	font-family: Verdana, Arial, Helvetica, sans-serif;
 	font-size: 12px;
 	color: #000;
@@ -85,6 +84,40 @@
 	text-indent:5px;
 }
 
+.tbl td.textInfoRight{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000;
+	line-height:26px;
+	text-align:right;
+	text-indent:5px;
+}
+
+.tb2{
+	font-size:12px;
+	color:#000;
+	text-align:center;
+	border-collapse:collapse;
+	margin:0;
+}
+
+.tb2 td.textInfoLeft{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000;
+	line-height:26px;
+	text-align:left;
+	text-indent:5px;
+}
+
+.tb2 td.textInfoRight{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	color: #000;
+	line-height:26px;
+	text-align:right;
+	text-indent:5px;
+}
 
 .tbl tr.total{
 	font-family: Verdana, Arial, Helvetica, sans-serif;
