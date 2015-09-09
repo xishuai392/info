@@ -2,7 +2,7 @@
  * 人口信息查询首页
  */
 Ext.onReady(function() {
-    var sqrxxPanel,zjPanel,ssxzlPanel,bcxrxxPanel,bcxrStore,bcxrGrid,infoMainPanel;
+    var sqrxxPanel,zjPanel,ssxzlPanel,bcxrxxPanel,bcxrStore,bcxrGrid,changzhuWin,zanzhuWin,infoMainPanel;
     
     var cardNav = function (incr) { 
     	
@@ -138,10 +138,27 @@ Ext.onReady(function() {
 	        handler: function() {
 	            var form = this.up('form').getForm();
 	            if (form.isValid()) {
-	            	//ExtUtils.info('通过表单校验');
-	            	var layout = infoMainPanel.getLayout();
-	            	//layout.setActiveItem(1);//下一步：证件扫描
-	            	layout.setActiveItem(3);
+	            	
+	            	var params = {};
+	            	Ext.apply(params,form.getValues());
+	            	//this.setParams(this.store.proxy.extraParams,this.getForm().getValues());
+	            	var config = {
+			            url : 'information/applicantQuery.do',
+			            params : params,
+			            callback : function(uuid){
+				            	console.log("uuid:"+uuid);
+				            	if(uuid.length==32){
+				            		//ExtUtils.info('通过表单校验');
+					            	var layout = infoMainPanel.getLayout();
+					            	//layout.setActiveItem(1);//下一步：证件扫描
+					            	layout.setActiveItem(1);
+				            	}
+			            }
+			        };
+			        ExtUtils.doAjax(config);
+	            	
+	            	
+	            	
 	            }
 	        }
 	    }]
@@ -161,6 +178,13 @@ Ext.onReady(function() {
 	        } 
 	    }],
 	    buttons: [{
+	        text: '第一步',
+	        iconCls: "x-tbar-page-first",
+	        handler: function() {
+	            var layout = infoMainPanel.getLayout();
+	            layout.setActiveItem(0);//第一步：填写申请人信息
+	        }
+	    },{
 	        text: '上一步',
 	        iconCls : 'x-btn-icon-el x-tbar-page-prev',
 	        handler: function() {
@@ -172,6 +196,10 @@ Ext.onReady(function() {
 	        iconCls : 'x-btn-icon-el x-tbar-page-next',
 	        formBind: true, //only enabled once the form is valid
 	        handler: function() {
+	        	
+	        	var applicantQueryType = sqrxxPanel.findField('applicantQueryType').getValue();
+	        	console.log(applicantQueryType);
+	        	
 	            //ExtUtils.info('介绍信及相关资料扫描');
 	            var layout = infoMainPanel.getLayout();
 	            layout.setActiveItem(2);//下一步：介绍信及相关资料扫描
@@ -192,6 +220,13 @@ Ext.onReady(function() {
 	        } 
 	    }],
 	    buttons: [{
+	        text: '第一步',
+	        iconCls: "x-tbar-page-first",
+	        handler: function() {
+	            var layout = infoMainPanel.getLayout();
+	            layout.setActiveItem(0);//第一步：填写申请人信息
+	        }
+	    },{
 	        text: '上一步',
 	        iconCls : 'x-btn-icon-el x-tbar-page-prev',
 	        handler: function() {
@@ -236,10 +271,11 @@ Ext.onReady(function() {
         }],
         // 重置 和下一步 按钮.
 	    buttons: [{
-	        text: '重置',
-	        icon : ctx + '/common/images/icons/arrow_rotate_anticlockwise.png',
+	        text: '第一步',
+	        iconCls: "x-tbar-page-first",
 	        handler: function() {
-	            this.up('form').getForm().reset();
+	            var layout = infoMainPanel.getLayout();
+	            layout.setActiveItem(0);//第一步：填写申请人信息
 	        }
 	    },{
 	        text: '上一步',
@@ -248,7 +284,13 @@ Ext.onReady(function() {
 	            var layout = infoMainPanel.getLayout();
 	            layout.setActiveItem(2);//上一步：介绍信及相关资料扫描
 	        }
-	    }, {
+	    },{
+	        text: '重置',
+	        icon : ctx + '/common/images/icons/arrow_rotate_anticlockwise.png',
+	        handler: function() {
+	            this.up('form').getForm().reset();
+	        }
+	    },{
 	        text: '查询',
 	        icon : ctx + '/common/images/icons/magnifier.png',
 	        formBind: true, //only enabled once the form is valid
@@ -300,55 +342,76 @@ Ext.onReady(function() {
             text : "人口类型",
             dataIndex : "populationType",
             renderer : function(value, meta, record) {
-                return value == 'A' ? '户籍人口' : '暂住人口';
+                //return value == 'A' ? '户籍人口' : '暂住人口';
+            	return value;
             },
             flex : 1
         },{
             text : "是否办理暂住证",
             dataIndex : "isHavingTR",
-            renderer : function(value, meta, record) {
-            	var viewMsg = "";
-            	if(value == 'A'){
-            		viewMsg = '已办理';
-            	}
-            	
-                return  viewMsg;
-            },
+//            renderer : function(value, meta, record) {
+//            	var viewMsg = "";
+//            	if(value == 'A'){
+//            		viewMsg = '已办理';
+//            	}
+//            	
+//                return  viewMsg;
+//            },
             flex : 1
         },
         {  
             text: '操作',  
             xtype:'actioncolumn',  
-            width: 50,  
+            width: 100,  
             items: [  
                 {  
                     icon: ctx + '/common/images/icons/application_view_detail.png', // 指定图标  
                     tooltip: '查看',  
                     handler: function(grid, rowIndex, colIndex){
                     	// 指定单击“查看”按钮的事件处理函数  
+                    	
                     	console.log("rowIndex:"+rowIndex);
                     	console.log("colIndex:"+colIndex);
-                    	changzhuWin.show();
-                    	var config = {
-				            url : '/information/queryCZRKinfo.do',
-				            params : {
-				            
-				            },
-				            callback : function(data){
-				            	console.log("ddddddd");
-				            	//console.log(Ext.decode(data));
-				            	changzhuWin.show();
-				            	//console.log(changzhuWin.down('panel').get('detailDiv'));
-				            	//console.log(changzhuWin.down('panel').getEl().get('detailDiv'));
-				            	//重写绑定模板 
-    							//changzhuWinTp.overwrite(changzhuWin.down('panel').getEl(), tpData);
-				            	changzhuWinTp.overwrite(changzhuWin.down('panel').getEl(), data);
-				            	console.log("eeeeeee");
-				            	console.log(changzhuWin.down('panel').getEl().getHTML());
-				            }
-				        };
-				
-				        ExtUtils.doAjax(config);
+                    	console.log(grid.getStore().getAt(rowIndex).data.populationType);
+                    	if('户籍人口'==grid.getStore().getAt(rowIndex).data.populationType){
+	                    	var config = {
+					            url : '/information/queryCZRKinfo.do',
+					            params : {
+					            
+					            },
+					            callback : function(data){
+					            	changzhuWin.show();
+					            	console.log("changzhuWin");
+					            	//重写绑定模板 
+	    							//changzhuWinTp.overwrite(changzhuWin.down('panel').getEl(), tpData);
+					            	changzhuWinTp.overwrite(changzhuWin.down('panel').getEl().getById("detailDiv"), data);
+					            	console.log("bbbbb");
+					            	console.log(changzhuWin.down('panel').getEl().getHTML());
+					            	changzhuWin.down('panel').doComponentLayout();
+					            	//changzhuWin.down('panel').fireEvent('resize');
+					            }
+					        };
+					        ExtUtils.doAjax(config);
+                    	}
+                    	
+                    	if('暂住人口'==grid.getStore().getAt(rowIndex).data.populationType){
+                    		var config = {
+					            url : '/information/queryZZRKinfo.do',
+					            params : {
+					            
+					            },
+					            callback : function(data){
+					            	zanzhuWin.show();
+					            	console.log("zanzhuWin");
+					            	//重写绑定模板 
+	    							//changzhuWinTp.overwrite(changzhuWin.down('panel').getEl(), tpData);
+					            	zanzhuWinTp.overwrite(zanzhuWin.down('panel').getEl().getById("detailDiv"), data);
+					            	console.log(zanhuWin.down('panel').getEl().getHTML());
+					            }
+					        };
+					        ExtUtils.doAjax(config);
+                    	}
+                    	
         
                     	
                     } 
@@ -357,6 +420,13 @@ Ext.onReady(function() {
         } 
         ],
         buttons: [{
+	        text: '第一步',
+	        iconCls: "x-tbar-page-first",
+	        handler: function() {
+	            var layout = infoMainPanel.getLayout();
+	            layout.setActiveItem(0);//第一步：填写申请人信息
+	        }
+	    },{
 	        text: '上一步',
 	        iconCls : 'x-btn-icon-el x-tbar-page-prev',
 	        handler: function() {
@@ -366,21 +436,11 @@ Ext.onReady(function() {
 	    }]
     });
     
-    //6、本市户籍人口信息 常住
-    changzhuWin = Ext.create('ZTEsoft.window.Window',{
-    	id : 'card5',
-    	width : '900',
-        height : '300',
-        layout : 'fit',
-        maximized : true,
-        maximizable : true,
-        items : [Ext.create('Ext.panel.Panel',{html : '<div id="detailDiv"></div>'})],
-        resizable : true
-    });
     
     
     
-    ////创建模板
+    
+    ////创建常住人口模板
     var changzhuWinTp = new Ext.XTemplate(
 	'<div class="frame_normal" id="allDiv">',
 	'	<div class="div_title" id="titleDiv">',
@@ -390,24 +450,24 @@ Ext.onReady(function() {
 	'		<h1>人员基本信息</h1>',
 	'	</div>',
 	'	<div id="part1Table">',
-	'		<table class="tbl" width=90%>',
+	'		<table class="tbl" width=1024>',
 	'			<tr>',
-	'				<td>姓名</td>',
-	'				<td class="textInfo">{[values.baseInfo.name]}</td>',
+	'				<td width=100>姓名</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.name]}</td>',
 	'				<td>曾用名</td>',
-	'				<td class="textInfo">{[values.baseInfo.aliaName]}</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.aliaName]}</td>',
 	'				<td>性别</td>',
-	'				<td class="textInfo">{[values.baseInfo.sex]}</td>',
-	'				<td colspan=2 rowspan=6><img alt="照片"',
+	'				<td class="textInfoLeft">{[values.baseInfo.sex]}</td>',
+	'				<td colspan=2 rowspan=6 width=160><img alt="照片" ',
 	'					src="{[values.baseInfo.photoGif]}"></td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>民族</td>',
-	'				<td class="textInfo">{[values.baseInfo.nation]}</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.nation]}</td>',
 	'				<td>出生日期</td>',
-	'				<td class="textInfo">{[values.baseInfo.birthDate]}</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.birthDate]}</td>',
 	'				<td>公民身份证号码</td>',
-	'				<td class="textInfo">{[values.baseInfo.idCardNum]}</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.idCardNum]}</td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>&nbsp;&nbsp;</td>',
@@ -417,29 +477,29 @@ Ext.onReady(function() {
 	'			</tr>',
 	'			<tr>',
 	'				<td>籍贯</td>',
-	'				<td class="textInfo">{[values.baseInfo.nativePlaceNation]}</td>',
-	'				<td class="textInfo" colspan=2>{[values.baseInfo.nativePlaceProvince]}</td>',
-	'				<td class="textInfo" colspan=2>{[values.baseInfo.nativePlaceDetailAddress]}</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.nativePlaceNation]}</td>',
+	'				<td class="textInfoLeft" colspan=2>{[values.baseInfo.nativePlaceProvince]}</td>',
+	'				<td class="textInfoLeft" colspan=2>{[values.baseInfo.nativePlaceDetailAddress]}</td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>出生地</td>',
-	'				<td class="textInfo">{[values.baseInfo.birthPlaceNation]}</td>',
-	'				<td class="textInfo" colspan=2>{[values.baseInfo.birthPlaceProvince]}</td>',
-	'				<td class="textInfo" colspan=2>{[values.baseInfo.birthPlaceDetailAddress]}</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.birthPlaceNation]}</td>',
+	'				<td class="textInfoLeft" colspan=2>{[values.baseInfo.birthPlaceProvince]}</td>',
+	'				<td class="textInfoLeft" colspan=2>{[values.baseInfo.birthPlaceDetailAddress]}</td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>身份证签发机关</td>',
-	'				<td class="textInfo" colspan=2>{[values.baseInfo.idCardIssuneOffice]}</td>',
+	'				<td class="textInfoLeft" colspan=2>{[values.baseInfo.idCardIssuneOffice]}</td>',
 	'				<td colspan=1>身份证有效期限</td>',
-	'				<td class="textInfo" colspan=2>{[values.baseInfo.idCardExciptyTime]}</td>',
+	'				<td class="textInfoLeft" colspan=2>{[values.baseInfo.idCardExciptyTime]}</td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>住址</td>',
-	'				<td class="textInfo" colspan=7>{[values.baseInfo.liveAddress]}</td>',
+	'				<td class="textInfoLeft" colspan=7>{[values.baseInfo.liveAddress]}</td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>派出所</td>',
-	'				<td class="textInfo" colspan=7>{[values.baseInfo.policeStation]}</td>',
+	'				<td class="textInfoLeft" colspan=7>{[values.baseInfo.policeStation]}</td>',
 	'			</tr>',
 	'		</table>',
 	'	</div>',
@@ -448,7 +508,7 @@ Ext.onReady(function() {
 	'		<h1>家庭关系及联系人信息</h1>',
 	'	</div>',
 	'	<div id="part2Table">',
-	'		<table class="tbl" width=90%>',
+	'		<table class="tbl" width=1024>',
 	'			<tr>',
 	'				<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>',
 	'				<td>关系</td>',
@@ -480,29 +540,214 @@ Ext.onReady(function() {
 	'		<h1>迁移信息</h1>',
 	'	</div>',
 	'	<div id="part3Table">',
-	'		<table class="tbl" width=90%>',
+	'		<table class="tbl" width=1024>',
 	'			<tr>',
-	'				<td>何时何因由何地迁来本市(县)</td>',
-	'				<td colspan=7>{[values.migrateInfo.timeAndResultForMigrateLocal]}</td>',
+	'				<td width=150>何时何因由何地迁来本市(县)</td>',
+	'				<td colspan=7 class="textInfoLeft">{[values.migrateInfo.timeAndResultForMigrateLocal]}</td>',
 	'			</tr>',
 	'			<tr>',
-	'				<td>何时何因由何地迁来本址</td>',
-	'				<td colspan=7>{[values.migrateInfo.timeAndResultForMigrateLocal]}</td>',
+	'				<td width=150>何时何因由何地迁来本址</td>',
+	'				<td colspan=7 class="textInfoLeft">{[values.migrateInfo.timeAndResultForMigrateLocal]}</td>',
 	'			</tr>',
 	'			<tr>',
-	'				<td>何时何因迁往何地</td>',
-	'				<td colspan=7>{[values.migrateInfo.timeAndResultForMigrateOtherPlace]}</td>',
+	'				<td width=150>何时何因迁往何地</td>',
+	'				<td colspan=7 class="textInfoLeft">{[values.migrateInfo.timeAndResultForMigrateOtherPlace]}</td>',
 	'			</tr>',
 	'		</table>',
 	'	</div>',
   '',
-	'	<div id="part3Div">',
-	'		<h1>以上查询信息仅作为.............. 操作单位：XXXX 操作人：XX 打印日期：{[new Date().toLocaleDateString()]}</h1>',
+	'	<div id="part4Div">',
+	'	<table class="tb2" width=1024>',
+	'		<tr>',
+	'			<td colspan=6  class="textInfoLeft">以上查询信息仅作为..............</td>',
+	'			<td class="textInfoRight">操作单位：</td>',
+	'			<td class="textInfoLeft">XXXX</td>',
+	'			<td class="textInfoRight">操作人：</td>',
+	'			<td class="textInfoLeft">XXXX</td>',
+	'			<td class="textInfoRight">打印日期：</td>',
+	'			<td class="textInfoLeft">{[new Date().toLocaleDateString()]}</td>',
+	'		</tr>',
+	'	</table>',
 	'	</div>',
 	'</div>'
 	);
 	changzhuWinTp.compile( ) ;
     
+	
+	//6、本市户籍人口信息 常住
+    changzhuWin = Ext.create('ZTEsoft.window.Window',{
+    	id : 'card5',
+    	width : '900',
+        height : '700',
+        layout : 'fit',
+        closeAction : 'hide',
+        maximized : true,
+        maximizable : true,
+        items : [Ext.create('Ext.panel.Panel',{
+        		tpl : changzhuWinTp,
+	        	overflowY :'scroll',
+	        	html : '<div id="detailDiv"></div>'
+        	}
+        )],
+        resizable : true,
+        buttons: [{ 
+        		text: '打印' ,
+        		icon : ctx + '/common/images/icons/printer.png',
+				name : 'printBtn',
+				handler: function(btn) {
+		            console.log("dayin");
+		        }
+        	},{ 
+        		text : '取消',
+				iconCls : 'arrow_undo',
+				name : 'canceltBtn',
+				handler : function(){
+					changzhuWin.hide();
+				}
+        	}
+		]
+    });
+    
+    
+    
+    ////创建常住人口模板
+    var zanzhuWinTp = new Ext.XTemplate(
+	'<div class="frame_normal" id="allDiv">',
+	'	<div class="div_title" id="titleDiv">',
+	'		<h1>本市暂住人口信息查询表</h1>',
+	'	</div>',
+	'	<div class="div_second_title" id="part1Div">',
+	'		<h1>人员基本信息</h1>',
+	'	</div>',
+	'	<div id="part1Table">',
+	'		<table class="tbl" width=1024>',
+	'			<tr>',
+	'				<td>公民身份证号码</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.idCardNum]}</td>',
+	'				<td width=100>姓名</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.name]}</td>',
+	'				<td colspan=2 rowspan=6 width=160><img alt="照片" ',
+	'					src="{[values.baseInfo.photoGif]}"></td>',
+	'			</tr>',
+	'			<tr>',
+	'				<td>曾用名</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.aliaName]}</td>',
+	'				<td>性别</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.sex]}</td>',
+	'			</tr>',
+	'			<tr>',
+	'				<td>出生日期</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.birthDate]}</td>',
+	'				<td>民族</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.nation]}</td>',
+	'			</tr>',
+	'			<tr>',
+	'				<td>&nbsp;&nbsp;</td>',
+	'				<td>国家(地区)</td>',
+	'				<td colspan=2>省市县(区)</td>',
+	'				<td colspan=2>详址</td>',
+	'			</tr>',
+	'			<tr>',
+	'				<td>籍贯</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.nativePlace]}</td>',
+	'				<td class="textInfoLeft" >&nbsp;</td>',
+	'				<td class="textInfoLeft" >&nbsp;</td>',
+	'			</tr>',
+	'			<tr>',
+	'				<td>户籍地址省市县（区）</td>',
+	'				<td class="textInfoLeft" colspan=3>{[values.baseInfo.householdRegisterProviceAddress]}</td>',
+	'			</tr>',
+	'			<tr>',
+	'				<td>户籍详细地址</td>',
+	'				<td class="textInfoLeft" colspan=1>{[values.baseInfo.householdRegisterDetailAddress]}</td>',
+	'			</tr>',
+	'		</table>',
+	'	</div>',
+  '',
+	'	<div class="div_second_title" id="part2Div">',
+	'		<h1>暂住信息</h1>',
+	'	</div>',
+	'	<div id="part2Table">',
+	'		<table class="tbl" width=1024>',
+	'			<tr>',
+	'				<td>序号</td>',
+	'				<td>暂住证编号</td>',
+	'				<td>起始日期</td>',
+	'				<td>截止日期</td>',
+	'				<td>间隔时间</td>',
+	'				<td>签发机构</td>',
+	'				<td>登记单位</td>',
+	'				<td>填报日期</td>',
+	'				<td>暂住地址</td>',
+	'			</tr>',
+	'			<tpl for="familyInfoList">',
+	'			<tr>',
+	'				<td>{relationType}</td>',
+	'				<td>{relationShip}</td>',
+	'				<td>{idCardNum}</td>',
+	'				<td>{name}</td>',
+	'				<td>{certificateType}</td>',
+	'				<td>{certificateNum}</td>',
+	'				<td>{foreignLastName}</td>',
+	'				<td>{foreignFirstName}</td>',
+	'				<td>{telephoneNum}</td>',
+	'			</tr>',
+	'			</tpl>',
+	'		</table>',
+	'	</div>',
+  '',
+  '',
+	'	<div id="part3Div">',
+	'	<table class="tb2" width=1024>',
+	'		<tr>',
+	'			<td colspan=6  class="textInfoLeft">以上查询信息仅作为..............</td>',
+	'			<td class="textInfoRight">操作单位：</td>',
+	'			<td class="textInfoLeft">XXXX</td>',
+	'			<td class="textInfoRight">操作人：</td>',
+	'			<td class="textInfoLeft">XXXX</td>',
+	'			<td class="textInfoRight">打印日期：</td>',
+	'			<td class="textInfoLeft">{[new Date().toLocaleDateString()]}</td>',
+	'		</tr>',
+	'	</table>',
+	'	</div>',
+	'</div>'
+	);
+	
+	
+	
+	//7、本市户籍人口信息 暂住
+    zanzhuWin = Ext.create('ZTEsoft.window.Window',{
+    	id : 'card7',
+    	width : '900',
+        height : '700',
+        layout : 'fit',
+        maximized : true,
+        maximizable : true,
+        items : [Ext.create('Ext.panel.Panel',{
+	        	overflowY :'scroll',
+	        	html : '<div id="detailDiv"></div>'
+        	}
+        )],
+        resizable : true,
+        buttons: [{ 
+        		text: '打印' ,
+        		icon : ctx + '/common/images/icons/printer.png',
+				name : 'printBtn',
+				handler: function(btn) {
+		            console.log("dayin");
+		        }
+        	},{ 
+        		text : '取消',
+				iconCls : 'arrow_undo',
+				name : 'canceltBtn',
+				handler : function(){
+					changzhuWin.hide();
+				}
+        	}
+		]
+    });
+    
+	
     
     //人口信息查询主要面板
     infoMainPanel = Ext.create('Ext.Panel', { 
