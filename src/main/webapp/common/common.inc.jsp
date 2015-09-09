@@ -4,6 +4,7 @@
 <link rel="stylesheet" type="text/css"
 	href="<%=request.getContextPath()%>/common/css/style.css">
 
+
 <!-- Ext -->
 <%@ include file="/common/head.ext4.inc.jsp"%>
 <style type="text/css">
