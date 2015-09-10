@@ -10,7 +10,7 @@ import com.ztesoft.web.information.domain.req.scan.IdScanReqInfo;
 
 /**
  * 证件扫描控制类
- * 包含证件扫描和文件扫描
+ * 包含证件 扫描和文件扫描
  * @author Ocean
  *
  */
