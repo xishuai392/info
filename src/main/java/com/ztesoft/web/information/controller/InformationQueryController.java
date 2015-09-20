@@ -15,6 +15,7 @@ import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
 import com.ztesoft.framework.util.UuidUtils;
 import com.ztesoft.web.information.db.po.TSqrxxPO;
+import com.ztesoft.web.information.domain.req.print.PrintReqInfo;
 import com.ztesoft.web.information.domain.req.query.QueryByOtherPeopleReqInfo;
 import com.ztesoft.web.information.domain.req.query.QueryPeopleReqInfo;
 import com.ztesoft.web.information.domain.resp.Address;
@@ -71,9 +72,12 @@ public class InformationQueryController {
     @RequestMapping("queryByOther")
     @ResponseBody
     public List<QueryResultInfo> queryByOtherPeople(QueryByOtherPeopleReqInfo reqInfo){
+    	
+    	/*******************************make data start********************************/
     	List<QueryResultInfo> queryResultInfoList=new ArrayList<QueryResultInfo>();
     	//暂时自己手工拼装
     	QueryResultInfo resultInfoOne=new QueryResultInfo();
+    	resultInfoOne.setBcxrxxId("219237837932");
     	resultInfoOne.setAddress("中国厦门");
     	resultInfoOne.setBirthDate("19911999");
     	resultInfoOne.setIdCardNum("1589399399393999");
@@ -81,6 +85,7 @@ public class InformationQueryController {
     	resultInfoOne.setName("徐鑫");
     	resultInfoOne.setPopulationType("户籍人口");
     	QueryResultInfo resultInfoTwo=new QueryResultInfo();
+    	resultInfoTwo.setBcxrxxId("2380973294387");
     	resultInfoTwo.setAddress("中国厦门");
     	resultInfoTwo.setBirthDate("19911999");
     	resultInfoTwo.setIdCardNum("1589399399393999");
@@ -89,6 +94,9 @@ public class InformationQueryController {
     	resultInfoTwo.setPopulationType("暂住人口");
     	queryResultInfoList.add(resultInfoOne);
     	queryResultInfoList.add(resultInfoTwo);
+    	/*******************************make data end********************************/
+    	
+    	
     	return queryResultInfoList;  	
     }
   @RequestMapping("queryCZRKinfo")
@@ -111,10 +119,14 @@ public class InformationQueryController {
   	trPopulationInfo.setTrInfoList(queryTRInfoList(reqInfo));
   	return trPopulationInfo;
   }
+  @RequestMapping("printInfo")
+  @ResponseBody
+  public void printQueryInfo(PrintReqInfo reqInfo){
+	  
+  }
     
-    
-    @RequestMapping("queryBasePopulation")
-    @ResponseBody
+//    @RequestMapping("queryBasePopulation")
+//    @ResponseBody
     public PopulationBaseInfo queryBasePopulation(QueryByOtherPeopleReqInfo reqInfo){
     	//暂时手工组装信息
     	PopulationBaseInfo baseInfo=new PopulationBaseInfo();

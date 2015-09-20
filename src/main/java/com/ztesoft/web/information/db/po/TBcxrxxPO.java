@@ -15,6 +15,10 @@ public class TBcxrxxPO extends AbstractDto{
 	private String  sfzf;
 	private String  zfly;
 	private String  sfdy;
+	private String  bcxrq;
+	private String  xgrq;
+	private String  rklx;
+	private Integer  cxcs;
     public String getId() {
         return StringUtils.isBlank(id) ? id : id.trim();
     }
@@ -86,5 +90,37 @@ public class TBcxrxxPO extends AbstractDto{
         this.sfdy = sfdy;
     }
     
+    
+    public String getBcxrq() {
+        return StringUtils.isBlank(bcxrq) ? bcxrq : bcxrq.trim();
+    }
+    public void setBcxrq(String bcxrq) {
+        this.bcxrq = bcxrq;
+    }
+    
+    
+    public String getXgrq() {
+        return StringUtils.isBlank(xgrq) ? xgrq : xgrq.trim();
+    }
+    public void setXgrq(String xgrq) {
+        this.xgrq = xgrq;
+    }
+    
+    
+    public String getRklx() {
+        return StringUtils.isBlank(rklx) ? rklx : rklx.trim();
+    }
+    public void setRklx(String rklx) {
+        this.rklx = rklx;
+    }
+    
+    
+    public Integer getCxcs() {
+        return cxcs;
+    }
+    public void setCxcs(Integer cxcs) {
+        this.cxcs = cxcs;
+    }
+
     
 }
