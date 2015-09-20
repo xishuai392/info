@@ -6,6 +6,10 @@
 Ext.define('component.information.model.QueryResultInfoModel', {
     extend : 'Ext.data.Model',
     fields : [
+    		{
+	            name : 'bcxrxxId',
+	            type : 'auto'
+        	},
        		{
 	            name : 'name',
 	            type : 'auto'

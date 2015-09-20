@@ -74,11 +74,11 @@ Ext.onReady(function() {
             operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
             allowBlank : false,
             width: 500,
-            name : "idCardNum"
+            name : "zjh"
         }, {
             fieldLabel : "证件类型",
             xtype : "combo",
-            name : "indentyType",
+            name : "zjlx",
             displayField : 'text',
             valueField : 'value',
             afterSubTpl : WEBConstants.REQUIRED,
@@ -95,11 +95,11 @@ Ext.onReady(function() {
             allowBlank : false,
             afterSubTpl : WEBConstants.REQUIRED,
             operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
-            name : "name"
+            name : "xm"
         },{
             fieldLabel : "查询申请人类型",
             xtype : "combo",
-            name : "applicantQueryType",
+            name : "cxsqrlx",
             displayField : 'text',
             valueField : 'value',
             editable : false,
@@ -114,15 +114,19 @@ Ext.onReady(function() {
         },{
             fieldLabel : "申请查询人单位",
             xtype : "textfield",
-            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
-            name : "applicantCompany"
+            name : "cxrdw"
         },{
             fieldLabel : "查询事由",
             xtype : "textfield",
             grow      : true,
             width: 500,
-            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
-            name : "queryResult"
+            name : "cxsy"
+        },{
+            fieldLabel : "mainId",//申请人信息表主键
+            xtype : "textfield",
+            width: 500,
+            hidden : true,
+            name : "mainId"
         }],
         // 重置 和下一步 按钮.
 	    buttons: [{
@@ -138,17 +142,17 @@ Ext.onReady(function() {
 	        handler: function() {
 	            var form = this.up('form').getForm();
 	            if (form.isValid()) {
-	            	
 	            	var params = {};
 	            	Ext.apply(params,form.getValues());
 	            	//this.setParams(this.store.proxy.extraParams,this.getForm().getValues());
 	            	var config = {
 			            url : 'information/applicantQuery.do',
 			            params : params,
-			            callback : function(uuid){
-				            	console.log("uuid:"+uuid);
+			            callback : function(jsonData){
+			            		var uuid = jsonData.uuid;
 				            	if(uuid.length==32){
 				            		//ExtUtils.info('通过表单校验');
+				            		sqrxxPanel.getForm().findField('mainId').setValue(uuid);
 					            	var layout = infoMainPanel.getLayout();
 					            	//layout.setActiveItem(1);//下一步：证件扫描
 					            	layout.setActiveItem(1);
@@ -156,9 +160,6 @@ Ext.onReady(function() {
 			            }
 			        };
 			        ExtUtils.doAjax(config);
-	            	
-	            	
-	            	
 	            }
 	        }
 	    }]
@@ -196,13 +197,26 @@ Ext.onReady(function() {
 	        iconCls : 'x-btn-icon-el x-tbar-page-next',
 	        formBind: true, //only enabled once the form is valid
 	        handler: function() {
-	        	
-	        	var applicantQueryType = sqrxxPanel.findField('applicantQueryType').getValue();
-	        	console.log(applicantQueryType);
-	        	
-	            //ExtUtils.info('介绍信及相关资料扫描');
-	            var layout = infoMainPanel.getLayout();
-	            layout.setActiveItem(2);//下一步：介绍信及相关资料扫描
+	        	var params = {};
+            	var config = {
+		            //TODO 
+            		url : 'information/applicantQuery.do',
+		            params : params,
+		            timeout : 1200000, // 超时：20分钟
+		            callback : function(jsonData){
+		            	var layout = infoMainPanel.getLayout();
+			        	var cxsqrlx = sqrxxPanel.getForm().findField('cxsqrlx').getValue();
+			        	console.log(cxsqrlx);
+			        	if("50"==cxsqrlx){
+			        		//个人查询，跳过 介绍信及相关资料扫描
+			        		layout.setActiveItem(3);//下一步：被查询人信息
+			        	}else{
+			        		 //ExtUtils.info('介绍信及相关资料扫描');
+			        		layout.setActiveItem(2);//下一步：介绍信及相关资料扫描
+			        	}
+		            }
+		        };
+		        ExtUtils.doAjax(config);
 	        }
 	    }]
     });
@@ -238,9 +252,20 @@ Ext.onReady(function() {
 	        iconCls : 'x-btn-icon-el x-tbar-page-next',
 	        formBind: true, //only enabled once the form is valid
 	        handler: function() {
-	            //ExtUtils.info('被查询人信息');
-	            var layout = infoMainPanel.getLayout();
-	            layout.setActiveItem(3);//下一步：被查询人信息
+	        	var params = {};
+            	var config = {
+		            //TODO 
+            		url : 'information/applicantQuery.do',
+            		timeout : 1200000, // 超时：20分钟
+		            params : params,
+		            callback : function(jsonData){
+		            	//ExtUtils.info('被查询人信息');
+			            var layout = infoMainPanel.getLayout();
+			            layout.setActiveItem(3);//下一步：被查询人信息
+		            }
+		        };
+		        ExtUtils.doAjax(config);
+	            
 	        }
 	    }]
     });
@@ -264,7 +289,6 @@ Ext.onReady(function() {
             fieldLabel : "身份证号码",
             xtype : "textfield",
             afterSubTpl : WEBConstants.REQUIRED,
-            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
             allowBlank : false,
             width: 500,
             name : "idCardNum"
@@ -297,13 +321,14 @@ Ext.onReady(function() {
 	        handler: function() {
 	            var form = this.up('form').getForm();
 	            if (form.isValid()) {
-	            	//ExtUtils.info('通过表单校验');
+	            	
+	            	//通过表单校验
 	            	var layout = infoMainPanel.getLayout();
 	            	layout.setActiveItem(4);//下一步：显示查询结果
 	            	
 	            	bcxrStore.getProxy().extraParams = {
 			        	//查询日志表的id
-						cxrzId : '',
+						cxrzId : sqrxxPanel.getForm().findField('mainId').getValue(),
 						//被查询人的身份证信息
 						idCardNum : bcxrxxPanel.getForm().findField("idCardNum").getValue()
 				
@@ -323,6 +348,10 @@ Ext.onReady(function() {
         store : bcxrStore,
         isPage : false,
         columns : [{
+            text : "被查询人ID",
+            dataIndex : "bcxrxxId",
+            flex : 1
+        },{
             text : "姓名",
             dataIndex : "name",
             flex : 1
@@ -370,24 +399,27 @@ Ext.onReady(function() {
                     handler: function(grid, rowIndex, colIndex){
                     	// 指定单击“查看”按钮的事件处理函数  
                     	
-                    	console.log("rowIndex:"+rowIndex);
-                    	console.log("colIndex:"+colIndex);
-                    	console.log(grid.getStore().getAt(rowIndex).data.populationType);
+                    	//console.log("rowIndex:"+rowIndex);
+                    	//console.log("colIndex:"+colIndex);
+                    	//console.log(grid.getStore().getAt(rowIndex).data.populationType);
                     	if('户籍人口'==grid.getStore().getAt(rowIndex).data.populationType){
 	                    	var config = {
 					            url : '/information/queryCZRKinfo.do',
 					            params : {
-					            
+					            	bcxrxxId :grid.getStore().getAt(rowIndex).data.bcxrxxId
 					            },
 					            callback : function(data){
 					            	changzhuWin.show();
 					            	console.log("changzhuWin");
 					            	//重写绑定模板 
 	    							//changzhuWinTp.overwrite(changzhuWin.down('panel').getEl(), tpData);
-					            	changzhuWinTp.overwrite(changzhuWin.down('panel').getEl().getById("detailDiv"), data);
-					            	console.log("bbbbb");
-					            	console.log(changzhuWin.down('panel').getEl().getHTML());
+					            	changzhuWinTp.overwrite(changzhuWin.down('panel').getEl().getById("changzhuDetailDiv"), data);
+					            	//console.log("bbbbb");
+					            	console.log(changzhuWin.down('panel').getEl().getById("changzhuDetailDiv").getHTML());
 					            	changzhuWin.down('panel').doComponentLayout();
+					            	//console.log("getSize:"+Ext.encode(changzhuWin.down('panel').getSize( )) );
+					            	//console.log("getHeight:"+changzhuWin.down('panel').getHeight( ) );
+					            	//console.log("getPosition:"+changzhuWin.down('panel').getPosition( ) );
 					            	//changzhuWin.down('panel').fireEvent('resize');
 					            }
 					        };
@@ -398,15 +430,14 @@ Ext.onReady(function() {
                     		var config = {
 					            url : '/information/queryZZRKinfo.do',
 					            params : {
-					            
+					            	bcxrxxId :grid.getStore().getAt(rowIndex).data.bcxrxxId
 					            },
 					            callback : function(data){
 					            	zanzhuWin.show();
 					            	console.log("zanzhuWin");
 					            	//重写绑定模板 
-	    							//changzhuWinTp.overwrite(changzhuWin.down('panel').getEl(), tpData);
-					            	zanzhuWinTp.overwrite(zanzhuWin.down('panel').getEl().getById("detailDiv"), data);
-					            	console.log(zanhuWin.down('panel').getEl().getHTML());
+					            	zanzhuWinTp.overwrite(zanzhuWin.down('panel').getEl().getById("zanzhuDetailDiv"), data);
+					            	console.log(zanzhuWin.down('panel').getEl().getById("zanzhuDetailDiv").getHTML());
 					            }
 					        };
 					        ExtUtils.doAjax(config);
@@ -431,7 +462,7 @@ Ext.onReady(function() {
 	        iconCls : 'x-btn-icon-el x-tbar-page-prev',
 	        handler: function() {
 	            var layout = infoMainPanel.getLayout();
-	            layout.setActiveItem(3);//上一步：证件扫描
+	            layout.setActiveItem(3);//上一步：被查询人信息
 	        }
 	    }]
     });
@@ -444,10 +475,10 @@ Ext.onReady(function() {
     var changzhuWinTp = new Ext.XTemplate(
 	'<div class="frame_normal" id="allDiv">',
 	'	<div class="div_title" id="titleDiv">',
-	'		<h1>本市户籍人口信息</h1>',
+	'		本市户籍人口信息',
 	'	</div>',
 	'	<div class="div_second_title" id="part1Div">',
-	'		<h1>人员基本信息</h1>',
+	'		人员基本信息',
 	'	</div>',
 	'	<div id="part1Table">',
 	'		<table class="tbl" width=1024>',
@@ -458,8 +489,10 @@ Ext.onReady(function() {
 	'				<td class="textInfoLeft">{[values.baseInfo.aliaName]}</td>',
 	'				<td>性别</td>',
 	'				<td class="textInfoLeft">{[values.baseInfo.sex]}</td>',
-	'				<td colspan=2 rowspan=6 width=160><img alt="照片" ',
-	'					src="{[values.baseInfo.photoGif]}"></td>',
+	'				<td colspan=2 rowspan=6 width=162px  height=199px>' ,
+	'					<div style="width:160px; height:197px" >',
+	'					<img alt="照片" style="width:100%; height:100%" ',
+	'						src="'+ctx+"/"+'{[values.baseInfo.photoGif]}"></div></td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>民族</td>',
@@ -467,7 +500,7 @@ Ext.onReady(function() {
 	'				<td>出生日期</td>',
 	'				<td class="textInfoLeft">{[values.baseInfo.birthDate]}</td>',
 	'				<td>公民身份证号码</td>',
-	'				<td class="textInfoLeft">{[values.baseInfo.idCardNum]}</td>',
+	'				<td class="textInfoLeft"  width=155>{[values.baseInfo.idCardNum]}</td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>&nbsp;&nbsp;</td>',
@@ -505,17 +538,17 @@ Ext.onReady(function() {
 	'	</div>',
   '',
 	'	<div class="div_second_title" id="part2Div">',
-	'		<h1>家庭关系及联系人信息</h1>',
+	'		家庭关系及联系人信息',
 	'	</div>',
 	'	<div id="part2Table">',
 	'		<table class="tbl" width=1024>',
 	'			<tr>',
-	'				<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>',
+	'				<td  width=70>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>',
 	'				<td>关系</td>',
-	'				<td>公民身份证号码</td>',
+	'				<td width=155>公民身份证号码</td>',
 	'				<td>姓名</td>',
 	'				<td>证件种类</td>',
-	'				<td>证件号码</td>',
+	'				<td width=155>证件号码</td>',
 	'				<td>外文姓</td>',
 	'				<td>外文名</td>',
 	'				<td>联系电话</td>',
@@ -537,20 +570,20 @@ Ext.onReady(function() {
 	'	</div>',
   '',
 	'	<div class="div_second_title" id="part3Div">',
-	'		<h1>迁移信息</h1>',
+	'		迁移信息',
 	'	</div>',
 	'	<div id="part3Table">',
 	'		<table class="tbl" width=1024>',
 	'			<tr>',
-	'				<td width=150>何时何因由何地迁来本市(县)</td>',
+	'				<td width=170>何时何因由何地迁来本市(县)</td>',
 	'				<td colspan=7 class="textInfoLeft">{[values.migrateInfo.timeAndResultForMigrateLocal]}</td>',
 	'			</tr>',
 	'			<tr>',
-	'				<td width=150>何时何因由何地迁来本址</td>',
+	'				<td width=170>何时何因由何地迁来本址</td>',
 	'				<td colspan=7 class="textInfoLeft">{[values.migrateInfo.timeAndResultForMigrateLocal]}</td>',
 	'			</tr>',
 	'			<tr>',
-	'				<td width=150>何时何因迁往何地</td>',
+	'				<td width=170>何时何因迁往何地</td>',
 	'				<td colspan=7 class="textInfoLeft">{[values.migrateInfo.timeAndResultForMigrateOtherPlace]}</td>',
 	'			</tr>',
 	'		</table>',
@@ -571,7 +604,7 @@ Ext.onReady(function() {
 	'	</div>',
 	'</div>'
 	);
-	changzhuWinTp.compile( ) ;
+	//changzhuWinTp.compile() ;
     
 	
 	//6、本市户籍人口信息 常住
@@ -584,18 +617,28 @@ Ext.onReady(function() {
         maximized : true,
         maximizable : true,
         items : [Ext.create('Ext.panel.Panel',{
-        		tpl : changzhuWinTp,
 	        	overflowY :'scroll',
-	        	html : '<div id="detailDiv"></div>'
+	        	html : '<div id="changzhuDetailDiv"></div>'
         	}
         )],
         resizable : true,
-        buttons: [{ 
+        buttons: [{
+		        text: '继续查询',
+		        icon : ctx + '/common/images/icons/magnifier.png',
+		        handler: function() {
+		            changzhuWin.hide();
+		            var layout = infoMainPanel.getLayout();
+	            	layout.setActiveItem(3);//被查询人信息
+	            	//bcxrxxPanel.getForm().reset();
+	            	bcxrxxPanel.getForm().findField("idCardNum").focus(true,100);
+		        }
+		    },{ 
         		text: '打印' ,
         		icon : ctx + '/common/images/icons/printer.png',
 				name : 'printBtn',
 				handler: function(btn) {
 		            console.log("dayin");
+		            window.print();
 		        }
         	},{ 
         		text : '取消',
@@ -610,14 +653,14 @@ Ext.onReady(function() {
     
     
     
-    ////创建常住人口模板
+    ////创建暂住人口模板
     var zanzhuWinTp = new Ext.XTemplate(
 	'<div class="frame_normal" id="allDiv">',
 	'	<div class="div_title" id="titleDiv">',
-	'		<h1>本市暂住人口信息查询表</h1>',
+	'		本市暂住人口信息查询表',
 	'	</div>',
 	'	<div class="div_second_title" id="part1Div">',
-	'		<h1>人员基本信息</h1>',
+	'		人员基本信息',
 	'	</div>',
 	'	<div id="part1Table">',
 	'		<table class="tbl" width=1024>',
@@ -626,8 +669,10 @@ Ext.onReady(function() {
 	'				<td class="textInfoLeft">{[values.baseInfo.idCardNum]}</td>',
 	'				<td width=100>姓名</td>',
 	'				<td class="textInfoLeft">{[values.baseInfo.name]}</td>',
-	'				<td colspan=2 rowspan=6 width=160><img alt="照片" ',
-	'					src="{[values.baseInfo.photoGif]}"></td>',
+	'				<td colspan=2 rowspan=6 width=162px  height=199px> ',
+	'					<div style="width:160px; height:197px" >',
+	'						<img alt="照片" style="width:100%; height:100%" ',
+	'							src="'+ctx+"/"+'{[values.baseInfo.photoGif]}"></div> </td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>曾用名</td>',
@@ -642,16 +687,8 @@ Ext.onReady(function() {
 	'				<td class="textInfoLeft">{[values.baseInfo.nation]}</td>',
 	'			</tr>',
 	'			<tr>',
-	'				<td>&nbsp;&nbsp;</td>',
-	'				<td>国家(地区)</td>',
-	'				<td colspan=2>省市县(区)</td>',
-	'				<td colspan=2>详址</td>',
-	'			</tr>',
-	'			<tr>',
 	'				<td>籍贯</td>',
-	'				<td class="textInfoLeft">{[values.baseInfo.nativePlace]}</td>',
-	'				<td class="textInfoLeft" >&nbsp;</td>',
-	'				<td class="textInfoLeft" >&nbsp;</td>',
+	'				<td class="textInfoLeft" colspan=3>{[values.baseInfo.nativePlace]}</td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>户籍地址省市县（区）</td>',
@@ -659,18 +696,18 @@ Ext.onReady(function() {
 	'			</tr>',
 	'			<tr>',
 	'				<td>户籍详细地址</td>',
-	'				<td class="textInfoLeft" colspan=1>{[values.baseInfo.householdRegisterDetailAddress]}</td>',
+	'				<td class="textInfoLeft" colspan=3>{[values.baseInfo.householdRegisterDetailAddress]}</td>',
 	'			</tr>',
 	'		</table>',
 	'	</div>',
   '',
 	'	<div class="div_second_title" id="part2Div">',
-	'		<h1>暂住信息</h1>',
+	'		暂住信息',
 	'	</div>',
 	'	<div id="part2Table">',
 	'		<table class="tbl" width=1024>',
 	'			<tr>',
-	'				<td>序号</td>',
+	'				<td width=60>序号</td>',
 	'				<td>暂住证编号</td>',
 	'				<td>起始日期</td>',
 	'				<td>截止日期</td>',
@@ -680,17 +717,18 @@ Ext.onReady(function() {
 	'				<td>填报日期</td>',
 	'				<td>暂住地址</td>',
 	'			</tr>',
-	'			<tpl for="familyInfoList">',
+	'			<tpl for="trInfoList">',
 	'			<tr>',
-	'				<td>{relationType}</td>',
-	'				<td>{relationShip}</td>',
-	'				<td>{idCardNum}</td>',
-	'				<td>{name}</td>',
-	'				<td>{certificateType}</td>',
-	'				<td>{certificateNum}</td>',
-	'				<td>{foreignLastName}</td>',
-	'				<td>{foreignFirstName}</td>',
-	'				<td>{telephoneNum}</td>',
+	'				<td>{#}</td>',	
+	'				<td>{trNum}</td>',
+	'				<td>{startDate}</td>',
+	'				<td>{endDate}</td>',
+	'				<td>{intervalTime}</td>',
+	'				<td>{trCardIssuneOffice}</td>',
+	'				<td>{trCardCompany}</td>',
+	'				<td>{fillDate}</td>',
+	'				<td>{trAddress}</td>',
+
 	'			</tr>',
 	'			</tpl>',
 	'		</table>',
@@ -715,7 +753,7 @@ Ext.onReady(function() {
 	
 	
 	
-	//7、本市户籍人口信息 暂住
+	//7、暂住人口信息 
     zanzhuWin = Ext.create('ZTEsoft.window.Window',{
     	id : 'card7',
     	width : '900',
@@ -723,25 +761,37 @@ Ext.onReady(function() {
         layout : 'fit',
         maximized : true,
         maximizable : true,
+        closeAction : 'hide',
         items : [Ext.create('Ext.panel.Panel',{
 	        	overflowY :'scroll',
-	        	html : '<div id="detailDiv"></div>'
+	        	html : '<div id="zanzhuDetailDiv"></div>'
         	}
         )],
         resizable : true,
-        buttons: [{ 
+        buttons: [{
+		        text: '继续查询',
+		        icon : ctx + '/common/images/icons/magnifier.png',
+		        handler: function() {
+		            changzhuWin.hide();
+		            var layout = infoMainPanel.getLayout();
+	            	layout.setActiveItem(3);//被查询人信息
+	            	//bcxrxxPanel.getForm().reset();
+	            	bcxrxxPanel.getForm().findField("idCardNum").focus(true,100);
+		        }
+		    },{ 
         		text: '打印' ,
         		icon : ctx + '/common/images/icons/printer.png',
 				name : 'printBtn',
 				handler: function(btn) {
 		            console.log("dayin");
+		            window.print();
 		        }
         	},{ 
         		text : '取消',
 				iconCls : 'arrow_undo',
 				name : 'canceltBtn',
 				handler : function(){
-					changzhuWin.hide();
+					zanzhuWin.hide();
 				}
         	}
 		]

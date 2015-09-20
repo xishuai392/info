@@ -5,7 +5,7 @@
 
 <html>
 	<head>
-		<title>AuditUser管理 </title>
+		<title>人口信息查询  </title>
 		<link rel="stylesheet" type="text/css"
 			href="<%=request.getContextPath()%>/common/css/info.css">
 		<script type="text/javascript"
