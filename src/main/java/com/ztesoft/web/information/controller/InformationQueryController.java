@@ -4,13 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
 import com.ztesoft.framework.util.UuidUtils;
+import com.ztesoft.web.information.db.po.TSqrxxPO;
 import com.ztesoft.web.information.domain.req.query.QueryByOtherPeopleReqInfo;
 import com.ztesoft.web.information.domain.req.query.QueryPeopleReqInfo;
 import com.ztesoft.web.information.domain.resp.Address;
@@ -22,6 +26,9 @@ import com.ztesoft.web.information.domain.resp.QueryRespInfo;
 import com.ztesoft.web.information.domain.resp.QueryResultInfo;
 import com.ztesoft.web.information.domain.resp.TRinfo;
 import com.ztesoft.web.information.domain.resp.TRpopulationInfo;
+import com.ztesoft.web.information.service.ITBcxrxxService;
+import com.ztesoft.web.information.service.ITSqrxxService;
+import com.ztesoft.web.information.service.ITSqrxxfjService;
 import com.ztesoft.web.permission.controller.AuditMenuController;
 
 /**
@@ -34,6 +41,10 @@ import com.ztesoft.web.permission.controller.AuditMenuController;
 public class InformationQueryController {
     private static final ZTEsoftLogManager logger = ZTEsoftLogManager.getLogger(InformationQueryController.class);
     
+    @Autowired
+    private ITBcxrxxService bcxrxxService;
+    @Autowired
+    private ITSqrxxService sqrxxService;
     @RequestMapping("index")
     public String index(Model model) {
 
@@ -47,10 +58,12 @@ public class InformationQueryController {
      * @param hello
      * @return
      */
-    public QueryRespInfo applicantQuery(QueryPeopleReqInfo reqInfo){
+    public QueryRespInfo applicantQuery(TSqrxxPO reqInfo) throws BaseAppException{
     	QueryRespInfo respInfo=new QueryRespInfo();
     	String uuid=UuidUtils.generatorUUID();
+    	reqInfo.setId(uuid);
     	//记录查询日志，生成日志操作记录信息表
+    	sqrxxService.add(reqInfo);
     	respInfo.setUuid(uuid);
     	return respInfo;
     }
@@ -78,7 +91,26 @@ public class InformationQueryController {
     	queryResultInfoList.add(resultInfoTwo);
     	return queryResultInfoList;  	
     }
-    
+  @RequestMapping("queryCZRKinfo")
+  @ResponseBody
+  public  PermanetPopulationInfo queryPermanetPopulationInfo(QueryByOtherPeopleReqInfo reqInfo){
+  	PermanetPopulationInfo permanentPopulationInfo=new PermanetPopulationInfo();
+  	List<FamilyInfo> familyInfoList=queryFamilyInfo(reqInfo);
+  	PopulationBaseInfo baseInfo=queryBasePopulation(reqInfo);
+  	MigrateInfo migrateInfo=queryMigrateInfo(reqInfo);
+  	permanentPopulationInfo.setBaseInfo(baseInfo);
+  	permanentPopulationInfo.setFamilyInfoList(familyInfoList);
+  	permanentPopulationInfo.setMigrateInfo(migrateInfo);
+  	return permanentPopulationInfo;
+  }
+  @RequestMapping("queryZZRKinfo")
+  @ResponseBody
+  public  TRpopulationInfo queryTRPopulationInfo(QueryByOtherPeopleReqInfo reqInfo){
+  	TRpopulationInfo trPopulationInfo=new TRpopulationInfo();
+  	trPopulationInfo.setBaseInfo(queryBasePopulation(reqInfo));
+  	trPopulationInfo.setTrInfoList(queryTRInfoList(reqInfo));
+  	return trPopulationInfo;
+  }
     
     
     @RequestMapping("queryBasePopulation")
@@ -109,8 +141,8 @@ public class InformationQueryController {
     	return baseInfo;  	
     }
     
-    @RequestMapping("queryFamilyInfo")
-    @ResponseBody
+//    @RequestMapping("queryFamilyInfo")
+//    @ResponseBody
     public List<FamilyInfo> queryFamilyInfo(QueryByOtherPeopleReqInfo reqInfo){
     	List<FamilyInfo> familyInfoList=new ArrayList<FamilyInfo>();
     	//暂时自己手工拼装
@@ -177,8 +209,9 @@ public class InformationQueryController {
     	return familyInfoList;  	
     }
     
-    @RequestMapping("queryMigrateInfo")
-    @ResponseBody
+   
+//    		"queryMigrateInfo")
+
     public MigrateInfo queryMigrateInfo(QueryByOtherPeopleReqInfo reqInfo){
     	MigrateInfo migrateInfo=new MigrateInfo();
     	migrateInfo.setTimeAndResultForMigrateLocal("smile forever,hhaha");
@@ -186,26 +219,7 @@ public class InformationQueryController {
     	migrateInfo.setTimeAndResultForMigrateOtherPlace(" 你猜");
     	return migrateInfo;  	
     }
-    @RequestMapping("queryCZRKinfo")
-    @ResponseBody
-    public  PermanetPopulationInfo queryPermanetPopulationInfo(QueryByOtherPeopleReqInfo reqInfo){
-    	PermanetPopulationInfo permanentPopulationInfo=new PermanetPopulationInfo();
-    	List<FamilyInfo> familyInfoList=queryFamilyInfo(reqInfo);
-    	PopulationBaseInfo baseInfo=queryBasePopulation(reqInfo);
-    	MigrateInfo migrateInfo=queryMigrateInfo(reqInfo);
-    	permanentPopulationInfo.setBaseInfo(baseInfo);
-    	permanentPopulationInfo.setFamilyInfoList(familyInfoList);
-    	permanentPopulationInfo.setMigrateInfo(migrateInfo);
-    	return permanentPopulationInfo;
-    }
-    @RequestMapping("queryZZRKinfo")
-    @ResponseBody
-    public  TRpopulationInfo queryTRPopulationInfo(QueryByOtherPeopleReqInfo reqInfo){
-    	TRpopulationInfo trPopulationInfo=new TRpopulationInfo();
-    	trPopulationInfo.setBaseInfo(queryBasePopulation(reqInfo));
-    	trPopulationInfo.setTrInfoList(queryTRInfoList(reqInfo));
-    	return trPopulationInfo;
-    }
+
     
     private List<TRinfo> queryTRInfoList(QueryByOtherPeopleReqInfo reqInfo){
     	List<TRinfo> trInfoList=new ArrayList<TRinfo>();
