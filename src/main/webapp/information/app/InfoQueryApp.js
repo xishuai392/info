@@ -423,7 +423,8 @@ Ext.onReady(function() {
 					            params : {
 					            	//查询日志表的id
 									sqrxxId : sqrxxPanel.getForm().findField('mainId').getValue(),
-					            	bcxrxxId :grid.getStore().getAt(rowIndex).data.bcxrxxId
+					            	bcxrxxId :grid.getStore().getAt(rowIndex).data.bcxrxxId,
+					            	populationType : grid.getStore().getAt(rowIndex).data.populationType
 					            },
 					            callback : function(data){
 					            	changzhuWin.show();
@@ -449,7 +450,8 @@ Ext.onReady(function() {
 					            params : {
 					            	//查询日志表的id
 									sqrxxId : sqrxxPanel.getForm().findField('mainId').getValue(),
-					            	bcxrxxId :grid.getStore().getAt(rowIndex).data.bcxrxxId
+					            	bcxrxxId :grid.getStore().getAt(rowIndex).data.bcxrxxId,
+					            	populationType : grid.getStore().getAt(rowIndex).data.populationType
 					            },
 					            callback : function(data){
 					            	zanzhuWin.show();
