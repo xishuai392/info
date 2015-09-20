@@ -20,6 +20,7 @@
 		<property name="locations">
 			<list>
 				<value>classpath:config/props/jdbc.properties</value>
+				<value>classpath:config/props/info.properties</value>
 			</list>
 		</property>
 	</bean>
