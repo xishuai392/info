@@ -3,6 +3,9 @@ package com.ztesoft.web.information.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
+import com.ztesoft.framework.util.DateUtils;
 import com.ztesoft.framework.util.UuidUtils;
+import com.ztesoft.web.domain.IConstants;
 import com.ztesoft.web.information.db.po.TSqrxxPO;
 import com.ztesoft.web.information.domain.req.print.PrintReqInfo;
 import com.ztesoft.web.information.domain.req.query.QueryByOtherPeopleReqInfo;
@@ -31,6 +36,7 @@ import com.ztesoft.web.information.service.ITBcxrxxService;
 import com.ztesoft.web.information.service.ITSqrxxService;
 import com.ztesoft.web.information.service.ITSqrxxfjService;
 import com.ztesoft.web.permission.controller.AuditMenuController;
+import com.ztesoft.web.permission.db.po.AuditUserPO;
 
 /**
  * 人口信息查询总入口.分查询人控制模块及被查询控制模块
@@ -41,6 +47,7 @@ import com.ztesoft.web.permission.controller.AuditMenuController;
 @RequestMapping(value="/information")
 public class InformationQueryController {
     private static final ZTEsoftLogManager logger = ZTEsoftLogManager.getLogger(InformationQueryController.class);
+    
     
     @Autowired
     private ITBcxrxxService bcxrxxService;
@@ -59,10 +66,16 @@ public class InformationQueryController {
      * @param hello
      * @return
      */
-    public QueryRespInfo applicantQuery(TSqrxxPO reqInfo) throws BaseAppException{
+    public QueryRespInfo applicantQuery(TSqrxxPO reqInfo,HttpServletRequest request) throws BaseAppException{
+    	HttpSession session = request.getSession(true);
+    	AuditUserPO auditUserPo=(AuditUserPO)session.getAttribute(IConstants.SESSIONUSER);
+    	
     	QueryRespInfo respInfo=new QueryRespInfo();
     	String uuid=UuidUtils.generatorUUID();
     	reqInfo.setId(uuid);
+    	reqInfo.setCzdw(String.valueOf(auditUserPo.getOrgId()));
+    	reqInfo.setCzr(String.valueOf(auditUserPo.getUserId()));
+    	reqInfo.setCxrq(DateUtils.getCurrentDate());
     	//记录查询日志，生成日志操作记录信息表
     	sqrxxService.add(reqInfo);
     	respInfo.setUuid(uuid);
