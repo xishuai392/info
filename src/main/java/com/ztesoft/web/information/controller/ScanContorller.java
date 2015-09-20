@@ -15,7 +15,7 @@ import com.ztesoft.web.information.service.ITSqrxxfjService;
 
 /**
  * 证件扫描控制类
- * 包含证件扫描和文件扫描
+ * 包含证件 扫描和文件扫描
  * @author Ocean
  *
  */
