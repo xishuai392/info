@@ -122,6 +122,12 @@ Ext.onReady(function() {
             width: 500,
             name : "cxsy"
         },{
+            fieldLabel : "cxbs",//查询标示
+            xtype : "textfield",
+            value : '20',
+            hidden : true,
+            name : "cxbs"
+        },{
             fieldLabel : "mainId",//申请人信息表主键
             xtype : "textfield",
             width: 500,
@@ -197,10 +203,14 @@ Ext.onReady(function() {
 	        iconCls : 'x-btn-icon-el x-tbar-page-next',
 	        formBind: true, //only enabled once the form is valid
 	        handler: function() {
-	        	var params = {};
+	        	var params = {
+	        		//查询日志表的id
+					sqrxxId : sqrxxPanel.getForm().findField('mainId').getValue()
+					//TODO
+	        	};
             	var config = {
 		            //TODO 
-            		url : 'information/applicantQuery.do',
+            		url : 'scan/idCardScan.do',
 		            params : params,
 		            timeout : 1200000, // 超时：20分钟
 		            callback : function(jsonData){
@@ -252,10 +262,15 @@ Ext.onReady(function() {
 	        iconCls : 'x-btn-icon-el x-tbar-page-next',
 	        formBind: true, //only enabled once the form is valid
 	        handler: function() {
-	        	var params = {};
+	        	var params = {
+	        		//查询日志表的id
+					sqrxxId : sqrxxPanel.getForm().findField('mainId').getValue()
+					//TODO
+					
+	        	};
             	var config = {
 		            //TODO 
-            		url : 'information/applicantQuery.do',
+            		url : 'scan/fileScan.do',
             		timeout : 1200000, // 超时：20分钟
 		            params : params,
 		            callback : function(jsonData){
@@ -406,6 +421,8 @@ Ext.onReady(function() {
 	                    	var config = {
 					            url : '/information/queryCZRKinfo.do',
 					            params : {
+					            	//查询日志表的id
+									sqrxxId : sqrxxPanel.getForm().findField('mainId').getValue(),
 					            	bcxrxxId :grid.getStore().getAt(rowIndex).data.bcxrxxId
 					            },
 					            callback : function(data){
@@ -430,6 +447,8 @@ Ext.onReady(function() {
                     		var config = {
 					            url : '/information/queryZZRKinfo.do',
 					            params : {
+					            	//查询日志表的id
+									sqrxxId : sqrxxPanel.getForm().findField('mainId').getValue(),
 					            	bcxrxxId :grid.getStore().getAt(rowIndex).data.bcxrxxId
 					            },
 					            callback : function(data){

@@ -1,15 +1,14 @@
 package com.ztesoft.web.information.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -22,8 +21,6 @@ import com.ztesoft.web.domain.IConstants;
 import com.ztesoft.web.information.db.po.TSqrxxPO;
 import com.ztesoft.web.information.domain.req.print.PrintReqInfo;
 import com.ztesoft.web.information.domain.req.query.QueryByOtherPeopleReqInfo;
-import com.ztesoft.web.information.domain.req.query.QueryPeopleReqInfo;
-import com.ztesoft.web.information.domain.resp.Address;
 import com.ztesoft.web.information.domain.resp.FamilyInfo;
 import com.ztesoft.web.information.domain.resp.MigrateInfo;
 import com.ztesoft.web.information.domain.resp.PermanetPopulationInfo;
@@ -34,8 +31,6 @@ import com.ztesoft.web.information.domain.resp.TRinfo;
 import com.ztesoft.web.information.domain.resp.TRpopulationInfo;
 import com.ztesoft.web.information.service.ITBcxrxxService;
 import com.ztesoft.web.information.service.ITSqrxxService;
-import com.ztesoft.web.information.service.ITSqrxxfjService;
-import com.ztesoft.web.permission.controller.AuditMenuController;
 import com.ztesoft.web.permission.db.po.AuditUserPO;
 
 /**
@@ -75,7 +70,7 @@ public class InformationQueryController {
     	reqInfo.setId(uuid);
     	reqInfo.setCzdw(String.valueOf(auditUserPo.getOrgId()));
     	reqInfo.setCzr(String.valueOf(auditUserPo.getUserId()));
-    	reqInfo.setCxrq(DateUtils.getCurrentDate());
+    	reqInfo.setCxrq(DateUtils.date2String(new Date(), DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
     	//记录查询日志，生成日志操作记录信息表
     	sqrxxService.add(reqInfo);
     	respInfo.setUuid(uuid);
