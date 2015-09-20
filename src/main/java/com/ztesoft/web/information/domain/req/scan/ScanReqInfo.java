@@ -1,18 +1,14 @@
 package com.ztesoft.web.information.domain.req.scan;
 
-public class IdScanReqInfo {
+public class ScanReqInfo {
+	private String id;
 	//文件日志记录表的uuid
-	private String cxrzId;
+	private String sqrxxId;
 	//文件名
 	private String fileName;
 	//文件存放路径
 	private String filePath;
-	public String getCxrzId() {
-		return cxrzId;
-	}
-	public void setCxrzId(String cxrzId) {
-		this.cxrzId = cxrzId;
-	}
+	
 	public String getFileName() {
 		return fileName;
 	}
@@ -24,6 +20,18 @@ public class IdScanReqInfo {
 	}
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
+	}
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
+	public String getSqrxxId() {
+		return sqrxxId;
+	}
+	public void setSqrxxId(String sqrxxId) {
+		this.sqrxxId = sqrxxId;
 	}
 	
 	
