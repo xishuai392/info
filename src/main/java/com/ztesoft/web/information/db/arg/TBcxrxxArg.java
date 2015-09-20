@@ -1000,6 +1000,362 @@ public class TBcxrxxArg {
             addCriterion("SFDY not between ", value1, value2, "SFDY");
             return (TBcxrxxCriteria) this;
         }
+        public TBcxrxxCriteria andBcxrqIsNull() {
+            addCriterion("BCXRQ is null");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andBcxrqIsNotNull() {
+            addCriterion("BCXRQ is not null");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andBcxrqEqualTo(String value) {
+            addCriterion("BCXRQ =", value, "BCXRQ");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andBcxrqNotEqualTo(String value) {
+            addCriterion("BCXRQ <>", value, "BCXRQ");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andBcxrqGreaterThan(String value) {
+            addCriterion("BCXRQ >", value, "BCXRQ");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andBcxrqGreaterThanOrEqualTo(String value) {
+            addCriterion("BCXRQ >=", value, "BCXRQ");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andBcxrqLessThan(String value) {
+            addCriterion("BCXRQ <", value, "BCXRQ");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andBcxrqLessThanOrEqualTo(String value) {
+            addCriterion("BCXRQ <=", value, "BCXRQ");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andBcxrqLike(String value) {
+            addCriterion("BCXRQ like ", value, "BCXRQ", 1);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andBcxrqNotLike(String value) {
+            addCriterion("BCXRQ  not like ", value, "BCXRQ", 1);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andBcxrqLeftLike(String value) {
+            addCriterion("BCXRQ like ", value, "BCXRQ", 0);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andBcxrqNotLeftLike(String value) {
+            addCriterion("BCXRQ  not like ", value, "BCXRQ", 0);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andBcxrqRightLike(String value) {
+            addCriterion("BCXRQ like ", value, "BCXRQ", 2);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andBcxrqNotRightLike(String value) {
+            addCriterion("BCXRQ  not like ", value, "BCXRQ", 2);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andBcxrqIn(List<String> values) {
+            addCriterion("BCXRQ  in ", values, "BCXRQ");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andBcxrqNotIn(List<String> values) {
+            addCriterion("BCXRQ not in ", values, "BCXRQ");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andBcxrqBetween(String value1, String value2) {
+            addCriterion("BCXRQ between ", value1, value2, "BCXRQ");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andBcxrqNotBetween(String value1, String value2) {
+            addCriterion("BCXRQ not between ", value1, value2, "BCXRQ");
+            return (TBcxrxxCriteria) this;
+        }
+        public TBcxrxxCriteria andXgrqIsNull() {
+            addCriterion("XGRQ is null");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andXgrqIsNotNull() {
+            addCriterion("XGRQ is not null");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andXgrqEqualTo(String value) {
+            addCriterion("XGRQ =", value, "XGRQ");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andXgrqNotEqualTo(String value) {
+            addCriterion("XGRQ <>", value, "XGRQ");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andXgrqGreaterThan(String value) {
+            addCriterion("XGRQ >", value, "XGRQ");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andXgrqGreaterThanOrEqualTo(String value) {
+            addCriterion("XGRQ >=", value, "XGRQ");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andXgrqLessThan(String value) {
+            addCriterion("XGRQ <", value, "XGRQ");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andXgrqLessThanOrEqualTo(String value) {
+            addCriterion("XGRQ <=", value, "XGRQ");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andXgrqLike(String value) {
+            addCriterion("XGRQ like ", value, "XGRQ", 1);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andXgrqNotLike(String value) {
+            addCriterion("XGRQ  not like ", value, "XGRQ", 1);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andXgrqLeftLike(String value) {
+            addCriterion("XGRQ like ", value, "XGRQ", 0);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andXgrqNotLeftLike(String value) {
+            addCriterion("XGRQ  not like ", value, "XGRQ", 0);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andXgrqRightLike(String value) {
+            addCriterion("XGRQ like ", value, "XGRQ", 2);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andXgrqNotRightLike(String value) {
+            addCriterion("XGRQ  not like ", value, "XGRQ", 2);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andXgrqIn(List<String> values) {
+            addCriterion("XGRQ  in ", values, "XGRQ");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andXgrqNotIn(List<String> values) {
+            addCriterion("XGRQ not in ", values, "XGRQ");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andXgrqBetween(String value1, String value2) {
+            addCriterion("XGRQ between ", value1, value2, "XGRQ");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andXgrqNotBetween(String value1, String value2) {
+            addCriterion("XGRQ not between ", value1, value2, "XGRQ");
+            return (TBcxrxxCriteria) this;
+        }
+        public TBcxrxxCriteria andRklxIsNull() {
+            addCriterion("RKLX is null");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andRklxIsNotNull() {
+            addCriterion("RKLX is not null");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andRklxEqualTo(String value) {
+            addCriterion("RKLX =", value, "RKLX");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andRklxNotEqualTo(String value) {
+            addCriterion("RKLX <>", value, "RKLX");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andRklxGreaterThan(String value) {
+            addCriterion("RKLX >", value, "RKLX");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andRklxGreaterThanOrEqualTo(String value) {
+            addCriterion("RKLX >=", value, "RKLX");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andRklxLessThan(String value) {
+            addCriterion("RKLX <", value, "RKLX");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andRklxLessThanOrEqualTo(String value) {
+            addCriterion("RKLX <=", value, "RKLX");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andRklxLike(String value) {
+            addCriterion("RKLX like ", value, "RKLX", 1);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andRklxNotLike(String value) {
+            addCriterion("RKLX  not like ", value, "RKLX", 1);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andRklxLeftLike(String value) {
+            addCriterion("RKLX like ", value, "RKLX", 0);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andRklxNotLeftLike(String value) {
+            addCriterion("RKLX  not like ", value, "RKLX", 0);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andRklxRightLike(String value) {
+            addCriterion("RKLX like ", value, "RKLX", 2);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andRklxNotRightLike(String value) {
+            addCriterion("RKLX  not like ", value, "RKLX", 2);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andRklxIn(List<String> values) {
+            addCriterion("RKLX  in ", values, "RKLX");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andRklxNotIn(List<String> values) {
+            addCriterion("RKLX not in ", values, "RKLX");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andRklxBetween(String value1, String value2) {
+            addCriterion("RKLX between ", value1, value2, "RKLX");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andRklxNotBetween(String value1, String value2) {
+            addCriterion("RKLX not between ", value1, value2, "RKLX");
+            return (TBcxrxxCriteria) this;
+        }
+        public TBcxrxxCriteria andCxcsIsNull() {
+            addCriterion("CXCS is null");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andCxcsIsNotNull() {
+            addCriterion("CXCS is not null");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andCxcsEqualTo(Integer value) {
+            addCriterion("CXCS =", value, "CXCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andCxcsNotEqualTo(Integer value) {
+            addCriterion("CXCS <>", value, "CXCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andCxcsGreaterThan(Integer value) {
+            addCriterion("CXCS >", value, "CXCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andCxcsGreaterThanOrEqualTo(Integer value) {
+            addCriterion("CXCS >=", value, "CXCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andCxcsLessThan(Integer value) {
+            addCriterion("CXCS <", value, "CXCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andCxcsLessThanOrEqualTo(Integer value) {
+            addCriterion("CXCS <=", value, "CXCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andCxcsLike(Integer value) {
+            addCriterion("CXCS like ", value, "CXCS", 1);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andCxcsNotLike(Integer value) {
+            addCriterion("CXCS  not like ", value, "CXCS", 1);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andCxcsLeftLike(Integer value) {
+            addCriterion("CXCS like ", value, "CXCS", 0);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andCxcsNotLeftLike(Integer value) {
+            addCriterion("CXCS  not like ", value, "CXCS", 0);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andCxcsRightLike(Integer value) {
+            addCriterion("CXCS like ", value, "CXCS", 2);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andCxcsNotRightLike(Integer value) {
+            addCriterion("CXCS  not like ", value, "CXCS", 2);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andCxcsIn(List<Integer> values) {
+            addCriterion("CXCS  in ", values, "CXCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andCxcsNotIn(List<Integer> values) {
+            addCriterion("CXCS not in ", values, "CXCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andCxcsBetween(Integer value1, Integer value2) {
+            addCriterion("CXCS between ", value1, value2, "CXCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andCxcsNotBetween(Integer value1, Integer value2) {
+            addCriterion("CXCS not between ", value1, value2, "CXCS");
+            return (TBcxrxxCriteria) this;
+        }
 
     }
 

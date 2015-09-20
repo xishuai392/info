@@ -7,6 +7,7 @@ package com.ztesoft.web.information.domain.resp;
  *
  */
 public class QueryResultInfo {
+  private String  bcxrxxId;
   private String  name;
   private String  idCardNum;
   private String  birthDate;
@@ -48,6 +49,12 @@ public String getIsHavingTR() {
 }
 public void setIsHavingTR(String isHavingTR) {
 	this.isHavingTR = isHavingTR;
+}
+public String getBcxrxxId() {
+	return bcxrxxId;
+}
+public void setBcxrxxId(String bcxrxxId) {
+	this.bcxrxxId = bcxrxxId;
 }
   
 }
