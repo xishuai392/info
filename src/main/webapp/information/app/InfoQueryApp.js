@@ -3,6 +3,9 @@
  */
 Ext.onReady(function() {
     var sqrxxPanel,zjPanel,ssxzlPanel,bcxrxxPanel,bcxrStore,bcxrGrid,changzhuWin,zanzhuWin,infoMainPanel;
+    var LODOP;
+    
+    var preHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>人口信息打印</title><style type="text/css">html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,input	{	margin: 0;	padding: 0;	border: 0;	font-weight: inherit;	font-style: inherit;	font-size: 100%;	font-family: Arial, Microsoft Yahei;	/**vertical-align:baseline;*/}body {	line-height: 1;	font-size: 12px;}ol,ul {	list-style: none;}.color_red {	color: #ff0900;}.color_gray {	color: #9b9b9b;}.color_bule {	color: #015a9f;}.clear {	clear: both;}.font18 {	font-size: 18px;}.font14 {	font-size: 14px;}* {	font-size: 12px !important;}</style><link rel="stylesheet" type="text/css"	href="'+webRoot+'common/css/info.css"></head><body>';
     
     var cardNav = function (incr) { 
     	
@@ -53,6 +56,18 @@ Ext.onReady(function() {
 	    //Ext.getCmp('cardNext').setDisabled(next === 2); 
 	}; 
 
+	//
+	var createPrintPage = function (html) {
+		LODOP = getLodop(document.getElementById('LODOP_OB'),
+				document.getElementById('LODOP_EM'));
+		LODOP.PRINT_INIT("人口信息打印");
+		LODOP.SET_PRINT_STYLE("FontSize", 12);
+		LODOP.SET_PRINT_STYLE("Bold", 1);
+		LODOP.SET_PRINT_PAGESIZE(1,0,0,"A4") ; //A4纸张纵向打印
+		LODOP.ADD_PRINT_HTM("0%", "0%", "100%", "100%", html);
+	};
+	
+	
     // 1、申请人信息填写
     sqrxxPanel = Ext.create("ZTEsoft.form.SearchForm", {
     	id : 'card0',
@@ -419,7 +434,7 @@ Ext.onReady(function() {
                     	//console.log(grid.getStore().getAt(rowIndex).data.populationType);
                     	if('户籍人口'==grid.getStore().getAt(rowIndex).data.populationType){
 	                    	var config = {
-					            url : '/information/queryCZRKinfo.do',
+					            url : 'information/queryCZRKinfo.do',
 					            params : {
 					            	//查询日志表的id
 									sqrxxId : sqrxxPanel.getForm().findField('mainId').getValue(),
@@ -432,6 +447,8 @@ Ext.onReady(function() {
 					            	//重写绑定模板 
 	    							//changzhuWinTp.overwrite(changzhuWin.down('panel').getEl(), tpData);
 					            	changzhuWinTp.overwrite(changzhuWin.down('panel').getEl().getById("changzhuDetailDiv"), data);
+					            	//合并单元格
+					            	$("#familyInfoTable").rowspan({td:1}); 
 					            	//console.log("bbbbb");
 					            	console.log(changzhuWin.down('panel').getEl().getById("changzhuDetailDiv").getHTML());
 					            	changzhuWin.down('panel').doComponentLayout();
@@ -446,7 +463,7 @@ Ext.onReady(function() {
                     	
                     	if('暂住人口'==grid.getStore().getAt(rowIndex).data.populationType){
                     		var config = {
-					            url : '/information/queryZZRKinfo.do',
+					            url : 'information/queryZZRKinfo.do',
 					            params : {
 					            	//查询日志表的id
 									sqrxxId : sqrxxPanel.getForm().findField('mainId').getValue(),
@@ -501,8 +518,8 @@ Ext.onReady(function() {
 	'	<div class="div_second_title" id="part1Div">',
 	'		人员基本信息',
 	'	</div>',
-	'	<div id="part1Table">',
-	'		<table class="tbl" width=1024>',
+	'	<div id="part1TableCZ">',
+	'		<table class="tbl" width=100%>',
 	'			<tr>',
 	'				<td width=100>姓名</td>',
 	'				<td class="textInfoLeft">{[values.baseInfo.name]}</td>',
@@ -513,7 +530,7 @@ Ext.onReady(function() {
 	'				<td colspan=2 rowspan=6 width=162px  height=199px>' ,
 	'					<div style="width:160px; height:197px" >',
 	'					<img alt="照片" style="width:100%; height:100%" ',
-	'						src="'+ctx+"/"+'{[values.baseInfo.photoGif]}"></div></td>',
+	'						src="'+ctx+"/personImages/"+'{[values.baseInfo.photoGif]}"></div></td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>民族</td>',
@@ -521,7 +538,7 @@ Ext.onReady(function() {
 	'				<td>出生日期</td>',
 	'				<td class="textInfoLeft">{[values.baseInfo.birthDate]}</td>',
 	'				<td>公民身份证号码</td>',
-	'				<td class="textInfoLeft"  width=155>{[values.baseInfo.idCardNum]}</td>',
+	'				<td class="textInfoLeft"  width=130>{[values.baseInfo.idCardNum]}</td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>&nbsp;&nbsp;</td>',
@@ -561,21 +578,21 @@ Ext.onReady(function() {
 	'	<div class="div_second_title" id="part2Div">',
 	'		家庭关系及联系人信息',
 	'	</div>',
-	'	<div id="part2Table">',
-	'		<table class="tbl" width=1024>',
+	'	<div id="part2TableCZ">',
+	'		<table class="tbl" width=100% id="familyInfoTable">',
 	'			<tr>',
-	'				<td  width=70>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>',
+	'				<td  width=60>&nbsp;&nbsp;</td>',
 	'				<td>关系</td>',
-	'				<td width=155>公民身份证号码</td>',
+	'				<td width=130>公民身份证号码</td>',
 	'				<td>姓名</td>',
 	'				<td>证件种类</td>',
-	'				<td width=155>证件号码</td>',
+	'				<td width=130>证件号码</td>',
 	'				<td>外文姓</td>',
 	'				<td>外文名</td>',
 	'				<td>联系电话</td>',
 	'			</tr>',
 	'			<tpl for="familyInfoList">',
-	'			<tr>',
+	'			<tr action="{relationType}">',
 	'				<td>{relationType}</td>',
 	'				<td>{relationShip}</td>',
 	'				<td>{idCardNum}</td>',
@@ -593,8 +610,8 @@ Ext.onReady(function() {
 	'	<div class="div_second_title" id="part3Div">',
 	'		迁移信息',
 	'	</div>',
-	'	<div id="part3Table">',
-	'		<table class="tbl" width=1024>',
+	'	<div id="part3TableCZ">',
+	'		<table class="tbl" width=100%>',
 	'			<tr>',
 	'				<td width=170>何时何因由何地迁来本市(县)</td>',
 	'				<td colspan=7 class="textInfoLeft">{[values.migrateInfo.timeAndResultForMigrateLocal]}</td>',
@@ -611,7 +628,7 @@ Ext.onReady(function() {
 	'	</div>',
   '',
 	'	<div id="part4Div">',
-	'	<table class="tb2" width=1024>',
+	'	<table class="tb2" width=100%>',
 	'		<tr>',
 	'			<td colspan=6  class="textInfoLeft">以上查询信息仅作为..............</td>',
 	'			<td class="textInfoRight">操作单位：</td>',
@@ -631,11 +648,12 @@ Ext.onReady(function() {
 	//6、本市户籍人口信息 常住
     changzhuWin = Ext.create('ZTEsoft.window.Window',{
     	id : 'card5',
-    	width : '900',
-        height : '700',
+    	width : 800,
+        height : 600,
         layout : 'fit',
         closeAction : 'hide',
-        maximized : true,
+        //overflowY :'scroll',
+        //maximized : true,
         maximizable : true,
         items : [Ext.create('Ext.panel.Panel',{
 	        	overflowY :'scroll',
@@ -658,8 +676,27 @@ Ext.onReady(function() {
         		icon : ctx + '/common/images/icons/printer.png',
 				name : 'printBtn',
 				handler: function(btn) {
-		            console.log("dayin");
-		            window.print();
+		            //console.log("dayin");
+		            var html = preHtml + changzhuWin.down('panel').getEl().getById("changzhuDetailDiv").getHTML()+'</body></html>';
+		            var printHtml = "";
+		            var htmlArray = $.parseHTML(html);
+		            //console.log(htmlArray);
+		            $.each( htmlArray, function( i, item ) {
+		            	var delEls = $(item).find("table tr[action=子女]");
+		            	if(delEls.length>0){
+		            		delEls.remove();
+		            		printHtml = $(item).html();
+		            	}
+					    //console.log(delEls);
+					    //console.log($(item));
+					    
+					});
+		            //console.log(printHtml);
+					
+		            printHtml = preHtml + printHtml+'</body></html>';
+		            //console.log(html);
+		            createPrintPage(printHtml);
+		            LODOP.PREVIEW();
 		        }
         	},{ 
         		text : '取消',
@@ -684,7 +721,7 @@ Ext.onReady(function() {
 	'		人员基本信息',
 	'	</div>',
 	'	<div id="part1Table">',
-	'		<table class="tbl" width=1024>',
+	'		<table class="tbl" width=100%>',
 	'			<tr>',
 	'				<td>公民身份证号码</td>',
 	'				<td class="textInfoLeft">{[values.baseInfo.idCardNum]}</td>',
@@ -693,7 +730,7 @@ Ext.onReady(function() {
 	'				<td colspan=2 rowspan=6 width=162px  height=199px> ',
 	'					<div style="width:160px; height:197px" >',
 	'						<img alt="照片" style="width:100%; height:100%" ',
-	'							src="'+ctx+"/"+'{[values.baseInfo.photoGif]}"></div> </td>',
+	'							src="'+ctx+"/personImages/"+'{[values.baseInfo.photoGif]}"></div> </td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>曾用名</td>',
@@ -726,9 +763,9 @@ Ext.onReady(function() {
 	'		暂住信息',
 	'	</div>',
 	'	<div id="part2Table">',
-	'		<table class="tbl" width=1024>',
+	'		<table class="tbl" width=100%>',
 	'			<tr>',
-	'				<td width=60>序号</td>',
+	'				<td width=40>序号</td>',
 	'				<td>暂住证编号</td>',
 	'				<td>起始日期</td>',
 	'				<td>截止日期</td>',
@@ -757,7 +794,7 @@ Ext.onReady(function() {
   '',
   '',
 	'	<div id="part3Div">',
-	'	<table class="tb2" width=1024>',
+	'	<table class="tb2" width=100%>',
 	'		<tr>',
 	'			<td colspan=6  class="textInfoLeft">以上查询信息仅作为..............</td>',
 	'			<td class="textInfoRight">操作单位：</td>',
@@ -777,10 +814,10 @@ Ext.onReady(function() {
 	//7、暂住人口信息 
     zanzhuWin = Ext.create('ZTEsoft.window.Window',{
     	id : 'card7',
-    	width : '900',
-        height : '700',
+    	width : 800,
+        height : 600,
         layout : 'fit',
-        maximized : true,
+        //maximized : true,
         maximizable : true,
         closeAction : 'hide',
         items : [Ext.create('Ext.panel.Panel',{
@@ -804,8 +841,11 @@ Ext.onReady(function() {
         		icon : ctx + '/common/images/icons/printer.png',
 				name : 'printBtn',
 				handler: function(btn) {
-		            console.log("dayin");
-		            window.print();
+		            //console.log("dayin");
+		            var html = preHtml + zanzhuWin.down('panel').getEl().getById("zanzhuDetailDiv").getHTML()+'</body></html>';
+		            //console.log(html);
+		            createPrintPage(html);
+		            LODOP.PREVIEW();
 		        }
         	},{ 
         		text : '取消',

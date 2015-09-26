@@ -2,9 +2,12 @@
 
 .frame_normal {
   	margin-top:5px;
-	margin-left:50px;
-	PADDING-TOP: 10px; 
-	width: 100%;
+	margin-left:10px;
+	margin-right:10px;
+	padding-left : 10px;
+	padding-right : 10px;
+	padding-top: 10px; 
+	width : 756px;
 }
 
 .div_title{
@@ -52,7 +55,8 @@
 	font-weight: normal;
 }
 .tbl td{
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	/**font-family: Verdana, Arial, Helvetica, sans-serif;*/
+	font-family:"宋体";
 	line-height:26px;
 	word-break : break-all;/**td文字换行*/
 	border-right:1px solid #000;
@@ -60,7 +64,8 @@
 }
 
 .tbl tr.main{
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	/**font-family: Verdana, Arial, Helvetica, sans-serif;*/
+	font-family:"宋体";
 	font-size: 12px;
 	color: #297194;
 	line-height:26px;
@@ -69,7 +74,8 @@
 	background-color:#f2f6fb;
 }
 .tbl td.main{
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	/**font-family: Verdana, Arial, Helvetica, sans-serif;*/
+	font-family:"宋体";
 	font-size: 12px;
 	color: #297194;
 	line-height:26px;
@@ -79,7 +85,8 @@
 }
 
 .tbl td.textInfoLeft{
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	/**font-family: Verdana, Arial, Helvetica, sans-serif;*/
+	font-family:"宋体";
 	font-size: 12px;
 	color: #000;
 	line-height:26px;
@@ -88,7 +95,8 @@
 }
 
 .tbl td.textInfoRight{
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	/**font-family: Verdana, Arial, Helvetica, sans-serif;*/
+	font-family:"宋体";
 	font-size: 12px;
 	color: #000;
 	line-height:26px;
@@ -105,7 +113,8 @@
 }
 
 .tb2 td.textInfoLeft{
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	/**font-family: Verdana, Arial, Helvetica, sans-serif;*/
+	font-family:"宋体";
 	font-size: 12px;
 	color: #000;
 	line-height:26px;
@@ -114,7 +123,8 @@
 }
 
 .tb2 td.textInfoRight{
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	/**font-family: Verdana, Arial, Helvetica, sans-serif;*/
+	font-family:"宋体";
 	font-size: 12px;
 	color: #000;
 	line-height:26px;
@@ -123,7 +133,8 @@
 }
 
 .tbl tr.total{
-	font-family: Verdana, Arial, Helvetica, sans-serif;
+	/**font-family: Verdana, Arial, Helvetica, sans-serif;*/
+	font-family:"宋体";
 	font-weight: bold;
 	font-size: 12px;
 	color: #111111;
