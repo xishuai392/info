@@ -231,7 +231,7 @@ Ext.onReady(function() {
 		            callback : function(jsonData){
 		            	var layout = infoMainPanel.getLayout();
 			        	var cxsqrlx = sqrxxPanel.getForm().findField('cxsqrlx').getValue();
-			        	console.log(cxsqrlx);
+			        	//console.log(cxsqrlx);
 			        	if("50"==cxsqrlx){
 			        		//个人查询，跳过 介绍信及相关资料扫描
 			        		layout.setActiveItem(3);//下一步：被查询人信息
@@ -443,7 +443,7 @@ Ext.onReady(function() {
 					            },
 					            callback : function(data){
 					            	changzhuWin.show();
-					            	console.log("changzhuWin");
+					            	//console.log("changzhuWin");
 					            	//重写绑定模板 
 	    							//changzhuWinTp.overwrite(changzhuWin.down('panel').getEl(), tpData);
 					            	changzhuWinTp.overwrite(changzhuWin.down('panel').getEl().getById("changzhuDetailDiv"), data);
@@ -451,7 +451,7 @@ Ext.onReady(function() {
 					            	$("#familyInfoTable").rowspan({td:1}); 
 					            	//console.log("bbbbb");
 					            	console.log(changzhuWin.down('panel').getEl().getById("changzhuDetailDiv").getHTML());
-					            	changzhuWin.down('panel').doComponentLayout();
+					            	//changzhuWin.down('panel').doComponentLayout();
 					            	//console.log("getSize:"+Ext.encode(changzhuWin.down('panel').getSize( )) );
 					            	//console.log("getHeight:"+changzhuWin.down('panel').getHeight( ) );
 					            	//console.log("getPosition:"+changzhuWin.down('panel').getPosition( ) );
@@ -472,10 +472,10 @@ Ext.onReady(function() {
 					            },
 					            callback : function(data){
 					            	zanzhuWin.show();
-					            	console.log("zanzhuWin");
+					            	//console.log("zanzhuWin");
 					            	//重写绑定模板 
 					            	zanzhuWinTp.overwrite(zanzhuWin.down('panel').getEl().getById("zanzhuDetailDiv"), data);
-					            	console.log(zanzhuWin.down('panel').getEl().getById("zanzhuDetailDiv").getHTML());
+					            	//console.log(zanzhuWin.down('panel').getEl().getById("zanzhuDetailDiv").getHTML());
 					            }
 					        };
 					        ExtUtils.doAjax(config);
@@ -691,9 +691,10 @@ Ext.onReady(function() {
 					    //console.log($(item));
 					    
 					});
-		            //console.log(printHtml);
+		            console.log(printHtml);
+		            console.log(changzhuWin.down('panel').getEl().getById("changzhuDetailDiv").getHTML());
 					
-		            printHtml = preHtml + printHtml+'</body></html>';
+		            printHtml = preHtml +'<div class="frame_normal" id="allDiv">'+ printHtml+'</div></body></html>';
 		            //console.log(html);
 		            createPrintPage(printHtml);
 		            LODOP.PREVIEW();
