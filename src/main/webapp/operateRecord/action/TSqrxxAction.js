@@ -6,6 +6,7 @@
 
 Ext.define("component.operateRecord.action.TSqrxxAction", {
 
+	
     /**
      * 新增记录
      * 
