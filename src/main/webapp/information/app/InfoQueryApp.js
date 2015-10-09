@@ -307,7 +307,7 @@ Ext.onReady(function() {
         layout : 'column',
         hiddenBtns : true,
         frame : true,
-        title : '被申请人信息',
+        title : '被查询人信息',
         defaults : {
             labelAlign : 'right',
             labelWidth : 100,
@@ -380,6 +380,7 @@ Ext.onReady(function() {
         columns : [{
             text : "被查询人ID",
             dataIndex : "bcxrxxId",
+            hidden : true,
             flex : 1
         },{
             text : "姓名",

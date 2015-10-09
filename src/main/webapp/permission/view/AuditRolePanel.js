@@ -105,12 +105,13 @@ Ext.define('component.permission.view.AuditRolePanel', {
 	        	text : "状态",
 	            dataIndex : "state",
 	            renderer : function(value, meta, record) {
-	                return value == 'A' ? '有效' : '无效';
+	                return value == '00A' ? '有效' : '无效';
 	            },
 	            flex : 1
 	        },
 	        {
 	        	text : "创建时间",
+	        	hidden : true,
 	            dataIndex : "createdDate",
 	            flex : 1
 	        }       
