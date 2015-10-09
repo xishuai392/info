@@ -39,8 +39,8 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
             config.title = '编辑';
         }
         Ext.applyIf(config, {
-            width : '30%',
-            height : '50%',
+            width : '600',
+            height : '450',
             layout : 'fit',
             maximizable : true,
             items : [me.formPanel],
@@ -76,6 +76,19 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
                 model.data = result;
                 me.formPanel.getForm().loadRecord(model);
                 me.formPanel.disableFields();
+                //获取附件信息
+                var config = {
+            			url:'/operateRecord/tsqrxx/sqrxxDetail.do',
+            			params:{
+            				id : model.data.id
+            			},
+            			callback : function(detailData){
+//            				for(var i=0; i<detailData.length; i++){
+//            					alert(i+"="+detailData[i]['mc']);
+//            				}
+            			}
+            		};
+            		ExtUtils.doAjax(config);
             });
         }
 

@@ -18,7 +18,7 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
         config = config || {};
 
         // TODO 设置额外的参数
-        // me.pkFiledId = config.pkFiledId;
+         me.pkFiledId = config.pkFiledId;
 
         // 创建顶部工具栏
        // me.toolsBar = me.createTbar();
@@ -174,23 +174,7 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
 	        	xtype : 'actioncolumn',
 	            items :[{
 	            	icon:ctx+'/common/images/icons/application_view_detail.png',
-	            	tooltip: '查看',
-	            	handler: function(grid,rowIndex,colIndex){
-	            		//alert(grid.getStore().getAt(rowIndex).data.id);
-	            		var config = {
-	            			url:'/operateRecord/tsqrxx/sqrxxDetail.do',
-	            			params:{
-	            				id : grid.getStore().getAt(rowIndex).data.id
-	            			},
-	            			callback : function(detailData){
-//	            				me.showDetail;
-//	            				for(var i=0; i<detailData.length; i++){
-//	            					alert(i+"="+detailData[i]['mc']);
-//	            				}
-	            			}
-	            		};
-	            		ExtUtils.doAjax(config);
-	            	}
+	            	tooltip: '查看'
 	            }]
 	        }    
 		]
@@ -233,10 +217,23 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
     },
     showDetail : function(){
     	 var me = this;
+         var items = me.busizGrid.getSelectedItems();
+         if (Ext.isEmpty(items)) {
+             ExtUtils.info(StrConstants.HINT_SELECT_FIRST);
+             return;
+         }
+         var item = me.busizGrid.getSelectedItem();
+         var pkFiledId = item.get("id");
+         
          var win = Ext.create('component.operateRecord.view.TSqrxxDetailWin', {
+        	 pkFiledId : pkFiledId,
+             winType : WEBConstants.ACTIONTYPE.VIEW,
+             callback : function(result) {
 
-            
-          
+            	 
+             }
+             
+
          });
          win.show();
     },
