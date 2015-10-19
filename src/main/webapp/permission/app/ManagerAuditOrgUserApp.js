@@ -143,6 +143,16 @@ Ext.onReady(function() {
 	            flex : 1
 	        },
 	        {
+	            text : "身份证号",
+	            dataIndex : "userCardId",
+	            flex : 1
+	        },
+	        {
+	            text : "PKI编号",
+	            dataIndex : "userPkiId",
+	            flex : 1
+	        },
+	        {
 	            text : "电话",
 	            dataIndex : "telephone",
 	            flex : 1
@@ -275,7 +285,7 @@ Ext.onReady(function() {
                 thizAction.modRecord(params, function(result) {
                     ExtUtils.info(StrConstants.HINT_MOD_SUCCESS);
                     // TODO  设置要更新的字段
-                    var changedColumns = ['userName' ,'userCode' ,'telephone' ,'email' ,'password' ,'age' ,'state' ,'createdDate' ,'orgId' ];
+                    var changedColumns = ['userName' ,'userCode' ,'userCardId' ,'userPkiId' ,'telephone' ,'email' ,'password' ,'age' ,'state' ,'createdDate' ,'orgId' ];
                     for (var colKey in changedColumns) {
                         var colValue = changedColumns[colKey];
                         item.set(colValue, result[colValue]);
@@ -323,6 +333,18 @@ Ext.onReady(function() {
 	            xtype : "textfield",
 	            allowBlank : false,
 	            name : "userCode"
+	        },
+	        {
+	            fieldLabel : "身份证号",
+	            xtype : "textfield",
+	            allowBlank : false,
+	            name : "userCardId"
+	        },
+	        {
+	            fieldLabel : "PKI编号",
+	            xtype : "textfield",
+	            allowBlank : false,
+	            name : "userPkiId"
 	        },
 	        {
 	            fieldLabel : "电话",

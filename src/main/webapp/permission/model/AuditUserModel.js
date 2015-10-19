@@ -45,6 +45,14 @@ Ext.define('component.permission.model.AuditUserModel', {
        		{
 	            name : 'orgId',
 	            type : 'auto'
+        	},
+       		{
+	            name : 'userCardId',
+	            type : 'auto'
+        	},
+       		{
+	            name : 'userPkiId',
+	            type : 'auto'
         	}       
 			]
 });

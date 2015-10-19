@@ -12,9 +12,11 @@
   	<result column="STATE" property="state" jdbcType="CHAR" />
   	<result column="CREATED_DATE" property="createdDate" jdbcType="DATE" />
   	<result column="ORG_ID" property="orgId" jdbcType="BIGINT" />
+  	<result column="USER_CARD_ID" property="userCardId" jdbcType="VARCHAR" />
+  	<result column="USER_PKI_ID" property="userPkiId" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-  	USER_ID,USER_NAME,USER_CODE,TELEPHONE,EMAIL,PASSWORD,AGE,STATE,CREATED_DATE,ORG_ID
+  	USER_ID,USER_NAME,USER_CODE,TELEPHONE,EMAIL,PASSWORD,AGE,STATE,CREATED_DATE,ORG_ID,USER_CARD_ID,USER_PKI_ID
   </sql>
   <sql id="Arg_Where_Clause" >
     <where >
@@ -132,8 +134,8 @@
 	where USER_ID = #{userId,jdbcType=INTEGER}
   </select>
   <insert id="insert" parameterType="com.ztesoft.web.permission.db.po.AuditUserPO"  >
-		insert into AUDIT_USER(USER_ID,USER_NAME,USER_CODE,TELEPHONE,EMAIL,PASSWORD,AGE,STATE,CREATED_DATE,ORG_ID)
-		values (#{userId,jdbcType=INTEGER},#{userName,jdbcType=VARCHAR},#{userCode,jdbcType=VARCHAR},#{telephone,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{age,jdbcType=INTEGER},#{state,jdbcType=CHAR},#{createdDate,jdbcType=DATE},#{orgId,jdbcType=BIGINT})
+		insert into AUDIT_USER(USER_ID,USER_NAME,USER_CODE,TELEPHONE,EMAIL,PASSWORD,AGE,STATE,CREATED_DATE,ORG_ID,USER_CARD_ID,USER_PKI_ID)
+		values (#{userId,jdbcType=INTEGER},#{userName,jdbcType=VARCHAR},#{userCode,jdbcType=VARCHAR},#{telephone,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},#{password,jdbcType=VARCHAR},#{age,jdbcType=INTEGER},#{state,jdbcType=CHAR},#{createdDate,jdbcType=DATE},#{orgId,jdbcType=BIGINT},#{userCardId,jdbcType=VARCHAR},#{userPkiId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ztesoft.web.permission.db.po.AuditUserPO">
 		insert into AUDIT_USER
@@ -168,6 +170,12 @@
 		<if test="orgId != null" >
 			ORG_ID,
 		</if>
+		<if test="userCardId != null" >
+			USER_CARD_ID,
+		</if>
+		<if test="userPkiId != null" >
+			USER_PKI_ID,
+		</if>
  	</trim>
 	<trim prefix="values (" suffix=")" suffixOverrides="," >
 		<if test="userId != null" >
@@ -200,13 +208,19 @@
 		<if test="orgId != null" >
 			#{orgId,jdbcType=BIGINT},
 		</if>
+		<if test="userCardId != null" >
+			#{userCardId,jdbcType=VARCHAR},
+		</if>
+		<if test="userPkiId != null" >
+			#{userPkiId,jdbcType=VARCHAR},
+		</if>
  	</trim> 	
   </insert>	
   <insert id="insertBatch" parameterType="list"  >
-	insert into AUDIT_USER(USER_ID,USER_NAME,USER_CODE,TELEPHONE,EMAIL,PASSWORD,AGE,STATE,CREATED_DATE,ORG_ID)
+	insert into AUDIT_USER(USER_ID,USER_NAME,USER_CODE,TELEPHONE,EMAIL,PASSWORD,AGE,STATE,CREATED_DATE,ORG_ID,USER_CARD_ID,USER_PKI_ID)
 	 values 
 	 <foreach collection="list" item="item" index="index" separator=",">
-	 		(#{item.userId,jdbcType=INTEGER},#{item.userName,jdbcType=VARCHAR},#{item.userCode,jdbcType=VARCHAR},#{item.telephone,jdbcType=VARCHAR},#{item.email,jdbcType=VARCHAR},#{item.password,jdbcType=VARCHAR},#{item.age,jdbcType=INTEGER},#{item.state,jdbcType=CHAR},#{item.createdDate,jdbcType=DATE},#{item.orgId,jdbcType=BIGINT})
+	 		(#{item.userId,jdbcType=INTEGER},#{item.userName,jdbcType=VARCHAR},#{item.userCode,jdbcType=VARCHAR},#{item.telephone,jdbcType=VARCHAR},#{item.email,jdbcType=VARCHAR},#{item.password,jdbcType=VARCHAR},#{item.age,jdbcType=INTEGER},#{item.state,jdbcType=CHAR},#{item.createdDate,jdbcType=DATE},#{item.orgId,jdbcType=BIGINT},#{item.userCardId,jdbcType=VARCHAR},#{item.userPkiId,jdbcType=VARCHAR})
 	 </foreach>
   </insert>
   <update id="updateByArgSelective" parameterType="map" >
@@ -237,7 +251,13 @@
 			CREATED_DATE= #{record.createdDate,jdbcType=DATE},
 		</if>
 		<if test="record.orgId != null" >
-			ORG_ID= #{record.orgId,jdbcType=BIGINT}
+			ORG_ID= #{record.orgId,jdbcType=BIGINT},
+		</if>
+		<if test="record.userCardId != null" >
+			USER_CARD_ID= #{record.userCardId,jdbcType=VARCHAR},
+		</if>
+		<if test="record.userPkiId != null" >
+			USER_PKI_ID= #{record.userPkiId,jdbcType=VARCHAR}
 		</if>
     </set>
     <if test="_parameter != null" >
@@ -256,7 +276,9 @@
 		AGE = #{record.age,jdbcType=INTEGER},
 		STATE = #{record.state,jdbcType=CHAR},
 		CREATED_DATE = #{record.createdDate,jdbcType=DATE},
-		ORG_ID = #{record.orgId,jdbcType=BIGINT}
+		ORG_ID = #{record.orgId,jdbcType=BIGINT},
+		USER_CARD_ID = #{record.userCardId,jdbcType=VARCHAR},
+		USER_PKI_ID = #{record.userPkiId,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Arg_Where_Clause" />
     </if>
@@ -289,7 +311,13 @@
 		CREATED_DATE = #{createdDate,jdbcType=DATE},
 	</if>
 	<if test="orgId != null" >
-		ORG_ID = #{orgId,jdbcType=BIGINT}
+		ORG_ID = #{orgId,jdbcType=BIGINT},
+	</if>
+	<if test="userCardId != null" >
+		USER_CARD_ID = #{userCardId,jdbcType=VARCHAR},
+	</if>
+	<if test="userPkiId != null" >
+		USER_PKI_ID = #{userPkiId,jdbcType=VARCHAR}
 	</if>
 	</set >
 	 where USER_ID = #{userId,jdbcType=INTEGER}
@@ -305,7 +333,9 @@
 			AGE = #{age,jdbcType=INTEGER},
 			STATE = #{state,jdbcType=CHAR},
 			CREATED_DATE = #{createdDate,jdbcType=DATE},
-			ORG_ID = #{orgId,jdbcType=BIGINT}
+			ORG_ID = #{orgId,jdbcType=BIGINT},
+			USER_CARD_ID = #{userCardId,jdbcType=VARCHAR},
+			USER_PKI_ID = #{userPkiId,jdbcType=VARCHAR}
 	 where USER_ID = #{userId,jdbcType=INTEGER}
    </update>
   <delete id="deleteByArg" parameterType="com.ztesoft.web.permission.db.arg.AuditUserArg" >

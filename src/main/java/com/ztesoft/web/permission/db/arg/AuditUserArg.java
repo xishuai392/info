@@ -1089,6 +1089,184 @@ public class AuditUserArg {
             addCriterion("ORG_ID not between ", value1, value2, "ORG_ID");
             return (AuditUserCriteria) this;
         }
+        public AuditUserCriteria andUserCardIdIsNull() {
+            addCriterion("USER_CARD_ID is null");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserCardIdIsNotNull() {
+            addCriterion("USER_CARD_ID is not null");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserCardIdEqualTo(String value) {
+            addCriterion("USER_CARD_ID =", value, "USER_CARD_ID");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserCardIdNotEqualTo(String value) {
+            addCriterion("USER_CARD_ID <>", value, "USER_CARD_ID");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserCardIdGreaterThan(String value) {
+            addCriterion("USER_CARD_ID >", value, "USER_CARD_ID");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserCardIdGreaterThanOrEqualTo(String value) {
+            addCriterion("USER_CARD_ID >=", value, "USER_CARD_ID");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserCardIdLessThan(String value) {
+            addCriterion("USER_CARD_ID <", value, "USER_CARD_ID");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserCardIdLessThanOrEqualTo(String value) {
+            addCriterion("USER_CARD_ID <=", value, "USER_CARD_ID");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserCardIdLike(String value) {
+            addCriterion("USER_CARD_ID like ", value, "USER_CARD_ID", 1);
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserCardIdNotLike(String value) {
+            addCriterion("USER_CARD_ID  not like ", value, "USER_CARD_ID", 1);
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserCardIdLeftLike(String value) {
+            addCriterion("USER_CARD_ID like ", value, "USER_CARD_ID", 0);
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserCardIdNotLeftLike(String value) {
+            addCriterion("USER_CARD_ID  not like ", value, "USER_CARD_ID", 0);
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserCardIdRightLike(String value) {
+            addCriterion("USER_CARD_ID like ", value, "USER_CARD_ID", 2);
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserCardIdNotRightLike(String value) {
+            addCriterion("USER_CARD_ID  not like ", value, "USER_CARD_ID", 2);
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserCardIdIn(List<String> values) {
+            addCriterion("USER_CARD_ID  in ", values, "USER_CARD_ID");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserCardIdNotIn(List<String> values) {
+            addCriterion("USER_CARD_ID not in ", values, "USER_CARD_ID");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserCardIdBetween(String value1, String value2) {
+            addCriterion("USER_CARD_ID between ", value1, value2, "USER_CARD_ID");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserCardIdNotBetween(String value1, String value2) {
+            addCriterion("USER_CARD_ID not between ", value1, value2, "USER_CARD_ID");
+            return (AuditUserCriteria) this;
+        }
+        public AuditUserCriteria andUserPkiIdIsNull() {
+            addCriterion("USER_PKI_ID is null");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserPkiIdIsNotNull() {
+            addCriterion("USER_PKI_ID is not null");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserPkiIdEqualTo(String value) {
+            addCriterion("USER_PKI_ID =", value, "USER_PKI_ID");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserPkiIdNotEqualTo(String value) {
+            addCriterion("USER_PKI_ID <>", value, "USER_PKI_ID");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserPkiIdGreaterThan(String value) {
+            addCriterion("USER_PKI_ID >", value, "USER_PKI_ID");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserPkiIdGreaterThanOrEqualTo(String value) {
+            addCriterion("USER_PKI_ID >=", value, "USER_PKI_ID");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserPkiIdLessThan(String value) {
+            addCriterion("USER_PKI_ID <", value, "USER_PKI_ID");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserPkiIdLessThanOrEqualTo(String value) {
+            addCriterion("USER_PKI_ID <=", value, "USER_PKI_ID");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserPkiIdLike(String value) {
+            addCriterion("USER_PKI_ID like ", value, "USER_PKI_ID", 1);
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserPkiIdNotLike(String value) {
+            addCriterion("USER_PKI_ID  not like ", value, "USER_PKI_ID", 1);
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserPkiIdLeftLike(String value) {
+            addCriterion("USER_PKI_ID like ", value, "USER_PKI_ID", 0);
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserPkiIdNotLeftLike(String value) {
+            addCriterion("USER_PKI_ID  not like ", value, "USER_PKI_ID", 0);
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserPkiIdRightLike(String value) {
+            addCriterion("USER_PKI_ID like ", value, "USER_PKI_ID", 2);
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserPkiIdNotRightLike(String value) {
+            addCriterion("USER_PKI_ID  not like ", value, "USER_PKI_ID", 2);
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserPkiIdIn(List<String> values) {
+            addCriterion("USER_PKI_ID  in ", values, "USER_PKI_ID");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserPkiIdNotIn(List<String> values) {
+            addCriterion("USER_PKI_ID not in ", values, "USER_PKI_ID");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserPkiIdBetween(String value1, String value2) {
+            addCriterion("USER_PKI_ID between ", value1, value2, "USER_PKI_ID");
+            return (AuditUserCriteria) this;
+        }
+
+        public AuditUserCriteria andUserPkiIdNotBetween(String value1, String value2) {
+            addCriterion("USER_PKI_ID not between ", value1, value2, "USER_PKI_ID");
+            return (AuditUserCriteria) this;
+        }
 
     }
 
