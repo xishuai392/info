@@ -383,6 +383,99 @@
 		</dependency>
 		<!-- commons-configuration end -->
 		
+		
+		<!-- julong denpendency jars start -->
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>3.3</version>
+		</dependency>
+		<!--
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+		</dependency>
+		-->
+		<dependency>
+			<groupId>jdom</groupId>
+			<artifactId>jdom</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>1.6.1</version>
+			<scope>system</scope>
+			<systemPath>C:\\mvnLib\\dom4j-1.6.1-jar-2.0.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.julong</groupId>
+			<artifactId>api-pci</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>C:\\mvnLib\\api-pci-1.0-SNAPSHOT.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.julong</groupId>
+			<artifactId>api-rbsp2</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>C:\\mvnLib\\api-rbsp2-1.0-SNAPSHOT.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.julong</groupId>
+			<artifactId>api-rbsp2</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>C:\\mvnLib\\api-rbsp2-1.0-SNAPSHOT.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.julong</groupId>
+			<artifactId>com.springsource.org.apache.commons.codec</artifactId>
+			<version>1.4.0</version>
+			<scope>system</scope>
+			<systemPath>C:\\mvnLib\\com.springsource.org.apache.commons.codec-1.4.0.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.julong</groupId>
+			<artifactId>commonlib</artifactId>
+			<version>2.0</version>
+			<scope>system</scope>
+			<systemPath>C:\\mvnLib\\commonlib-jar-2.0.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.julong</groupId>
+			<artifactId>xml-jar</artifactId>
+			<version>2.0</version>
+			<scope>system</scope>
+			<systemPath>C:\\mvnLib\\xml-jar-2.0.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.julong</groupId>
+			<artifactId>xschema-jar</artifactId>
+			<version>2.0</version>
+			<scope>system</scope>
+			<systemPath>C:\\mvnLib\\xschema-jar-2.0.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.julong</groupId>
+			<artifactId>fastjson</artifactId>
+			<version>1.1.28</version>
+			<scope>system</scope>
+			<systemPath>C:\\mvnLib\\fastjson-1.1.28.jar</systemPath>
+		</dependency>
+		
+		<dependency>
+			<groupId>com.julong</groupId>
+			<artifactId>node-ftpclient</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>C:\\mvnLib\\node-ftpclient-1.0-SNAPSHOT.jar</systemPath>
+		</dependency>
+		
+		<!-- julong denpendency jars end -->
+		
 	</dependencies>
 
 	<repositories>
