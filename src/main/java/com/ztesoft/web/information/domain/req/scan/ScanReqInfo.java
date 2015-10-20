@@ -2,7 +2,7 @@ package com.ztesoft.web.information.domain.req.scan;
 
 public class ScanReqInfo {
 	private String id;
-	//文件日志记录表的uuid
+	//申请人信息表主键uuid
 	private String sqrxxId;
 	//文件名
 	private String fileName;

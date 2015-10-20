@@ -1,5 +1,6 @@
 package com.ztesoft.web.information.rbsp;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +29,10 @@ public class InfoRbspClient {
      */
     public static String queryCZRKbaseInfo(AuditUserPO userPO, String pid,
             String whereField) {
+        if("true".equals(MessageResourceUtils.getMessage("isDebug"))){
+            return getXml("T_HUJI.xml");
+        }
+        
         // 创建RbspService
         RbspService service = new RbspService(
                 MessageResourceUtils.getMessage("T_HUJI.senderId"),
@@ -78,7 +83,10 @@ public class InfoRbspClient {
      * @return
      */
     public static String queryCZRKCensusInfo(AuditUserPO userPO, String huId) {
-
+        if("true".equals(MessageResourceUtils.getMessage("isDebug"))){
+            return getXml("T_HU.xml");
+        }
+        
         // 创建RbspService
         RbspService service = new RbspService(
                 MessageResourceUtils.getMessage("T_HU.senderId"),
@@ -122,6 +130,10 @@ public class InfoRbspClient {
      * @return
      */
     public static String queryDZinfo(AuditUserPO userPO, String metaAddrId) {
+        if("true".equals(MessageResourceUtils.getMessage("isDebug"))){
+            return getXml("T_META_ADDR.xml");
+        }
+        
         // 创建RbspService
         RbspService service = new RbspService(
                 MessageResourceUtils.getMessage("T_META_ADDR.senderId"),
@@ -166,6 +178,10 @@ public class InfoRbspClient {
      * @return
      */
     public static String queryZZRKInfo(AuditUserPO userPO, String pid) {
+        if("true".equals(MessageResourceUtils.getMessage("isDebug"))){
+            return getXml("T_LDRK_ZJZZXX.xml");
+        }
+        
         // 创建RbspService
         RbspService service = new RbspService(
                 MessageResourceUtils.getMessage("T_LDRK_ZJZZXX.senderId"),
@@ -212,6 +228,10 @@ public class InfoRbspClient {
      * @return
      */
     public static String queryLDRKInfo(AuditUserPO userPO, String pid) {
+        if("true".equals(MessageResourceUtils.getMessage("isDebug"))){
+            return getXml("T_LDRK_DJXX.xml");
+        }
+        
         // 创建RbspService
         RbspService service = new RbspService(
                 MessageResourceUtils.getMessage("T_LDRK_DJXX.senderId"),
@@ -258,6 +278,10 @@ public class InfoRbspClient {
      * @return
      */
     public static String queryImageInfo(AuditUserPO userPO, String photoId) {
+        if("true".equals(MessageResourceUtils.getMessage("isDebug"))){
+            return getXml("T_PHOTO.xml");
+        }
+        
         // 创建RbspService
         RbspService service = new RbspService(
                 MessageResourceUtils.getMessage("T_PHOTO.senderId"),
@@ -290,5 +314,13 @@ public class InfoRbspClient {
         // 调用返回结果PHOTO_ID
         String result = call.invoke(params);
         return result;
+    }
+    
+    private static String getXml(String fileName){
+        String filePath="C://mvnLib//exampleXml//"+fileName;
+        //String filePath="C://mvnLib//suc.xml";
+        File file=new File(filePath);
+        String xmlFile=file.toString();
+        return xmlFile;
     }
 }

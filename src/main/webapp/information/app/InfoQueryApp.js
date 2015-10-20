@@ -67,6 +67,8 @@ Ext.onReady(function() {
 		LODOP.ADD_PRINT_HTM("0%", "0%", "100%", "100%", html);
 	};
 	
+	var sqrxxPanelFieldWidth = 350;
+	
 	
     // 1、申请人信息填写
     sqrxxPanel = Ext.create("ZTEsoft.form.SearchForm", {
@@ -88,7 +90,7 @@ Ext.onReady(function() {
             afterSubTpl : WEBConstants.REQUIRED,
             operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
             allowBlank : false,
-            width: 500,
+            width: sqrxxPanelFieldWidth,
             name : "zjh"
         }, {
             fieldLabel : "证件类型",
@@ -100,6 +102,7 @@ Ext.onReady(function() {
             editable : false,
             allowBlank : false,
             value : '10',
+            width: sqrxxPanelFieldWidth,
             store : new Ext.data.ArrayStore({
                 fields : ['value', 'text'],
                 data : [['10', '身份证'], ['20', '其他']]
@@ -108,6 +111,7 @@ Ext.onReady(function() {
             fieldLabel : "姓名",
             xtype : "textfield",
             allowBlank : false,
+            width: sqrxxPanelFieldWidth,
             afterSubTpl : WEBConstants.REQUIRED,
             operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
             name : "xm"
@@ -120,6 +124,7 @@ Ext.onReady(function() {
             editable : false,
             allowBlank : false,
             value : '50',
+            width: sqrxxPanelFieldWidth,
             store : new Ext.data.ArrayStore({
                 fields : ['value', 'text'],
                 data : [['10', '律师'],['20', '党政军机关'],['30', '司法机关'],
@@ -129,23 +134,26 @@ Ext.onReady(function() {
         },{
             fieldLabel : "申请查询人单位",
             xtype : "textfield",
+            width: sqrxxPanelFieldWidth,
             name : "cxrdw"
         },{
             fieldLabel : "查询事由",
             xtype : "textfield",
             grow      : true,
-            width: 500,
+            width: sqrxxPanelFieldWidth,
             name : "cxsy"
         },{
             fieldLabel : "cxbs",//查询标示
             xtype : "textfield",
             value : '20',
+            width: sqrxxPanelFieldWidth,
             hidden : true,
             name : "cxbs"
         },{
             fieldLabel : "mainId",//申请人信息表主键
             xtype : "textfield",
-            width: 500,
+            //width: 500,
+            width: sqrxxPanelFieldWidth,
             hidden : true,
             name : "mainId"
         }],
@@ -219,7 +227,7 @@ Ext.onReady(function() {
 	        formBind: true, //only enabled once the form is valid
 	        handler: function() {
 	        	var params = {
-	        		//查询日志表的id
+	        		//申请人信息表主键
 					sqrxxId : sqrxxPanel.getForm().findField('mainId').getValue()
 					//TODO
 	        	};
@@ -357,8 +365,8 @@ Ext.onReady(function() {
 	            	layout.setActiveItem(4);//下一步：显示查询结果
 	            	
 	            	bcxrStore.getProxy().extraParams = {
-			        	//查询日志表的id
-						cxrzId : sqrxxPanel.getForm().findField('mainId').getValue(),
+			        	//申请人信息表主键uuid
+						sqrxxId : sqrxxPanel.getForm().findField('mainId').getValue(),
 						//被查询人的身份证信息
 						idCardNum : bcxrxxPanel.getForm().findField("idCardNum").getValue()
 				
@@ -437,8 +445,9 @@ Ext.onReady(function() {
 	                    	var config = {
 					            url : 'information/queryCZRKinfo.do',
 					            params : {
-					            	//查询日志表的id
+					            	//申请人信息表主键uuid
 									sqrxxId : sqrxxPanel.getForm().findField('mainId').getValue(),
+					            	//被查询人信息主键
 					            	bcxrxxId :grid.getStore().getAt(rowIndex).data.bcxrxxId,
 					            	populationType : grid.getStore().getAt(rowIndex).data.populationType
 					            },
@@ -451,7 +460,7 @@ Ext.onReady(function() {
 					            	//合并单元格
 					            	$("#familyInfoTable").rowspan({td:1}); 
 					            	//console.log("bbbbb");
-					            	console.log(changzhuWin.down('panel').getEl().getById("changzhuDetailDiv").getHTML());
+					            	/////console.log(changzhuWin.down('panel').getEl().getById("changzhuDetailDiv").getHTML());
 					            	//changzhuWin.down('panel').doComponentLayout();
 					            	//console.log("getSize:"+Ext.encode(changzhuWin.down('panel').getSize( )) );
 					            	//console.log("getHeight:"+changzhuWin.down('panel').getHeight( ) );
@@ -466,8 +475,9 @@ Ext.onReady(function() {
                     		var config = {
 					            url : 'information/queryZZRKinfo.do',
 					            params : {
-					            	//查询日志表的id
+					            	//申请人信息表主键uuid
 									sqrxxId : sqrxxPanel.getForm().findField('mainId').getValue(),
+					            	//被查询人信息主键
 					            	bcxrxxId :grid.getStore().getAt(rowIndex).data.bcxrxxId,
 					            	populationType : grid.getStore().getAt(rowIndex).data.populationType
 					            },
@@ -693,7 +703,7 @@ Ext.onReady(function() {
 					    
 					});
 		            console.log(printHtml);
-		            console.log(changzhuWin.down('panel').getEl().getById("changzhuDetailDiv").getHTML());
+		            /////console.log(changzhuWin.down('panel').getEl().getById("changzhuDetailDiv").getHTML());
 					
 		            printHtml = preHtml +'<div class="frame_normal" id="allDiv">'+ printHtml+'</div></body></html>';
 		            //console.log(html);
