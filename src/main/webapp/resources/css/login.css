@@ -1,0 +1,297 @@
+/*======================================
+		HSIT-UI CSS
+		author:   cai xue feng
+		QQ:       66383210
+		Email:    caixf@hsit.com.cn
+		Date:     2014-05
+======================================*/
+
+@import url('reset.css');
+html,
+body { 
+	height: 100%;
+	text-rendering: optimizeLegibility;
+	font-size: 14px;
+	line-height: 1.428571429;
+	color: #333333;
+}
+body,
+div,
+input,
+button { font-family: "Microsoft YaHei"; }
+.h-l-hide { display: none; }
+/*layout*/
+.h-l-page {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	min-height: 620px;
+}
+.h-l-wrapper {
+	text-align: center;
+	width: 100%;
+	position: relative;
+	left: 0;
+	top: 50%;
+}
+.h-l-wrapper-con {
+	height: 620px;
+	margin-top: -310px;
+}
+.h-l-wrapper-in {
+	width: 1000px;
+	margin: 0 auto;
+	text-align: left;
+	position: relative;
+}
+.h-l-content { position: relative; }
+/*---------------------------------
+	header
+---------------------------------*/
+.h-l-header { padding: 10px 0; }
+.h-l-header a,
+.h-l-header a:visited {
+	color: #666;
+	text-decoration: none;
+}
+.h-l-header a:hover { text-decoration: underline; }
+.h-l-top-nav {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+}
+.h-l-top-nav a {
+	display: inline-block;
+*display:inline;
+*zoom:1;
+	margin-left: 10px;
+}
+/*---------------------------------
+	form-area
+---------------------------------*/
+/*用户头像*/
+.h-l-user-header {
+	text-align: center;
+	padding-bottom: 10px;
+}
+.h-l-user-header img {
+	border-radius: 50%;
+	width: 100px;
+	height: 100px;
+	border: 4px solid #fff;
+}
+/*登录表单区域*/
+.h-l-form-area {
+	position: absolute;
+	left: 50%;
+	top: 40px;
+	width: 300px;
+	padding: 20px;
+	background: #f7f7f7;
+	z-index: 9999;
+	border-radius: 4px;
+	margin-left: 160px;
+}
+.h-l-form-title {
+	color: #999;
+	border-bottom: 1px solid #ececec;
+	padding: 10px 0;
+	margin-bottom: 20px;
+}
+.h-l-form-item { margin-bottom: 20px; }
+.h-l-form-item label {
+	float: left;
+	padding-top: 10px;
+}
+.h-l-form-item label input { vertical-align: middle !important; }
+.h-l-input-text {
+	border: 1px solid #d9d9d9;
+	background: url(images/login/bg-input.png) repeat-x;
+	width: 240px;
+	height: 48px;
+	line-height: 48px;
+	padding-left: 60px;
+	font-size: 18px;
+	color: #444;
+	vertical-align: middle !important;
+}
+.h-l-input-text:focus { border: 1px solid #3ca0e8; }
+.h-l-input-text:focus:hover { border: 1px solid #3ca0e8; }
+
+/*BTN*/
+.h-l-input-btn {
+	display:block;
+	height: 48px;
+	line-height:48px;
+	width: 100%;
+	background: #498bf4 url(images/login/btn.png);
+	border: 1px solid #3079ed;
+	font-size: 20px;
+	color: #fff;
+	border-radius: 3px;
+	letter-spacing:0px;
+	text-decoration:none;
+	color:#fff !important;
+}
+a.h-l-input-btn:hover{ background-image:url(images/login/btn-hover.png); background-color:#276cff; border-color:#1765e2; color:#fff;}
+a.h-l-input-btn:active{  background-image:url(images/login/btn-active.png); background-color:#2b87f0;border-color:#0050cf; color:#fff;}
+
+.h-l-input-btn.h-l-disable{
+	filter: alpha(opacity=80);
+	-moz-opacity: 0.8;
+	-khtml-opacity: 0.8;
+	opacity: 0.8;
+	cursor:not-allowed;
+}
+
+
+.h-l-icon-user { background-image: url(images/login/icon-user.jpg); }
+.h-l-icon-pw { background-image: url(images/login/icon-pw.jpg); }
+.h-l-btn-bar {
+	float: right;
+	width: 150px;
+}
+.h-l-user-info { text-align: center; }
+.h-l-user-name {
+	color: #666;
+	font-size: 22px;
+}
+.h-l-user-id {
+	font-weight: 400;
+	color: #999;
+	padding-left: 10px;
+	font-size: 22px;
+}
+.h-l-user-company {
+	font-size: 12px;
+	color: #999;
+	padding-bottom: 20px;
+	display: block;
+}
+.h-l-form-logged .h-l-input-btn { width: 100%; }
+.h-l-link { text-align: center; }
+.h-l-link a {
+	color: #427fed !important;
+	text-decoration: none;
+}
+.h-l-link a:hover { text-decoration: underline; }
+/*---------------------------------
+	errorTxt
+---------------------------------*/
+
+.h-l-errorTxt {
+	background: #ffffe3;
+	border: 1px dashed #ff6600;
+	padding: 6px;
+	color: #666;
+}
+.h-l-errorTxt span { color: #f00; }
+/*---------------------------------
+	footer
+---------------------------------*/
+.h-l-footer { padding: 10px 0; }
+.h-l-footer .h-l-copyRight {
+	height: 40px;
+	line-height: 40px;
+	text-align: right;
+}
+.h-l-footer .h-l-copyRight p { color: #999; }
+.h-l-footer .h-l-copyRight a { color: #999 !important; }
+
+.h-l-logo-bt{ float:left;}
+
+
+
+
+
+/* banner */
+.h-l-banner {
+	height: 500px;
+	position: relative;
+	width: 990px;
+	overflow: hidden;
+}
+.h-l-banner_inner {
+	position: relative;
+	height: 500px;
+	width: 990px;
+	margin: 0 auto
+}
+.h-l-banner_img { width: 20000px }
+.h-l-banner_img li {
+	float: left;
+	width: 1903px;
+	position: relative
+}
+.h-l-banner .h-l-child1 {
+	position: absolute;
+	width: 588px;
+	height: 500px;
+	left: 66px;
+	top: 0
+}
+.h-l-banner .h-l-child2 {
+	position: absolute;
+	width: 654px;
+	height: 500px;
+	left: 343px;
+	top: 0
+}
+.h-l-banner_common {
+	position: absolute;
+	width: 100%;
+	top: 460px;
+	left: 0;
+}
+.h-l-banner_common div {
+	width: 1000px;
+	margin: auto;
+}
+.h-l-banner_pre {
+	float: right;
+	width: 32px;
+	height: 32px;
+	cursor: pointer;
+	background: url(images/login/banner_btn_l_24.png) no-repeat;
+	opacity: .5;
+	filter: alpha(opacity=50)
+}
+.h-l-banner_next {
+	float: right;
+	width: 32px;
+	height: 32px;
+	cursor: pointer;
+	background: url(images/login/banner_btn_r_24.png) no-repeat;
+	opacity: .5;
+	filter: alpha(opacity=50)
+}
+.h-l-banner_pre:hover,
+.h-l-banner_next:hover {
+	opacity: 1;
+	filter: alpha(opacity=100)
+}
+.h-l-banner .h-l-control {
+	width: 130px;
+	position: absolute;
+	top: 470px;
+	left: 50%;
+	margin-left: -40px
+}
+.h-l-banner .h-l-control li {
+	float: left;
+	margin-left: 10px;
+	width: 12px;
+	height: 12px;
+	border-radius: 50%;
+	cursor: pointer;
+	background: #fff
+}
+.h-l-banner .h-l-control li a { display: none }
+.h-l-banner .h-l-control li.current { background: #ff7f02 }
+
+
+
+
+.h-l-icon-loading { background: url(images/login/loading.gif) no-repeat center center; height:16px; width:16px; display:inline-block; *display:inline; *zoom:1; }
