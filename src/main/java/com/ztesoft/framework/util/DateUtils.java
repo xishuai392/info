@@ -1,5 +1,6 @@
 package com.ztesoft.framework.util;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -885,5 +886,79 @@ public final class DateUtils {
             al.add(string2Date(str + "-" + i, "yyyy-MM-dd"));
         }
         return al;
+    }
+
+    /**
+     * 按yyyy-MM-dd比较两个Date的大小
+     * 
+     * @author: panxb
+     * @date: 2012-3-6 下午03:02:02
+     * @param date1
+     * @param date2
+     * @param stype
+     * @return
+     */
+    public static int compareDate(Date date1, Date date2, int stype) {
+        String format = "yyyy-MM-dd";
+        return compareDate(date2String(date1, format),
+                date2String(date2, format), stype);
+    }
+
+    /**
+     * @param date1 需要比较的时间 不能为空(null),需要正确的日期格式
+     * @param date2 被比较的时间 为空(null)则为当前时间
+     * @param stype 返回值类型 0为多少天，1为多少个月，2为多少年
+     * @return 如果date1比date2提早，返回负数；反之亦然
+     */
+    public static int compareDate(String date1, String date2, int stype) {
+        int n = 0;
+
+        // String[] u = { "天", "月", "年" };
+        String formatStyle = stype == 1 ? "yyyy-MM" : "yyyy-MM-dd";
+
+        date2 = date2 == null ? getCurrentDate() : date2;
+
+        DateFormat df = new SimpleDateFormat(formatStyle);
+        Calendar c1 = Calendar.getInstance();
+        Calendar c2 = Calendar.getInstance();
+        try {
+            c1.setTime(df.parse(date1));
+            c2.setTime(df.parse(date2));
+        }
+        catch (Exception e3) {
+        }
+        // List list = new ArrayList();
+        if (c1.compareTo(c2) <= 0) {
+            while (!c1.after(c2)) { // 循环对比，直到相等，n 就是所要的结果
+                // list.add(df.format(c1.getTime())); // 这里可以把间隔的日期存到数组中 打印出来
+                n--;
+                if (stype == 1) {
+                    c1.add(Calendar.MONTH, 1); // 比较月份，月份+1
+                }
+                else {
+                    c1.add(Calendar.DATE, 1); // 比较天数，日期+1
+                }
+            }
+            n = n + 1;
+        }
+        else {
+            while (!c2.after(c1)) { // 循环对比，直到相等，n 就是所要的结果
+                // list.add(df.format(c1.getTime())); // 这里可以把间隔的日期存到数组中 打印出来
+                n++;
+                if (stype == 1) {
+                    c2.add(Calendar.MONTH, 1); // 比较月份，月份+1
+                }
+                else {
+                    c2.add(Calendar.DATE, 1); // 比较天数，日期+1
+                }
+            }
+            n = n - 1;
+        }
+
+        if (stype == 2) {
+            n = (int) n / 365;
+        }
+
+        return n;
     }
 }

@@ -14,6 +14,8 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import com.ztesoft.framework.exception.BaseAppException;
+import com.ztesoft.framework.exception.ExceptionHandler;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
 
 /**
@@ -135,6 +137,14 @@ public class InfoXmlParser {
         return resultVO;
     }
 
+    public static List<Map<String, String>> parserResultVO(InfoResultVO infoResultVO) {
+        if(!"000".equals(infoResultVO.getTargetCode())){
+            //异常
+            throw new RuntimeException(infoResultVO.getTargetMsg());
+        }
+        return infoResultVO.getTargetDatas();
+    }
+    
     /**
      * @param args
      */

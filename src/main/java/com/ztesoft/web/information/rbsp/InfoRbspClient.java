@@ -21,12 +21,13 @@ public class InfoRbspClient {
     /**
      * 常住人口基本信息数据查询服务方 <br>
      * TC_RKXT.T_HUJI
-     * 
      * @param userPO
      * @param pid
+     * @param whereField  例如： PID
      * @return
      */
-    public static String queryCZRKbaseInfo(AuditUserPO userPO, String pid) {
+    public static String queryCZRKbaseInfo(AuditUserPO userPO, String pid,
+            String whereField) {
         // 创建RbspService
         RbspService service = new RbspService(
                 MessageResourceUtils.getMessage("T_HUJI.senderId"),
@@ -54,7 +55,7 @@ public class InfoRbspClient {
         if (pid.length() == 15) {
             pid = IdentificationCodeUtil.update2eighteen(pid);
         }
-        String condition = "PID=" + pid;
+        String condition = whereField + "=" + pid;
         // String condition = "ZJHM='"+pid+"'";
 
         params.put("Condition", condition);
