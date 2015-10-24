@@ -8,6 +8,16 @@
 		<title>人口信息查询  </title>
 		<link rel="stylesheet" type="text/css"
 			href="<%=request.getContextPath()%>/common/css/info.css">
+		<style type="text/css">
+		.btnQueryCls {
+			line-height: 17px;
+			font-family:"Microsoft Yahei";
+			font-size: 14px;
+			font-style: normal;
+			/*font-weight: bold;*/
+			color: red;
+		}
+		</style>
 		<script language="javascript" src="<%=request.getContextPath()%>/lodap/LodopFuncs.js"></script>
 		<script type="text/javascript">
 			!function($) {
@@ -44,9 +54,9 @@
 		<OBJECT classid="clsid:10946843-7507-44FE-ACE8-2B3483D179B7"
 			  id="CVR_IDCard" name="CVR_IDCard" width="0" height="0" >
 		</OBJECT>
-		
+
 		<script type="text/javascript"
-			src="${ctx}/information/app/InfoQueryApp.js">
+			src="${ctx}/information/app/PlatesInfoQueryApp.js">
 		</script>
 	</head>
 	<body style="width: 100%;height: 100%">

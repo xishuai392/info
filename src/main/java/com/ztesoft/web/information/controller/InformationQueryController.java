@@ -134,9 +134,10 @@ public class InformationQueryController {
         System.out.println("MessageResourceUtils:"
                 + MessageResourceUtils.getMessage("senderId"));
         System.out.println("======================");
-        System.out.println(request.getSession().getServletContext().getRealPath("/"));
+        System.out.println(request.getSession().getServletContext()
+                .getRealPath("/"));
         System.out.println("======================");
-        
+
         return respInfo;
     }
 
@@ -146,12 +147,13 @@ public class InformationQueryController {
      * @param reqInfo
      * @param request
      * @return
-     * @throws BaseAppException 
+     * @throws BaseAppException
      */
     @RequestMapping("queryByOther")
     @ResponseBody
     public List<QueryResultInfo> queryByOtherPeople(
-            QueryByOtherPeopleReqInfo reqInfo, HttpServletRequest request) throws BaseAppException {
+            QueryByOtherPeopleReqInfo reqInfo, HttpServletRequest request)
+            throws BaseAppException {
 
         /******************************* make data start ********************************/
         // List<QueryResultInfo> queryResultInfoList=new ArrayList<QueryResultInfo>();
@@ -181,105 +183,109 @@ public class InformationQueryController {
         HttpSession session = request.getSession(true);
         AuditUserPO auditUserPo = (AuditUserPO) session
                 .getAttribute(IConstants.SESSIONUSER);
-        //被查询身份证号码
+        // 被查询身份证号码
         String pid = reqInfo.getIdCardNum();
-        //被查询者姓名
+        // 被查询者姓名
         String bcxrxm = "";
-        
-        String resultCZRK = InfoRbspClient.queryCZRKbaseInfo(auditUserPo, pid, "PID");
+
+        String resultCZRK = InfoRbspClient.queryCZRKbaseInfo(auditUserPo, pid,
+                "PID");
         InfoResultVO czrkVO = InfoXmlParser.parserXML(resultCZRK);
-        List<Map<String, String>> czrkbaseInfoList = InfoXmlParser.parserResultVO(czrkVO);
+        List<Map<String, String>> czrkbaseInfoList = InfoXmlParser
+                .parserResultVO(czrkVO);
         List<QueryResultInfo> queryResultInfoList = new ArrayList<QueryResultInfo>();
         if (czrkbaseInfoList.size() != 0) {
             for (Map<String, String> rowMap : czrkbaseInfoList) {
                 QueryResultInfo resultInfo = new QueryResultInfo();
                 String uuid = UuidUtils.generatorUUID();
-                
+
                 resultInfo.setBcxrxxId(uuid);
                 resultInfo.setIdCardNum(pid);
-                resultInfo.setBirthDate(rowMap.get("DOB"));//出生日期
-                resultInfo.setAddress(rowMap.get("NATAL_XIANG"));//出生地详址
+                resultInfo.setBirthDate(rowMap.get("DOB"));// 出生日期
+                resultInfo.setAddress(rowMap.get("NATAL_XIANG"));// 出生地详址
                 resultInfo.setIsHavingTR("");
-                resultInfo.setName(rowMap.get("NAME"));//姓名
-                if(StringUtils.isNotBlank(rowMap.get("NAME")))
-                    bcxrxm = rowMap.get("NAME");//姓名
+                resultInfo.setName(rowMap.get("NAME"));// 姓名
+                if (StringUtils.isNotBlank(rowMap.get("NAME")))
+                    bcxrxm = rowMap.get("NAME");// 姓名
                 resultInfo.setPopulationType("户籍人口");
                 queryResultInfoList.add(resultInfo);
-                
+
                 try {
-                    //被查询人信息
-                    TBcxrxxPO bcxrxxPO  = new TBcxrxxPO ();
+                    // 被查询人信息
+                    TBcxrxxPO bcxrxxPO = new TBcxrxxPO();
                     bcxrxxPO.setId(uuid);
                     bcxrxxPO.setSqrId(reqInfo.getSqrxxId());
-                    bcxrxxPO.setZjlx("10");//证件类型（10：身份证，20：其他）
+                    bcxrxxPO.setZjlx("10");// 证件类型（10：身份证，20：其他）
                     bcxrxxPO.setZjh(pid);
                     bcxrxxPO.setXm(bcxrxm);
-                    bcxrxxPO.setSfzf("0");//是否作废（1：是，0：否）默认为“否”
-                    bcxrxxPO.setSfdy("0");//是否打印（1：是，0：否）默认为“否”
-                    bcxrxxPO.setBcxrq(DateUtils.date2String(new Date(), 
-                            DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));//被查询日期
-                    bcxrxxPO.setRklx("1");//人口类型（1：户籍人口，2：暂住人口）
-                    bcxrxxPO.setCxcs(0);//查询次数
-                    //记录日志
+                    bcxrxxPO.setSfzf("0");// 是否作废（1：是，0：否）默认为“否”
+                    bcxrxxPO.setSfdy("0");// 是否打印（1：是，0：否）默认为“否”
+                    bcxrxxPO.setBcxrq(DateUtils.date2String(new Date(),
+                            DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));// 被查询日期
+                    bcxrxxPO.setRklx("1");// 人口类型（1：户籍人口，2：暂住人口）
+                    bcxrxxPO.setCxcs(0);// 查询次数
+                    // 记录日志
                     bcxrxxService.add(bcxrxxPO);
-                }catch(Exception e){
+                }
+                catch (Exception e) {
                     logger.error("插入被查询人信息时发生错误", e);
                 }
             }
         }
         String resultZZRK = InfoRbspClient.queryZZRKInfo(auditUserPo, pid);
         InfoResultVO zzrkVO = InfoXmlParser.parserXML(resultZZRK);
-        List<Map<String, String>> zzrkBaseInfoList = InfoXmlParser.parserResultVO(zzrkVO);
+        List<Map<String, String>> zzrkBaseInfoList = InfoXmlParser
+                .parserResultVO(zzrkVO);
         if (zzrkBaseInfoList.size() != 0) {
             for (Map<String, String> rowMap : zzrkBaseInfoList) {
                 QueryResultInfo resultInfo = new QueryResultInfo();
                 String uuid = UuidUtils.generatorUUID();
-                
+
                 resultInfo.setBcxrxxId(uuid);
                 resultInfo.setIdCardNum(pid);
-                resultInfo.setBirthDate(rowMap.get("DOB"));//出生日期
-                resultInfo.setAddress(rowMap.get("ZZDZXZ"));//暂住地址
+                resultInfo.setBirthDate(rowMap.get("DOB"));// 出生日期
+                resultInfo.setAddress(rowMap.get("ZZDZXZ"));// 暂住地址
                 resultInfo.setIsHavingTR("已办证");
-                resultInfo.setName(rowMap.get("NAME"));//姓名
-                if(StringUtils.isNotBlank(rowMap.get("NAME")))
-                    bcxrxm = rowMap.get("NAME");//姓名
+                resultInfo.setName(rowMap.get("NAME"));// 姓名
+                if (StringUtils.isNotBlank(rowMap.get("NAME")))
+                    bcxrxm = rowMap.get("NAME");// 姓名
                 resultInfo.setPopulationType("暂住人口");
                 queryResultInfoList.add(resultInfo);
-                
+
                 try {
-                    //被查询人信息
-                    TBcxrxxPO bcxrxxPO  = new TBcxrxxPO ();
+                    // 被查询人信息
+                    TBcxrxxPO bcxrxxPO = new TBcxrxxPO();
                     bcxrxxPO.setId(uuid);
                     bcxrxxPO.setSqrId(reqInfo.getSqrxxId());
-                    bcxrxxPO.setZjlx("10");//证件类型（10：身份证，20：其他）
+                    bcxrxxPO.setZjlx("10");// 证件类型（10：身份证，20：其他）
                     bcxrxxPO.setZjh(pid);
                     bcxrxxPO.setXm(bcxrxm);
-                    bcxrxxPO.setSfzf("0");//是否作废（1：是，0：否）默认为“否”
-                    bcxrxxPO.setSfdy("0");//是否打印（1：是，0：否）默认为“否”
-                    bcxrxxPO.setBcxrq(DateUtils.date2String(new Date(), 
-                            DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));//被查询日期
-                    bcxrxxPO.setRklx("2");//人口类型（1：户籍人口，2：暂住人口）
-                    bcxrxxPO.setCxcs(0);//查询次数
-                    //记录日志
+                    bcxrxxPO.setSfzf("0");// 是否作废（1：是，0：否）默认为“否”
+                    bcxrxxPO.setSfdy("0");// 是否打印（1：是，0：否）默认为“否”
+                    bcxrxxPO.setBcxrq(DateUtils.date2String(new Date(),
+                            DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));// 被查询日期
+                    bcxrxxPO.setRklx("2");// 人口类型（1：户籍人口，2：暂住人口）
+                    bcxrxxPO.setCxcs(0);// 查询次数
+                    // 记录日志
                     bcxrxxService.add(bcxrxxPO);
-                }catch(Exception e){
+                }
+                catch (Exception e) {
                     logger.error("插入被查询人信息时发生错误", e);
                 }
-                
+
             }
         }
 
         /************************ Get drag data end ********************************/
 
-        
-        
         return queryResultInfoList;
     }
 
     @RequestMapping("queryCZRKinfo")
     @ResponseBody
     public PermanetPopulationInfo queryPermanetPopulationInfo(
-            QueryByOtherPeopleReqInfo reqInfo, HttpServletRequest request) {
+            QueryByOtherPeopleReqInfo reqInfo, HttpServletRequest request)
+            throws BaseAppException {
         HttpSession session = request.getSession(true);
         AuditUserPO auditUserPo = (AuditUserPO) session
                 .getAttribute(IConstants.SESSIONUSER);
@@ -287,91 +293,100 @@ public class InformationQueryController {
         PermanetPopulationInfo permanentPopulationInfo = new PermanetPopulationInfo();
         String pid = reqInfo.getIdCardNum();
         // 查询常住人口信息
-        String czrkInfoResult = InfoRbspClient.queryCZRKbaseInfo(auditUserPo,pid,"PID");
+        String czrkInfoResult = InfoRbspClient.queryCZRKbaseInfo(auditUserPo,
+                pid, "PID");
         InfoResultVO czrkVO = InfoXmlParser.parserXML(czrkInfoResult);
-        List<Map<String, String>> czrkInfoList = InfoXmlParser.parserResultVO(czrkVO);
-        
-        
+        List<Map<String, String>> czrkInfoList = InfoXmlParser
+                .parserResultVO(czrkVO);
+
         Map<String, String> czrkInfoMap = czrkInfoList.get(0);
 
-        //获取它的照片编号
+        // 获取它的照片编号
         String photoId = czrkInfoMap.get("PHOTO_ID");
         // 查询photo信息并保存在服务器固定目录
-        String photoInfoResult = InfoRbspClient.queryImageInfo(auditUserPo, photoId);
+        String photoInfoResult = InfoRbspClient.queryImageInfo(auditUserPo,
+                photoId);
         InfoResultVO photoVO = InfoXmlParser.parserXML(photoInfoResult);
-        List<Map<String, String>> photoInfoList = InfoXmlParser.parserResultVO(photoVO);
+        List<Map<String, String>> photoInfoList = InfoXmlParser
+                .parserResultVO(photoVO);
         if (photoInfoList.size() > 0) {
             String imageStr = photoInfoList.get(0).get("IMAGE");
-            //TODO 按约定保存二进制到固定目录
-            String imagePath = request.getSession().getServletContext().getRealPath("/") 
-                    + System.getProperty("file.separator") + "personImages"
-                    + System.getProperty("file.separator") + pid 
+            // TODO 按约定保存二进制到固定目录
+            String imagePath = request.getSession().getServletContext()
+                    .getRealPath("/")
+                    + System.getProperty("file.separator")
+                    + "personImages"
+                    + System.getProperty("file.separator")
+                    + pid
                     + MessageResourceUtils.getMessage("idCard.image.format");
-            
+
             try {
-                TransUtils.hexString2Image(imagePath, imageStr);
-                TransUtils.base64String2Image(imagePath, imageStr);
+                savePhoto(imagePath, imageStr);
             }
             catch (Exception e) {
                 logger.error("保存身份证照片时发生异常", e);
             }
         }
-        
+
         // 查询全量地址
         String allFullAddr = "";
         String huId = czrkInfoMap.get("HU_ID");
-        String huInfoResult = InfoRbspClient.queryCZRKCensusInfo(auditUserPo, huId);
+        String huInfoResult = InfoRbspClient.queryCZRKCensusInfo(auditUserPo,
+                huId);
         InfoResultVO huInfoVO = InfoXmlParser.parserXML(huInfoResult);
-        List<Map<String, String>> huInfoList = InfoXmlParser.parserResultVO(huInfoVO);
+        List<Map<String, String>> huInfoList = InfoXmlParser
+                .parserResultVO(huInfoVO);
         if (huInfoList.size() > 0) {
             String metaAddrId = huInfoList.get(0).get("META_ADDR_ID");
-            String dzInfoResult = InfoRbspClient.queryDZinfo(auditUserPo, metaAddrId);
+            String dzInfoResult = InfoRbspClient.queryDZinfo(auditUserPo,
+                    metaAddrId);
             InfoResultVO dzInfoVO = InfoXmlParser.parserXML(dzInfoResult);
-            List<Map<String, String>> dzInfoList = InfoXmlParser.parserResultVO(dzInfoVO);
+            List<Map<String, String>> dzInfoList = InfoXmlParser
+                    .parserResultVO(dzInfoVO);
             if (dzInfoList.size() > 0) {
                 allFullAddr = dzInfoList.get(0).get("ALL_FULL_ADDR");
             }
         }
-        
-        //拼装家庭关系及联系人信息
-        List<FamilyInfo> familyInfoList = queryFamilyInfo(auditUserPo,pid,czrkInfoMap);
-        
-        //拼装基本信息
+
+        // 拼装家庭关系及联系人信息
+        List<FamilyInfo> familyInfoList = queryFamilyInfo(auditUserPo, pid,
+                czrkInfoMap);
+
+        // 拼装基本信息
         PopulationBaseInfo baseInfo = queryBasePopulation(czrkInfoMap,
                 allFullAddr);
-        
-        //拼装迁移信息
-        MigrateInfo migrateInfo = queryMigrateInfo(auditUserPo,pid,czrkInfoMap);
-        
+
+        // 拼装迁移信息
+        MigrateInfo migrateInfo = queryMigrateInfo(auditUserPo, pid,
+                czrkInfoMap);
+
         permanentPopulationInfo.setBaseInfo(baseInfo);
         permanentPopulationInfo.setFamilyInfoList(familyInfoList);
         permanentPopulationInfo.setMigrateInfo(migrateInfo);
-        
-        
-        
+
         try {
-            //更新日志
-            //被查询人信息
-            TBcxrxxPO bcxrxxPO = bcxrxxService.selectByPrimaryKey(reqInfo.getBcxrxxId());
+            // 更新日志
+            // 被查询人信息
+            TBcxrxxPO bcxrxxPO = bcxrxxService.selectByPrimaryKey(reqInfo
+                    .getBcxrxxId());
             TBcxrxxPO nbcxrxxPO = new TBcxrxxPO();
-            //更新查询次数
+            // 更新查询次数
             nbcxrxxPO.setId(bcxrxxPO.getId());
-            nbcxrxxPO.setCxcs(bcxrxxPO.getCxcs()+1);
+            nbcxrxxPO.setCxcs(bcxrxxPO.getCxcs() + 1);
             bcxrxxService.update(nbcxrxxPO);
         }
         catch (Exception e) {
             logger.error("更新被查询人信息（查询次数）时发生错误", e);
         }
-        
-        
-        
+
         return permanentPopulationInfo;
     }
 
     @RequestMapping("queryZZRKinfo")
     @ResponseBody
     public TRpopulationInfo queryTRPopulationInfo(
-            QueryByOtherPeopleReqInfo reqInfo, HttpServletRequest request) {
+            QueryByOtherPeopleReqInfo reqInfo, HttpServletRequest request)
+            throws BaseAppException {
         HttpSession session = request.getSession(true);
         AuditUserPO auditUserPo = (AuditUserPO) session
                 .getAttribute(IConstants.SESSIONUSER);
@@ -380,64 +395,71 @@ public class InformationQueryController {
         String pid = reqInfo.getIdCardNum();
         // 查流动人口信息
         String ldrkInfoResult = InfoRbspClient.queryLDRKInfo(auditUserPo, pid);
-        
+
         InfoResultVO ldrkInfoVO = InfoXmlParser.parserXML(ldrkInfoResult);
-        List<Map<String, String>> ldrkInfoList = InfoXmlParser.parserResultVO(ldrkInfoVO);
-        
+        List<Map<String, String>> ldrkInfoList = InfoXmlParser
+                .parserResultVO(ldrkInfoVO);
+
         Map<String, String> ldrkInfoMap = ldrkInfoList.get(0);
 
         String photoId = ldrkInfoMap.get("PHOTO_ID");
         // 查询photo信息并保存在服务器固定目录
-        String photoInfoResult = InfoRbspClient.queryImageInfo(auditUserPo, photoId);
-        
+        String photoInfoResult = InfoRbspClient.queryImageInfo(auditUserPo,
+                photoId);
+
         InfoResultVO photoInfoVO = InfoXmlParser.parserXML(photoInfoResult);
-        List<Map<String, String>> photoInfoList = InfoXmlParser.parserResultVO(photoInfoVO);
-        
+        List<Map<String, String>> photoInfoList = InfoXmlParser
+                .parserResultVO(photoInfoVO);
+
         if (photoInfoList.size() > 0) {
             String imageStr = photoInfoList.get(0).get("IMAGE");
-            //TODO 按约定保存二进制到固定目录
-            String imagePath = request.getSession().getServletContext().getRealPath("/") 
-                    + System.getProperty("file.separator") + "personImages"
-                    + System.getProperty("file.separator") + pid 
+            // TODO 按约定保存二进制到固定目录
+            String imagePath = request.getSession().getServletContext()
+                    .getRealPath("/")
+                    + System.getProperty("file.separator")
+                    + "personImages"
+                    + System.getProperty("file.separator")
+                    + pid
                     + MessageResourceUtils.getMessage("idCard.image.format");
-            
+
             try {
-                TransUtils.hexString2Image(imagePath, imageStr);
-                TransUtils.base64String2Image(imagePath, imageStr);
+                savePhoto(imagePath, imageStr);
             }
             catch (Exception e) {
                 logger.error("保存身份证照片时发生异常", e);
             }
-            
+
         }
         // 查询暂住人口信息
         String zzrkInfoResult = InfoRbspClient.queryZZRKInfo(auditUserPo, pid);
-        
+
         InfoResultVO zzrkInfoVO = InfoXmlParser.parserXML(zzrkInfoResult);
-        List<Map<String, String>> zzrkInfoList = InfoXmlParser.parserResultVO(zzrkInfoVO);
-        
+        List<Map<String, String>> zzrkInfoList = InfoXmlParser
+                .parserResultVO(zzrkInfoVO);
+
         Map<String, String> zzrkInfoMap = zzrkInfoList.get(0);
 
-        //拼装ZK基本信息
+        // 拼装ZK基本信息
         trPopulationInfo.setBaseInfo(queryZZRKBasePopulation(ldrkInfoMap,
                 zzrkInfoMap));
-        //拼装ZK暂住信息
+        // 拼装ZK暂住信息
         trPopulationInfo.setTrInfoList(queryTRInfoList(zzrkInfoList));
-        
+
         try {
-            //更新日志
-            //被查询人信息
-            TBcxrxxPO bcxrxxPO = bcxrxxService.selectByPrimaryKey(reqInfo.getBcxrxxId());
+            // 更新日志
+            // 被查询人信息
+            TBcxrxxPO bcxrxxPO = bcxrxxService.selectByPrimaryKey(reqInfo
+                    .getBcxrxxId());
             TBcxrxxPO nbcxrxxPO = new TBcxrxxPO();
-            //更新查询次数
+            // 更新查询次数
             nbcxrxxPO.setId(bcxrxxPO.getId());
-            nbcxrxxPO.setCxcs(bcxrxxPO.getCxcs()+1);
+            nbcxrxxPO.setCxcs(bcxrxxPO.getCxcs() + 1);
             bcxrxxService.update(nbcxrxxPO);
         }
         catch (Exception e) {
             logger.error("更新被查询人信息（查询次数）时发生错误", e);
         }
-        
+
         return trPopulationInfo;
     }
 
@@ -447,15 +469,14 @@ public class InformationQueryController {
 
     }
 
-    
-
     /**
      * 拼装CK基本信息
+     * 
      * @param rowInfoMap
      * @param allFullAddr
      * @return
      */
-    private PopulationBaseInfo queryBasePopulation(
+    public PopulationBaseInfo queryBasePopulation(
             Map<String, String> rowInfoMap, String allFullAddr) {
         PopulationBaseInfo baseInfo = new PopulationBaseInfo();
         // 暂时手工组装信息
@@ -500,8 +521,8 @@ public class InformationQueryController {
         baseInfo.setNativePlaceDetailAddress(rowInfoMap.get("NATIVE_XIANG"));
         baseInfo.setNativePlaceNation(rowInfoMap.get("NATIVE_COUNTRY"));
         baseInfo.setNativePlaceProvince(rowInfoMap.get("NATIVE_PLACE"));
-        //TODO 身份证照片地址
-        baseInfo.setPhotoGif(rowInfoMap.get("PID")+".jpg");
+        // TODO 身份证照片地址
+        baseInfo.setPhotoGif(rowInfoMap.get("PID") + ".jpg");
         baseInfo.setPoliceStation(rowInfoMap.get("WHO_IN_UNIT_NAME"));
         baseInfo.setSex(TransUtils.transSex(rowInfoMap.get("GENDER")));
         return baseInfo;
@@ -509,12 +530,14 @@ public class InformationQueryController {
 
     /**
      * 拼装CK 家庭关系及联系人信息
+     * 
      * @param auditUserPO
      * @param rowInfoMap
      * @return
+     * @throws BaseAppException
      */
-    private List<FamilyInfo> queryFamilyInfo(AuditUserPO auditUserPO,
-            String pid,Map<String, String> rowInfoMap) {
+    public List<FamilyInfo> queryFamilyInfo(AuditUserPO auditUserPO,
+            String pid, Map<String, String> rowInfoMap) throws BaseAppException {
         List<FamilyInfo> familyInfoList = new ArrayList<FamilyInfo>();
         /************************************ make data start **********************************/
 
@@ -605,13 +628,13 @@ public class InformationQueryController {
         FamilyInfo familyInfoSpouse = new FamilyInfo();
         familyInfoSpouse.setRelationType("配偶");
         familyInfoSpouse.setIdCardNum(rowInfoMap.get("PO_PID"));
-        if("男".equals(TransUtils.transSex(rowInfoMap.get("GENDER")))){
+        if ("男".equals(TransUtils.transSex(rowInfoMap.get("GENDER")))) {
             familyInfoSpouse.setRelationShip("妻子");
         }
-        if("女".equals(TransUtils.transSex(rowInfoMap.get("GENDER")))){
+        if ("女".equals(TransUtils.transSex(rowInfoMap.get("GENDER")))) {
             familyInfoSpouse.setRelationShip("丈夫");
         }
-        
+
         familyInfoSpouse.setCertificateType(rowInfoMap.get("PO_CARD_TYPE"));
         familyInfoSpouse.setCertificateNum(rowInfoMap.get("PO_CARD_NO"));
         familyInfoSpouse.setForeignFirstName(rowInfoMap.get("PO_WWX"));
@@ -650,41 +673,42 @@ public class InformationQueryController {
 
         familyInfoList.add(familyInfoFather);
         familyInfoList.add(familyInfoMother);
-        
-        //需要判断是否有配偶
-        if(!StringUtils.isBlank(familyInfoSpouse.getName())){
+
+        // 需要判断是否有配偶
+        if (!StringUtils.isBlank(familyInfoSpouse.getName())) {
             familyInfoList.add(familyInfoSpouse);
         }
-        
-        //需要判断是否有监护人
-        if(!StringUtils.isBlank(familyInfoKeeper.getName())){
+
+        // 需要判断是否有监护人
+        if (!StringUtils.isBlank(familyInfoKeeper.getName())) {
             familyInfoList.add(familyInfoKeeper);
         }
-        if(!StringUtils.isBlank(familyInfoKeeperTwo.getName())){
+        if (!StringUtils.isBlank(familyInfoKeeperTwo.getName())) {
             familyInfoList.add(familyInfoKeeperTwo);
         }
-        
-        
-        //查找该人的所有子女
+
+        // 查找该人的所有子女
         String whereFiled = "";
-        if("男".equals(TransUtils.transSex(rowInfoMap.get("GENDER")))){
+        if ("男".equals(TransUtils.transSex(rowInfoMap.get("GENDER")))) {
             whereFiled = "FA_PID";
         }
-        if("女".equals(TransUtils.transSex(rowInfoMap.get("GENDER")))){
+        if ("女".equals(TransUtils.transSex(rowInfoMap.get("GENDER")))) {
             whereFiled = "MA_PID";
         }
-        String czrkInfoResult = InfoRbspClient.queryCZRKbaseInfo(auditUserPO,pid,whereFiled);
+        String czrkInfoResult = InfoRbspClient.queryCZRKbaseInfo(auditUserPO,
+                pid, whereFiled);
         InfoResultVO czrkVO = InfoXmlParser.parserXML(czrkInfoResult);
-        List<Map<String, String>> czrkInfoList = InfoXmlParser.parserResultVO(czrkVO);
-        
-        if(null!=czrkInfoList && czrkInfoList.size()>0){
-            for(Map<String, String> oneChildMap : czrkInfoList){
+        List<Map<String, String>> czrkInfoList = InfoXmlParser
+                .parserResultVO(czrkVO);
+
+        if (null != czrkInfoList && czrkInfoList.size() > 0) {
+            for (Map<String, String> oneChildMap : czrkInfoList) {
                 FamilyInfo familyInfoChild = new FamilyInfo();
                 familyInfoChild.setRelationType("子女");
-                if("男".equals(TransUtils.transSex(oneChildMap.get("GENDER")))){
+                if ("男".equals(TransUtils.transSex(oneChildMap.get("GENDER")))) {
                     familyInfoSpouse.setRelationShip("儿子");
                 }
-                if("女".equals(TransUtils.transSex(oneChildMap.get("GENDER")))){
+                if ("女".equals(TransUtils.transSex(oneChildMap.get("GENDER")))) {
                     familyInfoSpouse.setRelationShip("女儿");
                 }
                 // TODO 子女信息
@@ -700,19 +724,17 @@ public class InformationQueryController {
         }
         return familyInfoList;
     }
-    
-    
-
 
     /**
      * 拼装CK 迁移信息
+     * 
      * @param auditUserPO
      * @param pid
      * @param rowInfoMap
      * @return
      */
-    private MigrateInfo queryMigrateInfo(AuditUserPO auditUserPO,
-            String pid, Map<String, String> rowInfoMap) {
+    public MigrateInfo queryMigrateInfo(AuditUserPO auditUserPO, String pid,
+            Map<String, String> rowInfoMap) {
         MigrateInfo migrateInfo = new MigrateInfo();
         migrateInfo.setTimeAndResultForMigrateLocal(rowInfoMap.get(""));
         migrateInfo.setTimeAndResultForMigrateNative(rowInfoMap.get(""));
@@ -724,14 +746,14 @@ public class InformationQueryController {
         return migrateInfo;
     }
 
-    
     /**
      * 拼装ZK基本信息
+     * 
      * @param ldrkInfoMap
      * @param zzrkInfoMap
      * @return
      */
-    private PopulationBaseInfo queryZZRKBasePopulation(
+    public PopulationBaseInfo queryZZRKBasePopulation(
             Map<String, String> ldrkInfoMap, Map<String, String> zzrkInfoMap) {
         PopulationBaseInfo baseInfo = new PopulationBaseInfo();
         baseInfo.setName(zzrkInfoMap.get("NAME"));
@@ -742,18 +764,20 @@ public class InformationQueryController {
                 .get("HJD_FULL_ADDR"));
         baseInfo.setHouseholdRegisterProviceAddress(ldrkInfoMap.get("HJD_QU"));
         baseInfo.setNativePlace(ldrkInfoMap.get("NATIVE_PLACE"));
-        //TODO 身份证照片地址
-        baseInfo.setPhotoGif(ldrkInfoMap.get("PID")+".jpg");
+        // TODO 身份证照片地址
+        baseInfo.setPhotoGif(ldrkInfoMap.get("PID") + ".jpg");
+        baseInfo.setNation(zzrkInfoMap.get("NATION"));
         baseInfo.setSex(TransUtils.transSex(zzrkInfoMap.get("GENDER")));
         return baseInfo;
     }
-    
+
     /**
      * 拼装ZK暂住信息
+     * 
      * @param zzrkInfoList
      * @return
      */
-    private List<TRinfo> queryTRInfoList(List<Map<String, String>> zzrkInfoList) {
+    public List<TRinfo> queryTRInfoList(List<Map<String, String>> zzrkInfoList) {
 
         List<TRinfo> trInfoList = new ArrayList<TRinfo>();
 
@@ -784,27 +808,44 @@ public class InformationQueryController {
             TRinfo infoOne = new TRinfo();
             infoOne.setEndDate(zzrkInfoMap.get("YXQXJZRQ"));
             infoOne.setFillDate(zzrkInfoMap.get("LZRQ"));
-            
+
             infoOne.setStartDate(zzrkInfoMap.get("YXQQSRQ"));
             infoOne.setTrAddress(zzrkInfoMap.get("ZZDZXZ"));
             infoOne.setTrCardCompany(zzrkInfoMap.get(""));
             infoOne.setTrCardIssuneOffice(zzrkInfoMap.get("FZJGJGMC"));
             infoOne.setTrNum(zzrkInfoMap.get("ZZZBH"));
-            //TODO 根据确定的格式得到相差时间
-            try{
-                Date startDate = DateUtils.string2Date(zzrkInfoMap.get("YXQQSRQ"), 
-                        MessageResourceUtils.getMessage("T_LDRK_ZJZZXX.date.format"));
-                Date endDate = DateUtils.string2Date(zzrkInfoMap.get("YXQXJZRQ"), 
-                        MessageResourceUtils.getMessage("T_LDRK_ZJZZXX.date.format"));
-                //ArrayList<Date> list = DateUtils.getIntervalDay(startDate, endDate);
-                infoOne.setIntervalTime(String.valueOf(DateUtils.compareDate(endDate,startDate,0)));
-            }catch(Exception e){
+            // TODO 根据确定的格式得到相差时间
+            try {
+                Date startDate = DateUtils.string2Date(zzrkInfoMap
+                        .get("YXQQSRQ"), MessageResourceUtils
+                        .getMessage("T_LDRK_ZJZZXX.date.format"));
+                Date endDate = DateUtils.string2Date(zzrkInfoMap
+                        .get("YXQXJZRQ"), MessageResourceUtils
+                        .getMessage("T_LDRK_ZJZZXX.date.format"));
+                // ArrayList<Date> list = DateUtils.getIntervalDay(startDate, endDate);
+                infoOne.setIntervalTime(String.valueOf(DateUtils.compareDate(
+                        endDate, startDate, 0)));
+            }
+            catch (Exception e) {
                 logger.error(e);
             }
-            
+
             trInfoList.add(infoOne);
         }
         return trInfoList;
+    }
+
+    /**
+     * 保存身份证照片
+     * 
+     * @param imagePath
+     * @param imageStr
+     * @throws Exception
+     */
+    public void savePhoto(String imagePath, String imageStr) throws Exception {
+        // TransUtils.hexString2Image(imagePath, imageStr);
+        logger.info("身份证照片路径：" + imagePath);
+        TransUtils.base64String2Image(imagePath, imageStr);
     }
 
 }

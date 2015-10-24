@@ -1,12 +1,17 @@
 package com.ztesoft.web.information.rbsp;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.dragonsoft.node.adapter.comm.RbspCall;
 import com.dragonsoft.node.adapter.comm.RbspConsts;
 import com.dragonsoft.node.adapter.comm.RbspService;
+import com.ztesoft.framework.log.ZTEsoftLogManager;
 import com.ztesoft.framework.util.MessageResourceUtils;
 import com.ztesoft.web.permission.db.po.AuditUserPO;
 
@@ -18,59 +23,75 @@ import com.ztesoft.web.permission.db.po.AuditUserPO;
  * @author Ocean
  */
 public class InfoRbspClient {
+    private static final ZTEsoftLogManager logger = ZTEsoftLogManager
+            .getLogger(InfoRbspClient.class);
 
     /**
      * 常住人口基本信息数据查询服务方 <br>
      * TC_RKXT.T_HUJI
+     * 
      * @param userPO
      * @param pid
-     * @param whereField  例如： PID
+     * @param whereField 例如： PID
      * @return
      */
     public static String queryCZRKbaseInfo(AuditUserPO userPO, String pid,
             String whereField) {
-        if("true".equals(MessageResourceUtils.getMessage("isDebug"))){
-            return getXml("T_HUJI.xml");
-        }
-        
-        // 创建RbspService
-        RbspService service = new RbspService(
-                MessageResourceUtils.getMessage("T_HUJI.senderId"),
-                MessageResourceUtils.getMessage("T_HUJI.serviceId"));
-        // 设置用户身份编号
-        service.setUserCardId(userPO.getUserCardId());
-        // 设置用户单位
-        service.setUserDept(userPO.getOrgName());
-        // 设置用户名
-        service.setUserName(userPO.getUserName());
-        // 设置PKI编号
-        service.setPkiId(userPO.getUserPkiId());
-        // 创建RbspCall
-        RbspCall call = service.createCall();
-        // 设置总线地址
-        call.setUrl(MessageResourceUtils.getMessage("T_HUJI.url"));
-        // 设置WebService接口方法
-        call.setMethod(RbspConsts.METHOD_QUERY);
-        // 设置接口方法参数<参数名,值>
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("DataObjectCode",
-                MessageResourceUtils.getMessage("T_HUJI.DataObjectCode"));
-        // params.put("DataObjectCode", "M001");
-        params.put("InfoCodeMode", "1");
-        if (pid.length() == 15) {
-            pid = IdentificationCodeUtil.update2eighteen(pid);
-        }
-        String condition = whereField + "=" + pid;
-        // String condition = "ZJHM='"+pid+"'";
+        String result = null;
+        try {
+            logger.info("调用接口开始[常住人口基本信息数据查询服务方TC_RKXT.T_HUJI]");
+            if ("true".equals(MessageResourceUtils.getMessage("isDebug"))) {
+                return getXml("T_HUJI.xml");
+            }
 
-        params.put("Condition", condition);
+            // 创建RbspService
+            RbspService service = new RbspService(
+                    MessageResourceUtils.getMessage("T_HUJI.senderId"),
+                    MessageResourceUtils.getMessage("T_HUJI.serviceId"));
+            // 设置用户身份编号
+            service.setUserCardId(userPO.getUserCardId());
+            // 设置用户单位
+            service.setUserDept(String.valueOf(userPO.getOrgId()));
+            // 设置用户名
+            service.setUserName(userPO.getUserName());
+            // 设置PKI编号
+            service.setPkiId(userPO.getUserPkiId());
+            // 设置超时
+            service.setTimeOut(MessageResourceUtils
+                    .getMessage("TimeOut.second"));
+            // 创建RbspCall
+            RbspCall call = service.createCall();
+            // 设置总线地址
+            call.setUrl(MessageResourceUtils.getMessage("T_HUJI.url"));
+            // 设置WebService接口方法
+            call.setMethod(RbspConsts.METHOD_QUERY);
+            // 设置接口方法参数<参数名,值>
+            Map<String, Object> params = new HashMap<String, Object>();
+            params.put("DataObjectCode",
+                    MessageResourceUtils.getMessage("T_HUJI.DataObjectCode"));
+            // params.put("DataObjectCode", "M001");
+            params.put("InfoCodeMode", "1");
+            if (pid.length() == 15) {
+                pid = IdentificationCodeUtil.update2eighteen(pid);
+            }
+            String condition = whereField + "=" + pid;
+            // String condition = "ZJHM='"+pid+"'";
 
-        params.put("RequiredItems", new String[] {
-            // "ZHSJC", "ZZXZ", "ZZSSX", "CSRQ", "MZ", "XB", "XM", "ZJHM"
-                MessageResourceUtils.getMessage("T_HUJI.RequiredItems")
-            });
-        // 调用返回结果
-        String result = call.invoke(params);
+            params.put("Condition", condition);
+
+            params.put("RequiredItems", new String[] {
+                // "ZHSJC", "ZZXZ", "ZZSSX", "CSRQ", "MZ", "XB", "XM", "ZJHM"
+                    MessageResourceUtils.getMessage("T_HUJI.RequiredItems")
+                });
+            // 调用返回结果
+            result = call.invoke(params);
+
+            logger.info("调用接口返回[常住人口基本信息数据查询服务方TC_RKXT.T_HUJI],xmlResult="
+                    + result);
+        }
+        catch (Exception e) {
+            logger.info("调用接口[常住人口基本信息数据查询服务方TC_RKXT.T_HUJI],发生异常.", e);
+        }
         return result;
     }
 
@@ -83,10 +104,11 @@ public class InfoRbspClient {
      * @return
      */
     public static String queryCZRKCensusInfo(AuditUserPO userPO, String huId) {
-        if("true".equals(MessageResourceUtils.getMessage("isDebug"))){
+        logger.info("调用接口开始[常住人口户信息数据查询服务方TC_RKXT.T_HU]");
+        if ("true".equals(MessageResourceUtils.getMessage("isDebug"))) {
             return getXml("T_HU.xml");
         }
-        
+
         // 创建RbspService
         RbspService service = new RbspService(
                 MessageResourceUtils.getMessage("T_HU.senderId"),
@@ -94,11 +116,13 @@ public class InfoRbspClient {
         // 设置用户身份编号
         service.setUserCardId(userPO.getUserCardId());
         // 设置用户单位
-        service.setUserDept(userPO.getOrgName());
+        service.setUserDept(String.valueOf(userPO.getOrgId()));
         // 设置用户名
         service.setUserName(userPO.getUserName());
         // 设置PKI编号
         service.setPkiId(userPO.getUserPkiId());
+        // 设置超时
+        service.setTimeOut(MessageResourceUtils.getMessage("TimeOut.second"));
         // 创建RbspCall
         RbspCall call = service.createCall();
         // 设置总线地址
@@ -118,6 +142,7 @@ public class InfoRbspClient {
             });
         // 调用返回结果
         String result = call.invoke(params);
+        logger.info("调用接口返回[常住人口户信息数据查询服务方TC_RKXT.T_HU],xmlResult=" + result);
         return result;
     }
 
@@ -130,10 +155,11 @@ public class InfoRbspClient {
      * @return
      */
     public static String queryDZinfo(AuditUserPO userPO, String metaAddrId) {
-        if("true".equals(MessageResourceUtils.getMessage("isDebug"))){
+        logger.info("调用接口开始[地址信息数据查询服务方TC_JCYW.T_META_ADDR]");
+        if ("true".equals(MessageResourceUtils.getMessage("isDebug"))) {
             return getXml("T_META_ADDR.xml");
         }
-        
+
         // 创建RbspService
         RbspService service = new RbspService(
                 MessageResourceUtils.getMessage("T_META_ADDR.senderId"),
@@ -141,11 +167,13 @@ public class InfoRbspClient {
         // 设置用户身份编号
         service.setUserCardId(userPO.getUserCardId());
         // 设置用户单位
-        service.setUserDept(userPO.getOrgName());
+        service.setUserDept(String.valueOf(userPO.getOrgId()));
         // 设置用户名
         service.setUserName(userPO.getUserName());
         // 设置PKI编号
         service.setPkiId(userPO.getUserPkiId());
+        // 设置超时
+        service.setTimeOut(MessageResourceUtils.getMessage("TimeOut.second"));
         // 创建RbspCall
         RbspCall call = service.createCall();
         // 设置总线地址
@@ -165,6 +193,8 @@ public class InfoRbspClient {
             });
         // 调用返回结果
         String result = call.invoke(params);
+        logger.info("调用接口返回[地址信息数据查询服务方TC_JCYW.T_META_ADDR],xmlResult="
+                + result);
         return result;
 
     }
@@ -178,10 +208,11 @@ public class InfoRbspClient {
      * @return
      */
     public static String queryZZRKInfo(AuditUserPO userPO, String pid) {
-        if("true".equals(MessageResourceUtils.getMessage("isDebug"))){
+        logger.info("调用接口开始[暂（居）住证信息数据查询服务方TC_RKXT.T_LDRK_ZJZZXX]");
+        if ("true".equals(MessageResourceUtils.getMessage("isDebug"))) {
             return getXml("T_LDRK_ZJZZXX.xml");
         }
-        
+
         // 创建RbspService
         RbspService service = new RbspService(
                 MessageResourceUtils.getMessage("T_LDRK_ZJZZXX.senderId"),
@@ -189,11 +220,13 @@ public class InfoRbspClient {
         // 设置用户身份编号
         service.setUserCardId(userPO.getUserCardId());
         // 设置用户单位
-        service.setUserDept(userPO.getOrgName());
+        service.setUserDept(String.valueOf(userPO.getOrgId()));
         // 设置用户名
         service.setUserName(userPO.getUserName());
         // 设置PKI编号
         service.setPkiId(userPO.getUserPkiId());
+        // 设置超时
+        service.setTimeOut(MessageResourceUtils.getMessage("TimeOut.second"));
         // 创建RbspCall
         RbspCall call = service.createCall();
         // 设置总线地址
@@ -216,6 +249,8 @@ public class InfoRbspClient {
             });
         // 调用返回结果
         String result = call.invoke(params);
+        logger.info("调用接口返回[暂（居）住证信息数据查询服务方TC_RKXT.T_LDRK_ZJZZXX],xmlResult="
+                + result);
         return result;
     }
 
@@ -228,10 +263,11 @@ public class InfoRbspClient {
      * @return
      */
     public static String queryLDRKInfo(AuditUserPO userPO, String pid) {
-        if("true".equals(MessageResourceUtils.getMessage("isDebug"))){
+        logger.info("调用接口开始[流动人口登记信息数据查询服务方TC_RKXT.T_LDRK_DJXX]");
+        if ("true".equals(MessageResourceUtils.getMessage("isDebug"))) {
             return getXml("T_LDRK_DJXX.xml");
         }
-        
+
         // 创建RbspService
         RbspService service = new RbspService(
                 MessageResourceUtils.getMessage("T_LDRK_DJXX.senderId"),
@@ -239,11 +275,13 @@ public class InfoRbspClient {
         // 设置用户身份编号
         service.setUserCardId(userPO.getUserCardId());
         // 设置用户单位
-        service.setUserDept(userPO.getOrgName());
+        service.setUserDept(String.valueOf(userPO.getOrgId()));
         // 设置用户名
         service.setUserName(userPO.getUserName());
         // 设置PKI编号
         service.setPkiId(userPO.getUserPkiId());
+        // 设置超时
+        service.setTimeOut(MessageResourceUtils.getMessage("TimeOut.second"));
         // 创建RbspCall
         RbspCall call = service.createCall();
         // 设置总线地址
@@ -266,6 +304,8 @@ public class InfoRbspClient {
             });
         // 调用返回结果
         String result = call.invoke(params);
+        logger.info("调用接口返回[流动人口登记信息数据查询服务方TC_RKXT.T_LDRK_DJXX],xmlResult="
+                + result);
         return result;
     }
 
@@ -278,10 +318,11 @@ public class InfoRbspClient {
      * @return
      */
     public static String queryImageInfo(AuditUserPO userPO, String photoId) {
-        if("true".equals(MessageResourceUtils.getMessage("isDebug"))){
+        logger.info("调用接口开始[实有人口相片信息数据查询服务方TC_PHOTO.T_PHOTO]");
+        if ("true".equals(MessageResourceUtils.getMessage("isDebug"))) {
             return getXml("T_PHOTO.xml");
         }
-        
+
         // 创建RbspService
         RbspService service = new RbspService(
                 MessageResourceUtils.getMessage("T_PHOTO.senderId"),
@@ -289,11 +330,13 @@ public class InfoRbspClient {
         // 设置用户身份编号
         service.setUserCardId(userPO.getUserCardId());
         // 设置用户单位
-        service.setUserDept(userPO.getOrgName());
+        service.setUserDept(String.valueOf(userPO.getOrgId()));
         // 设置用户名
         service.setUserName(userPO.getUserName());
         // 设置PKI编号
         service.setPkiId(userPO.getUserPkiId());
+        // 设置超时
+        service.setTimeOut(MessageResourceUtils.getMessage("TimeOut.second"));
         // 创建RbspCall
         RbspCall call = service.createCall();
         // 设置总线地址
@@ -313,14 +356,28 @@ public class InfoRbspClient {
             });
         // 调用返回结果PHOTO_ID
         String result = call.invoke(params);
+        logger.info("调用接口返回[实有人口相片信息数据查询服务方TC_PHOTO.T_PHOTO],xmlResult="
+                + result);
         return result;
     }
-    
-    private static String getXml(String fileName){
-        String filePath="C://mvnLib//exampleXml//"+fileName;
-        //String filePath="C://mvnLib//suc.xml";
-        File file=new File(filePath);
-        String xmlFile=file.toString();
-        return xmlFile;
+
+    private static String getXml(String fileName) {
+        String filePath = "C://mvnLib//exampleXml//" + fileName;
+        StringBuffer stbXml = new StringBuffer();
+        // String filePath="C://mvnLib//suc.xml";
+        try{
+            File file = new File(filePath);
+            InputStreamReader read = new InputStreamReader(new FileInputStream(file),"utf-8");//考虑到编码格式
+            BufferedReader bufferedReader = new BufferedReader(read);
+            String lineTxt = null;
+            while((lineTxt = bufferedReader.readLine()) != null){
+                stbXml.append(lineTxt);
+            }
+            bufferedReader.close();
+            read.close();
+        }catch(Exception e){
+            logger.error(e);
+        }
+        return stbXml.toString();
     }
 }

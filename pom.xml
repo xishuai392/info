@@ -60,13 +60,14 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>5.1.29</version>
 		</dependency>
-		
-	<!--    <dependency>
-		    <groupId>com.oracle</groupId>
-		    <artifactId>ojdbc6</artifactId>
-		    <version>11.2.0.3.0</version>
+
+	<!--  -->
+		<dependency>
+			<groupId>com.oracle</groupId>
+			<artifactId>ojdbc6</artifactId>
+			<version>11.2.0.3.0</version>
 		</dependency>
- -->
+
 
 		<!-- json start -->
 
@@ -372,31 +373,26 @@
 
 		<!-- commons-configuration start -->
 		<dependency>
-            <groupId>commons-configuration</groupId>
-            <artifactId>commons-configuration</artifactId>
-            <version>1.9</version>
-        </dependency>
-        <dependency>
+			<groupId>commons-configuration</groupId>
+			<artifactId>commons-configuration</artifactId>
+			<version>1.9</version>
+		</dependency>
+		<dependency>
 			<groupId>commons-digester</groupId>
 			<artifactId>commons-digester</artifactId>
 			<version>1.8</version>
 		</dependency>
 		<!-- commons-configuration end -->
-		
-		
+
+
 		<!-- julong denpendency jars start -->
 		<dependency>
 			<groupId>commons-net</groupId>
 			<artifactId>commons-net</artifactId>
 			<version>3.3</version>
 		</dependency>
-		<!--
-		<dependency>
-			<groupId>dom4j</groupId>
-			<artifactId>dom4j</artifactId>
-			<version>1.6.1</version>
-		</dependency>
-		-->
+		<!-- <dependency> <groupId>dom4j</groupId> <artifactId>dom4j</artifactId> 
+			<version>1.6.1</version> </dependency> -->
 		<dependency>
 			<groupId>jdom</groupId>
 			<artifactId>jdom</artifactId>
@@ -465,7 +461,7 @@
 			<scope>system</scope>
 			<systemPath>C:\\mvnLib\\fastjson-1.1.28.jar</systemPath>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>com.julong</groupId>
 			<artifactId>node-ftpclient</artifactId>
@@ -473,9 +469,9 @@
 			<scope>system</scope>
 			<systemPath>C:\\mvnLib\\node-ftpclient-1.0-SNAPSHOT.jar</systemPath>
 		</dependency>
-		
+
 		<!-- julong denpendency jars end -->
-		
+
 	</dependencies>
 
 	<repositories>
@@ -487,7 +483,7 @@
 
 	<build>
 		<finalName>${project.artifactId}</finalName>
-		
+
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -508,7 +504,7 @@
 				<filtering>false</filtering>
 			</resource>
 		</resources>
-		
+
 		<plugins>
 			<!-- 设置源文件编码方式 -->
 			<plugin>

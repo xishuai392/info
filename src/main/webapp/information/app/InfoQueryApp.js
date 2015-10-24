@@ -69,6 +69,9 @@ Ext.onReady(function() {
 	
 	var sqrxxPanelFieldWidth = 350;
 	
+	//弹出窗口宽高
+	var winHeight = (parseInt(Ext.getBody().getHeight())*0.8);
+	
 	
     // 1、申请人信息填写
     sqrxxPanel = Ext.create("ZTEsoft.form.SearchForm", {
@@ -842,7 +845,7 @@ Ext.onReady(function() {
 		        text: '继续查询',
 		        icon : ctx + '/common/images/icons/magnifier.png',
 		        handler: function() {
-		            changzhuWin.hide();
+		            zanzhuWin.hide();
 		            var layout = infoMainPanel.getLayout();
 	            	layout.setActiveItem(3);//被查询人信息
 	            	//bcxrxxPanel.getForm().reset();
