@@ -165,10 +165,11 @@ Ext.onReady(function() {
             handler : function() {
                 console.log('开始读取身份证');
                 
-                var CVR_IDCard = document.getElementById("CVR_IDCard");					
-				var strReadResult = CVR_IDCard.ReadCard();
+                //TODO  惜帅  调试隐藏
+//                var CVR_IDCard = document.getElementById("CVR_IDCard");					
+//				var strReadResult = CVR_IDCard.ReadCard();
 				
-				//strReadResult = "0";
+				strReadResult = "0";
 				if(strReadResult == "0"){
 	              var config = {
 			            url : 'plates/queryByPlates.do',
@@ -178,8 +179,10 @@ Ext.onReady(function() {
 				            "nation" : CVR_IDCard.Nation, //民族
 				            "born" : CVR_IDCard.Born,     //出生日期
 				            "address" : CVR_IDCard.Address, //地址
+				            //TODO  惜帅  调试隐藏
+//				            "cardNo" : CVR_IDCard.CardNo, //身份号码
 //				            "cardNo" : CVR_IDCard.CardNo||"35020419811021103X", //身份号码
-				            "cardNo" : CVR_IDCard.CardNo, //身份号码
+				            
 				            "issuedAt" : CVR_IDCard.IssuedAt,  //签发机关
 				            "effectedDate" : CVR_IDCard.EffectedDate,  //生效期限
 				            "expiredDate" : CVR_IDCard.ExpiredDate,//失效时间

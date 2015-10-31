@@ -1,6 +1,6 @@
 <%@ page language="java" import="java.text.*,java.util.*"
 	pageEncoding="UTF-8"%>
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
 <%@include file="/common/common.inc.jsp"%>
 
 <html>
@@ -55,6 +55,23 @@
 		<script type="text/javascript"
 			src="${ctx}/information/app/InfoQueryApp.js">
 		</script>
+		
+		<style>
+			* { margin:0; padding:0; }
+			img { vertical-align:bottom; border:none; }
+			body { background:#f0f0f0; height:800px; font-family:Arial;}
+			ul { list-style:none; }
+			h1{ font-size:20px; width:680px; margin:3% auto 5px; color:#202020; }
+			h6{ width:680px; margin:0 auto 20px; font-size:12px; font-weight:normal; color:#333; }
+			h6 a { color:#09c; }
+			ul#gallery { width:660px; margin:0 auto 10px; padding-left:20px; border:1px solid #d3d3d3; background:#fff; overflow:hidden; }
+			ul#gallery li { width:200px; height:200px; float:left; margin:20px 20px 20px 0; display:inline; }
+			ul#gallery li a.smallimage { background:#333; display:block; width:200px; height:200px; }
+			#bigimage { position:absolute; display:none; }
+			#bigimage img { width:400px; height:400px; padding:5px; background:#fff; border:1px solid #e3e3e3; }
+		</style>
+
+
 	</head>
 	<body style="width: 100%;height: 100%">
 		

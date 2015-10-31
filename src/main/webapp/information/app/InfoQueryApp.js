@@ -295,7 +295,7 @@ Ext.onReady(function() {
 //		        	var stopResult = captrue.bStopPlay();  	
 //	        		var stsrtResult = captrue.bStartPlay();
 //	        		var saveJPGResult = captrue.bSaveJPG(localPath,picName);
-		        	//获取图片 base64编码
+//		        	//获取图片 base64编码
 //		        	var imageBase64Str = captrue.sGetBase64();
 //		        	stopResult=captrue.bStopPlay();  
 
@@ -328,11 +328,27 @@ Ext.onReady(function() {
 							});
 							**/
 			            	
-							console.log(thizImageModel);
+							//console.log(thizImageModel);
                     
 							imageStore.add(thizImageModel);
 							//imageStore.add(tmp);
 			            	ExtUtils.tip("提示","扫描图片已上传服务器...");
+			            	
+			            	
+				            $("#"+sqrxxfjDto.id+"_img").hover(function(e){
+								$("body").append('<p id="bigimage"><img src="'+ this.src + '" alt="" /></p>');
+						        $(this).find('img').stop().fadeTo('slow',0.5);		
+								widthJudge(e);
+							    $("#bigimage").fadeIn('fast');
+							},function(){
+							    $(this).find('img').stop().fadeTo('slow',1);
+								$("#bigimage").remove();
+						    });	
+							
+							$("#"+sqrxxfjDto.id+"_img").mousemove(function(e){
+								widthJudge(e);
+							});	
+						
 			            }
 			        };
 			        ExtUtils.doAjax(config);
@@ -362,11 +378,28 @@ Ext.onReady(function() {
 		        	//console.log("uploadPicResult:"+uploadPicResult);
 		        	*/
     	}
-    }
+    };
+    
+    var x = 22;
+	var y = 20;
+						
+    var widthJudge = function widthJudge(e){
+		var marginRight = document.documentElement.clientWidth - e.pageX; 
+		var imageWidth = $("#bigimage").width()||400;
+		//alert(document.documentElement.clientWidth +"   "+e.pageX+"  "+marginRight+"  "+imageWidth);
+		if(marginRight < imageWidth)
+		{
+		    x = imageWidth + 22;
+			$("#bigimage").css({top:(e.pageY - y ) + 'px',left:(e.pageX - x ) + 'px'});	
+		}else{
+		    x = 22;
+		    $("#bigimage").css({top:(e.pageY - y ) + 'px',left:(e.pageX + x ) + 'px'});
+        };	
+	};
     
     //2、证件扫描
     zjPanel = Ext.create('Ext.Panel', { 
-	    title: '证件扫描', 
+	    title: '证件、介绍信及相关资料扫描', 
 	    id : 'card1', 
 	    frame : true,
 	    layout : 'border',
@@ -394,7 +427,7 @@ Ext.onReady(function() {
 	            trackOver: false,
 	            overItemCls: 'x-item-over',
 	            itemSelector: 'div.thumb-wrap',
-	            emptyText: '请点击[开始扫描]按钮扫描图片...',
+	            emptyText: '请点击<开始扫描>按钮扫描图片...',
 	            plugins: [
 	                Ext.create('Ext.ux.DataView.DragSelector', {}),
 	                Ext.create('Ext.ux.DataView.LabelEditor', {
@@ -415,7 +448,7 @@ Ext.onReady(function() {
 							            params : params,
 							            timeout : 1200000, // 超时：20分钟
 							            callback : function(sqrxxfjDto){
-							            	console.log(sqrxxfjDto);
+							            	//console.log(sqrxxfjDto);
 							            	ExtUtils.tip("提示","修改名称成功...");
 							            }
 							        };
@@ -451,29 +484,37 @@ Ext.onReady(function() {
 	                },
 	                itemdblclick : function(dv, record, item, index, e, eOpts){
 	                	console.log('dataview dbclick');
-	                	console.log(record);
-	                	console.log(item);
+	                	//console.log(record);
+	                	//console.log(item);
 	                	var id = record.data.id;
 	                	
-	                	var custom = Ext.create('Ext.resizer.Resizer', {
-					        target: id+"_img",
-					        pinned:true,
-					        minWidth:50,
-					        minHeight: 50,
-					        preserveRatio: true,
-					        handles: 'all',
-					        dynamic: true
-					    });
-					
-					    var customEl = custom.getEl();
-					    // move to the body to prevent overlap on my blog
-					    document.body.insertBefore(customEl.dom, document.body.firstChild);
-					
-					    customEl.on('dblclick', function(){
-					        customEl.hide(true);
-					    });
 	                	
-					    customEl.center();
+	                	window.open(Ext.getDom(id+'_img').src);
+							
+
+	                	
+//	                	var custom = Ext.create('Ext.resizer.Resizer', {
+//					        target: id+"_img",
+//					        pinned:true,
+//					        minWidth:50,
+//					        minHeight: 50,
+//					        preserveRatio: true,
+//					        handles: 'all',
+//					        dynamic: true
+//					    });
+//					
+//					    var customEl = custom.getEl();
+//					    // move to the body to prevent overlap on my blog
+//					    document.body.insertBefore(customEl.dom, document.body.firstChild);
+//					
+//					    customEl.on('dblclick', function(){
+//					        customEl.hide(true);
+//					    });
+//	                	
+//					    customEl.center();
+	                	
+	                	
+	                	
 	                	
 //	                	Ext.create('Ext.resizer.Resizer', {
 //						    el: id+"_img",
@@ -495,7 +536,7 @@ Ext.onReady(function() {
 		        handler: function(){
 		        	Ext.MessageBox.prompt('扫描件', '请输入该扫描件的名称:', saveImagesFn);
 		        } 
-		    },'->',{
+		    },'->','<span style="color:red">提示：鼠标移动到图片上可以放大预览，双击可以打开原始图片.</span>','-',{
 		    	text : '删除',
 		    	icon : ctx + '/common/images/icons/delete.png',
 		        handler: function(){
@@ -607,7 +648,7 @@ Ext.onReady(function() {
 				        	var BrightnessValue = Ext.getCmp("BrightnessValue").value;
 				        	var ContrastValue = Ext.getCmp("ContrastValue").value;
 				        	var ExposureValue = Ext.getCmp("ExposureValue").value;
-				        	console.log(BrightnessValue);console.log(ContrastValue);console.log(ExposureValue);
+				        	//console.log(BrightnessValue);console.log(ContrastValue);console.log(ExposureValue);
 							captrue.vSetBrightness(BrightnessValue);	
 							captrue.vSetContrast(ContrastValue);
 							captrue.vSetExposure(ExposureValue);
@@ -651,6 +692,7 @@ Ext.onReady(function() {
 	        handler: function() {
 	            var layout = infoMainPanel.getLayout();
 	            layout.setActiveItem(0);//第一步：填写申请人信息
+	            clearAll();
 	        }
 	    },{
 	        text: '上一步',
@@ -723,6 +765,7 @@ Ext.onReady(function() {
 	        handler: function() {
 	            var layout = infoMainPanel.getLayout();
 	            layout.setActiveItem(0);//第一步：填写申请人信息
+	            clearAll();
 	        }
 	    },{
 	        text: '上一步',
@@ -789,6 +832,7 @@ Ext.onReady(function() {
 	        handler: function() {
 	            var layout = infoMainPanel.getLayout();
 	            layout.setActiveItem(0);//第一步：填写申请人信息
+	            clearAll();
 	        }
 	    },{
 	        text: '上一步',
@@ -960,6 +1004,7 @@ Ext.onReady(function() {
 	        handler: function() {
 	            var layout = infoMainPanel.getLayout();
 	            layout.setActiveItem(0);//第一步：填写申请人信息
+	            clearAll();
 	        }
 	    },{
 	        text: '上一步',
@@ -1354,5 +1399,15 @@ Ext.onReady(function() {
         layout : 'border',
         items : [infoMainPanel]
     });
+    
+    /**
+     * 清理所有值，初始化
+     */
+    var clearAll = function(){
+    	sqrxxPanel.getForm().reset();
+    	bcxrxxPanel.getForm().reset();
+    	imageStore.removeAll();
+    	bcxrStore.removeAll();
+    };
 
 });

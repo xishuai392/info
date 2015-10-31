@@ -862,7 +862,7 @@ public class InformationQueryController {
     public void savePhoto(String imagePath, String imageStr) throws Exception {
         // TransUtils.hexString2Image(imagePath, imageStr);
         logger.info("身份证照片路径：" + imagePath);
-        TransUtils.base64String2Image(imagePath, imageStr);
+        TransUtils.base64String2Image(imagePath, imageStr.trim());
     }
 
 }

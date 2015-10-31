@@ -3,7 +3,7 @@
 <configuration debug="false" scan="true" scanPeriod="30 seconds">
 	<Encoding>UTF-8</Encoding>
 	<!-- D:/PROJECT_HOME/log -->
-    <substitutionProperty name="log.base" value="D://ZTESOFT_logs/" />
+    <substitutionProperty name="log.base" value="D://info_logs/" />
     
 	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
