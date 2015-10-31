@@ -18,6 +18,8 @@
     String path = request.getContextPath();
     String webRoot = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/"; 
     String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path;
+    String serverName = String.valueOf(request.getServerName());
+    String serverPort = String.valueOf(request.getServerPort());
 %>
 <c:set var="ctx" value="<%=basePath %>" />
 
@@ -39,6 +41,7 @@
 	// 项目根路径，用于引用资源等
 	webRoot = '${ctx}/';
 	ctx = '${ctx}';
-
+	serverName = '${serverName}';
+	serverPort = '${serverPort}';
 </script>
 

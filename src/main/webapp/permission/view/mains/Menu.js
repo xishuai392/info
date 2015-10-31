@@ -64,10 +64,15 @@ Ext.define('PM.view.mains.Menu', {
                         //console.log("record.data.menuId:"+record.data.attributeMap.menuId);
                         var contentPanel = Ext.getCmp('main_content_panel');
                         var pnl = contentPanel.getComponent('ZTEtab-' + record.data.attributeMap.menuId);
+                        var hasIcon = false;
+                        if(record.data.attributeMap.menuIconPath!=null||record.data.attributeMap.menuIconPath!=""){
+                        	hasIcon = true;
+                        }
                         if (!pnl) {
                             pnl = contentPanel.add({
                                 xtype : 'component',
                                 id : 'ZTEtab-' + record.data.attributeMap.menuId,
+                                icon : hasIcon?(webRoot + record.data.attributeMap.menuIconPath):null,
                                 title : record.data.attributeMap.menuTitle,
                                 closable : true,
                                 layout : 'fit',

@@ -34,7 +34,7 @@ public class TransUtils {
      * @return
      */
     public static String transSex(String source) {
-        if ("0".equals(source))
+        if ("1".equals(source))
             return "男";
         return "女";
     }

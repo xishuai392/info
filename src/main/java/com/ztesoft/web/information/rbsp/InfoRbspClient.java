@@ -44,10 +44,16 @@ public class InfoRbspClient {
                 return getXml("T_HUJI.xml");
             }
 
+            logger.debug("调用接口开始[常住人口基本信息数据查询服务方TC_RKXT.T_HUJI]  new RbspService begin");
+            logger.debug("T_HUJI.senderId:"
+                    + MessageResourceUtils.getMessage("T_HUJI.senderId"));
+            logger.debug("T_HUJI.serviceId:"
+                    + MessageResourceUtils.getMessage("T_HUJI.serviceId"));
             // 创建RbspService
             RbspService service = new RbspService(
                     MessageResourceUtils.getMessage("T_HUJI.senderId"),
                     MessageResourceUtils.getMessage("T_HUJI.serviceId"));
+            logger.debug("调用接口开始[常住人口基本信息数据查询服务方TC_RKXT.T_HUJI]  new RbspService end");
             // 设置用户身份编号
             service.setUserCardId(userPO.getUserCardId());
             // 设置用户单位
@@ -60,7 +66,9 @@ public class InfoRbspClient {
             service.setTimeOut(MessageResourceUtils
                     .getMessage("TimeOut.second"));
             // 创建RbspCall
+            logger.debug("调用接口开始[常住人口基本信息数据查询服务方TC_RKXT.T_HUJI]  service.createCall() begin");
             RbspCall call = service.createCall();
+            logger.debug("调用接口开始[常住人口基本信息数据查询服务方TC_RKXT.T_HUJI]  service.createCall() end");
             // 设置总线地址
             call.setUrl(MessageResourceUtils.getMessage("T_HUJI.url"));
             // 设置WebService接口方法
@@ -74,23 +82,35 @@ public class InfoRbspClient {
             if (pid.length() == 15) {
                 pid = IdentificationCodeUtil.update2eighteen(pid);
             }
-            String condition = whereField + "=" + pid;
+            String condition = whereField + "='" + pid + "'";
             // String condition = "ZJHM='"+pid+"'";
 
             params.put("Condition", condition);
 
-            params.put("RequiredItems", new String[] {
-                // "ZHSJC", "ZZXZ", "ZZSSX", "CSRQ", "MZ", "XB", "XM", "ZJHM"
-                    MessageResourceUtils.getMessage("T_HUJI.RequiredItems")
-                });
+            // params.put("RequiredItems", new String[] {
+            // // "ZHSJC", "ZZXZ", "ZZSSX", "CSRQ", "MZ", "XB", "XM", "ZJHM"
+            // MessageResourceUtils.getMessage("T_HUJI.RequiredItems")
+            // });
+
+            params.put("RequiredItems",
+                    getRequiredItems("T_HUJI.RequiredItems"));
+
+            // params.put("RequiredItems",new String[] {"NAME","USED_NAME"});
+
+            logger.debug("调用接口开始[常住人口基本信息数据查询服务方TC_RKXT.T_HUJI] Condition "
+                    + condition);
+            logger.debug("调用接口开始[常住人口基本信息数据查询服务方TC_RKXT.T_HUJI] RequiredItems "
+                    + MessageResourceUtils.getMessage("T_HUJI.RequiredItems"));
+
             // 调用返回结果
+            logger.debug("调用接口开始[常住人口基本信息数据查询服务方TC_RKXT.T_HUJI]call.invoke begin ");
             result = call.invoke(params);
 
             logger.info("调用接口返回[常住人口基本信息数据查询服务方TC_RKXT.T_HUJI],xmlResult="
                     + result);
         }
         catch (Exception e) {
-            logger.info("调用接口[常住人口基本信息数据查询服务方TC_RKXT.T_HUJI],发生异常.", e);
+            logger.error("调用接口[常住人口基本信息数据查询服务方TC_RKXT.T_HUJI],发生异常.", e);
         }
         return result;
     }
@@ -134,12 +154,16 @@ public class InfoRbspClient {
         params.put("DataObjectCode",
                 MessageResourceUtils.getMessage("T_HU.DataObjectCode"));
         params.put("InfoCodeMode", "1");
-        String condition = "HU_ID=" + huId;
+        String condition = "HU_ID='" + huId + "'";
         params.put("Condition", condition);
-        params.put("RequiredItems", new String[] {
-            // "HU_ID", "META_ADDR_ID"
-                MessageResourceUtils.getMessage("T_HU.RequiredItems")
-            });
+
+        // params.put("RequiredItems", new String[] {
+        // // "HU_ID", "META_ADDR_ID"
+        // MessageResourceUtils.getMessage("T_HU.RequiredItems")
+        // });
+
+        params.put("RequiredItems", getRequiredItems("T_HU.RequiredItems"));
+
         // 调用返回结果
         String result = call.invoke(params);
         logger.info("调用接口返回[常住人口户信息数据查询服务方TC_RKXT.T_HU],xmlResult=" + result);
@@ -185,12 +209,14 @@ public class InfoRbspClient {
         params.put("DataObjectCode",
                 MessageResourceUtils.getMessage("T_META_ADDR.DataObjectCode"));
         params.put("InfoCodeMode", "1");
-        String condition = "META_ADDR_ID=" + metaAddrId;
+        String condition = "META_ADDR_ID='" + metaAddrId + "'";
         params.put("Condition", condition);
-        params.put("RequiredItems", new String[] {
-            // "META_ADDR_ID", "ALL_FULL_ADDR"
-                MessageResourceUtils.getMessage("T_META_ADDR.RequiredItems")
-            });
+//        params.put("RequiredItems", new String[] {
+//            // "META_ADDR_ID", "ALL_FULL_ADDR"
+//                MessageResourceUtils.getMessage("T_META_ADDR.RequiredItems")
+//            });
+        params.put("RequiredItems", getRequiredItems("T_META_ADDR.RequiredItems"));
+        
         // 调用返回结果
         String result = call.invoke(params);
         logger.info("调用接口返回[地址信息数据查询服务方TC_JCYW.T_META_ADDR],xmlResult="
@@ -241,12 +267,15 @@ public class InfoRbspClient {
         if (pid.length() == 15) {
             pid = IdentificationCodeUtil.update2eighteen(pid);
         }
-        String condition = "PID=" + pid;
+        String condition = "PID='" + pid + "'";
         params.put("Condition", condition);
-        params.put("RequiredItems", new String[] {
-            // "PID", "NAME", "GENDER", "NATION", "DOB", "ZZZBH", "YXQQSRQ","YXQXJZRQ", "FZJGJGMC", "LZRQ", "ZZDZXZ"
-                MessageResourceUtils.getMessage("T_LDRK_ZJZZXX.RequiredItems")
-            });
+        
+//        params.put("RequiredItems", new String[] {
+//            // "PID", "NAME", "GENDER", "NATION", "DOB", "ZZZBH", "YXQQSRQ","YXQXJZRQ", "FZJGJGMC", "LZRQ", "ZZDZXZ"
+//                MessageResourceUtils.getMessage("T_LDRK_ZJZZXX.RequiredItems")
+//            });
+        params.put("RequiredItems", getRequiredItems("T_LDRK_ZJZZXX.RequiredItems"));
+        
         // 调用返回结果
         String result = call.invoke(params);
         logger.info("调用接口返回[暂（居）住证信息数据查询服务方TC_RKXT.T_LDRK_ZJZZXX],xmlResult="
@@ -296,12 +325,15 @@ public class InfoRbspClient {
         if (pid.length() == 15) {
             pid = IdentificationCodeUtil.update2eighteen(pid);
         }
-        String condition = "PID=" + pid;
+        String condition = "PID='" + pid + "'";
         params.put("Condition", condition);
-        params.put("RequiredItems", new String[] {
-            // "PID", "USED_NAME", "NATIVE_PLACE", "HJD_QU", "HJD_FULL_ADDR","PHOTO_ID"
-                MessageResourceUtils.getMessage("T_LDRK_DJXX.RequiredItems")
-            });
+//        params.put("RequiredItems", new String[] {
+//            // "PID", "USED_NAME", "NATIVE_PLACE", "HJD_QU", "HJD_FULL_ADDR","PHOTO_ID"
+//                MessageResourceUtils.getMessage("T_LDRK_DJXX.RequiredItems")
+//            });
+        
+        params.put("RequiredItems", getRequiredItems("T_LDRK_DJXX.RequiredItems"));
+        
         // 调用返回结果
         String result = call.invoke(params);
         logger.info("调用接口返回[流动人口登记信息数据查询服务方TC_RKXT.T_LDRK_DJXX],xmlResult="
@@ -348,12 +380,15 @@ public class InfoRbspClient {
         params.put("DataObjectCode",
                 MessageResourceUtils.getMessage("T_PHOTO.DataObjectCode"));
         params.put("InfoCodeMode", "1");
-        String condition = "PHOTO_ID=" + photoId;
+        String condition = "PHOTO_ID='" + photoId + "'";
         params.put("Condition", condition);
-        params.put("RequiredItems", new String[] {
-            // "PHOTO_ID", "IMAGE"
-                MessageResourceUtils.getMessage("T_PHOTO.RequiredItems")
-            });
+//        params.put("RequiredItems", new String[] {
+//            // "PHOTO_ID", "IMAGE"
+//                MessageResourceUtils.getMessage("T_PHOTO.RequiredItems")
+//            });
+        
+        params.put("RequiredItems", getRequiredItems("T_PHOTO.RequiredItems"));
+        
         // 调用返回结果PHOTO_ID
         String result = call.invoke(params);
         logger.info("调用接口返回[实有人口相片信息数据查询服务方TC_PHOTO.T_PHOTO],xmlResult="
@@ -365,19 +400,55 @@ public class InfoRbspClient {
         String filePath = "C://mvnLib//exampleXml//" + fileName;
         StringBuffer stbXml = new StringBuffer();
         // String filePath="C://mvnLib//suc.xml";
-        try{
+        try {
             File file = new File(filePath);
-            InputStreamReader read = new InputStreamReader(new FileInputStream(file),"utf-8");//考虑到编码格式
+            InputStreamReader read = new InputStreamReader(new FileInputStream(
+                    file), "utf-8");// 考虑到编码格式
             BufferedReader bufferedReader = new BufferedReader(read);
             String lineTxt = null;
-            while((lineTxt = bufferedReader.readLine()) != null){
+            while ((lineTxt = bufferedReader.readLine()) != null) {
                 stbXml.append(lineTxt);
             }
             bufferedReader.close();
             read.close();
-        }catch(Exception e){
+        }
+        catch (Exception e) {
             logger.error(e);
         }
         return stbXml.toString();
+    }
+
+    public static String[] getRequiredItems(String key) {
+        String valueStr = MessageResourceUtils.getMessage(key);
+        String[] targetAry = valueStr.split(",");
+        String[] resultAry = new String[targetAry.length];
+        for (int i = 0; i < targetAry.length; i++) {
+            String t = targetAry[i];
+            resultAry[i] = t.trim();
+        }
+        return resultAry;
+    }
+
+    public static void main(String[] args) {
+        String[] test = new String[] {
+                "NAME", "USED_NAME", "GENDER", "NATION", "DOB", "PID",
+                "NATIVE_COUNTRY", "NATIVE_PLACE", "NATIVE_XIANG",
+                "NATAL_COUNTRY", "NATAL_PLACE", "NATAL_XIANG",
+                "WHO_IN_UNIT_NAME", "PID_ISSUE_UNIT_NAME", "PID_USEFUL_LIFE",
+                "FA_PID", "FA_NAME", "FA_CARD_TYPE", "FA_CARD_NO", "FA_WWX",
+                "FA_WWM", "MA_PID", "MA_NAME", "MA_CARD_TYPE", "MA_CARD_NO",
+                "MA_WWX", "MA_WWM", "PO_PID", "PO_NAME", "PO_CARD_TYPE",
+                "PO_CARD_NO", "PO_WWX", "PO_WWM", "GURARDIAN_1_PID",
+                "GURARDIAN_1", "GURARDIAN_1_CARD_TYPE", "GURARDIAN_1_CARD_NO",
+                "GURARDIAN_1_WWX", "GURARDIAN_1_WWM", "GURARDIAN_1_TEL",
+                "GURARDIAN_2_PID", "GURARDIAN_2", "GURARDIAN_2_CARD_TYPE",
+                "GURARDIAN_2_CARD_NO", "GURARDIAN_2_WWX", "GURARDIAN_2_WWM",
+                "GURARDIAN_2_TEL", "INCITY_DATE", "INCITY_BDYY",
+                "INCITY_DETAIL", "WHEN_OUT", "OUT_CATEGORY", "TO_ADDR",
+                "PHOTO_ID", "HU_ID"
+        };
+        for (String s : test) {
+            System.out.println(s);
+        }
     }
 }

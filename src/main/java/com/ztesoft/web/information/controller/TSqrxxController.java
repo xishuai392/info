@@ -28,7 +28,7 @@ import com.ztesoft.web.information.service.ITSqrxxService;
  */
 
 @Controller
-@RequestMapping("/information/information/tsqrxx")
+@RequestMapping("/information/tsqrxx")
 public class TSqrxxController {
 
     private static final ZTEsoftLogManager logger = ZTEsoftLogManager
@@ -44,7 +44,7 @@ public class TSqrxxController {
 
         // ///////
 
-        return "information/information/jsp/tSqrxx";
+        return "information/jsp/tSqrxx";
     }
 
     @RequestMapping("queryRecordByPage")

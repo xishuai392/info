@@ -33,6 +33,7 @@ import com.ztesoft.web.information.domain.resp.QueryRespInfo;
 import com.ztesoft.web.information.domain.resp.QueryResultInfo;
 import com.ztesoft.web.information.domain.resp.TRinfo;
 import com.ztesoft.web.information.domain.resp.TRpopulationInfo;
+import com.ztesoft.web.information.rbsp.IdentificationCodeUtil;
 import com.ztesoft.web.information.rbsp.InfoRbspClient;
 import com.ztesoft.web.information.rbsp.InfoResultVO;
 import com.ztesoft.web.information.rbsp.InfoXmlParser;
@@ -185,6 +186,10 @@ public class InformationQueryController {
                 .getAttribute(IConstants.SESSIONUSER);
         // 被查询身份证号码
         String pid = reqInfo.getIdCardNum();
+        if (pid.length() == 15) {
+            pid = IdentificationCodeUtil.update2eighteen(pid);
+        }
+        
         // 被查询者姓名
         String bcxrxm = "";
 
@@ -200,7 +205,9 @@ public class InformationQueryController {
                 String uuid = UuidUtils.generatorUUID();
 
                 resultInfo.setBcxrxxId(uuid);
-                resultInfo.setIdCardNum(pid);
+                //resultInfo.setIdCardNum(pid);
+                //从接口数据获取，保证完全正确
+                resultInfo.setIdCardNum(rowMap.get("PID"));
                 resultInfo.setBirthDate(rowMap.get("DOB"));// 出生日期
                 resultInfo.setAddress(rowMap.get("NATAL_XIANG"));// 出生地详址
                 resultInfo.setIsHavingTR("");
@@ -242,7 +249,9 @@ public class InformationQueryController {
                 String uuid = UuidUtils.generatorUUID();
 
                 resultInfo.setBcxrxxId(uuid);
-                resultInfo.setIdCardNum(pid);
+                //resultInfo.setIdCardNum(pid);
+                //从接口数据获取，保证完全正确
+                resultInfo.setIdCardNum(rowMap.get("PID"));
                 resultInfo.setBirthDate(rowMap.get("DOB"));// 出生日期
                 resultInfo.setAddress(rowMap.get("ZZDZXZ"));// 暂住地址
                 resultInfo.setIsHavingTR("已办证");
@@ -292,6 +301,10 @@ public class InformationQueryController {
 
         PermanetPopulationInfo permanentPopulationInfo = new PermanetPopulationInfo();
         String pid = reqInfo.getIdCardNum();
+        if (pid.length() == 15) {
+            pid = IdentificationCodeUtil.update2eighteen(pid);
+        }
+        
         // 查询常住人口信息
         String czrkInfoResult = InfoRbspClient.queryCZRKbaseInfo(auditUserPo,
                 pid, "PID");
@@ -393,6 +406,10 @@ public class InformationQueryController {
 
         TRpopulationInfo trPopulationInfo = new TRpopulationInfo();
         String pid = reqInfo.getIdCardNum();
+        if (pid.length() == 15) {
+            pid = IdentificationCodeUtil.update2eighteen(pid);
+        }
+        
         // 查流动人口信息
         String ldrkInfoResult = InfoRbspClient.queryLDRKInfo(auditUserPo, pid);
 

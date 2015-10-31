@@ -3,6 +3,7 @@ package com.ztesoft.web.information.controller;
 import java.math.*;
 import java.util.*;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +29,7 @@ import com.ztesoft.web.information.service.ITSqrxxfjService;
  */
 
 @Controller
-@RequestMapping("/information/information/tsqrxxfj")
+@RequestMapping("/information/tsqrxxfj")
 public class TSqrxxfjController {
 
     private static final ZTEsoftLogManager logger = ZTEsoftLogManager
@@ -44,7 +45,7 @@ public class TSqrxxfjController {
 
         // ///////
 
-        return "information/information/jsp/tSqrxxfj";
+        return "information/jsp/tSqrxxfj";
     }
 
     @RequestMapping("queryRecordByPage")
@@ -80,10 +81,29 @@ public class TSqrxxfjController {
 
     @RequestMapping("qryRecordInfo")
     @ResponseBody
-    public TSqrxxfjPO qryRecordInfo(@RequestParam(value = "id",
-            required = true) String id) throws BaseAppException {
+    public TSqrxxfjPO qryRecordInfo(
+            @RequestParam(value = "id", required = true) String id)
+            throws BaseAppException {
         TSqrxxfjPO record = tSqrxxfjService.selectByPrimaryKey(id);
         return record;
+    }
+
+    @RequestMapping("deleteBatch")
+    @ResponseBody
+    public int deleteBatch(String delIds) throws BaseAppException {
+        if (StringUtils.isBlank(delIds))
+            return 0;
+        List<TSqrxxfjPO> listRecord = new ArrayList<TSqrxxfjPO>();
+        String[] delIdAry = delIds.split(",");
+        for (String id : delIdAry) {
+            if (!StringUtils.isBlank(id)) {
+                TSqrxxfjPO record = new TSqrxxfjPO();
+                record.setId(id.trim());
+                listRecord.add(record);
+            }
+        }
+
+        return tSqrxxfjService.deleteBatch(listRecord);
     }
 
 }

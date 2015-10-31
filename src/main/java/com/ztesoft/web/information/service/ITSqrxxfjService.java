@@ -28,13 +28,15 @@ public interface ITSqrxxfjService {
 
     List<TSqrxxfjPO> selectByArg(TSqrxxfjPO record) throws BaseAppException;
 
-    Page<TSqrxxfjPO> selectByArgAndPage(TSqrxxfjPO record, Page<TSqrxxfjPO> resultPage)
-            throws BaseAppException;
+    Page<TSqrxxfjPO> selectByArgAndPage(TSqrxxfjPO record,
+            Page<TSqrxxfjPO> resultPage) throws BaseAppException;
 
     int add(TSqrxxfjPO record) throws BaseAppException;
 
     int update(TSqrxxfjPO record) throws BaseAppException;
 
     int delete(TSqrxxfjPO record) throws BaseAppException;
+
+    int deleteBatch(List<TSqrxxfjPO> listRecord) throws BaseAppException;
 
 }

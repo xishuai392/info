@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ztesoft.framework.exception.BaseAppException;
+import com.ztesoft.framework.exception.ExceptionHandler;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
 import com.ztesoft.framework.util.DateUtils;
 import com.ztesoft.framework.util.MessageResourceUtils;
@@ -34,6 +35,7 @@ import com.ztesoft.web.information.domain.resp.PermanetPopulationInfo;
 import com.ztesoft.web.information.domain.resp.PopulationBaseInfo;
 import com.ztesoft.web.information.domain.resp.QueryResultInfo;
 import com.ztesoft.web.information.domain.resp.TRpopulationInfo;
+import com.ztesoft.web.information.rbsp.IdentificationCodeUtil;
 import com.ztesoft.web.information.rbsp.InfoRbspClient;
 import com.ztesoft.web.information.rbsp.InfoResultVO;
 import com.ztesoft.web.information.rbsp.InfoXmlParser;
@@ -100,13 +102,19 @@ public class PlatesInfoQueryController {
             QueryByPlatesReqInfo reqInfo, HttpServletRequest request) throws BaseAppException {
         QueryByOtherPeopleReqInfo bcxrInfo = new QueryByOtherPeopleReqInfo();
         bcxrInfo.setPopulationType(reqInfo.getPopulationType());
-        bcxrInfo.setIdCardNum(reqInfo.getCardNo());
+        
         
         logger.debug(reqInfo.toString());
         
         AuditUserPO auditUserPo =  defaultUser();
         //查询身份证号码
         String pid = reqInfo.getCardNo();
+        if (pid.length() == 15) {
+            pid = IdentificationCodeUtil.update2eighteen(pid);
+        }
+        
+        bcxrInfo.setIdCardNum(reqInfo.getCardNo());
+        
         //查询者姓名
         String bcxrxm = "";
         
@@ -174,6 +182,9 @@ public class PlatesInfoQueryController {
         InfoResultVO czrkVO = InfoXmlParser.parserXML(czrkInfoResult);
         List<Map<String, String>> czrkInfoList = InfoXmlParser.parserResultVO(czrkVO);
         
+        if(null==czrkInfoList||czrkInfoList.size()==0){
+            ExceptionHandler.publish("APP-01-0020", "该身份证查询不到常住人口信息！");
+        }
         
         Map<String, String> czrkInfoMap = czrkInfoList.get(0);
 

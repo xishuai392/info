@@ -10,11 +10,11 @@
 <meta name="keywords" content="HSIT-UI">
 <meta name="author" content="design4u,QQ:66383210,Email:caixfm@gmail.com;admin@design4u.cn">
 <meta name="Copyright" Content="xx信息技术有限公司 版权所有">
-<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
-<script type="text/javascript" src="js/jquery.royalslider.min.js"></script>
-<link href="resources/css/login.css" rel="stylesheet" type="text/css" />
-<link href="resources/css/royalslider.css" rel="stylesheet" type="text/css" />
-<link href="resources/css/rs-minimal-white.css" rel="stylesheet">
+<script type="text/javascript" src="${ctx}/js/jquery.royalslider.min.js"></script>
+<script type="text/javascript" src="${ctx}/js/login.js"></script>
+<link href="${ctx}/resources/css/login.css" rel="stylesheet" type="text/css" />
+<link href="${ctx}/resources/css/royalslider.css" rel="stylesheet" type="text/css" />
+<link href="${ctx}/resources/css/rs-minimal-white.css" rel="stylesheet">
 
 <script type="text/javascript">
  
@@ -29,7 +29,7 @@
         <div class="h-l-wrapper-in">
           <!--网站logo-->
           <h1 class="h-l-logo">
-            <img src="resources/images/db.png"  alt=""/>
+            <img src="${ctx}/resources/images/db.png"  alt=""/>
           </h1>
           <!--头部右侧功导航-->
           <div class="h-l-top-nav">
@@ -49,16 +49,16 @@
 			<input type="hidden" name="loginFailurePage" id="loginFailurePage"  value="http:///login.jsp"/>				
 			<input type="hidden" name="userid" id="userid"/>    -->
             <p class="h-l-user-header">
-              <img src="resources/images/img-user-header.jpg"  alt=""/>
+              <img src="${ctx}/resources/images/img-user-header.jpg"  alt=""/>
             </p>
             <p class="h-l-form-item">
-              <input id="userCode" name="userCode" type="text" class="h-l-input-text h-l-icon-user" value="" placeholder="请输入用户名" onKeyDown="keyDownEvent(event)" />
+              <input id="userCode" name="userCode" type="text" class="h-l-input-text h-l-icon-user" value="" placeholder="请输入用户名"  />
             </p>
             <p class="h-l-form-item">
-              <input name="password" type="password" id="pw" class="h-l-input-text h-l-icon-pw" value="" placeholder="请输入密码" onKeyDown="keyDownEvent(event)" />
+              <input id="passWord" name="password" type="password" id="pw" class="h-l-input-text h-l-icon-pw" value="" placeholder="请输入密码"  />
             </p>
             <p class="h-l-form-item">
-              <input name="submit" type="submit" id="submit" class="h-l-input-btn" value="登录"/>
+              <input name="submitBtn" type="button" id="loginBtn" class="h-l-input-btn" value="登录"/>
               <!--
               <a href="#" class="h-l-input-btn h-l-disable" >
               	<span class="h-l-icon-loading"></span>
@@ -79,7 +79,7 @@
               <h2><strong class="h-l-user-name"></strong>
                 <span class="h-l-user-id"></span>
               </h2>
-              <span class="h-l-user-company">福建省烟草公司</span>
+              <span class="h-l-user-company">福建省公司</span>
             </div>
             <p class="h-l-form-item">
               <input name="password1" type="password" id="pw1" class="h-l-input-text h-l-icon-pw" value="" placeholder="请输入密码" />
@@ -112,6 +112,7 @@
             </p>
           </form>
          -->
+         <span id="error_text" class="benner_text_error" style="color: red; font-size: 14px;">${error}</span>
           <div class="h-l-errorTxt h-l-hide">
             <span>错误提示：</span>
             </div>
@@ -124,13 +125,13 @@
         <div class="sliderContainer fullWidth clearfix">
           <div id="full-width-slider" class="royalSlider heroSlider rsMinW">
             <div class="rsContent" style="background:#2a95bb; height:500px;">
-              <div style="position:absolute; left:50%; width:2000px; height:500px; top:0; margin-left:-1000px;"><img src="resources/images/banner/3-0.jpg" alt=""/></div>
+              <div style="position:absolute; left:50%; width:2000px; height:500px; top:0; margin-left:-1000px;"><img src="${ctx}/resources/images/banner/3-0.jpg" alt=""/></div>
               <!-- 
               <div class="rsABlock" data-fade-effect="" data-move-offset="100" data-move-effect="left" data-speed="800"><img style="margin-left:-400px;" src="" alt=""/></div>
                -->
             </div>
             <div class="rsContent" style="background:#2a95bb; height:500px;">
-              <div style="position:absolute; left:50%; width:2000px; height:500px; top:0; margin-left:-1000px;"><img src="resources/images/banner/1-0.jpg" alt=""/></div>
+              <div style="position:absolute; left:50%; width:2000px; height:500px; top:0; margin-left:-1000px;"><img src="${ctx}/resources/images/banner/1-0.jpg" alt=""/></div>
 			  <!-- 
               <div class="rsABlock" data-fade-effect="" data-move-offset="100" data-move-effect="left" data-speed="800"><img style="margin-left:-400px;" src="" alt=""/></div>
                -->
@@ -174,7 +175,7 @@
       <div class="h-l-footer">
         <div class="h-l-wrapper-in">
           <div class="h-l-logo-bt"><!--
-            <img src="resources/images/logo-hs.png" alt=""/> -->
+            <img src="${ctx}/resources/images/logo-hs.png" alt=""/> -->
           </div>
           <div class="h-l-copyRight">
             <p>Copyright &copy; 2014

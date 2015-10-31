@@ -302,7 +302,9 @@
 	<if test="czr != null" >
 		CZR = #{czr,jdbcType=VARCHAR},
 	</if>
+	<if test="cxbs != null" >
 		CXBS = #{cxbs,jdbcType=VARCHAR}
+	</if>
 	</set >
 	 where ID = #{id,jdbcType=VARCHAR}
   </update>

@@ -39,6 +39,9 @@ public final class DateUtils {
 
     /** DAY日期格式. yyyy */
     public static String STR_DATE_FORMAT_YEAR = "yyyy";
+    
+    /** DAY日期格式. yyyy */
+    public static String STR_DATE_FORMAT_DAY_SPLIT = "dd";
 
     /** 分钟日期格式. yyyy-MM-dd HH:mm */
     public static String STR_DATE_FORMAT_MINUTE = "yyyy-MM-dd HH:mm";

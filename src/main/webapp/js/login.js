@@ -10,18 +10,25 @@ function showError(msg) {
  */
 function login() {
     var userCode = $('#userCode').val();
-    var password = $('#password').val();
+    var password = $('#passWord').val();
 
     if (userCode == undefined || userCode == "" || userCode == null) {
         showError('请填写用户名!');
         $('#userCode').focus();
-        return;
+        return false;
+    }
+
+    if (password == undefined || password == "" || password == null) {
+        showError('请填写密码!');
+        $('#passWord').focus();
+        return false;
     }
 
     $('#loginForm').submit();
+
 }
 
-$(document).keypress(function() {
+jQuery(document).keypress(function() {
 
     function enter() {
         var event = getEvent();
@@ -50,7 +57,7 @@ $(document).keypress(function() {
     enter();
 });
 
-$(document).ready(function() {
+jQuery(document).ready(function() {
     function onLoad() {
         var userCode = $('#userCode');
         userCode.focus();

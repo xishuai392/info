@@ -1,16 +1,28 @@
 package com.ztesoft.web.information.controller;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
+import com.ztesoft.framework.util.DateUtils;
 import com.ztesoft.framework.util.UuidUtils;
 import com.ztesoft.web.information.db.po.TSqrxxfjPO;
-import com.ztesoft.web.information.domain.req.scan.FileScanReqInfo;
 import com.ztesoft.web.information.domain.req.scan.ScanReqInfo;
+import com.ztesoft.web.information.rbsp.TransUtils;
 import com.ztesoft.web.information.service.ITSqrxxfjService;
 
 /**
@@ -26,6 +38,120 @@ public class ScanContorller {
 
     @Autowired
     private ITSqrxxfjService sqrxxfjService;
+
+    @RequestMapping("index")
+    public String index(Model model) {
+
+        return "/information/jsp/upload";
+    }
+
+    @RequestMapping(value = "/upload")
+    @ResponseBody
+    public String upload(
+            @RequestParam(value = "upload", required = false) MultipartFile file,
+            @RequestParam(value = "sqrxxId", required = true) String sqrxxId,
+            HttpServletRequest request, ModelMap model) {
+
+        logger.debug("上传文件名：" + file.getOriginalFilename());
+        String pathRoot = request.getSession().getServletContext()
+                .getRealPath("scanImages");// 跟路径
+
+        String subPath = getSubPath();// 子路径
+
+        String path = pathRoot + File.separator + subPath;// 总路径
+
+        String uuid = UuidUtils.generatorUUID();
+
+        String fileName = uuid + ".jpg";
+        // String fileName = file.getOriginalFilename();
+
+        logger.debug("上传文件路径：" + path);
+        File targetFile = new File(path, fileName);
+        if (!targetFile.exists()) {
+            targetFile.mkdirs();
+        }
+
+        // 保存
+        try {
+
+            file.transferTo(targetFile);
+
+            // 更新文件操作日志
+
+            TSqrxxfjPO sqrxxfjDto = new TSqrxxfjPO();
+            sqrxxfjDto.setId(uuid);
+            sqrxxfjDto.setDz(subPath + File.separator + fileName);
+            sqrxxfjDto.setMc(uuid);
+            sqrxxfjDto.setSqrId(sqrxxId);
+            sqrxxfjService.add(sqrxxfjDto);
+        }
+        catch (Exception e) {
+            logger.error("保存上传文件时发生异常：", e);
+        }
+        model.addAttribute("fileUrl", path + File.separator + fileName);
+        model.addAttribute("fjId", uuid);
+
+        return "{\"success\":true,\"imageName\":\"" + uuid + "\"}";
+    }
+
+    private String getSubPath() {
+        Date thizDate = new Date();
+        String subPath = DateUtils.date2String(thizDate,
+                DateUtils.STR_DATE_FORMAT_MONTH_WITHOUT_SPLIT);
+        subPath += File.separator
+                + DateUtils.date2String(thizDate,
+                        DateUtils.STR_DATE_FORMAT_DAY_SPLIT);
+        return subPath;
+    }
+
+    private void createFilePath(String filePath) {
+
+    }
+
+    /**
+     * 保存扫描图片，并记录
+     * 
+     * @param reqInfo
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/saveScanImages")
+    @ResponseBody
+    public TSqrxxfjPO saveScanImages(HttpServletRequest request,
+            ScanReqInfo reqInfo) throws Exception {
+        String pathRoot = request.getSession().getServletContext()
+                .getRealPath("scanImages");// 跟路径
+
+        String subPath = getSubPath();// 子路径
+
+        String path = pathRoot + File.separator + subPath;// 总路径
+
+        String uuid = UuidUtils.generatorUUID();
+        String fileName = uuid + ".jpg";
+
+        File targetFile = new File(path);
+        if (!targetFile.exists()) {
+            targetFile.mkdirs();
+        }
+
+        boolean isSave = TransUtils.base64String2Image(path + File.separator
+                + fileName, reqInfo.getImageBase64Str());
+
+        String imagePath = new File(path + File.separator + fileName)
+                .toURI().toString();
+
+        TSqrxxfjPO sqrxxfjDto = new TSqrxxfjPO();
+        sqrxxfjDto.setId(uuid);
+        sqrxxfjDto
+                .setDz(imagePath.substring(imagePath.indexOf("scanImages") + 10));
+        sqrxxfjDto.setMc(reqInfo.getFileName());
+        sqrxxfjDto.setSqrId(reqInfo.getSqrxxId());
+
+        // 更新附件日志
+        sqrxxfjService.add(sqrxxfjDto);
+        return sqrxxfjDto;
+
+    }
 
     /**
      * 调用第三方接口扫描身份证信息。并将图片保存到本地制定位置后同时上传到前台 与此同时接受uuid值

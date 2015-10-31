@@ -17,11 +17,24 @@ Ext.onReady(function() {
 	var createPrintPage = function (html) {
 		LODOP = getLodop(document.getElementById('LODOP_OB'),
 				document.getElementById('LODOP_EM'));
+		LODOP.SET_PREVIEW_WINDOW(1,3,1,0,0, "预览查看.开始打印");
+
 		LODOP.PRINT_INIT("人口信息打印");
 		LODOP.SET_PRINT_STYLE("FontSize", 12);
 		LODOP.SET_PRINT_STYLE("Bold", 1);
 		LODOP.SET_PRINT_PAGESIZE(1,0,0,"A4") ; //A4纸张纵向打印
 		LODOP.ADD_PRINT_HTM("0%", "0%", "100%", "100%", html);
+		LODOP.SET_SHOW_MODE("HIDE_SBUTTIN_PREVIEW",true);
+		//LODOP.SET_SHOW_MODE("HIDE_QBUTTIN_PREVIEW",true);
+		LODOP.SET_SHOW_MODE("HIDE_PAGE_PERCENT",true);
+		LODOP.SET_SHOW_MODE("HIDE_DISBUTTIN_SETUP",true);
+		LODOP.SET_SHOW_MODE("PREVIEW_NO_MINIMIZE",true);
+		LODOP.SET_SHOW_MODE("HIDE_PBUTTIN_SETUP",true);
+		LODOP.SET_SHOW_MODE("HIDE_VBUTTIN_SETUP",true);
+		LODOP.SET_SHOW_MODE("HIDE_ABUTTIN_SETUP",true);
+		LODOP.SET_SHOW_MODE("HIDE_RBUTTIN_SETUP",true);
+		
+		
 	};
 	
 	var sqrxxPanelFieldWidth = 350;
@@ -87,15 +100,15 @@ Ext.onReady(function() {
             xtype : 'button',
             region : 'north',
             id : 'czQryBtn',
-            text: '常住人口查询',
-            cls : 'btnQueryCls',
+            text: '<span style="font-size:26px !important;font-family:microsoft yahei !important;">常住人口信息查询</span>',
             width : btnWidth,
             height : btnHeight,
             handler : function() {
-                console.log('常住人口查询');
+                console.log('常住人口信息查询');
                 populationType = 1;
                 var layout = infoMainPanel.getLayout();
 	            layout.setActiveItem(1);//第2步：证件扫描
+	            Ext.getCmp('titleBtn').setText("<span style='font-size:16px !important;font-family:microsoft yahei !important;color:blue;'>您正在进行常住人口信息查询...</span>");
             }
 
         },{
@@ -103,25 +116,33 @@ Ext.onReady(function() {
             region : 'center',
             id : 'zzQryBtn',
             cls : 'btnQueryCls',
-            text: '暂住人口查询',
+            text: '<span style="font-size:26px !important;font-family:microsoft yahei !important;">暂住人口信息查询</span>',
             //cls : 'btntransparent',
             width : btnWidth,
             height : btnHeight,
             handler : function() {
-                console.log('暂住人口查询');
+                console.log('暂住人口信息查询');
                 populationType = 2;
                 var layout = infoMainPanel.getLayout();
 	            layout.setActiveItem(1);//第2步：证件扫描
+	            Ext.getCmp('titleBtn').setText("<span style='font-size:16px !important;font-family:microsoft yahei !important;color:blue;'>您正在进行暂住人口信息查询...</span>");
             }
 
         }]
 	});
 	
+	//背景色方式1，使用渐变色
+	//Ext.getCmp('czQryBtn').el.setStyle('background-image','-webkit-linear-gradient(top,red,yellow 40%,yellow 30%,red)');
+	//背景色方式2
+	//Ext.getCmp('mine').btnEl.setStyle('background-color',"yellow");
+	//字体颜色
+	//Ext.getCmp('czQryBtn').btnInnerEl.setStyle('color',"green");
+	//Ext.getCmp('czQryBtn').btnInnerEl.setStyle('font-family',"microsoft yahei");
 	//Ext.getCmp('czQryBtn').el.setStyle('font-family','Microsoft Yahei');
     
     //2、证件扫描
     zjPanel = Ext.create('Ext.Panel', { 
-	    //title: '证件扫描', 
+	    //title: '当前进行', 
 	    id : 'card1', 
 	    frame : true,
 	    layout : {
@@ -137,17 +158,17 @@ Ext.onReady(function() {
             xtype : 'button',
             region : 'center',
             id : 'idCardBtn',
-            text: '开始读取身份证',
+            text: '<span style="font-size:26px !important;font-family:microsoft yahei !important;">开始读取身份证</span>',
             //cls : 'btntransparent',
             width : btnWidth,
             height : btnHeight,
             handler : function() {
                 console.log('开始读取身份证');
                 
-//                var CVR_IDCard = document.getElementById("CVR_IDCard");					
-//				var strReadResult = CVR_IDCard.ReadCard();
+                var CVR_IDCard = document.getElementById("CVR_IDCard");					
+				var strReadResult = CVR_IDCard.ReadCard();
 				
-				strReadResult = "0";
+				//strReadResult = "0";
 				if(strReadResult == "0"){
 	              var config = {
 			            url : 'plates/queryByPlates.do',
@@ -157,7 +178,8 @@ Ext.onReady(function() {
 				            "nation" : CVR_IDCard.Nation, //民族
 				            "born" : CVR_IDCard.Born,     //出生日期
 				            "address" : CVR_IDCard.Address, //地址
-				            "cardNo" : CVR_IDCard.CardNo||"PID", //身份号码
+//				            "cardNo" : CVR_IDCard.CardNo||"35020419811021103X", //身份号码
+				            "cardNo" : CVR_IDCard.CardNo, //身份号码
 				            "issuedAt" : CVR_IDCard.IssuedAt,  //签发机关
 				            "effectedDate" : CVR_IDCard.EffectedDate,  //生效期限
 				            "expiredDate" : CVR_IDCard.ExpiredDate,//失效时间
@@ -243,12 +265,18 @@ Ext.onReady(function() {
 
         }],
 	    tbar: [ {
-	        text: '返回', 
-	        icon : ctx + '/common/images/icons/arrow_left.png',
+	    	scale   : 'large',
+	        text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">返回首页</span>', 
+	        icon : ctx + '/common/images/Back_light_32px.png',
 	        handler: function(){
 	        	var layout = infoMainPanel.getLayout();
 	            layout.setActiveItem(0);//第一步：首页
 	        } 
+	    },{
+	    	xtype: 'tbtext',
+	    	id : 'titleBtn',
+	    	scale   : 'large',
+	    	text : ''
 	    }]
     });
     
@@ -257,7 +285,7 @@ Ext.onReady(function() {
     var changzhuWinTp = new Ext.XTemplate(
 	'<div class="frame_normal" id="allDiv">',
 	'	<div class="div_title" id="titleDiv">',
-	'		本市户籍人口信息',
+	'		<span style="FONT-SIZE: 20px!important; ">本市户籍人口信息</span>',
 	'	</div>',
 	'	<div class="div_second_title" id="part1Div">',
 	'		人员基本信息',
@@ -406,16 +434,18 @@ Ext.onReady(function() {
         )],
         resizable : true,
         buttons: [{
-		        text: '返回首页',
-		        icon : ctx + '/common/images/icons/house.png',
+		        scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">返回首页</span>', 
+	       		icon : ctx + '/common/images/Back_light_32px.png',
 		        handler: function() {
 		            changzhuWin.hide();
 		            var layout = infoMainPanel.getLayout();
 	            	layout.setActiveItem(0);//返回首页
 		        }
 		    },{ 
-        		text: '打印' ,
-        		icon : ctx + '/common/images/icons/printer.png',
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">打印</span>', 
+        		icon : ctx + '/common/images/print_32px.png',
 				name : 'printBtn',
 				handler: function(btn) {
 		            //console.log("dayin");
@@ -442,8 +472,9 @@ Ext.onReady(function() {
 		            LODOP.PREVIEW();
 		        }
         	},{ 
-        		text : '取消',
-				iconCls : 'arrow_undo',
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">取消</span>', 
+				icon : ctx + '/common/images/arrow_bold_circle_32px.png',
 				name : 'canceltBtn',
 				handler : function(){
 					changzhuWin.hide();
@@ -458,7 +489,7 @@ Ext.onReady(function() {
     var zanzhuWinTp = new Ext.XTemplate(
 	'<div class="frame_normal" id="allDiv">',
 	'	<div class="div_title" id="titleDiv">',
-	'		本市暂住人口信息查询表',
+	'		<span style="FONT-SIZE: 20px!important; ">本市暂住人口信息查询表</span>',
 	'	</div>',
 	'	<div class="div_second_title" id="part1Div">',
 	'		人员基本信息',
@@ -570,16 +601,18 @@ Ext.onReady(function() {
         )],
         resizable : true,
         buttons: [{
-		        text: '返回首页',
-		        icon : ctx + '/common/images/icons/house.png',
+		        scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">返回首页</span>', 
+	        	icon : ctx + '/common/images/Back_light_32px.png',
 		        handler: function() {
 		            zanzhuWin.hide();
 		            var layout = infoMainPanel.getLayout();
 	            	layout.setActiveItem(0);//返回首页
 		        }
 		    },{ 
-        		text: '打印' ,
-        		icon : ctx + '/common/images/icons/printer.png',
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">打印</span>', 
+        		icon : ctx + '/common/images/print_32px.png',
 				name : 'printBtn',
 				handler: function(btn) {
 		            //console.log("dayin");
@@ -589,8 +622,9 @@ Ext.onReady(function() {
 		            LODOP.PREVIEW();
 		        }
         	},{ 
-        		text : '取消',
-				iconCls : 'arrow_undo',
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">取消</span>', 
+				icon : ctx + '/common/images/arrow_bold_circle_32px.png',
 				name : 'canceltBtn',
 				handler : function(){
 					zanzhuWin.hide();

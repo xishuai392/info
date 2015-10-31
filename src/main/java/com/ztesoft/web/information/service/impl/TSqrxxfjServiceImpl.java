@@ -17,7 +17,6 @@ import com.ztesoft.core.idproduce.ISequenceGenerator;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
 import com.ztesoft.framework.util.Utils;
-
 import com.ztesoft.web.information.db.arg.TSqrxxfjArg;
 import com.ztesoft.web.information.db.arg.TSqrxxfjArg.TSqrxxfjCriteria;
 import com.ztesoft.web.information.db.dao.TSqrxxfjDao;
@@ -43,7 +42,6 @@ public class TSqrxxfjServiceImpl implements ITSqrxxfjService {
 
     @Autowired
     private TSqrxxfjDao tSqrxxfjDao;
-    
 
     /**
      * 查询条件转换成Arg类的服务接口
@@ -56,7 +54,6 @@ public class TSqrxxfjServiceImpl implements ITSqrxxfjService {
      */
     @Resource(name = "sequenceProcGenerator")
     private ISequenceGenerator sequenceGenerator;
-    
 
     @Override
     public TSqrxxfjPO selectByPrimaryKey(String key) throws BaseAppException {
@@ -68,16 +65,18 @@ public class TSqrxxfjServiceImpl implements ITSqrxxfjService {
     }
 
     @Override
-    public List<TSqrxxfjPO> selectByArg(TSqrxxfjPO record) throws BaseAppException {
+    public List<TSqrxxfjPO> selectByArg(TSqrxxfjPO record)
+            throws BaseAppException {
         logger.debug("selectByArg begin...record={0}", record);
 
         // 第一种方式：自己创建arg，自行设置查询条件及操作符
-        //TSqrxxfjArg arg = new TSqrxxfjArg();
-        //TSqrxxfjCriteria criteria = arg.createCriteria();
-        
+        // TSqrxxfjArg arg = new TSqrxxfjArg();
+        // TSqrxxfjCriteria criteria = arg.createCriteria();
+
         // 第二种方式：利用arg转换服务，转换出arg，带上查询条件及操作符，
         // 转换后，还可以自行对arg进行设置修改
-        TSqrxxfjArg arg = argConversionService.invokeArg(TSqrxxfjArg.class, record);
+        TSqrxxfjArg arg = argConversionService.invokeArg(TSqrxxfjArg.class,
+                record);
 
         // ///////
         // TODO 根据业务场景，设置查询条件，示例
@@ -90,8 +89,8 @@ public class TSqrxxfjServiceImpl implements ITSqrxxfjService {
     }
 
     @Override
-    public Page<TSqrxxfjPO> selectByArgAndPage(TSqrxxfjPO record, Page<TSqrxxfjPO> resultPage)
-            throws BaseAppException {
+    public Page<TSqrxxfjPO> selectByArgAndPage(TSqrxxfjPO record,
+            Page<TSqrxxfjPO> resultPage) throws BaseAppException {
         logger.debug("selectByArgAndPage begin...record={0}", record);
 
         // 第一种方式：自己创建arg，自行设置查询条件及操作符
@@ -104,10 +103,10 @@ public class TSqrxxfjServiceImpl implements ITSqrxxfjService {
 
         // 第二种方式：利用arg转换服务，转换出arg，带上查询条件及操作符，
         // 转换后，还可以自行对arg进行设置修改
-        TSqrxxfjArg arg = argConversionService.invokeArg(TSqrxxfjArg.class, record);
+        TSqrxxfjArg arg = argConversionService.invokeArg(TSqrxxfjArg.class,
+                record);
 
         resultPage = tSqrxxfjDao.selectByArgAndPage(arg, resultPage);
-
 
         return resultPage;
     }
@@ -149,6 +148,18 @@ public class TSqrxxfjServiceImpl implements ITSqrxxfjService {
         // ///////
 
         return tSqrxxfjDao.deleteByPrimaryKey(record.getId());
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see com.ztesoft.web.information.service.ITSqrxxfjService#deleteBatch(java.util.List)
+     */
+    @Override
+    public int deleteBatch(List<TSqrxxfjPO> listRecord) throws BaseAppException {
+        for (TSqrxxfjPO record : listRecord) {
+            delete(record);
+        }
+        return listRecord.size();
     }
 
 }

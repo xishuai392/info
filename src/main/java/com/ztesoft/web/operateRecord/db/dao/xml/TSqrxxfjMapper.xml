@@ -211,7 +211,9 @@
 	<if test="mc != null" >
 		MC = #{mc,jdbcType=VARCHAR},
 	</if>
+	<if test="dz != null" >
 		DZ = #{dz,jdbcType=VARCHAR}
+	</if>
 	</set >
 	 where ID = #{id,jdbcType=VARCHAR}
   </update>

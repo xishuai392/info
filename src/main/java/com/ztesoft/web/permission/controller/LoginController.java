@@ -60,7 +60,7 @@ public class LoginController implements IConstants {
             // 1.拓展exception在此
             logger.error("登录异常--", e);
             ModelAndView view = new ModelAndView("login");
-            view.addObject("error", "登录异常！");
+            view.addObject("error", "登录异常！" + e.getMessage());
             return view;
         }
         ModelAndView view = new ModelAndView("redirect:/index.do");
@@ -87,9 +87,9 @@ public class LoginController implements IConstants {
         HttpSession session = request.getSession(true);
         logger.info("用户退出:userName=" + session.getAttribute(SESSIONUSERNAME)
                 + ",userCode=" + session.getAttribute(SESSIONUSERCODE));
-//        session.removeAttribute(SESSIONUSER);
-//        session.removeAttribute(SESSIONUSERNAME);
-//        session.removeAttribute(SESSIONUSERCODE);
+        // session.removeAttribute(SESSIONUSER);
+        // session.removeAttribute(SESSIONUSERNAME);
+        // session.removeAttribute(SESSIONUSERCODE);
         session.invalidate();
         Map<String, Object> result = new HashMap<String, Object>();
         result.put("success", true);
