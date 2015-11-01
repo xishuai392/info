@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ztesoft.core.common.Page;
+import com.ztesoft.framework.dto.AbstractDto;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
+import com.ztesoft.framework.util.MessageResourceUtils;
 import com.ztesoft.web.information.db.po.TBcxrxxPO;
 import com.ztesoft.web.information.service.ITBcxrxxService;
 
@@ -80,10 +82,92 @@ public class TBcxrxxController {
 
     @RequestMapping("qryRecordInfo")
     @ResponseBody
-    public TBcxrxxPO qryRecordInfo(@RequestParam(value = "id",
-            required = true) String id) throws BaseAppException {
+    public TBcxrxxPO qryRecordInfo(
+            @RequestParam(value = "id", required = true) String id)
+            throws BaseAppException {
         TBcxrxxPO record = tBcxrxxService.selectByPrimaryKey(id);
         return record;
     }
 
+    /**
+     * 判断是否可以打印，如果可以则设置为已打印
+     * 
+     * @param bcxrxxId
+     * @param cxbs
+     * @param idCardNum
+     * @return
+     * @throws BaseAppException
+     */
+    @RequestMapping("canPrint")
+    @ResponseBody
+    public CanPrintResult canPrint(String bcxrxxId, String cxbs,
+            String idCardNum) throws BaseAppException {
+
+        CanPrintResult result = new CanPrintResult();
+        // 先去捞库里的记录
+        TBcxrxxPO record = tBcxrxxService.selectByPrimaryKey(bcxrxxId);
+        if (null == record) {
+            result.setCanPrint(false);
+            result.setMessage("您查询的记录不存在，请重新查询");
+            return result;
+        }
+
+        if ("20".equals(cxbs)) {
+            // pc端，直接记录查询次数，不需要控制
+            TBcxrxxPO newRecord = new TBcxrxxPO();
+            newRecord.setSfdy("1");
+            newRecord.setId(bcxrxxId);
+            tBcxrxxService.update(newRecord);
+        }else{
+            //终端
+            // 配置文件里设定的最多次数
+            int maxPrint = Integer.parseInt(MessageResourceUtils
+                    .getMessage("maxPrintByDay"));
+            
+            
+            
+            TBcxrxxPO newRecord = new TBcxrxxPO();
+            newRecord.setSfdy("1");
+            newRecord.setId(bcxrxxId);
+            tBcxrxxService.update(newRecord);
+        }
+
+        return result;
+
+    }
+
+    public class CanPrintResult extends AbstractDto {
+        private boolean canPrint = true;
+
+        private String message = "";
+
+        /**
+         * @return the canPrint
+         */
+        public boolean isCanPrint() {
+            return canPrint;
+        }
+
+        /**
+         * @param canPrint the canPrint to set
+         */
+        public void setCanPrint(boolean canPrint) {
+            this.canPrint = canPrint;
+        }
+
+        /**
+         * @return the message
+         */
+        public String getMessage() {
+            return message;
+        }
+
+        /**
+         * @param message the message to set
+         */
+        public void setMessage(String message) {
+            this.message = message;
+        }
+
+    }
 }

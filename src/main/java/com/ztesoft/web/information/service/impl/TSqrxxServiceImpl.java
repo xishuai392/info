@@ -43,7 +43,6 @@ public class TSqrxxServiceImpl implements ITSqrxxService {
 
     @Autowired
     private TSqrxxDao tSqrxxDao;
-    
 
     /**
      * 查询条件转换成Arg类的服务接口
@@ -56,7 +55,6 @@ public class TSqrxxServiceImpl implements ITSqrxxService {
      */
     @Resource(name = "sequenceProcGenerator")
     private ISequenceGenerator sequenceGenerator;
-    
 
     @Override
     public TSqrxxPO selectByPrimaryKey(String key) throws BaseAppException {
@@ -72,9 +70,9 @@ public class TSqrxxServiceImpl implements ITSqrxxService {
         logger.debug("selectByArg begin...record={0}", record);
 
         // 第一种方式：自己创建arg，自行设置查询条件及操作符
-        //TSqrxxArg arg = new TSqrxxArg();
-        //TSqrxxCriteria criteria = arg.createCriteria();
-        
+        // TSqrxxArg arg = new TSqrxxArg();
+        // TSqrxxCriteria criteria = arg.createCriteria();
+
         // 第二种方式：利用arg转换服务，转换出arg，带上查询条件及操作符，
         // 转换后，还可以自行对arg进行设置修改
         TSqrxxArg arg = argConversionService.invokeArg(TSqrxxArg.class, record);
@@ -90,8 +88,8 @@ public class TSqrxxServiceImpl implements ITSqrxxService {
     }
 
     @Override
-    public Page<TSqrxxPO> selectByArgAndPage(TSqrxxPO record, Page<TSqrxxPO> resultPage)
-            throws BaseAppException {
+    public Page<TSqrxxPO> selectByArgAndPage(TSqrxxPO record,
+            Page<TSqrxxPO> resultPage) throws BaseAppException {
         logger.debug("selectByArgAndPage begin...record={0}", record);
 
         // 第一种方式：自己创建arg，自行设置查询条件及操作符
@@ -107,7 +105,6 @@ public class TSqrxxServiceImpl implements ITSqrxxService {
         TSqrxxArg arg = argConversionService.invokeArg(TSqrxxArg.class, record);
 
         resultPage = tSqrxxDao.selectByArgAndPage(arg, resultPage);
-
 
         return resultPage;
     }
@@ -149,6 +146,17 @@ public class TSqrxxServiceImpl implements ITSqrxxService {
         // ///////
 
         return tSqrxxDao.deleteByPrimaryKey(record.getId());
+    }
+
+    /**
+     * 按查询标示统计用户，打印次数
+     * 
+     * @param record
+     * @return
+     */
+    @Override
+    public int countPrintByZD(TSqrxxPO record) throws BaseAppException {
+        return tSqrxxDao.countPrintByZD(record);
     }
 
 }

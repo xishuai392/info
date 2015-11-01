@@ -37,4 +37,12 @@ public interface ITSqrxxService {
 
     int delete(TSqrxxPO record) throws BaseAppException;
 
+    /**
+     * 按查询标示统计用户，打印次数
+     * 
+     * @param record
+     * @return
+     * @throws BaseAppException
+     */
+    int countPrintByZD(TSqrxxPO record) throws BaseAppException;
 }

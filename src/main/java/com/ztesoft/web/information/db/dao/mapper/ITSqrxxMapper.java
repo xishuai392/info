@@ -39,4 +39,10 @@ public interface ITSqrxxMapper {
     
     int deleteByPrimaryKey(String id);
     
+    /**
+     * 按查询标示统计用户，打印次数
+     * @param record
+     * @return
+     */
+    int countPrintByZD(TSqrxxPO record);
 }

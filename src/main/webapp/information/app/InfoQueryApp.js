@@ -5,6 +5,11 @@ Ext.onReady(function() {
     var sqrxxPanel,zjPanel,ssxzlPanel,bcxrxxPanel,bcxrStore,bcxrGrid,changzhuWin,zanzhuWin,infoMainPanel;
     var LODOP;
     
+    //被查询人信息主键——统计打印次数需要
+    var bcxrxxId;
+    //图片的store
+    var imageStore;
+    
     var preHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>人口信息打印</title><style type="text/css">html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,input	{	margin: 0;	padding: 0;	border: 0;	font-weight: inherit;	font-style: inherit;	font-size: 100%;	font-family: Arial, Microsoft Yahei;	/**vertical-align:baseline;*/}body {	line-height: 1;	font-size: 12px;}ol,ul {	list-style: none;}.color_red {	color: #ff0900;}.color_gray {	color: #9b9b9b;}.color_bule {	color: #015a9f;}.clear {	clear: both;}.font18 {	font-size: 18px;}.font14 {	font-size: 14px;}* {	font-size: 12px !important;}</style><link rel="stylesheet" type="text/css"	href="'+webRoot+'common/css/info.css"></head><body>';
     
     var cardNav = function (incr) { 
@@ -86,6 +91,7 @@ Ext.onReady(function() {
 		LODOP.SET_SHOW_MODE("HIDE_RBUTTIN_SETUP",true);
 	};
 	
+	//申请人输入框统一宽度
 	var sqrxxPanelFieldWidth = 350;
 	
 	//弹出窗口宽高
@@ -272,7 +278,7 @@ Ext.onReady(function() {
     });
  
 
-    var imageStore = Ext.create('Ext.data.Store', {
+    imageStore = Ext.create('Ext.data.Store', {
         model: 'component.information.model.ImageModel',
         proxy: {
             type: 'localstorage'
@@ -936,6 +942,9 @@ Ext.onReady(function() {
                     	//console.log("rowIndex:"+rowIndex);
                     	//console.log("colIndex:"+colIndex);
                     	//console.log(grid.getStore().getAt(rowIndex).data.populationType);
+                    	
+                    	//被查询人信息主键，记录打印次数用
+                    	bcxrxxId = grid.getStore().getAt(rowIndex).data.bcxrxxId;
                     	if('户籍人口'==grid.getStore().getAt(rowIndex).data.populationType){
 	                    	var config = {
 					            url : 'information/queryCZRKinfo.do',
@@ -1187,6 +1196,28 @@ Ext.onReady(function() {
         		icon : ctx + '/common/images/icons/printer.png',
 				name : 'printBtn',
 				handler: function(btn) {
+					
+					//记录打印状态
+					var params = {
+		        		//被查询人信息主键，记录打印次数用
+                    	bcxrxxId : bcxrxxId,
+                    	//cxbs 10：终端，20：pc端
+                    	cxbs : "20",
+                    	//身份证编号
+						idCardNum : grid.getStore().getAt(rowIndex).data.idCardNum
+		        	};
+	        		var config = {
+	            		url : 'information/tbcxrxx/canPrint.do',
+			            params : params,
+			            callback : function(canPrintResult){
+			            	if(canPrintResult.canPrint){
+			            		//可以打印
+			            	}
+			            }
+			        };
+			        ExtUtils.doAjax(config);
+					
+					
 		            //console.log("dayin");
 		            var html = preHtml + changzhuWin.down('panel').getEl().getById("changzhuDetailDiv").getHTML()+'</body></html>';
 		            var printHtml = "";
@@ -1353,6 +1384,27 @@ Ext.onReady(function() {
         		icon : ctx + '/common/images/icons/printer.png',
 				name : 'printBtn',
 				handler: function(btn) {
+					//记录打印状态
+					var params = {
+		        		//被查询人信息主键，记录打印次数用
+                    	bcxrxxId : bcxrxxId,
+                    	//cxbs 10：终端，20：pc端
+                    	cxbs : "20",
+                    	//身份证编号
+						idCardNum : grid.getStore().getAt(rowIndex).data.idCardNum
+		        	};
+	        		var config = {
+	            		url : 'information/tbcxrxx/canPrint.do',
+			            params : params,
+			            callback : function(canPrintResult){
+			            	if(canPrintResult.canPrint){
+			            		//可以打印
+			            	}
+			            }
+			        };
+			        ExtUtils.doAjax(config);
+			        
+					
 		            //console.log("dayin");
 		            var html = preHtml + zanzhuWin.down('panel').getEl().getById("zanzhuDetailDiv").getHTML()+'</body></html>';
 		            //console.log(html);
@@ -1408,6 +1460,7 @@ Ext.onReady(function() {
     	bcxrxxPanel.getForm().reset();
     	imageStore.removeAll();
     	bcxrStore.removeAll();
+    	bcxrxxId = "";
     };
 
 });

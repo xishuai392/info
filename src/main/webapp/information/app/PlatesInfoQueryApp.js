@@ -452,27 +452,57 @@ Ext.onReady(function() {
 				name : 'printBtn',
 				handler: function(btn) {
 		            //console.log("dayin");
-		            var html = preHtml + changzhuWin.down('panel').getEl().getById("changzhuDetailDiv").getHTML()+'</body></html>';
-		            var printHtml = "";
-		            var htmlArray = $.parseHTML(html);
-		            //console.log(htmlArray);
-		            $.each( htmlArray, function( i, item ) {
-		            	var delEls = $(item).find("table tr[action=子女]");
-		            	if(delEls.length>0){
-		            		delEls.remove();
-		            		printHtml = $(item).html();
-		            	}
-					    //console.log(delEls);
-					    //console.log($(item));
-					    
-					});
-		            console.log(printHtml);
-		            /////console.log(changzhuWin.down('panel').getEl().getById("changzhuDetailDiv").getHTML());
 					
-		            printHtml = preHtml +'<div class="frame_normal" id="allDiv">'+ printHtml+'</div></body></html>';
-		            //console.log(html);
-		            createPrintPage(printHtml);
-		            LODOP.PREVIEW();
+					//记录打印状态
+					var params = {
+		        		//被查询人信息主键，记录打印次数用
+                    	bcxrxxId : bcxrxxId,
+                    	//cxbs 10：终端，20：pc端
+                    	cxbs : "20",
+                    	//身份证编号
+						idCardNum : grid.getStore().getAt(rowIndex).data.idCardNum
+		        	};
+	        		var config = {
+	            		url : 'information/tbcxrxx/canPrint.do',
+			            params : params,
+			            callback : function(canPrintResult){
+			            	if(canPrintResult.canPrint){
+			            		//可以打印
+			            		var html = preHtml + changzhuWin.down('panel').getEl().getById("changzhuDetailDiv").getHTML()+'</body></html>';
+					            var printHtml = "";
+					            var htmlArray = $.parseHTML(html);
+					            //console.log(htmlArray);
+					            $.each( htmlArray, function( i, item ) {
+					            	var delEls = $(item).find("table tr[action=子女]");
+					            	if(delEls.length>0){
+					            		delEls.remove();
+					            		printHtml = $(item).html();
+					            	}
+								    //console.log(delEls);
+								    //console.log($(item));
+								    
+								});
+					            console.log(printHtml);
+					            /////console.log(changzhuWin.down('panel').getEl().getById("changzhuDetailDiv").getHTML());
+								
+					            printHtml = preHtml +'<div class="frame_normal" id="allDiv">'+ printHtml+'</div></body></html>';
+					            //console.log(html);
+					            createPrintPage(printHtml);
+					            LODOP.PREVIEW();
+					            
+			            	}else{
+			            		//超过限制，不能打印
+			            		
+			            		ExtUtils.error(canPrintResult.message);
+			            	}
+			            }
+			        };
+			        ExtUtils.doAjax(config);
+					
+					
+					
+					
+		            
 		        }
         	},{ 
         		scale   : 'large',
@@ -618,11 +648,37 @@ Ext.onReady(function() {
         		icon : ctx + '/common/images/print_32px.png',
 				name : 'printBtn',
 				handler: function(btn) {
-		            //console.log("dayin");
-		            var html = preHtml + zanzhuWin.down('panel').getEl().getById("zanzhuDetailDiv").getHTML()+'</body></html>';
-		            //console.log(html);
-		            createPrintPage(html);
-		            LODOP.PREVIEW();
+					//记录打印状态
+					var params = {
+		        		//被查询人信息主键，记录打印次数用
+                    	bcxrxxId : bcxrxxId,
+                    	//cxbs 10：终端，20：pc端
+                    	cxbs : "20",
+                    	//身份证编号
+						idCardNum : grid.getStore().getAt(rowIndex).data.idCardNum
+		        	};
+	        		var config = {
+	            		url : 'information/tbcxrxx/canPrint.do',
+			            params : params,
+			            callback : function(canPrintResult){
+			            	if(canPrintResult.canPrint){
+			            		//可以打印
+			            		
+					            //console.log("dayin");
+					            var html = preHtml + zanzhuWin.down('panel').getEl().getById("zanzhuDetailDiv").getHTML()+'</body></html>';
+					            //console.log(html);
+					            createPrintPage(html);
+					            LODOP.PREVIEW();
+			            	}else{
+			            		//超过限制，不能打印
+			            		
+			            		ExtUtils.error(canPrintResult.message);
+			            	}
+			            }
+			        };
+			        ExtUtils.doAjax(config);
+					
+					
 		        }
         	},{ 
         		scale   : 'large',

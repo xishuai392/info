@@ -84,8 +84,13 @@ public class TSqrxxDao extends SqlSessionDaoSupport {
         return getMapper().updateByPrimaryKey(record);
     }
 
+    public int countPrintByZD(TSqrxxPO record) {
+        return getMapper().countPrintByZD(record);
+    }
+
     /**
      * 根据传入的Map条件进行查询，当前仅支持所有Map中Key字段的EqualTo查询
+     * 
      * @param params Map,Key=字段名，value=查询值
      * @return
      */
@@ -111,7 +116,9 @@ public class TSqrxxDao extends SqlSessionDaoSupport {
                 Object value = params.get(key);
                 for (Method method : criteriaClass.getMethods()) {
                     if (method.getName().equals(
-                            "and"+ StringUtils.toUpperCaseFirstOne(key.toString()) + "EqualTo")) {
+                            "and"
+                                    + StringUtils.toUpperCaseFirstOne(key
+                                            .toString()) + "EqualTo")) {
                         try {
                             method.invoke(criteria, value);
                         }
@@ -127,7 +134,7 @@ public class TSqrxxDao extends SqlSessionDaoSupport {
     }
 
     public ITSqrxxMapper getMapper() {
-    	return getSqlSession().getMapper(ITSqrxxMapper.class);
+        return getSqlSession().getMapper(ITSqrxxMapper.class);
     }
 
 }

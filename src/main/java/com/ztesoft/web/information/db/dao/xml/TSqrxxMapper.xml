@@ -333,4 +333,18 @@
 	 delete from T_SQRXX
 	 where ID = #{id,jdbcType=VARCHAR}
   </delete>
+  
+  <!--按查询标示统计用户，打印次数-->
+  <select id="countPrintByZD" parameterType="com.ztesoft.web.information.db.po.TSqrxxPO" resultType="java.lang.Integer" >
+   	select count(1) from t_bcxrxx where SQR_ID in 
+   		(select ID from t_sqrxx 
+   			where zjh=#{zjh,jdbcType=VARCHAR} 
+   			and cxrq=#{cxrq,jdbcType=VARCHAR} 
+   			and cxbs=#{cxbs,jdbcType=VARCHAR}
+   		) and BCXRQ=#{cxrq,jdbcType=VARCHAR} 
+   		and SFDY='1'
+   
+  </select>
+  
+  
 </mapper>  
