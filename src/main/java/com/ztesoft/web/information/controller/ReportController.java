@@ -51,12 +51,13 @@ public class ReportController {
                 DateUtils.date2StringDay(DateUtils.getMonthLastday(new Date())));
         System.out.println(DateUtils.date2StringDay(DateUtils
                 .getMonthBeginday(new Date())));
-        System.out.println(DateUtils.date2StringDay(DateUtils.getMonthLastday(new Date())));
+        System.out.println(DateUtils.date2StringDay(DateUtils
+                .getMonthLastday(new Date())));
         return view;
     }
 
     /**
-     * 窗口信息查询服务统计报表
+     * 窗口信息查询服务统计报表--请求数据
      * 
      * @param reqInfo
      * @return
@@ -70,6 +71,39 @@ public class ReportController {
         reqInfo.setEndDateStr(DateUtils.date2String(reqInfo.getEndDate(),
                 DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
         return reportService.queryCkcx(reqInfo);
+    }
+
+    /**
+     * 自助终端查询报表
+     * 
+     * @param model
+     * @return
+     */
+    @RequestMapping("queryPlatesQryPrint")
+    public ModelAndView queryPlatesQryPrint(Model model) {
+        ModelAndView view = new ModelAndView("/report/jsp/zdcx");
+        view.addObject("startDateInit", DateUtils.date2StringDay(DateUtils
+                .getMonthBeginday(new Date())));
+        view.addObject("endDateInit",
+                DateUtils.date2StringDay(DateUtils.getMonthLastday(new Date())));
+        return view;
+    }
+
+    /**
+     * 自助终端查询报表--数据
+     * 
+     * @param reqInfo
+     * @return
+     */
+    @RequestMapping("queryPlatesQryPrintData")
+    @ResponseBody
+    public List<ReportResultDto> queryPlatesQryPrintData(ReportQueryDto reqInfo) {
+        reqInfo.setCxbs("10");// 10：终端
+        reqInfo.setStartDateStr(DateUtils.date2String(reqInfo.getStartDate(),
+                DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
+        reqInfo.setEndDateStr(DateUtils.date2String(reqInfo.getEndDate(),
+                DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
+        return reportService.queryPlatesQryPrint(reqInfo);
     }
 
 }

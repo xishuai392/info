@@ -19,6 +19,41 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 	
+	
+	<!--检查用户是否登录了系统的过滤器配置-->
+	<filter>
+		<filter-name>sessionFilter</filter-name>
+		<filter-class>com.ztesoft.web.common.SessionFilter</filter-class>
+		<init-param>
+			<param-name>sessionKey</param-name>
+			<param-value>sessionuser</param-value>
+			<description>将当前登录的用户的信息保存在 session 中时使用的key，如果没有配置此参数，则该过滤器不起作用</description>
+		</init-param>
+		<init-param>
+			<param-name>redirectUrl</param-name>
+			<param-value>/login/login.do</param-value>
+			<description>
+			          如果用户未登录（即在 session 中 key 为 sessionKey 的属性不存在或为空），则将请求重定向到该 url。
+			          该 url 不包含web应用的 ContextPath。
+			          如果不配置此参数，则在用户未登录系统的情况下，直接重定向到web应用的根路径（/）
+			</description>
+		</init-param>
+		<init-param>
+			<param-name>excludeUrl</param-name>
+			<param-value>/login.jsp,/login/login.do,/login/doLogin.do,/login/loginOut.do,/login/loginCheck.do,/plates/index.do,/plates/queryByPlates.do,/plates/queryCZRKinfo.do,/plates/queryZZRKinfo.do,/information/tbcxrxx/canPrint.do</param-value>
+			<description>不需要过滤的url，多个以逗号分隔</description>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>sessionFilter</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>sessionFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping> 
+	
 	<!-- 字符集 过滤器 -->
 	<filter>
 		<filter-name>CharacterEncodingFilter</filter-name>
@@ -92,4 +127,7 @@
 		<location>/404.htm</location>
 	</error-page>
 	
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
 </web-app>

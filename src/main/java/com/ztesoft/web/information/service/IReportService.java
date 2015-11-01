@@ -28,4 +28,11 @@ public interface IReportService {
      */
     public List<ReportResultDto> queryCkcx(ReportQueryDto reqInfo);
 
+    /**
+     * 自助终端查询报表
+     * 
+     * @param reqInfo
+     * @return
+     */
+    public List<ReportResultDto> queryPlatesQryPrint(ReportQueryDto reqInfo);
 }

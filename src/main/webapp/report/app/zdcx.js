@@ -1,11 +1,11 @@
 /**
- * 窗口信息查询服务统计报表
+ * 自助终端信息查询统计报表
  */
 Ext.onReady(function() {
     var reportStore,searchForm,reportGrid;
     var LODOP;
     
-    var preHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>窗口信息查询服务统计报表</title><style type="text/css">html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,input	{	margin: 0;	padding: 0;	border: 0;	font-weight: inherit;	font-style: inherit;	font-size: 100%;	font-family: Arial, Microsoft Yahei;	/**vertical-align:baseline;*/}body {	line-height: 1;	font-size: 12px;}ol,ul {	list-style: none;}.color_red {	color: #ff0900;}.color_gray {	color: #9b9b9b;}.color_bule {	color: #015a9f;}.clear {	clear: both;}.font18 {	font-size: 18px;}.font14 {	font-size: 14px;}* {	font-size: 12px !important;}</style><link rel="stylesheet" type="text/css"	href="'+webRoot+'common/css/info.css"></head><body>';
+    var preHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>自助终端信息查询统计报表</title><style type="text/css">html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,input	{	margin: 0;	padding: 0;	border: 0;	font-weight: inherit;	font-style: inherit;	font-size: 100%;	font-family: Arial, Microsoft Yahei;	/**vertical-align:baseline;*/}body {	line-height: 1;	font-size: 12px;}ol,ul {	list-style: none;}.color_red {	color: #ff0900;}.color_gray {	color: #9b9b9b;}.color_bule {	color: #015a9f;}.clear {	clear: both;}.font18 {	font-size: 18px;}.font14 {	font-size: 14px;}* {	font-size: 12px !important;}</style><link rel="stylesheet" type="text/css"	href="'+webRoot+'common/css/info.css"></head><body>';
 	//
 	var createPrintPage = function (html) {
 		LODOP = getLodop(document.getElementById('LODOP_OB'),
@@ -17,7 +17,7 @@ Ext.onReady(function() {
 		LODOP.ADD_PRINT_HTM("0%", "0%", "100%", "100%", html);
 	};
 	
-	reportStore = Ext.create('component.report.store.QueryCkcxStore');
+	reportStore = Ext.create('component.report.store.QueryZdcxStore');
 	
 	var orgField = Ext.create('ZTEsoft.form.field.OrgTreeField');
 	
@@ -54,14 +54,7 @@ Ext.onReady(function() {
             operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
             allowBlank : false,
             name : "endDate"
-        }, Ext.create('ZTEsoft.form.field.OrgTreeField',{
-            fieldLabel : '操作单位',
-            labelAlign : 'right',
-            allowBlank : false,
-            editable : false,
-            validateOnBlur : false,
-            name : 'czdw'
-        })]
+        }]
 
     });
     
@@ -73,16 +66,16 @@ Ext.onReady(function() {
         store : reportStore,
         isPage : false,
         columns : [{
-            text : "服务次数",
-            dataIndex : "fwcs",
+            text : "终端名称",
+            dataIndex : "czr",
             flex : 1
         },{
             text : "查询次数",
             dataIndex : "cxcs",
             flex : 1
         }, {
-            text : "查询成功次数",
-            dataIndex : "cxcgcs",
+            text : "打印次数",
+            dataIndex : "dycs",
             flex : 1
         }
         ]

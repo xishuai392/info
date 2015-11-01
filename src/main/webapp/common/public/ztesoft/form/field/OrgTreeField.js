@@ -14,7 +14,8 @@ Ext.define('ZTEsoft.form.field.OrgTreeField', {
     title : "组织列表",
     rootId : -1,	
     rootText : "顶级组织",
-    icon : ctx + '/common/images/icons/chart_organisation.png',
+    rootVisible : false,
+    icon : '/common/images/icons/chart_organisation.png',
 	constructor : function(config) {
 		this.config = config;
 		this.callParent([config]);

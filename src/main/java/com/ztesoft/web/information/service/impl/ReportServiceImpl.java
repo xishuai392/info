@@ -53,4 +53,14 @@ public class ReportServiceImpl implements IReportService {
         return result;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see com.ztesoft.web.information.service.IReportService#queryPlatesQryPrint(com.ztesoft.web.information.domain.req.ReportQueryDto)
+     */
+    @Override
+    public List<ReportResultDto> queryPlatesQryPrint(ReportQueryDto reqInfo) {
+        // TODO Auto-generated method stub
+        return reportDao.queryPlatesQryPrint(reqInfo);
+    }
+
 }

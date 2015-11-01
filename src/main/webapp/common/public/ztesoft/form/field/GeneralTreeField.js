@@ -90,6 +90,7 @@ Ext.define('ZTEsoft.form.field.GeneralTreeField', {
 			    	buttonAlign:'center',
 					buttons:[{
 						text:'确定',
+						icon : ctx + '/common/images/icons/accept.png',
 						handler:function(){
 							var nodes = me.treepanel.getSelectionModel().getSelection();
 							if(nodes.length==0){
@@ -112,6 +113,7 @@ Ext.define('ZTEsoft.form.field.GeneralTreeField', {
 						}
 					},{
 						text:'取消',
+						icon : ctx + '/common/images/icons/arrow_undo.png',
 						handler:function(){
 							me.tree.hide();
 						}

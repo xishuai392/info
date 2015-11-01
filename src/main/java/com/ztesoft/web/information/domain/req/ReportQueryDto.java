@@ -29,8 +29,24 @@ public class ReportQueryDto extends AbstractDto {
     private String endDateStr;// 结束日期
 
     private String czdw;// 操作单位
+    
+    private String czr;// 操作人（终端：终端名）
 
     private String cxbs;// 查询标识：10：终端，20：pc端
+
+    /**
+     * @return the czr
+     */
+    public String getCzr() {
+        return czr;
+    }
+
+    /**
+     * @param czr the czr to set
+     */
+    public void setCzr(String czr) {
+        this.czr = czr;
+    }
 
     /**
      * @return the startDateStr

@@ -58,6 +58,10 @@
 		<script type="text/javascript"
 			src="${ctx}/information/app/PlatesInfoQueryApp.js">
 		</script>
+		
+		<script type="text/javascript"
+			src="${ctx}/information/app/nobody.js">
+		</script>
 	</head>
 	<body style="width: 100%;height: 100%">
 	</body>

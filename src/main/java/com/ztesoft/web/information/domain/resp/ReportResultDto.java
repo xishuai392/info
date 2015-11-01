@@ -29,6 +29,38 @@ public class ReportResultDto extends AbstractDto {
 
     private int totalRows;// 总行数
 
+    private int dycs;// 打印次数
+
+    private String czr;// 操作人 （终端：终端名）
+
+    /**
+     * @return the dycs
+     */
+    public int getDycs() {
+        return dycs;
+    }
+
+    /**
+     * @param dycs the dycs to set
+     */
+    public void setDycs(int dycs) {
+        this.dycs = dycs;
+    }
+
+    /**
+     * @return the czr
+     */
+    public String getCzr() {
+        return czr;
+    }
+
+    /**
+     * @param czr the czr to set
+     */
+    public void setCzr(String czr) {
+        this.czr = czr;
+    }
+
     /**
      * @return the totalRows
      */

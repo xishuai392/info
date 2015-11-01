@@ -8,6 +8,8 @@
 		<result column="cxcs" property="cxcs" jdbcType="INTEGER" />
 		<result column="cxcgcs" property="cxcgcs" jdbcType="INTEGER" />
 		<result column="totalRows" property="totalRows" jdbcType="INTEGER" />
+		<result column="dycs" property="dycs" jdbcType="INTEGER" />
+		<result column="czr" property="czr" jdbcType="VARCHAR" />
 		
 	</resultMap>
 	
@@ -26,35 +28,51 @@
     
 	</select>  
   
-  	<!-- 查询次数-->
+	<!--被查询人信息表  查询次数-->
 	<select id="queryCxcs" resultMap="BaseResultMap" parameterType="com.ztesoft.web.information.domain.req.ReportQueryDto" >
 		select count(1)totalRows,count(cxcs)cxcs from t_bcxrxx bc
 		where bc.SQR_ID IN(
 			select ID from t_sqrxx
 			where 1=1
-			<if test="cxbs!=null and cxbs!=''" >
+		<if test="cxbs!=null and cxbs!=''" >
 	            AND CXBS = #{cxbs}
-			</if>
-			<if test="czdw!=null and czdw!=''" >
+		</if>
+		<if test="czdw!=null and czdw!=''" >
 	            AND CZDW = #{czdw}
-			</if>
+		</if>
 			AND CXRQ BETWEEN #{startDateStr} AND #{endDateStr}
 		)
 	</select>
    	
-   	<!-- 查询成功次数-->
+	<!--被查询人信息表   查询成功次数-->
 	<select id="queryCxcgcs" resultMap="BaseResultMap" parameterType="com.ztesoft.web.information.domain.req.ReportQueryDto" >
 		select count(1)totalRows,count(cxcs)cxcgcs from t_bcxrxx bc
 		where  bc.SFZF='0' and bc.SQR_ID IN(
 			select ID from t_sqrxx
 			where 1=1
-			<if test="cxbs!=null and cxbs!=''" >
+		<if test="cxbs!=null and cxbs!=''" >
 	            AND CXBS = #{cxbs}
-			</if>
-			<if test="czdw!=null and czdw!=''" >
+		</if>
+		<if test="czdw!=null and czdw!=''" >
 	            AND CZDW = #{czdw}
-			</if>
+		</if>
 			AND CXRQ BETWEEN #{startDateStr} AND #{endDateStr}
 		)
 	</select>  
+	
+	<!--按 操作人（终端：终端名）分组统计 查询次数 打印次数-->
+	<select id="queryPlatesQryPrint" resultMap="BaseResultMap" parameterType="com.ztesoft.web.information.domain.req.ReportQueryDto" >
+		select czr,sum(sfdy) dycs,sum(cxcs) cxcs
+		FROM(
+			select bc.SFDY, bc.SFZF, bc.XGRQ, bc.RKLX, bc.CXCS, bc.BCXRQ, sq.CZDW, sq.CZR, sq.CXBS
+			FROM
+		    	t_bcxrxx bc left join t_sqrxx sq on sq.ID=bc.SQR_ID
+			where bc.SFZF='0' 
+			<if test="cxbs!=null and cxbs!=''" >
+	            AND sq.CXBS = #{cxbs}
+			</if>
+				AND bc.BCXRQ BETWEEN #{startDateStr} AND #{endDateStr}
+		)t group by czr
+	</select>  
+	
 </mapper>  

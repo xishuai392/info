@@ -29,9 +29,9 @@ Ext.define('ZTEsoft.common.StrConstants', {
         HINT_REDO_CONFIRM : "是否立即重做?",
         HINT_CANCEL_CONFIRM : "确定要执行取消操作吗?",
         HINT_CANCEL_SUCCESS : "取消操作成功!",
-        HINT_REDO_SUCCESS : "重做操作成功"
+        HINT_REDO_SUCCESS : "重做操作成功",
         
         
-
+		ORGANIZATION_TREE : 'com.ztesoft.web.common.db.dao.mapper.GeneralTreeMapper.orgTree'
     }
 });

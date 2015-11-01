@@ -717,5 +717,24 @@ Ext.onReady(function() {
         items : [infoMainPanel]
     });
 
+    window.onNobody(function(){
+    	console.log("onNobody");
+    	if(Ext.Msg.isVisible()){
+    		Ext.Msg.hide();
+    	}
+    	
+    	if(Ext.isObject(changzhuWin)&&changzhuWin.isVisible()){
+    		changzhuWin.hide();
+    	}
+    	
+    	if(Ext.isObject(zanzhuWin)&&zanzhuWin.isVisible()){
+    		zanzhuWin.hide();
+    	}
+    	
+    	if(Ext.isObject(infoMainPanel)){
+    		var layout = infoMainPanel.getLayout();
+	        layout.setActiveItem(0);//返回首页
+    	}
+    },5000,false);
     
 });

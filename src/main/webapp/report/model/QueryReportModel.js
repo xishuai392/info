@@ -23,5 +23,11 @@ Ext.define('component.report.model.QueryReportModel', {
     }, {
         name : 'totalRows',
         type : 'auto'
+    }, {
+        name : 'dycs',
+        type : 'auto'
+    }, {
+        name : 'czr',
+        type : 'auto'
     }]
 });
