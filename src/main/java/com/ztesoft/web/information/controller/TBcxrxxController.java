@@ -1,7 +1,6 @@
 package com.ztesoft.web.information.controller;
 
-import java.math.*;
-import java.util.*;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,9 +13,12 @@ import com.ztesoft.core.common.Page;
 import com.ztesoft.framework.dto.AbstractDto;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
+import com.ztesoft.framework.util.DateUtils;
 import com.ztesoft.framework.util.MessageResourceUtils;
 import com.ztesoft.web.information.db.po.TBcxrxxPO;
+import com.ztesoft.web.information.db.po.TSqrxxPO;
 import com.ztesoft.web.information.service.ITBcxrxxService;
+import com.ztesoft.web.information.service.ITSqrxxService;
 
 /**
  * <Description>tbcxrxx管理 <br>
@@ -38,6 +40,9 @@ public class TBcxrxxController {
 
     @Autowired
     private ITBcxrxxService tBcxrxxService;
+
+    @Autowired
+    private ITSqrxxService tSqrxxService;
 
     @RequestMapping("index")
     public String index(Model model) {
@@ -118,14 +123,33 @@ public class TBcxrxxController {
             newRecord.setSfdy("1");
             newRecord.setId(bcxrxxId);
             tBcxrxxService.update(newRecord);
-        }else{
-            //终端
-            // 配置文件里设定的最多次数
-            int maxPrint = Integer.parseInt(MessageResourceUtils
-                    .getMessage("maxPrintByDay"));
-            
-            
-            
+        }
+        else {
+            try {
+                // 终端
+                // 配置文件里设定的最多次数
+                int maxPrint = Integer.parseInt(MessageResourceUtils
+                        .getMessage("maxPrintByDay"));
+
+                TSqrxxPO queryVO = new TSqrxxPO();
+                queryVO.setCxbs("10");// 终端
+                queryVO.setZjh(idCardNum);
+                queryVO.setCxrq(DateUtils.date2String(new Date(),
+                        DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
+
+                int printTimes = tSqrxxService.countPrintByZD(queryVO);
+
+                if (printTimes >= maxPrint) {
+                    // 不可以打印了
+                    result.setCanPrint(false);
+                    result.setMessage(MessageResourceUtils
+                            .getMessage("maxPrintByDay。errorMessage"));
+                    return result;
+                }
+            }
+            catch (Exception e) {
+                logger.error("查询终端用户当天打印次数时发生错误。", e);
+            }
             TBcxrxxPO newRecord = new TBcxrxxPO();
             newRecord.setSfdy("1");
             newRecord.setId(bcxrxxId);

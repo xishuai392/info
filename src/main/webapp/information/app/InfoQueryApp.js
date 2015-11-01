@@ -713,6 +713,10 @@ Ext.onReady(function() {
 	        formBind: true, //only enabled once the form is valid
 	        handler: function() {
 	        	var layout = infoMainPanel.getLayout();
+	        	
+	        	layout.setActiveItem(3);//下一步：被查询人信息
+	        	
+	        	/** 证件扫描与介绍信及相关资料扫描合并
 			    var cxsqrlx = sqrxxPanel.getForm().findField('cxsqrlx').getValue();
 	        	if("50"==cxsqrlx){
 	        		//个人查询，跳过 介绍信及相关资料扫描
@@ -721,6 +725,7 @@ Ext.onReady(function() {
 	        		 //ExtUtils.info('介绍信及相关资料扫描');
 	        		layout.setActiveItem(2);//下一步：介绍信及相关资料扫描
 	        	}
+	        	*/
 	        	
 	        	/**
 	        	var params = {
@@ -845,7 +850,11 @@ Ext.onReady(function() {
 	        iconCls : 'x-btn-icon-el x-tbar-page-prev',
 	        handler: function() {
 	            var layout = infoMainPanel.getLayout();
+	            
+	            layout.setActiveItem(1);//上一步：证件、介绍信及相关资料扫描
+	            /** 证件扫描与介绍信及相关资料扫描合并
 	            layout.setActiveItem(2);//上一步：介绍信及相关资料扫描
+	            */
 	        }
 	    },{
 	        text: '重置',

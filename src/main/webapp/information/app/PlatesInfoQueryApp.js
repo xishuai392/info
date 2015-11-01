@@ -7,6 +7,9 @@ Ext.onReady(function() {
 	
 	Ext.Ajax.timeout = 180000; //3分钟超时 
 	
+	//被查询人信息主键、身份证号——统计打印次数需要
+    var bcxrxxId,sqrIdCardNum;
+	
     var sqrxxPanel,zjPanel,ssxzlPanel,bcxrxxPanel,bcxrStore,bcxrGrid,changzhuWin,zanzhuWin,infoMainPanel;
     var LODOP;
     
@@ -166,7 +169,7 @@ Ext.onReady(function() {
                 console.log('开始读取身份证');
                 
                 //TODO  惜帅  调试隐藏
-//                var CVR_IDCard = document.getElementById("CVR_IDCard");					
+//              var CVR_IDCard = document.getElementById("CVR_IDCard");					
 //				var strReadResult = CVR_IDCard.ReadCard();
 				
 				strReadResult = "0";
@@ -181,7 +184,7 @@ Ext.onReady(function() {
 				            "address" : CVR_IDCard.Address, //地址
 				            //TODO  惜帅  调试隐藏
 //				            "cardNo" : CVR_IDCard.CardNo, //身份号码
-//				            "cardNo" : CVR_IDCard.CardNo||"35020419811021103X", //身份号码
+				            "cardNo" : CVR_IDCard.CardNo||"35020419811021103X", //身份号码
 				            
 				            "issuedAt" : CVR_IDCard.IssuedAt,  //签发机关
 				            "effectedDate" : CVR_IDCard.EffectedDate,  //生效期限
@@ -196,6 +199,10 @@ Ext.onReady(function() {
 			            callback : function(data){
 			            	//返回被查询人信息
 			            	
+			            	//被查询人信息主键，记录打印次数用
+                    		bcxrxxId = data.bcxrxxId;
+                    		sqrIdCardNum = data.idCardNum;
+                    		
 			            	//户籍人口
 			            	if("1"==data.populationType){
 				            	var config = {
@@ -458,9 +465,9 @@ Ext.onReady(function() {
 		        		//被查询人信息主键，记录打印次数用
                     	bcxrxxId : bcxrxxId,
                     	//cxbs 10：终端，20：pc端
-                    	cxbs : "20",
+                    	cxbs : "10",
                     	//身份证编号
-						idCardNum : grid.getStore().getAt(rowIndex).data.idCardNum
+						idCardNum : sqrIdCardNum
 		        	};
 	        		var config = {
 	            		url : 'information/tbcxrxx/canPrint.do',
@@ -653,9 +660,9 @@ Ext.onReady(function() {
 		        		//被查询人信息主键，记录打印次数用
                     	bcxrxxId : bcxrxxId,
                     	//cxbs 10：终端，20：pc端
-                    	cxbs : "20",
+                    	cxbs : "10",
                     	//身份证编号
-						idCardNum : grid.getStore().getAt(rowIndex).data.idCardNum
+						idCardNum : sqrIdCardNum
 		        	};
 	        		var config = {
 	            		url : 'information/tbcxrxx/canPrint.do',
@@ -710,4 +717,5 @@ Ext.onReady(function() {
         items : [infoMainPanel]
     });
 
+    
 });

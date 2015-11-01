@@ -155,7 +155,7 @@ public class PlatesInfoQueryController {
             bcxrxxRecord.setBcxrq(DateUtils.date2String(new Date(),
                     DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));// 被查询日期
             bcxrxxRecord.setRklx(reqInfo.getPopulationType());// 人口类型（1：户籍人口，2：暂住人口）
-            bcxrxxRecord.setCxcs(1);// 查询次数
+            bcxrxxRecord.setCxcs(0);// 查询次数
             
             
             // 记录日志,被查询人信息表
