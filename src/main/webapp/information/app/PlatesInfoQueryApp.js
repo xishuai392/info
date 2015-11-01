@@ -717,6 +717,7 @@ Ext.onReady(function() {
         items : [infoMainPanel]
     });
 
+    /**
     window.onNobody(function(){
     	console.log("onNobody");
     	if(Ext.Msg.isVisible()){
@@ -736,5 +737,5 @@ Ext.onReady(function() {
 	        layout.setActiveItem(0);//返回首页
     	}
     },5000,false);
-    
+    **/
 });
