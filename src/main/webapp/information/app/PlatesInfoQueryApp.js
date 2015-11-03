@@ -717,6 +717,52 @@ Ext.onReady(function() {
         items : [infoMainPanel]
     });
 
+    
+    
+    // 定义时间初始时间为10秒
+    var intervalTimes = 10;
+    var times = intervalTimes;
+    // 该方法用于重置时间
+    defaultTimes = function () {
+        // 测试弹出
+        times = intervalTimes;
+    };
+    // 判断是否超过10秒无操作。
+    timesReduce = function () {
+        times--;
+        // alert(times);
+        if (times <= 0) {
+            // alert('跳转');
+            // 执行跳转
+            if(Ext.Msg.isVisible()){
+	    		Ext.Msg.hide();
+	    	}
+	    	
+	    	if(Ext.isObject(changzhuWin)&&changzhuWin.isVisible()){
+	    		changzhuWin.hide();
+	    	}
+	    	
+	    	if(Ext.isObject(zanzhuWin)&&zanzhuWin.isVisible()){
+	    		zanzhuWin.hide();
+	    	}
+	    	
+	    	if(Ext.isObject(infoMainPanel)){
+	    		var layout = infoMainPanel.getLayout();
+		        layout.setActiveItem(0);//返回首页
+	    	}
+        }
+    };
+    window.setInterval('timesReduce()', 1000);
+    
+    
+    //键盘事件
+	document.onkeydown=defaultTimes;
+	document.onkeypress=defaultTimes;
+	//鼠标事件
+	document.onmousedown=defaultTimes;
+	document.onmousewheel=defaultTimes;
+	document.onmouseover=defaultTimes;
+    
     /**
     window.onNobody(function(){
     	console.log("onNobody");

@@ -831,6 +831,7 @@ Ext.onReady(function() {
         {
             fieldLabel : "身份证号码",
             xtype : "textfield",
+            vtype : 'idcard',
             afterSubTpl : WEBConstants.REQUIRED,
             allowBlank : false,
             width: 500,

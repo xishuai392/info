@@ -132,12 +132,12 @@ public class InformationQueryController {
         sqrxxService.add(reqInfo);
         respInfo.setUuid(uuid);
 
-        System.out.println("MessageResourceUtils:"
-                + MessageResourceUtils.getMessage("senderId"));
-        System.out.println("======================");
-        System.out.println(request.getSession().getServletContext()
-                .getRealPath("/"));
-        System.out.println("======================");
+//        System.out.println("MessageResourceUtils:"
+//                + MessageResourceUtils.getMessage("senderId"));
+//        System.out.println("======================");
+//        System.out.println(request.getSession().getServletContext()
+//                .getRealPath("/"));
+//        System.out.println("======================");
 
         return respInfo;
     }
