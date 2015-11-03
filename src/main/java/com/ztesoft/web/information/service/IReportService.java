@@ -35,4 +35,12 @@ public interface IReportService {
      * @return
      */
     public List<ReportResultDto> queryPlatesQryPrint(ReportQueryDto reqInfo);
+
+    /**
+     * 按单位分组查询(传入的单位ID进行查询) ： 服务次数、查询次数、查询成功次数
+     * 
+     * @param dto
+     * @return
+     */
+    public List<ReportResultDto> queryGroupByCzdw(ReportQueryDto dto);
 }

@@ -63,4 +63,13 @@ public class ReportServiceImpl implements IReportService {
         return reportDao.queryPlatesQryPrint(reqInfo);
     }
 
+    /* (non-Javadoc)
+     * @see com.ztesoft.web.information.service.IReportService#queryGroupByCzdw(com.ztesoft.web.information.domain.req.ReportQueryDto)
+     */
+    @Override
+    public List<ReportResultDto> queryGroupByCzdw(ReportQueryDto dto) {
+        // TODO Auto-generated method stub
+        return reportDao.queryGroupByCzdw(dto);
+    }
+
 }

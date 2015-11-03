@@ -30,7 +30,7 @@
   
 	<!--被查询人信息表  查询次数-->
 	<select id="queryCxcs" resultMap="BaseResultMap" parameterType="com.ztesoft.web.information.domain.req.ReportQueryDto" >
-		select count(1)totalRows,count(cxcs)cxcs from t_bcxrxx bc
+		select count(1)totalRows,SUM(cxcs)cxcs from t_bcxrxx bc
 		where bc.SQR_ID IN(
 			select ID from t_sqrxx
 			where 1=1
@@ -46,7 +46,7 @@
    	
 	<!--被查询人信息表   查询成功次数-->
 	<select id="queryCxcgcs" resultMap="BaseResultMap" parameterType="com.ztesoft.web.information.domain.req.ReportQueryDto" >
-		select count(1)totalRows,count(cxcs)cxcgcs from t_bcxrxx bc
+		select count(1)totalRows,SUM(cxcs)cxcgcs from t_bcxrxx bc
 		where  bc.SFZF='0' and bc.SQR_ID IN(
 			select ID from t_sqrxx
 			where 1=1
@@ -74,5 +74,60 @@
 				AND bc.BCXRQ BETWEEN #{startDateStr} AND #{endDateStr}
 		)t group by czr
 	</select>  
+	
+	
+	<!--按单位分组查询(传入的单位ID进行查询) ： 服务次数、查询次数、查询成功次数-->
+	<select id="queryGroupByCzdw" resultMap="BaseResultMap" parameterType="com.ztesoft.web.information.domain.req.ReportQueryDto" >
+		SELECT
+		    a.czdw,a.fwcs,b.cxcs,c.cxcgcs,
+		    (SELECT ORG_NAME FROM  audit_organization o WHERE a.czdw=o.org_id ) dwmc
+		FROM
+		    (
+		        /**服务次数*/
+		        SELECT  COUNT(1)fwcs,  czdw
+		        FROM
+		            t_sqrxx
+		        WHERE
+		            CXBS = #{cxbs}
+		        AND CXRQ BETWEEN #{startDateStr} AND #{endDateStr}
+		        AND CZDW IN(
+		        	${czdwSplitByComma}
+		        )
+		        GROUP BY  czdw
+		    )  a LEFT JOIN
+		    (
+		        /**查询次数*/
+		        SELECT sq.CZDW,  COUNT(1)totalRows, SUM(bc.cxcs)cxcs
+		        FROM
+		            t_bcxrxx bc
+		        LEFT JOIN t_sqrxx sq
+		        ON sq.ID=bc.SQR_ID
+		        WHERE
+		            sq.CXBS = #{cxbs}
+		        AND bc.BCXRQ BETWEEN #{startDateStr} AND #{endDateStr}
+		        AND sq.CZDW IN(
+		        	${czdwSplitByComma}
+		        )
+		    )
+		    b
+		ON  a.czdw=b.czdw
+		LEFT JOIN
+		    (
+		        /**查询成功次数*/
+		        SELECT  sq.CZDW, COUNT(1)totalRows,  SUM(bc.cxcs)cxcgcs
+		        FROM
+		            t_bcxrxx bc
+		        LEFT JOIN t_sqrxx sq
+		        ON sq.ID=bc.SQR_ID
+		        WHERE
+		            sq.CXBS = #{cxbs}
+		        AND bc.SFZF='0'
+		        AND bc.BCXRQ BETWEEN #{startDateStr} AND #{endDateStr}
+		        AND sq.CZDW IN(
+		        	${czdwSplitByComma}
+		        )
+		    )c
+		ON a.czdw=c.czdw
+	</select>  	
 	
 </mapper>  

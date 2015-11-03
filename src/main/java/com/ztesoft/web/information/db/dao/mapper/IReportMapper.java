@@ -14,4 +14,7 @@ public interface IReportMapper {
     List<ReportResultDto> queryCxcgcs(ReportQueryDto dto);
 
     List<ReportResultDto> queryPlatesQryPrint(ReportQueryDto dto);
+    
+    List<ReportResultDto> queryGroupByCzdw(ReportQueryDto dto);
+    
 }

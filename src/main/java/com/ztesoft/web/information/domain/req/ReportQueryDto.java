@@ -29,10 +29,26 @@ public class ReportQueryDto extends AbstractDto {
     private String endDateStr;// 结束日期
 
     private String czdw;// 操作单位
-    
+
     private String czr;// 操作人（终端：终端名）
 
     private String cxbs;// 查询标识：10：终端，20：pc端
+
+    private String czdwSplitByComma;// in条件的操作单位，以逗号分隔
+
+    /**
+     * @return the czdwSplitByComma
+     */
+    public String getCzdwSplitByComma() {
+        return czdwSplitByComma;
+    }
+
+    /**
+     * @param czdwSplitByComma the czdwSplitByComma to set
+     */
+    public void setCzdwSplitByComma(String czdwSplitByComma) {
+        this.czdwSplitByComma = czdwSplitByComma;
+    }
 
     /**
      * @return the czr

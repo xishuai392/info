@@ -51,4 +51,8 @@ public class ReportDao extends SqlSessionDaoSupport {
     public List<ReportResultDto> queryPlatesQryPrint(ReportQueryDto dto) {
         return getMapper().queryPlatesQryPrint(dto);
     }
+
+    public List<ReportResultDto> queryGroupByCzdw(ReportQueryDto dto) {
+        return getMapper().queryGroupByCzdw(dto);
+    }
 }
