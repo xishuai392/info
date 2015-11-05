@@ -1166,7 +1166,7 @@ Ext.onReady(function() {
 	'			<td class="textInfoRight">操作人：</td>',
 	'			<td class="textInfoLeft">XXXX</td>',
 	'			<td class="textInfoRight">打印日期：</td>',
-	'			<td class="textInfoLeft">{[new Date().toLocaleDateString()]}</td>',
+	'			<td class="textInfoLeft">{[new Date().format("Y年m月d日")]}</td>',
 	'		</tr>',
 	'	</table>',
 	'	</div>',
@@ -1214,7 +1214,8 @@ Ext.onReady(function() {
                     	//cxbs 10：终端，20：pc端
                     	cxbs : "20",
                     	//身份证编号
-						idCardNum : grid.getStore().getAt(rowIndex).data.idCardNum
+						idCardNum : bcxrxxPanel.getForm().findField('idCardNum').getValue()
+						
 		        	};
 	        		var config = {
 	            		url : 'information/tbcxrxx/canPrint.do',
@@ -1243,7 +1244,7 @@ Ext.onReady(function() {
 					    //console.log($(item));
 					    
 					});
-		            console.log(printHtml);
+		            //console.log(printHtml);
 		            /////console.log(changzhuWin.down('panel').getEl().getById("changzhuDetailDiv").getHTML());
 					
 		            printHtml = preHtml +'<div class="frame_normal" id="allDiv">'+ printHtml+'</div></body></html>';
@@ -1401,7 +1402,7 @@ Ext.onReady(function() {
                     	//cxbs 10：终端，20：pc端
                     	cxbs : "20",
                     	//身份证编号
-						idCardNum : grid.getStore().getAt(rowIndex).data.idCardNum
+						idCardNum : bcxrxxPanel.getForm().findField('idCardNum').getValue()
 		        	};
 	        		var config = {
 	            		url : 'information/tbcxrxx/canPrint.do',

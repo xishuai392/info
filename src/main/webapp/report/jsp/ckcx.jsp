@@ -20,6 +20,7 @@
 	<body>
 	<input id="startDateInitId" type="hidden" value="${startDateInit}">  
 	<input id="endDateInitId" type="hidden" value="${endDateInit}">  
+	<div id="testDiv"></div>
 	</body>
 </html>
 
