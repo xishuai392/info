@@ -300,6 +300,11 @@ public class InformationQueryController {
                 .getAttribute(IConstants.SESSIONUSER);
 
         PermanetPopulationInfo permanentPopulationInfo = new PermanetPopulationInfo();
+        permanentPopulationInfo.setCzdw(auditUserPo.getOrgName());
+        permanentPopulationInfo.setCzr(auditUserPo.getUserName());
+        permanentPopulationInfo.setDyrq(DateUtils.date2String(new Date(), 
+                DateUtils.STR_DEFAULT_DATE_FORMAT_WITH_SPLIT));
+        
         String pid = reqInfo.getIdCardNum();
         if (pid.length() == 15) {
             pid = IdentificationCodeUtil.update2eighteen(pid);
@@ -405,6 +410,11 @@ public class InformationQueryController {
                 .getAttribute(IConstants.SESSIONUSER);
 
         TRpopulationInfo trPopulationInfo = new TRpopulationInfo();
+        trPopulationInfo.setCzdw(auditUserPo.getOrgName());
+        trPopulationInfo.setCzr(auditUserPo.getUserName());
+        trPopulationInfo.setDyrq(DateUtils.date2String(new Date(), 
+                DateUtils.STR_DEFAULT_DATE_FORMAT_WITH_SPLIT));
+        
         String pid = reqInfo.getIdCardNum();
         if (pid.length() == 15) {
             pid = IdentificationCodeUtil.update2eighteen(pid);

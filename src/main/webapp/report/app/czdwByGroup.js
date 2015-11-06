@@ -63,6 +63,7 @@ Ext.onReady(function() {
             xtype : "datefield",
             format : 'Y-m-d',
             value : Ext.get("startDateInitId").getValue(),
+            editable : false,
             afterSubTpl : WEBConstants.REQUIRED,
             operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
             allowBlank : false,
@@ -72,6 +73,7 @@ Ext.onReady(function() {
             xtype : "datefield",
             format : 'Y-m-d',
             value : Ext.get("endDateInitId").getValue(),
+            editable : false,
             afterSubTpl : WEBConstants.REQUIRED,
             operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
             allowBlank : false,

@@ -15,7 +15,10 @@ import com.ztesoft.core.convert.IArgConversionService;
 import com.ztesoft.core.idproduce.ISequenceGenerator;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
+import com.ztesoft.framework.util.DateUtils;
+import com.ztesoft.framework.util.Utils;
 import com.ztesoft.web.operateRecord.db.arg.TSqrxxArg;
+import com.ztesoft.web.operateRecord.db.arg.TSqrxxArg.TSqrxxCriteria;
 import com.ztesoft.web.operateRecord.db.dao.TSqrxxDao1;
 import com.ztesoft.web.operateRecord.db.dao.TSqrxxfjDao1;
 import com.ztesoft.web.operateRecord.db.po.TSqrxxPO;
@@ -41,10 +44,9 @@ public class TSqrxxServiceImpl1 implements ITSqrxxService {
 
     @Autowired
     private TSqrxxDao1 tSqrxxDao;
-    
+
     @Autowired
     private TSqrxxfjDao1 tSqrxxfjDao;
-    
 
     /**
      * 查询条件转换成Arg类的服务接口
@@ -57,7 +59,6 @@ public class TSqrxxServiceImpl1 implements ITSqrxxService {
      */
     @Resource(name = "sequenceProcGenerator")
     private ISequenceGenerator sequenceGenerator;
-    
 
     @Override
     public TSqrxxPO selectByPrimaryKey(String key) throws BaseAppException {
@@ -67,12 +68,13 @@ public class TSqrxxServiceImpl1 implements ITSqrxxService {
         // ///////
         return tSqrxxDao.selectByPrimaryKey(key);
     }
-    
+
     /**
      * 通过申请人ID查询附件信息
      */
-    public List<TSqrxxfjPO> selectSqrxxfjBySqrId(String sqrId) throws BaseAppException {
-    	return tSqrxxfjDao.selectBySqrId(sqrId);
+    public List<TSqrxxfjPO> selectSqrxxfjBySqrId(String sqrId)
+            throws BaseAppException {
+        return tSqrxxfjDao.selectBySqrId(sqrId);
     }
 
     @Override
@@ -80,9 +82,9 @@ public class TSqrxxServiceImpl1 implements ITSqrxxService {
         logger.debug("selectByArg begin...record={0}", record);
 
         // 第一种方式：自己创建arg，自行设置查询条件及操作符
-        //TSqrxxArg arg = new TSqrxxArg();
-        //TSqrxxCriteria criteria = arg.createCriteria();
-        
+        // TSqrxxArg arg = new TSqrxxArg();
+        // TSqrxxCriteria criteria = arg.createCriteria();
+
         // 第二种方式：利用arg转换服务，转换出arg，带上查询条件及操作符，
         // 转换后，还可以自行对arg进行设置修改
         TSqrxxArg arg = argConversionService.invokeArg(TSqrxxArg.class, record);
@@ -98,8 +100,8 @@ public class TSqrxxServiceImpl1 implements ITSqrxxService {
     }
 
     @Override
-    public Page<TSqrxxPO> selectByArgAndPage(TSqrxxPO record, Page<TSqrxxPO> resultPage)
-            throws BaseAppException {
+    public Page<TSqrxxPO> selectByArgAndPage(TSqrxxPO record,
+            Page<TSqrxxPO> resultPage) throws BaseAppException {
         logger.debug("selectByArgAndPage begin...record={0}", record);
 
         // 第一种方式：自己创建arg，自行设置查询条件及操作符
@@ -114,8 +116,16 @@ public class TSqrxxServiceImpl1 implements ITSqrxxService {
         // 转换后，还可以自行对arg进行设置修改
         TSqrxxArg arg = argConversionService.invokeArg(TSqrxxArg.class, record);
 
-        resultPage = tSqrxxDao.selectByArgAndPage(arg, resultPage);
+        if (arg.getOredCriteria().size() == 0) {
+            arg.createCriteria();
+        }
+        TSqrxxCriteria criteria = arg.getOredCriteria().get(0);
+        criteria.andCxrqBetween(DateUtils.date2String(record.getStartDate(),
+                DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT), DateUtils
+                .date2String(record.getEndDate(),
+                        DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
 
+        resultPage = tSqrxxDao.selectByArgAndPage(arg, resultPage);
 
         return resultPage;
     }

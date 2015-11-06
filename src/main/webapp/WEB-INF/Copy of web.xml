@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns="http://java.sun.com/xml/ns/javaee" 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" 
+	id="WebApp_ID" version="3.0">
+
+	<display-name>info</display-name>
+	
+	<context-param>
+		<param-name>webAppRootKey</param-name>
+		<param-value>webapp.root.info</param-value>
+	</context-param>
+	
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>classpath*:/config/spring-content.xml</param-value>
+	</context-param>
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	
+	
+	<!--检查用户是否登录了系统的过滤器配置-->
+	<filter>
+		<filter-name>sessionFilter</filter-name>
+		<filter-class>com.ztesoft.web.common.SessionFilter</filter-class>
+		<init-param>
+			<param-name>sessionKey</param-name>
+			<param-value>sessionuser</param-value>
+			<description>将当前登录的用户的信息保存在 session 中时使用的key，如果没有配置此参数，则该过滤器不起作用</description>
+		</init-param>
+		<init-param>
+			<param-name>redirectUrl</param-name>
+			<param-value>/login/login.do</param-value>
+			<description>
+			          如果用户未登录（即在 session 中 key 为 sessionKey 的属性不存在或为空），则将请求重定向到该 url。
+			          该 url 不包含web应用的 ContextPath。
+			          如果不配置此参数，则在用户未登录系统的情况下，直接重定向到web应用的根路径（/）
+			</description>
+		</init-param>
+		<init-param>
+			<param-name>excludeUrl</param-name>
+			<param-value>/login.jsp,/login/login.do,/login/doLogin.do,/login/loginOut.do,/login/loginCheck.do,/plates/index.do,/plates/queryByPlates.do,/plates/queryCZRKinfo.do,/plates/queryZZRKinfo.do,/information/tbcxrxx/canPrint.do</param-value>
+			<description>不需要过滤的url，多个以逗号分隔</description>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>sessionFilter</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+	</filter-mapping>
+	
+	<filter-mapping>
+		<filter-name>sessionFilter</filter-name>
+		<url-pattern>*.do</url-pattern>
+	</filter-mapping> 
+	
+	<!-- 字符集 过滤器 -->
+	<filter>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
+		<init-param>
+			<param-name>encoding</param-name>
+			<param-value>utf-8</param-value>
+		</init-param>
+		<init-param>
+			<param-name>forceEncoding</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharacterEncodingFilter</filter-name>
+		<url-pattern>/</url-pattern>
+	</filter-mapping>
+    
+	<!-- Spring view分发器 -->
+	<servlet>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:/config/spring-servlet.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+		<async-supported>true</async-supported>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>*.do</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>*.json</url-pattern>
+	</servlet-mapping>
+    
+	<!-- logback配置，加载个性化配置策略  -->
+	<context-param>
+		<param-name>logbackConfigLocation</param-name>
+		<param-value>classpath:config/logback.xml</param-value> 
+	</context-param>
+	<listener>
+		<listener-class>ch.qos.logback.ext.spring.web.LogbackConfigListener</listener-class>
+	</listener>
+	
+	<mime-mapping>
+		<extension>ico</extension>
+		<mime-type>image/x-icon</mime-type>
+	</mime-mapping>
+	
+    
+	<!-- 默认进入的页面 -->
+	<welcome-file-list>
+		<welcome-file>login.html</welcome-file>
+		<welcome-file>login.jsp</welcome-file>
+		<welcome-file>portal/portal.jsp</welcome-file>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+	
+	<!--错误跳转页面 -->
+	<error-page>
+		<error-code>404</error-code>
+		<location>/404.htm</location>
+	</error-page>
+	
+	<session-config>
+		<session-timeout>30</session-timeout>
+	</session-config>
+</web-app>

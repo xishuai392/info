@@ -28,7 +28,7 @@ import com.ztesoft.web.operateRecord.service.ITSqrxxService;
  */
 
 @Controller
-@RequestMapping("//operateRecord/tsqrxx")
+@RequestMapping("/operateRecord/tsqrxx")
 public class TSqrxxController1 {
 
     private static final ZTEsoftLogManager logger = ZTEsoftLogManager

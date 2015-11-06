@@ -89,7 +89,7 @@ Ext.define('ZTEsoft.form.SearchForm', {
 				this.setParams(this.store.proxy.extraParams,this.getForm().getValues());
 				this.store.loadPage(1);
 			}else{
-				console.error('请给表单设置store,否者无法执行查询方法');
+				console.error('请给表单设置store,否则无法执行查询方法');
 			}
 		}
 	},

@@ -21,7 +21,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
 import com.ztesoft.web.domain.IConstants;
+import com.ztesoft.web.permission.db.po.AuditOrganizationPO;
 import com.ztesoft.web.permission.db.po.AuditUserPO;
+import com.ztesoft.web.permission.service.IAuditOrganizationService;
 import com.ztesoft.web.permission.service.ILoginService;
 
 /**
@@ -42,6 +44,9 @@ public class LoginController implements IConstants {
     @Autowired
     private ILoginService loginService;
 
+    @Autowired
+    private IAuditOrganizationService auditOrganizationService;
+
     @RequestMapping(value = "login/doLogin", method = RequestMethod.POST)
     public ModelAndView doLogin(HttpServletRequest request,
             @RequestParam("userCode") String userCode,
@@ -50,6 +55,11 @@ public class LoginController implements IConstants {
         try {
             AuditUserPO userInfo = loginService.selectUserInfo(userCode,
                     password);
+            Long orgId = userInfo.getOrgId();
+            AuditOrganizationPO orgInfo = auditOrganizationService
+                    .selectByPrimaryKey(orgId);
+            userInfo.setOrgName(orgInfo.getOrgName());
+
             HttpSession session = request.getSession(true);
             logger.info("用户登录userInfo:=" + userInfo);
             session.setAttribute(SESSIONUSER, userInfo);

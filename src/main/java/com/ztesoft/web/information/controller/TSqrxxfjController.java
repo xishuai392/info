@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ztesoft.core.common.Page;
+import com.ztesoft.core.convert.ArgCondition;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
+import com.ztesoft.framework.util.JsonUtil;
 import com.ztesoft.web.information.db.po.TSqrxxfjPO;
 import com.ztesoft.web.information.service.ITSqrxxfjService;
 
@@ -104,6 +106,24 @@ public class TSqrxxfjController {
         }
 
         return tSqrxxfjService.deleteBatch(listRecord);
+    }
+
+    @RequestMapping("qryList")
+    @ResponseBody
+    public List<TSqrxxfjPO> qryList(TSqrxxfjPO record) throws BaseAppException {
+        ArgCondition conditon = new ArgCondition();
+        conditon.setParamName("sqrId");
+        conditon.setOperation("EqualTo");
+        conditon.setParamValue(new String[] {
+            String.valueOf(record.getSqrId())
+        });
+        ArgCondition[] conditionAry = new ArgCondition[1];
+        conditionAry[0] = conditon;
+
+        String condition = JsonUtil.toJson(conditionAry);
+        record.setQueryConditions(condition);
+        
+        return tSqrxxfjService.selectByArg(record);
     }
 
 }
