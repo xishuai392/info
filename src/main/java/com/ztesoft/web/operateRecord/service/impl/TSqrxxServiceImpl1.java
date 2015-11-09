@@ -125,6 +125,8 @@ public class TSqrxxServiceImpl1 implements ITSqrxxService {
                 .date2String(record.getEndDate(),
                         DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
 
+        arg.setOrderByClause("CXRQ");
+        
         resultPage = tSqrxxDao.selectByArgAndPage(arg, resultPage);
 
         return resultPage;

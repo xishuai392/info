@@ -385,6 +385,7 @@
     <if test="startDateStr != null and endDateStr != null ">
     	and b.BCXRQ BETWEEN #{startDateStr} AND #{endDateStr}
     </if>
+    order by b.BCXRQ
   </select>
   
   
