@@ -7,7 +7,7 @@
 	<head>
 		<title>TBcxrxx管理 </title>
 		<script type="text/javascript"
-			src="${ctx}//byTheQuery/app/TBcxrxxAppWin.js">
+			src="${ctx}/byTheQuery/app/TBcxrxxAppWin.js">
 		</script>
 	</head>
 	</body>

@@ -48,9 +48,17 @@ public class TBcxrxxDao1 extends SqlSessionDaoSupport {
         return getMapper().updateByArg(record, arg);
     }
 
-    public Page<TBcxrxxPO> selectByArgAndPage(TBcxrxxPO arg,
+    public Page<TBcxrxxPO> selectByArgAndPage(TBcxrxxArg arg,
             Page<TBcxrxxPO> resultPage) {
         List<TBcxrxxPO> resultList = getMapper().selectByArgAndPage(arg,
+                resultPage);
+        resultPage.setResultList(resultList);
+        return resultPage;
+    }
+    
+    public Page<TBcxrxxPO> select4Page(TBcxrxxPO record,
+            Page<TBcxrxxPO> resultPage) {
+        List<TBcxrxxPO> resultList = getMapper().select4Page(record,
                 resultPage);
         resultPage.setResultList(resultList);
         return resultPage;

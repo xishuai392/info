@@ -70,7 +70,7 @@ Ext.define('component.byTheQuery.view.TBcxrxxPanel', {
     createStore : function() {
     	return Ext.create('component.byTheQuery.store.TBcxrxxStore', {
 
-        		autoLoad : true,
+//        		autoLoad : true,
             // 定义分页大小
             pageSize : WEBConstants.DEFAULT_PAGE_SIZE
         });
@@ -92,10 +92,17 @@ Ext.define('component.byTheQuery.view.TBcxrxxPanel', {
 	            flex : 1
 	        },
 	        {
-	        	text : "申请人",
+	        	text : "申请人ID",
 	            dataIndex : "sqrId",
+	            hidden : true,
 	            flex : 1
 	        },
+	        {
+	        	text : "申请人",
+	            dataIndex : "sqrXm",
+	            flex : 1
+	        },
+	        
 	        {
 	        	text : "被查询人姓名",
 	            dataIndex : "xm",

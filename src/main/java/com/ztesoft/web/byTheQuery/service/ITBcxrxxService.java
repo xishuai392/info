@@ -37,4 +37,7 @@ public interface ITBcxrxxService {
 
     int delete(TBcxrxxPO record) throws BaseAppException;
 
+    Page<TBcxrxxPO> select4Page(TBcxrxxPO record, Page<TBcxrxxPO> resultPage)
+            throws BaseAppException;
+    
 }

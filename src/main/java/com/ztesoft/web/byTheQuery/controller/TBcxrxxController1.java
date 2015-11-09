@@ -29,7 +29,7 @@ import com.ztesoft.web.byTheQuery.service.ITBcxrxxService;
  */
 
 @Controller
-@RequestMapping("//byTheQuery/tbcxrxx")
+@RequestMapping("/byTheQuery/tbcxrxx")
 public class TBcxrxxController1 {
 
     private static final ZTEsoftLogManager logger = ZTEsoftLogManager
@@ -87,4 +87,12 @@ public class TBcxrxxController1 {
         return record;
     }
 
+    @RequestMapping("select4Page")
+    @ResponseBody
+    public Page<TBcxrxxPO> select4Page(TBcxrxxPO record,
+            Page<TBcxrxxPO> resultPage) throws BaseAppException {
+        resultPage = tBcxrxxService.select4Page(record, resultPage);
+        return resultPage;
+    }
+    
 }

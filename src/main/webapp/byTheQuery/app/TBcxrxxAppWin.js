@@ -33,21 +33,30 @@ Ext.onReady(function() {
 	            hidden : true,
 	            name : "sqrId"
         	},
-	      	{
-	            fieldLabel : "被查询人证件号",
-	            xtype : "textfield",
-	            name : "zjh"
-        	},
+	      	
 	      	{
 	            fieldLabel : "zjlx",
 	            xtype : "textfield",
 	            hidden : true,
 	            name : "zjlx"
         	},
+        	{
+	            fieldLabel : "查询人姓名",
+	            xtype : "textfield",
+	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
+	            name : "sqrXm"
+        	},
 	      	{
 	            fieldLabel : "被查询人姓名",
 	            xtype : "textfield",
+	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
 	            name : "xm"
+        	},
+        	{
+	            fieldLabel : "被查询人证件号",
+	            xtype : "textfield",
+	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
+	            name : "zjh"
         	},
 	      	{
 	            fieldLabel : "sfzzp",
@@ -73,11 +82,24 @@ Ext.onReady(function() {
 	            hidden : true,
 	            name : "sfdy"
         	},
-	      	{
-	            fieldLabel : "查询日期",
-	            xtype : "textfield",
-	            name : "bcxrq"
-        	},
+        	{
+	            fieldLabel : "查询起始日期",
+	            xtype : "datefield",
+	            format : 'Y-m-d',
+	            value : new Date(),
+	            afterSubTpl : WEBConstants.REQUIRED,
+	            editable : false,
+	            name : "startDate"
+	        }, {
+	            fieldLabel : "查询结束日期",
+	            xtype : "datefield",
+	            format : 'Y-m-d',
+	            value : new Date(),
+	            vtype : "compare",
+	            target : 'startDate',
+	            editable : false,
+	            name : "endDate"
+	        },
 	      	{
 	            fieldLabel : "xgrq",
 	            xtype : "textfield",

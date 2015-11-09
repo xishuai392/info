@@ -59,10 +59,10 @@ public class ReportController {
                 .getMonthBeginday(new Date())));
         view.addObject("endDateInit",
                 DateUtils.date2StringDay(DateUtils.getMonthLastday(new Date())));
-        System.out.println(DateUtils.date2StringDay(DateUtils
-                .getMonthBeginday(new Date())));
-        System.out.println(DateUtils.date2StringDay(DateUtils
-                .getMonthLastday(new Date())));
+//        System.out.println(DateUtils.date2StringDay(DateUtils
+//                .getMonthBeginday(new Date())));
+//        System.out.println(DateUtils.date2StringDay(DateUtils
+//                .getMonthLastday(new Date())));
         return view;
     }
 
@@ -195,6 +195,10 @@ public class ReportController {
         String condition = JsonUtil.toJson(conditionAry);
         record.setQueryConditions(condition);
 
+        //加入本节点
+        allOrgIdList.add(parentOrgId);
+        
+        //加入其所有子节点
         List<AuditOrganizationPO> childrenOrg = auditOrganizationService
                 .selectByArg(record);
         if (null != childrenOrg && childrenOrg.size() > 0) {

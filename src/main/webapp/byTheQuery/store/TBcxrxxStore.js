@@ -9,7 +9,13 @@ Ext.define('component.byTheQuery.store.TBcxrxxStore', {
     model : 'component.byTheQuery.model.TBcxrxxModel',
     proxy : {
         type : 'ajax',
-        url : webRoot + '/byTheQuery/tbcxrxx/queryRecordByPage.do',
+        url : webRoot + '/byTheQuery/tbcxrxx/select4Page.do',
+        actionMethods: {
+            create : 'POST',
+            read   : 'POST', // by default GET
+            update : 'POST',
+            destroy: 'POST'
+        },
         reader : ztesoft_pageReader
     }
 

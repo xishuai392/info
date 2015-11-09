@@ -17,7 +17,7 @@ public interface ITBcxrxxMapper {
 
     TBcxrxxPO selectByPrimaryKey(String id);
 
-    List<TBcxrxxPO> selectByArgAndPage(TBcxrxxPO arg, RowBounds rowBound);
+    List<TBcxrxxPO> selectByArgAndPage(TBcxrxxArg arg, RowBounds rowBound);
 
     int insert(TBcxrxxPO record);
 
@@ -38,5 +38,8 @@ public interface ITBcxrxxMapper {
     int deleteByArg(TBcxrxxArg arg);
     
     int deleteByPrimaryKey(String id);
+    
+    
+    List<TBcxrxxPO> select4Page( TBcxrxxPO record, RowBounds rowBound);
     
 }

@@ -16,8 +16,8 @@ import com.ztesoft.core.convert.IArgConversionService;
 import com.ztesoft.core.idproduce.ISequenceGenerator;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
+import com.ztesoft.framework.util.DateUtils;
 import com.ztesoft.framework.util.Utils;
-
 import com.ztesoft.web.byTheQuery.db.arg.TBcxrxxArg;
 import com.ztesoft.web.byTheQuery.db.arg.TBcxrxxArg.TBcxrxxCriteria;
 import com.ztesoft.web.byTheQuery.db.dao.TBcxrxxDao1;
@@ -104,9 +104,9 @@ public class TBcxrxxServiceImpl1 implements ITBcxrxxService {
 
         // 第二种方式：利用arg转换服务，转换出arg，带上查询条件及操作符，
         // 转换后，还可以自行对arg进行设置修改
-//        TBcxrxxArg arg = argConversionService.invokeArg(TBcxrxxArg.class, record);
+        TBcxrxxArg arg = argConversionService.invokeArg(TBcxrxxArg.class, record);
 
-        resultPage = tBcxrxxDao.selectByArgAndPage(record, resultPage);
+        resultPage = tBcxrxxDao.selectByArgAndPage(arg, resultPage);
 
 
         return resultPage;
@@ -149,6 +149,20 @@ public class TBcxrxxServiceImpl1 implements ITBcxrxxService {
         // ///////
 
         return tBcxrxxDao.deleteByPrimaryKey(record.getId());
+    }
+
+    /* (non-Javadoc)
+     * @see com.ztesoft.web.byTheQuery.service.ITBcxrxxService#select4Page(com.ztesoft.web.byTheQuery.db.po.TBcxrxxPO, com.ztesoft.core.common.Page)
+     */
+    @Override
+    public Page<TBcxrxxPO> select4Page(TBcxrxxPO record,
+            Page<TBcxrxxPO> resultPage) throws BaseAppException {
+        
+        record.setStartDateStr(DateUtils.date2String(record.getStartDate(),
+                DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
+        record.setEndDateStr(DateUtils.date2String(record.getEndDate(),
+                DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
+        return tBcxrxxDao.select4Page(record, resultPage);
     }
 
 }

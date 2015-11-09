@@ -14,6 +14,10 @@ Ext.define('component.byTheQuery.model.TBcxrxxModel', {
 	            name : 'sqrId',
 	            type : 'auto'
         	},
+        	{
+	            name : 'sqrXm',
+	            type : 'auto'
+        	},
        		{
 	            name : 'zjh',
 	            type : 'auto'

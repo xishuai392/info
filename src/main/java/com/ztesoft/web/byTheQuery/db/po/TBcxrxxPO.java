@@ -2,7 +2,9 @@ package com.ztesoft.web.byTheQuery.db.po;
 
 import java.math.*;
 import java.util.*;
+
 import org.apache.commons.lang.StringUtils;
+
 import com.ztesoft.framework.dto.AbstractDto;
 
 public class TBcxrxxPO extends AbstractDto{
@@ -19,6 +21,73 @@ public class TBcxrxxPO extends AbstractDto{
 	private String  xgrq;
 	private String  rklx;
 	private Integer  cxcs;
+	
+    private String sqrXm;//申请人姓名
+	private Date startDate;//查询开始时间
+	private String startDateStr;// 开始日期
+    private Date endDate;//查询结束时间
+    private String endDateStr;// 结束日期
+    
+    /**
+     * @return the startDateStr
+     */
+    public String getStartDateStr() {
+        return startDateStr;
+    }
+    /**
+     * @param startDateStr the startDateStr to set
+     */
+    public void setStartDateStr(String startDateStr) {
+        this.startDateStr = startDateStr;
+    }
+    /**
+     * @return the endDateStr
+     */
+    public String getEndDateStr() {
+        return endDateStr;
+    }
+    /**
+     * @param endDateStr the endDateStr to set
+     */
+    public void setEndDateStr(String endDateStr) {
+        this.endDateStr = endDateStr;
+    }
+    /**
+     * @return the sqrXm
+     */
+    public String getSqrXm() {
+        return sqrXm;
+    }
+    /**
+     * @param sqrXm the sqrXm to set
+     */
+    public void setSqrXm(String sqrXm) {
+        this.sqrXm = sqrXm;
+    }
+    /**
+     * @return the startDate
+     */
+    public Date getStartDate() {
+        return startDate;
+    }
+    /**
+     * @param startDate the startDate to set
+     */
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+    /**
+     * @return the endDate
+     */
+    public Date getEndDate() {
+        return endDate;
+    }
+    /**
+     * @param endDate the endDate to set
+     */
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
     public String getId() {
         return StringUtils.isBlank(id) ? id : id.trim();
     }
