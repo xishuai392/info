@@ -30,11 +30,13 @@ Ext.onReady(function() {
     	      	{
     	            fieldLabel : "姓名",
     	            xtype : "textfield",
+    	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
     	            name : "xm"
             	},
     	      	{
     	            fieldLabel : "证件号",
     	            xtype : "textfield",
+    	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
     	            name : "zjh"
             	},
     	      	{
@@ -43,6 +45,7 @@ Ext.onReady(function() {
     	            name : "zjlx",
     	            displayField : 'text',
     	            valueField : 'value',
+    	            value : '',
     	            editable : false,
     	            store : new Ext.data.ArrayStore({
     	                fields : ['value', 'text'],
@@ -55,6 +58,7 @@ Ext.onReady(function() {
     	            name : "cxsqrlx",
     	            displayField : 'text',
     	            valueField : 'value',
+    	            value : '',
     	            editable : false,
     	            store : new Ext.data.ArrayStore({
     	                fields : ['value', 'text'],
@@ -64,37 +68,62 @@ Ext.onReady(function() {
     	      	{
     	            fieldLabel : "cxrdw",
     	            xtype : "textfield",
+    	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
     	            hidden : true,
     	            name : "cxrdw"
             	},
     	      	{
     	            fieldLabel : "cxsy",
     	            xtype : "textfield",
+    	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
     	            hidden : true,
     	            name : "cxsy"
             	},
-    	      	{
-    	            fieldLabel : "日期",
-    	            xtype : "textfield",
-    	            name : "cxrq"
-            	},
+            	{
+		            fieldLabel : "查询起始日期",
+		            xtype : "datefield",
+		            format : 'Y-m-d',
+		            value : new Date(),
+		            afterSubTpl : WEBConstants.REQUIRED,
+		            editable : false,
+		            name : "startDate"
+		        }, {
+		            fieldLabel : "查询结束日期",
+		            xtype : "datefield",
+		            format : 'Y-m-d',
+		            value : new Date(),
+		            vtype : "compare",
+		            target : 'startDate',
+		            editable : false,
+		            name : "endDate"
+		        },
     	      	{
     	            fieldLabel : "czdw",
     	            xtype : "textfield",
+    	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
     	            hidden : true,
     	            name : "czdw"
             	},
     	      	{
     	            fieldLabel : "czr",
     	            xtype : "textfield",
+    	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
     	            hidden : true,
     	            name : "czr"
             	},
-    	      	{
-    	            fieldLabel : "cxbs",
-    	            xtype : "textfield",
+            	{
+    	            fieldLabel : "查询来源",
+    	            xtype : "combo",
+    	            name : "cxbs",
     	            hidden : true,
-    	            name : "cxbs"
+    	            displayField : 'text',
+    	            valueField : 'value',
+    	            value : '',
+    	            editable : false,
+    	            store : new Ext.data.ArrayStore({
+    	                fields : ['value', 'text'],
+    	                data : [['', '全部'], ['10', '终端'], ['20', '窗口']]
+    	            })
             	}	       
             ]
 

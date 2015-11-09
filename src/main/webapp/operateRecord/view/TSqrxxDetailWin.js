@@ -6,10 +6,17 @@
 
 Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
     extend : 'ZTEsoft.window.PopWindow',
+//    formPanel : null,
+//    tsqrxxfjStore : null,
+//    imagePanel : null,
     config : {
         formPanel : null,
+        tsqrxxfjStore : null,
+        imagePanel : null,
         action : Ext.create("component.operateRecord.action.TSqrxxAction")
     },
+    closeAction : 'hide',
+    
     /**
      * 构造函数，用于初始化界面
      * 
@@ -17,6 +24,7 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
      *            config
      */
     constructor : function(config) {
+    	console.log("TSqrxxDetailWin constructor");
         config = config || {};
 
         var me = this;
@@ -26,8 +34,21 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
 
         me.winType = config.winType;
 
-        // 创建表单
-        me.formPanel = me.createFormPanel();
+        if(null==me.formPanel){
+        	// 创建表单
+        	me.formPanel = me.createFormPanel();
+        }
+        
+        if(null==me.tsqrxxfjStore){
+        	//图片store
+        	me.tsqrxxfjStore = me.createImageStore();
+        }
+
+        if(null==me.imagePanel){
+        	// 创建附件展示
+        	me.imagePanel = me.createImagePanel();
+        }
+        
 
         if (me.winType == WEBConstants.ACTIONTYPE.VIEW) {
             config.title = '详情';
@@ -41,15 +62,16 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
         Ext.applyIf(config, {
             width : '600',
             height : '450',
-            layout : 'fit',
+            layout : 'border',
             maximizable : true,
-            items : [me.formPanel],
+            items : [me.formPanel, me.imagePanel],
             resizable : true
         });
         this.callParent([config]);
     },
     // 初始化界面
     initComponent : function() {
+    	console.log("TSqrxxDetailWin initComponent");
         var me = this;
 
         // 编辑
@@ -76,20 +98,27 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
                 model.data = result;
                 me.formPanel.getForm().loadRecord(model);
                 me.formPanel.disableFields();
-                //获取附件信息
-                var config = {
-            			url:'/operateRecord/tsqrxx/sqrxxDetail.do',
-            			params:{
-            				id : model.data.id
-            			},
-            			callback : function(detailData){
-//            				for(var i=0; i<detailData.length; i++){
-//            					alert(i+"="+detailData[i]['mc']);
-//            				}
-            			}
-            		};
-            		ExtUtils.doAjax(config);
+                // 获取附件信息
+//                var config = {
+//                    url : '/operateRecord/tsqrxx/sqrxxDetail.do',
+//                    params : {
+//                        id : model.data.id
+//                    },
+//                    callback : function(detailData) {
+//                        // for(var i=0; i<detailData.length; i++){
+//                        // alert(i+"="+detailData[i]['mc']);
+//                        // }
+//                    }
+//                };
+//                ExtUtils.doAjax(config);
             });
+            
+            me.tsqrxxfjStore.getProxy().extraParams = {
+	            // TODO 自定义业务条件：带业务条件查询
+	            sqrId : me.pkFiledId
+	        };
+	        
+	         me.tsqrxxfjStore.load();
         }
 
         this.callParent();
@@ -100,73 +129,77 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
         var me = this;
         var formPanel = Ext.create('ZTEsoft.form.EditForm', {
             itemId : 'editForm',
-            columnNum : 1,
-            items : [
-	      	{
-	            fieldLabel : "id",
-	            xtype : "textfield",
-	            hidden : true,
-	            name : "id"
-        	},
-	      	{
-	            fieldLabel : "姓名",
-	            xtype : "textfield",
-	            name : "xm"
-        	},
-	      	{
-	            fieldLabel : "证件号",
-	            xtype : "textfield",
-	            name : "zjh"
-        	},
-	      	{
-	            fieldLabel : "证件类型",
-	            xtype : "textfield",
-	            name : "zjlx"
-        	},
-	      	{
-	            fieldLabel : "查询类型",
-	            xtype : "textfield",
-	            name : "cxsqrlx"
-        	},
-	      	{
-	            fieldLabel : "cxrdw",
-	            xtype : "textfield",
-	            hidden : true,
-	            name : "cxrdw"
-        	},
-	      	{
-	            fieldLabel : "cxsy",
-	            xtype : "textfield",
-	            hidden : true,
-	            name : "cxsy"
-        	},
-	      	{
-	            fieldLabel : "日期",
-	            xtype : "textfield",
-	            name : "cxrq"
-        	},
-	      	{
-	            fieldLabel : "czdw",
-	            xtype : "textfield",
-	            hidden : true,
-	            name : "czdw"
-        	},
-	      	{
-	            fieldLabel : "czr",
-	            xtype : "textfield",
-	            hidden : true,
-	            name : "czr"
-        	},
-	      	{
-	            fieldLabel : "cxbs",
-	            xtype : "textfield",
-	            hidden : true,
-	            name : "cxbs"
-        	}	       
-        ]
+            region : 'north',
+            columnNum : 2,
+            items : [{
+                fieldLabel : "id",
+                xtype : "textfield",
+                hidden : true,
+                name : "id"
+            }, {
+                fieldLabel : "姓名",
+                xtype : "textfield",
+                name : "xm"
+            }, {
+                fieldLabel : "证件号",
+                xtype : "textfield",
+                name : "zjh"
+            }, {
+                fieldLabel : "证件类型",
+                xtype : "combo",
+                name : "zjlx",
+                displayField : 'text',
+                valueField : 'value',
+                editable : false,
+                store : new Ext.data.ArrayStore({
+                    fields : ['value', 'text'],
+                    data : [['10', '身份证'], ['20', '其他']]
+                })
+            }, {
+                fieldLabel : "查询类型",
+                xtype : "combo",
+                name : "cxsqrlx",
+                displayField : 'text',
+                valueField : 'value',
+                editable : false,
+                store : new Ext.data.ArrayStore({
+                    fields : ['value', 'text'],
+                    data : [['10', '律师'], ['20', '党政军机关'], ['30', '司法机关'], ['40', '企事业单位'], ['50', '个人'], ['60', '人民团体'], ['70', '其他']]
+                })
+            }, {
+                fieldLabel : "cxrdw",
+                xtype : "textfield",
+                hidden : true,
+                name : "cxrdw"
+            }, {
+                fieldLabel : "cxsy",
+                xtype : "textfield",
+                hidden : true,
+                name : "cxsy"
+            }, {
+                fieldLabel : "日期",
+                xtype : "textfield",
+                name : "cxrq"
+            }, {
+                fieldLabel : "czdw",
+                xtype : "textfield",
+                hidden : true,
+                name : "czdw"
+            }, {
+                fieldLabel : "czr",
+                xtype : "textfield",
+                hidden : true,
+                name : "czr"
+            }, {
+                fieldLabel : "cxbs",
+                xtype : "textfield",
+                hidden : true,
+                name : "cxbs"
+            }]
         });
         return formPanel;
     },
+
     // 确定按钮回调函数，在此处理新增、修改操作
     okHandler : function() {
         var me = this;
@@ -202,6 +235,96 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
             me.close();
         }
 
+    },
+    
+    createImageStore : function(){
+    	var tsqrxxfjStore = Ext.create('component.information.store.TsqrxxfjStore');
+    	return tsqrxxfjStore;
+    },
+
+    // 展示图片
+    createImagePanel : function() {
+        var me = this;
+        
+        var imagePanel = Ext.create('Ext.Panel', {
+            id : 'images-view',
+            region : 'center',
+            layout : 'fit',
+            frame : false,
+            tbar : [{
+                text : '刷新',
+                iconCls : 'arrow_refresh',
+                handler : function() {
+                    Ext.getCmp('scanImagesView').getStore().load();
+                }
+            },'->','<span style="color:red">提示：双击可以打开原始图片.</span>'],
+            items : Ext.create('Ext.view.View', {
+	            id : 'scanImagesView',
+	            store : me.tsqrxxfjStore,
+	            tpl : ['<tpl for=".">', '<div class="thumb-wrap" id="{id}_div">', '<div class="thumb"><img src="',ctx+'/scanImages{dz}" id="{id}_img" title="{mc}"></div>',
+	                '<div style="padding-left: 3px;"><span class="x-editable">{mc}</span></div>', '</div>', '</tpl>', '<div class="x-clear"></div>'],
+	            multiSelect : true,
+	            height : 310,
+	            autoScroll : true,
+	            trackOver : false,
+	            overItemCls : 'x-item-over',
+	            itemSelector : 'div.thumb-wrap',
+	            emptyText : '没有找到相关的扫描图片...',
+	            plugins : [Ext.create('Ext.ux.DataView.DragSelector', {}), Ext.create('Ext.ux.DataView.LabelEditor', {
+	                    dataIndex : 'mc',
+	                    grow : true,
+	                    selectOnFocus : false,
+	                    listeners :{
+	                    	beforestartedit : function(){
+	                    		return false;
+	                    	}
+	                    }
+	                    
+	                })],
+	            /**
+	             * prepareData: function(data) { Ext.apply(data, { mc:
+	             * Ext.util.Format.ellipsis(data.mc, 15), id:
+	             * Ext.util.Format.fileSize(data.id) }); return data; },
+	             */
+	            listeners : {
+	                selectionchange : function(dv, nodes) {
+	
+	                    var l = nodes.length, s = l !== 1 ? 's' : '';
+	                    // console.log(l);
+	                    // this.up('panel').setTitle('Simple DataView (' + l + '
+	                    // item' + s + ' selected)');
+	                },
+	                itemdblclick : function(dv, record, item, index, e, eOpts) {
+	                    console.log('dataview dbclick');
+	                    // console.log(record);
+	                    // console.log(item);
+	                    var id = record.data.id;
+	
+	                    window.open(Ext.getDom(id + '_img').src);
+	
+	                }
+	            }
+            })
+        });
+        return imagePanel;
+    },
+    
+    //加载数据
+    loadData : function(){
+    	var me = this;
+	    me.getAction().qryRecord(me.pkFiledId, function(result) {
+            var model = Ext.create("component.operateRecord.model.TSqrxxModel");
+            model.data = result;
+            me.formPanel.getForm().loadRecord(model);
+            me.formPanel.disableFields();
+        });
+        
+        me.tsqrxxfjStore.getProxy().extraParams = {
+            // TODO 自定义业务条件：带业务条件查询
+            sqrId : me.pkFiledId
+        };
+        
+        me.tsqrxxfjStore.load();
     }
 
 });

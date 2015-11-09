@@ -340,7 +340,8 @@ Ext.onReady(function() {
 							//imageStore.add(tmp);
 			            	ExtUtils.tip("提示","扫描图片已上传服务器...");
 			            	
-			            	
+			            	//TODO 去掉鼠标移到图片上的预览功能
+			            	/**
 				            $("#"+sqrxxfjDto.id+"_img").hover(function(e){
 								$("body").append('<p id="bigimage"><img src="'+ this.src + '" alt="" /></p>');
 						        $(this).find('img').stop().fadeTo('slow',0.5);		
@@ -354,6 +355,7 @@ Ext.onReady(function() {
 							$("#"+sqrxxfjDto.id+"_img").mousemove(function(e){
 								widthJudge(e);
 							});	
+							*/
 						
 			            }
 			        };
@@ -542,7 +544,12 @@ Ext.onReady(function() {
 		        handler: function(){
 		        	Ext.MessageBox.prompt('扫描件', '请输入该扫描件的名称:', saveImagesFn);
 		        } 
-		    },'->','<span style="color:red">提示：鼠标移动到图片上可以放大预览，双击可以打开原始图片.</span>','-',{
+		    },'->',
+		    /**
+		    '<span style="color:red">提示：鼠标移动到图片上可以放大预览，双击可以打开原始图片.</span>',
+		    */
+		    '<span style="color:red">提示：双击可以打开原始图片.</span>',
+		    '-',{
 		    	text : '删除',
 		    	icon : ctx + '/common/images/icons/delete.png',
 		        handler: function(){
