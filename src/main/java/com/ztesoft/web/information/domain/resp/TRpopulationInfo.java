@@ -15,6 +15,9 @@ public class TRpopulationInfo {
     // 暂住信息集
     private List<TRinfo> trInfoList;
 
+    // 以上查询信息仅作为..............
+    private String tipMessage;
+
     // 操作单位
     private String czdw;
 
@@ -23,6 +26,20 @@ public class TRpopulationInfo {
 
     // 打印日期
     private String dyrq;
+
+    /**
+     * @return the tipMessage
+     */
+    public String getTipMessage() {
+        return tipMessage;
+    }
+
+    /**
+     * @param tipMessage the tipMessage to set
+     */
+    public void setTipMessage(String tipMessage) {
+        this.tipMessage = tipMessage;
+    }
 
     /**
      * @return the czdw

@@ -17,6 +17,9 @@ public class PermanetPopulationInfo {
     // 迁移信息
     private MigrateInfo migrateInfo;
 
+    // 以上查询信息仅作为..............
+    private String tipMessage;
+
     // 操作单位
     private String czdw;
 
@@ -25,6 +28,20 @@ public class PermanetPopulationInfo {
 
     // 打印日期
     private String dyrq;
+
+    /**
+     * @return the tipMessage
+     */
+    public String getTipMessage() {
+        return tipMessage;
+    }
+
+    /**
+     * @param tipMessage the tipMessage to set
+     */
+    public void setTipMessage(String tipMessage) {
+        this.tipMessage = tipMessage;
+    }
 
     /**
      * @return the czdw

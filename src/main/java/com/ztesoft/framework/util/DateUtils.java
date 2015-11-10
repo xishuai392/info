@@ -964,4 +964,11 @@ public final class DateUtils {
 
         return n;
     }
+    
+    
+    public  static void main(String[] args){
+        String format = "yyyy-MM-dd HH:mm:ss.S";
+        Date date = DateUtils.string2Date("2012-04-17 09:10:12.9",format);
+        System.out.println(DateUtils.date2String(date, format));
+    }
 }

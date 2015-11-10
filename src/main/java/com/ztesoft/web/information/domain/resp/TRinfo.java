@@ -1,14 +1,24 @@
 package com.ztesoft.web.information.domain.resp;
+
+import java.util.Date;
+
+import com.ztesoft.framework.util.DateUtils;
+
 /**
- * 暂住信息。包含 :序号 、暂住证编号  、起始日期、截止日期、间隔时间、签发机构、登记单位、填报日期、暂住地址
+ * 暂住信息。包含 :序号 、暂住证编号  、起始日期、截止日期、间隔时间、签发机构、登记单位、填报日期、暂住地址<br>
+ * 根据起始日期可排序
  * @author Ocean
  *
  */
-public class TRinfo {
+public class TRinfo implements Comparable<TRinfo>{
 //	暂住证编号 
 	private String trNum;
 //	起始日期
 	private String startDate;
+	
+	// 起始日期——用于比较
+    private Date startDate4Compar;
+	
 //	截止日期
 	private String endDate;
 //	间隔时间
@@ -21,7 +31,23 @@ public class TRinfo {
 	private String fillDate;
 //	暂住地址
 	private String trAddress;
-	public String getTrNum() {
+	
+	
+	
+	
+    /**
+     * @return the startDate4Compar
+     */
+    public Date getStartDate4Compar() {
+        return startDate4Compar;
+    }
+    /**
+     * @param startDate4Compar the startDate4Compar to set
+     */
+    public void setStartDate4Compar(Date startDate4Compar) {
+        this.startDate4Compar = startDate4Compar;
+    }
+    public String getTrNum() {
 		return trNum;
 	}
 	public void setTrNum(String trNum) {
@@ -69,5 +95,28 @@ public class TRinfo {
 	public void setTrAddress(String trAddress) {
 		this.trAddress = trAddress;
 	}
+    /* (non-Javadoc)
+     * @see java.lang.Comparable#compareTo(java.lang.Object)
+     */
+    @Override
+    public int compareTo(TRinfo that) {
+        // TODO Auto-generated method stub
+        if(null==this.getStartDate4Compar()){
+            return -1;
+        }
+        if(null==that.getStartDate4Compar()){
+            return 1;
+        }
+        //0-小于, 1-等于，2-大于
+        int order = DateUtils.isCompare(this.getStartDate4Compar(), that.getStartDate4Compar());
+        if(order == 0)
+            return -1;
+        if(order == 1)
+            return 0;
+        if(order == 2)
+            return 1;
+        
+        return 0;
+    }
 	
 }
