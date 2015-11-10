@@ -193,7 +193,15 @@ public class InformationQueryController {
                 // resultInfo.setIdCardNum(pid);
                 // 从接口数据获取，保证完全正确
                 resultInfo.setIdCardNum(rowMap.get("PID"));
-                resultInfo.setBirthDate(rowMap.get("DOB"));// 出生日期
+                // 出生日期
+                String dobStr = rowMap.get("DOB");
+                if(StringUtils.isNotBlank(dobStr)){
+                    if(dobStr.length()>10){
+                        resultInfo.setBirthDate(dobStr.substring(0, 10));
+                    }else{
+                        resultInfo.setBirthDate(dobStr);
+                    }
+                }
                 resultInfo.setAddress(rowMap.get("NATAL_XIANG"));// 出生地详址
                 resultInfo.setIsHavingTR("");
                 resultInfo.setName(rowMap.get("NAME"));// 姓名
@@ -242,7 +250,15 @@ public class InformationQueryController {
                 // resultInfo.setIdCardNum(pid);
                 // 从接口数据获取，保证完全正确
                 resultInfo.setIdCardNum(zzrkLatelyMap.get("PID"));
-                resultInfo.setBirthDate(zzrkLatelyMap.get("DOB"));// 出生日期
+                // 出生日期
+                String dobStr = zzrkLatelyMap.get("DOB");
+                if(StringUtils.isNotBlank(dobStr)){
+                    if(dobStr.length()>10){
+                        resultInfo.setBirthDate(dobStr.substring(0, 10));
+                    }else{
+                        resultInfo.setBirthDate(dobStr);
+                    }
+                }
                 resultInfo.setAddress(zzrkLatelyMap.get("ZZDZXZ"));// 暂住地址
                 resultInfo.setIsHavingTR("已办证");
                 resultInfo.setName(zzrkLatelyMap.get("NAME"));// 姓名
