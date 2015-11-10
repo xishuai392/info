@@ -195,14 +195,21 @@ public class InformationQueryController {
                 resultInfo.setIdCardNum(rowMap.get("PID"));
                 // 出生日期
                 String dobStr = rowMap.get("DOB");
-                if(StringUtils.isNotBlank(dobStr)){
-                    if(dobStr.length()>10){
+                if (StringUtils.isNotBlank(dobStr)) {
+                    if (dobStr.length() > 10) {
                         resultInfo.setBirthDate(dobStr.substring(0, 10));
-                    }else{
+                    }
+                    else {
                         resultInfo.setBirthDate(dobStr);
                     }
                 }
-                resultInfo.setAddress(rowMap.get("NATAL_XIANG"));// 出生地详址
+                // TODO 迁往地 住址
+                // String huId = rowMap.get("HU_ID");
+                // String allFullAddr = buildAllFullAddr(auditUserPo, pid, huId);
+                // resultInfo.setAddress(allFullAddr);
+
+                resultInfo.setAddress(rowMap.get("TO_ADDR"));
+
                 resultInfo.setIsHavingTR("");
                 resultInfo.setName(rowMap.get("NAME"));// 姓名
                 if (StringUtils.isNotBlank(rowMap.get("NAME")))
@@ -252,10 +259,11 @@ public class InformationQueryController {
                 resultInfo.setIdCardNum(zzrkLatelyMap.get("PID"));
                 // 出生日期
                 String dobStr = zzrkLatelyMap.get("DOB");
-                if(StringUtils.isNotBlank(dobStr)){
-                    if(dobStr.length()>10){
+                if (StringUtils.isNotBlank(dobStr)) {
+                    if (dobStr.length() > 10) {
                         resultInfo.setBirthDate(dobStr.substring(0, 10));
-                    }else{
+                    }
+                    else {
                         resultInfo.setBirthDate(dobStr);
                     }
                 }
@@ -319,7 +327,7 @@ public class InformationQueryController {
         permanentPopulationInfo.setTipMessage(MessageResourceUtils
                 .getMessage("Detail.tipMessage"));
         permanentPopulationInfo.setDyrq(DateUtils.date2String(new Date(),
-                DateUtils.STR_DEFAULT_DATE_FORMAT_WITH_SPLIT));
+                MessageResourceUtils.getMessage("Dyrq.format")));
 
         buildCZRKInfo(reqInfo, request, auditUserPo, permanentPopulationInfo);
 
@@ -369,18 +377,8 @@ public class InformationQueryController {
             if (photoInfoList.size() > 0) {
                 String imageStr = photoInfoList.get(0).get("IMAGE");
                 if (StringUtils.isNotBlank(imageStr)) {
-                    // 按约定保存二进制到固定目录
-                    String imagePath = request.getSession().getServletContext()
-                            .getRealPath("/")
-                            + System.getProperty("file.separator")
-                            + "personImages"
-                            + System.getProperty("file.separator")
-                            + pid
-                            + MessageResourceUtils
-                                    .getMessage("idCard.image.format");
-
                     try {
-                        savePhoto(imagePath, imageStr);
+                        savePhoto(request, pid, imageStr);
                     }
                     catch (Exception e) {
                         logger.error("保存身份证照片时发生异常", e);
@@ -396,38 +394,9 @@ public class InformationQueryController {
             logger.error(String.format("常住人口信息]报文信息中没有照片编号.身份证号[%s]", pid));
         }
 
-        // 查询全量地址
-        String allFullAddr = "";
         String huId = czrkInfoMap.get("HU_ID");
-        if (StringUtils.isNotBlank(huId)) {
-            String huInfoResult = InfoRbspClient.queryCZRKCensusInfo(
-                    auditUserPo, huId);
-            InfoResultVO huInfoVO = InfoXmlParser.parserXML(huInfoResult);
-            List<Map<String, String>> huInfoList = InfoXmlParser
-                    .parserResultVO(huInfoVO);
-            if (huInfoList.size() > 0) {
-                String metaAddrId = huInfoList.get(0).get("META_ADDR_ID");
-                if (StringUtils.isNotBlank(metaAddrId)) {
-                    String dzInfoResult = InfoRbspClient.queryDZinfo(
-                            auditUserPo, metaAddrId);
-                    InfoResultVO dzInfoVO = InfoXmlParser
-                            .parserXML(dzInfoResult);
-                    List<Map<String, String>> dzInfoList = InfoXmlParser
-                            .parserResultVO(dzInfoVO);
-                    if (dzInfoList.size() > 0) {
-                        allFullAddr = dzInfoList.get(0).get("ALL_FULL_ADDR");
-                    }
-                }
-                else {
-                    logger.error(String.format(
-                            "常住人口信息]报文信息中没有META_ADDR_ID.身份证号[%s],HU_ID[%s]",
-                            pid, huId));
-                }
-            }
-        }
-        else {
-            logger.error(String.format("常住人口信息]报文信息中没有HU_ID.身份证号[%s]", pid));
-        }
+        // 查询全量地址
+        String allFullAddr = buildAllFullAddr(auditUserPo, pid, huId);
 
         // 拼装家庭关系及联系人信息
         List<FamilyInfo> familyInfoList = bulidFamilyInfo(auditUserPo, pid,
@@ -463,6 +432,50 @@ public class InformationQueryController {
     }
 
     /**
+     * 构建全量地址
+     * 
+     * @param auditUserPo
+     * @param pid
+     * @param huId
+     * @return
+     * @throws BaseAppException
+     */
+    public String buildAllFullAddr(AuditUserPO auditUserPo, String pid,
+            String huId) throws BaseAppException {
+        String allFullAddr = "";
+        if (StringUtils.isNotBlank(huId)) {
+            String huInfoResult = InfoRbspClient.queryCZRKCensusInfo(
+                    auditUserPo, huId);
+            InfoResultVO huInfoVO = InfoXmlParser.parserXML(huInfoResult);
+            List<Map<String, String>> huInfoList = InfoXmlParser
+                    .parserResultVO(huInfoVO);
+            if (huInfoList.size() > 0) {
+                String metaAddrId = huInfoList.get(0).get("META_ADDR_ID");
+                if (StringUtils.isNotBlank(metaAddrId)) {
+                    String dzInfoResult = InfoRbspClient.queryDZinfo(
+                            auditUserPo, metaAddrId);
+                    InfoResultVO dzInfoVO = InfoXmlParser
+                            .parserXML(dzInfoResult);
+                    List<Map<String, String>> dzInfoList = InfoXmlParser
+                            .parserResultVO(dzInfoVO);
+                    if (dzInfoList.size() > 0) {
+                        allFullAddr = dzInfoList.get(0).get("ALL_FULL_ADDR");
+                    }
+                }
+                else {
+                    logger.error(String.format(
+                            "常住人口信息]报文信息中没有META_ADDR_ID.身份证号[%s],HU_ID[%s]",
+                            pid, huId));
+                }
+            }
+        }
+        else {
+            logger.error(String.format("常住人口信息]报文信息中没有HU_ID.身份证号[%s]", pid));
+        }
+        return allFullAddr;
+    }
+
+    /**
      * 点《暂住人口信息记录详情》展现的数据
      * 
      * @param reqInfo
@@ -485,7 +498,7 @@ public class InformationQueryController {
         trPopulationInfo.setTipMessage(MessageResourceUtils
                 .getMessage("Detail.tipMessage"));
         trPopulationInfo.setDyrq(DateUtils.date2String(new Date(),
-                DateUtils.STR_DEFAULT_DATE_FORMAT_WITH_SPLIT));
+                MessageResourceUtils.getMessage("Dyrq.format")));
 
         buildZZRKInfo(reqInfo, request, auditUserPo, trPopulationInfo);
 
@@ -534,18 +547,8 @@ public class InformationQueryController {
             if (photoInfoList.size() > 0) {
                 String imageStr = photoInfoList.get(0).get("IMAGE");
                 if (StringUtils.isNotBlank(imageStr)) {
-                    // 按约定保存二进制到固定目录
-                    String imagePath = request.getSession().getServletContext()
-                            .getRealPath("/")
-                            + System.getProperty("file.separator")
-                            + "personImages"
-                            + System.getProperty("file.separator")
-                            + pid
-                            + MessageResourceUtils
-                                    .getMessage("idCard.image.format");
-
                     try {
-                        savePhoto(imagePath, imageStr);
+                        savePhoto(request, pid, imageStr);
                     }
                     catch (Exception e) {
                         logger.error("保存身份证照片时发生异常", e);
@@ -617,7 +620,17 @@ public class InformationQueryController {
         PopulationBaseInfo baseInfo = new PopulationBaseInfo();
 
         baseInfo.setAliaName(rowInfoMap.get("USED_NAME"));
-        baseInfo.setBirthDate(rowInfoMap.get("DOB"));
+        // 出生日期
+        String dobStr = rowInfoMap.get("DOB");
+        if (StringUtils.isNotBlank(dobStr)) {
+            if (dobStr.length() > 10) {
+                baseInfo.setBirthDate(dobStr.substring(0, 10));
+            }
+            else {
+                baseInfo.setBirthDate(dobStr);
+            }
+        }
+
         baseInfo.setBirthPlaceDetailAddress(rowInfoMap.get("NATAL_XIANG"));
         baseInfo.setBirthPlaceNation(rowInfoMap.get("NATAL_COUNTRY"));
         baseInfo.setBirthPlaceProvince(rowInfoMap.get("NATAL_PLACE"));
@@ -651,7 +664,6 @@ public class InformationQueryController {
     public List<FamilyInfo> bulidFamilyInfo(AuditUserPO auditUserPO,
             String pid, Map<String, String> rowInfoMap) throws BaseAppException {
         List<FamilyInfo> familyInfoList = new ArrayList<FamilyInfo>();
-        // 暂时自己手工拼装
         FamilyInfo familyInfoFather = new FamilyInfo();
         familyInfoFather.setRelationType("父母");
         familyInfoFather.setRelationShip("父亲");
@@ -754,10 +766,10 @@ public class InformationQueryController {
                 FamilyInfo familyInfoChild = new FamilyInfo();
                 familyInfoChild.setRelationType("子女");
                 if ("男".equals(TransUtils.transSex(oneChildMap.get("GENDER")))) {
-                    familyInfoSpouse.setRelationShip("儿子");
+                    familyInfoChild.setRelationShip("儿子");
                 }
                 if ("女".equals(TransUtils.transSex(oneChildMap.get("GENDER")))) {
-                    familyInfoSpouse.setRelationShip("女儿");
+                    familyInfoChild.setRelationShip("女儿");
                 }
                 // TODO 惜帅 子女信息
                 familyInfoChild.setIdCardNum(oneChildMap.get("PID"));
@@ -871,7 +883,16 @@ public class InformationQueryController {
         baseInfo.setName(zzrkInfoMap.get("NAME"));
         baseInfo.setAliaName(ldrkInfoMap.get("USED_NAME"));
         baseInfo.setIdCardNum(ldrkInfoMap.get("PID"));
-        baseInfo.setBirthDate(zzrkInfoMap.get("DOB"));
+        // 出生日期
+        String dobStr = zzrkInfoMap.get("DOB");
+        if (StringUtils.isNotBlank(dobStr)) {
+            if (dobStr.length() > 10) {
+                baseInfo.setBirthDate(dobStr.substring(0, 10));
+            }
+            else {
+                baseInfo.setBirthDate(dobStr);
+            }
+        }
         baseInfo.setHouseholdRegisterDetailAddress(ldrkInfoMap
                 .get("HJD_FULL_ADDR"));
         baseInfo.setHouseholdRegisterProviceAddress(ldrkInfoMap.get("HJD_QU"));
@@ -895,10 +916,40 @@ public class InformationQueryController {
 
         for (Map<String, String> zzrkInfoMap : zzrkInfoList) {
             TRinfo infoOne = new TRinfo();
-            infoOne.setEndDate(zzrkInfoMap.get("YXQXJZRQ"));
-            infoOne.setFillDate(zzrkInfoMap.get("LZRQ"));
 
-            infoOne.setStartDate(zzrkInfoMap.get("YXQQSRQ"));
+            // 起始日期
+            String qsrqStr = zzrkInfoMap.get("YXQQSRQ");
+            if (StringUtils.isNotBlank(qsrqStr)) {
+                if (qsrqStr.length() > 10) {
+                    infoOne.setStartDate(qsrqStr.substring(0, 10));
+                }
+                else {
+                    infoOne.setStartDate(qsrqStr);
+                }
+            }
+
+            // 截止日期
+            String jzrqStr = zzrkInfoMap.get("YXQXJZRQ");
+            if (StringUtils.isNotBlank(jzrqStr)) {
+                if (jzrqStr.length() > 10) {
+                    infoOne.setEndDate(jzrqStr.substring(0, 10));
+                }
+                else {
+                    infoOne.setEndDate(jzrqStr);
+                }
+            }
+
+            // 填报日期日期
+            String tbrqStr = zzrkInfoMap.get("LZRQ");
+            if (StringUtils.isNotBlank(tbrqStr)) {
+                if (tbrqStr.length() > 10) {
+                    infoOne.setFillDate(tbrqStr.substring(0, 10));
+                }
+                else {
+                    infoOne.setFillDate(tbrqStr);
+                }
+            }
+
             infoOne.setTrAddress(zzrkInfoMap.get("ZZDZXZ"));
             infoOne.setTrCardCompany(zzrkInfoMap.get(""));
             infoOne.setTrCardIssuneOffice(zzrkInfoMap.get("FZJGJGMC"));
@@ -918,7 +969,7 @@ public class InformationQueryController {
                                 .getMessage("T_LDRK_ZJZZXX.date.format"));
                         // ArrayList<Date> list = DateUtils.getIntervalDay(startDate, endDate);
                         infoOne.setIntervalTime(String.valueOf(DateUtils
-                                .compareDate(endDate, startDate, 0)));
+                                .compareDate(endDate, startDate, 0)) + "天");
                     }
                 }
 
@@ -940,7 +991,16 @@ public class InformationQueryController {
      * @param imageStr
      * @throws Exception
      */
-    public void savePhoto(String imagePath, String imageStr) throws Exception {
+    public void savePhoto(HttpServletRequest request, String pid,
+            String imageStr) throws Exception {
+        // 按约定保存二进制到固定目录
+        String imagePath = request.getSession().getServletContext()
+                .getRealPath("/")
+                + System.getProperty("file.separator")
+                + "personImages"
+                + System.getProperty("file.separator")
+                + pid
+                + MessageResourceUtils.getMessage("idCard.image.format");
         // TransUtils.hexString2Image(imagePath, imageStr);
         logger.info("身份证照片路径：" + imagePath);
         TransUtils.base64String2Image(imagePath, imageStr.trim());

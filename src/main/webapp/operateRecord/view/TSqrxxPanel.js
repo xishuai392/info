@@ -165,9 +165,15 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
 	            flex : 1
 	        },
 	        {
-	        	text : "cxbs",
+	        	text : "查询类型",
 	            dataIndex : "cxbs",
-	            hidden : true,
+	            renderer : function(value) {
+	            	if(value == '10'){
+	            		return'终端查询';
+	            	}else if(value == '20'){
+	            		return'窗口查询';
+	            	}
+	            },
 	            flex : 1
 	        },
 	        {

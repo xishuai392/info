@@ -183,7 +183,7 @@ public class PlatesInfoQueryController {
         permanentPopulationInfo.setTipMessage(MessageResourceUtils
                 .getMessage("Detail.tipMessage"));
         permanentPopulationInfo.setDyrq(DateUtils.date2String(new Date(),
-                DateUtils.STR_DEFAULT_DATE_FORMAT_WITH_SPLIT));
+                MessageResourceUtils.getMessage("Dyrq.format")));
         informationQueryController.buildCZRKInfo(reqInfo, request, auditUserPo,
                 permanentPopulationInfo);
         return permanentPopulationInfo;
@@ -199,7 +199,7 @@ public class PlatesInfoQueryController {
         trPopulationInfo.setTipMessage(MessageResourceUtils
                 .getMessage("Detail.tipMessage"));
         trPopulationInfo.setDyrq(DateUtils.date2String(new Date(),
-                DateUtils.STR_DEFAULT_DATE_FORMAT_WITH_SPLIT));
+                MessageResourceUtils.getMessage("Dyrq.format")));
 
         informationQueryController.buildZZRKInfo(reqInfo, request, auditUserPo,
                 trPopulationInfo);

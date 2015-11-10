@@ -191,10 +191,16 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
                 hidden : true,
                 name : "czr"
             }, {
-                fieldLabel : "cxbs",
-                xtype : "textfield",
-                hidden : true,
-                name : "cxbs"
+                fieldLabel : "查询类型",
+                xtype : "combo",
+                name : "cxbs",
+                displayField : 'text',
+                valueField : 'value',
+                editable : false,
+                store : new Ext.data.ArrayStore({
+                    fields : ['value', 'text'],
+                    data : [['10', '终端查询'], ['20', '窗口查询']]
+                })
             }]
         });
         return formPanel;
