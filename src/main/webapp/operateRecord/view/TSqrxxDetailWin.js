@@ -60,8 +60,8 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
             config.title = '编辑';
         }
         Ext.applyIf(config, {
-            width : '600',
-            height : '450',
+            width : 600,
+            height : 450,
             layout : 'border',
             maximizable : true,
             items : [me.formPanel, me.imagePanel],
@@ -120,7 +120,6 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
 	        
 	         me.tsqrxxfjStore.load();
         }
-
         this.callParent();
     },
 
@@ -167,6 +166,20 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
                     data : [['10', '律师'], ['20', '党政军机关'], ['30', '司法机关'], ['40', '企事业单位'], ['50', '个人'], ['60', '人民团体'], ['70', '其他']]
                 })
             }, {
+                fieldLabel : "日期",
+                xtype : "textfield",
+                name : "cxrq"
+            }, {
+                fieldLabel : "查询类型",
+                xtype : "combo",
+                name : "cxbs",
+                displayField : 'text',
+                valueField : 'value',
+                store : new Ext.data.ArrayStore({
+                    fields : ['value', 'text'],
+                    data : [['10', '终端查询'], ['20', '窗口查询']]
+                })
+            }, {
                 fieldLabel : "cxrdw",
                 xtype : "textfield",
                 hidden : true,
@@ -177,10 +190,6 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
                 hidden : true,
                 name : "cxsy"
             }, {
-                fieldLabel : "日期",
-                xtype : "textfield",
-                name : "cxrq"
-            }, {
                 fieldLabel : "czdw",
                 xtype : "textfield",
                 hidden : true,
@@ -190,17 +199,6 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
                 xtype : "textfield",
                 hidden : true,
                 name : "czr"
-            }, {
-                fieldLabel : "查询类型",
-                xtype : "combo",
-                name : "cxbs",
-                displayField : 'text',
-                valueField : 'value',
-                editable : false,
-                store : new Ext.data.ArrayStore({
-                    fields : ['value', 'text'],
-                    data : [['10', '终端查询'], ['20', '窗口查询']]
-                })
             }]
         });
         return formPanel;
@@ -295,7 +293,7 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
 	            listeners : {
 	                selectionchange : function(dv, nodes) {
 	
-	                    var l = nodes.length, s = l !== 1 ? 's' : '';
+//	                    var l = nodes.length, s = l !== 1 ? 's' : '';
 	                    // console.log(l);
 	                    // this.up('panel').setTitle('Simple DataView (' + l + '
 	                    // item' + s + ' selected)');

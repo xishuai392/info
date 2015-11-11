@@ -158,6 +158,7 @@ Ext.define('component.permission.view.AuditRolePanel', {
                     });
                     
                     menuRoleWin.show();
+                    menuRoleWin.down('[name=resetBtn]').hide();
                     return;
 
                 }

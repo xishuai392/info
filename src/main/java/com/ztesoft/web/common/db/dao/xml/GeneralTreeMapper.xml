@@ -28,6 +28,7 @@
 	
 	<select id="menuRoleTree" resultType="map" parameterType="map">
 		SELECT m.MENU_ID AS 'menuId',m.MENU_TITLE AS 'menuTitle',m.MENU_ICON_PATH as "icon",
+			#{roleId} as 'roleId',
 			case when 
 			(select count(*) from audit_menu_role mr 
 			where mr.role_id=#{roleId} and mr.menu_id=m.menu_id) =0 then 'false' else 'true' end as 'checked'  

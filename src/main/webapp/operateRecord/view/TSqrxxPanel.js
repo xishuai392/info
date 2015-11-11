@@ -10,10 +10,11 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
 
     config : {
         busizGrid : null,
+        detailWin : null,
         action : Ext.create("component.operateRecord.action.TSqrxxAction")
 
     },
-    detailWin : null,
+    
     constructor : function(config) {
         var me = this;
         config = config || {};
@@ -69,12 +70,13 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
 
     // 创建数据源
     createStore : function() {
-    	return Ext.create('component.operateRecord.store.TSqrxxStore', {
+    	var store = Ext.create('component.operateRecord.store.TSqrxxStore', {
 
         	autoLoad : false,
             // 定义分页大小
             pageSize : WEBConstants.DEFAULT_PAGE_SIZE
         });
+    	return store;
     },
 
     // 创建表格
@@ -93,12 +95,12 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
 	            flex : 1
 	        },
 	        {
-	        	text : "姓名",
+	        	text : "被查询人姓名",
 	            dataIndex : "xm",
 	            flex : 1
 	        },
 	        {
-	        	text : "证件号",
+	        	text : "被查询人证件号",
 	            dataIndex : "zjh",
 	            flex : 1
 	        },
@@ -182,9 +184,11 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
 	            items :[{
 	            	icon: ctx + '/common/images/icons/application_view_detail.png',
 	            	tooltip: '查看',
-	            	handler: function(grid, rowIndex, colIndex){
-	            		
-	            	}
+	            	handler: function(grid, rowIndex, colIndex) {
+//	                    var rec = grid.getStore().getAt(rowIndex);
+//	                    alert("Edit " + rec.get('firstname'));
+	            		me.showDetail(grid,"", rowIndex, colIndex);
+	                }
 	            }],
 	            width: 100
 	        }    
@@ -222,9 +226,9 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
         if (me.down('[xtype=ztedelbutton]')) {
             me.down('[xtype=ztedelbutton]').on('click', Ext.bind(me.delBtnHandler, me));
         }
-        if (me.down('[xtype=actioncolumn]')) {
-            me.down('[xtype=actioncolumn]').on('click', Ext.bind(me.showDetail, me));
-        }
+//        if (me.down('[xtype=actioncolumn]')) {
+//            me.down('[xtype=actioncolumn]').on('click', Ext.bind(me.showDetail, me));
+//        }
     },
     showDetail : function(grid,rowHtml, rowIndex, colIndex){
 //    	console.log(grid);
@@ -239,27 +243,25 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
 //         }
 //         var item = me.busizGrid.getSelectedItem();
 //         var pkFiledId = item.get("id");
-         
          var sqrxxId = grid.getStore().getAt(rowIndex).data.id;
-         
+         console.log(sqrxxId);
 //         console.log("pkFiledId:"+pkFiledId);
          console.log("sqrxxId:"+sqrxxId);
-         if(null==me.detailWin){
-	         me.detailWin = Ext.create('component.operateRecord.view.TSqrxxDetailWin', {
+         if(null==me.getDetailWin()){
+         	console.log(3);
+	         var win = Ext.create('component.operateRecord.view.TSqrxxDetailWin', {
 	        	 pkFiledId : sqrxxId,
-	             winType : WEBConstants.ACTIONTYPE.VIEW,
-	             callback : function(result) {
-	
-	            	 
-	             }
-	             
-	
+	             winType : WEBConstants.ACTIONTYPE.VIEW
 	         });
+	         me.setDetailWin(win);
+	         
          }else{
-         	me.detailWin.pkFiledId = sqrxxId;
-         	me.detailWin.loadData();
+         	console.log(4);
+         	me.getDetailWin().pkFiledId = sqrxxId;
+         	me.getDetailWin().loadData();
          }
-         this.detailWin.show();
+         me.getDetailWin().show();
+         console.log(5);
     },
     // 新增 按钮的事件
     addBtnHandler : function() {

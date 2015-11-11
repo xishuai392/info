@@ -1,7 +1,7 @@
 Ext.define('ZTEsoft.tree.GeneralTree', {
     extend: 'Ext.tree.Panel',
     alias: 'widget.generalTree',
-    requires: ['ZTEsoft.tree.TreeLoader'],
+    requires: ['ZTEsoft.tree.TreeLoader','ZTEsoft.form.field.ClearTextField','ZTEsoft.button.QueryButton'],
     border:false,
 	collapsible: false,
 	headerPosition : 'top',
@@ -35,7 +35,7 @@ Ext.define('ZTEsoft.tree.GeneralTree', {
     	me.initConfig(cfg);
     	var paramMap = {
             sqlKey : cfg.sqlKey,
-            deep : 2,
+            deep : cfg.deep||2,
             rootId : cfg.rootId,
             valueField : 'id',
             displayField : 'text',
@@ -179,6 +179,7 @@ Ext.define('ZTEsoft.tree.GeneralTree', {
 			            name : name,
 			            labelWidth : labelWidth,
 			            flex:1,
+						style:'font-size:12px;',
 			            labelAlign : 'right',
 			            fieldLabel : me.displayName,
 			            emptyText : emptyText
