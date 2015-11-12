@@ -38,7 +38,7 @@ public class InfoXmlParser {
     public static InfoResultVO parserXML(String xml) throws BaseAppException {
         logger.info("XML from jl=" + xml);
         if (StringUtils.isBlank(xml)) {
-            throw ExceptionHandler.publish("APP-01-0010", "调用巨龙接口发生超时异常");
+            throw ExceptionHandler.publish("APP-01-0010", "调用巨龙接口发生异常，返回空!");
         }
 
         xml = xml.trim();

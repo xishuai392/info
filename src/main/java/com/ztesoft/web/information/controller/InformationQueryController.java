@@ -165,6 +165,9 @@ public class InformationQueryController {
                 .getAttribute(IConstants.SESSIONUSER);
         // 被查询身份证号码
         String pid = reqInfo.getIdCardNum();
+        if(StringUtils.isBlank(pid)){
+            ExceptionHandler.publish("APP-01-0030", "查询的身份证号不能为空！");
+        }
         if (pid.length() == 15) {
             pid = IdentificationCodeUtil.update2eighteen(pid);
         }
@@ -348,6 +351,9 @@ public class InformationQueryController {
             PermanetPopulationInfo permanentPopulationInfo)
             throws BaseAppException {
         String pid = reqInfo.getIdCardNum();
+        if(StringUtils.isBlank(pid)){
+            ExceptionHandler.publish("APP-01-0030", "查询的身份证号不能为空！");
+        }
         if (pid.length() == 15) {
             pid = IdentificationCodeUtil.update2eighteen(pid);
         }
@@ -519,6 +525,9 @@ public class InformationQueryController {
             TRpopulationInfo trPopulationInfo) throws BaseAppException {
 
         String pid = reqInfo.getIdCardNum();
+        if(StringUtils.isBlank(pid)){
+            ExceptionHandler.publish("APP-01-0030", "查询的身份证号不能为空！");
+        }
         if (pid.length() == 15) {
             pid = IdentificationCodeUtil.update2eighteen(pid);
         }

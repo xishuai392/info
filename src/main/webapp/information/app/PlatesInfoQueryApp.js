@@ -168,7 +168,7 @@ Ext.onReady(function() {
             handler : function() {
                 console.log('开始读取身份证');
                 
-                //TODO  惜帅  调试隐藏
+                //TODO  @惜帅  调试隐藏
 //              var CVR_IDCard = document.getElementById("CVR_IDCard");					
 //				var strReadResult = CVR_IDCard.ReadCard();
 				
@@ -182,7 +182,7 @@ Ext.onReady(function() {
 				            "nation" : CVR_IDCard.Nation, //民族
 				            "born" : CVR_IDCard.Born,     //出生日期
 				            "address" : CVR_IDCard.Address, //地址
-				            //TODO  惜帅  调试隐藏
+				            //TODO  @惜帅  调试隐藏
 //				            "cardNo" : CVR_IDCard.CardNo, //身份号码
 				            "cardNo" : CVR_IDCard.CardNo||"35020419811021103X", //身份号码
 				            

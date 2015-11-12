@@ -108,6 +108,7 @@
 		        AND sq.CZDW IN(
 		        	${czdwSplitByComma}
 		        )
+		        GROUP BY sq.CZDW
 		    )
 		    b
 		ON  a.czdw=b.czdw
@@ -126,6 +127,7 @@
 		        AND sq.CZDW IN(
 		        	${czdwSplitByComma}
 		        )
+		        GROUP BY sq.CZDW
 		    )c
 		ON a.czdw=c.czdw
 	</select>  	
