@@ -8,6 +8,8 @@ import java.net.ConnectException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.dragonsoft.node.adapter.comm.RbspCall;
 import com.dragonsoft.node.adapter.comm.RbspConsts;
 import com.dragonsoft.node.adapter.comm.RbspService;
@@ -33,15 +35,21 @@ public class InfoRbspClient {
      * @param userPO
      * @param pid
      * @param whereField 例如： PID
+     * @param dynamicCondition 动态条件
      * @return
      */
     public static String queryCZRKbaseInfo(AuditUserPO userPO, String pid,
-            String whereField) {
+            String whereField, String dynamicCondition) {
         String result = null;
         try {
             logger.info("调用接口开始[常住人口基本信息数据查询服务方TC_RKXT.T_HUJI]");
             if ("true".equals(MessageResourceUtils.getMessage("isDebug"))) {
-                return getXml("T_HUJI.xml");
+                if("PID".equals(whereField)){
+                    return getXml("T_HUJI.xml");
+                }else{
+                    return getXml("T_HUJI_CHILD.xml");
+                }
+                
             }
 
             logger.debug("调用接口开始[常住人口基本信息数据查询服务方TC_RKXT.T_HUJI]  new RbspService begin");
@@ -84,6 +92,17 @@ public class InfoRbspClient {
             }
             String condition = whereField + "='" + pid + "'";
             // String condition = "ZJHM='"+pid+"'";
+
+            // 添加动态条件
+            if (StringUtils.isNotBlank(dynamicCondition)) {
+                condition += dynamicCondition;
+            }
+            // 添加静态条件
+            if (StringUtils.isNotBlank(MessageResourceUtils
+                    .getMessage("T_LDRK_JBXX.staticCondition"))) {
+                condition += MessageResourceUtils
+                        .getMessage("T_LDRK_JBXX.staticCondition");
+            }
 
             params.put("Condition", condition);
 
@@ -211,12 +230,13 @@ public class InfoRbspClient {
         params.put("InfoCodeMode", "1");
         String condition = "META_ADDR_ID='" + metaAddrId + "'";
         params.put("Condition", condition);
-//        params.put("RequiredItems", new String[] {
-//            // "META_ADDR_ID", "ALL_FULL_ADDR"
-//                MessageResourceUtils.getMessage("T_META_ADDR.RequiredItems")
-//            });
-        params.put("RequiredItems", getRequiredItems("T_META_ADDR.RequiredItems"));
-        
+        // params.put("RequiredItems", new String[] {
+        // // "META_ADDR_ID", "ALL_FULL_ADDR"
+        // MessageResourceUtils.getMessage("T_META_ADDR.RequiredItems")
+        // });
+        params.put("RequiredItems",
+                getRequiredItems("T_META_ADDR.RequiredItems"));
+
         // 调用返回结果
         String result = call.invoke(params);
         logger.info("调用接口返回[地址信息数据查询服务方TC_JCYW.T_META_ADDR],xmlResult="
@@ -233,7 +253,7 @@ public class InfoRbspClient {
      * @param pid
      * @return
      */
-    public static String queryZZRKInfo(AuditUserPO userPO, String pid) {
+    public static String queryZJZZXXInfo(AuditUserPO userPO, String pid) {
         logger.info("调用接口开始[暂（居）住证信息数据查询服务方TC_RKXT.T_LDRK_ZJZZXX]");
         if ("true".equals(MessageResourceUtils.getMessage("isDebug"))) {
             return getXml("T_LDRK_ZJZZXX.xml");
@@ -269,16 +289,84 @@ public class InfoRbspClient {
         }
         String condition = "PID='" + pid + "'";
         params.put("Condition", condition);
-        
-//        params.put("RequiredItems", new String[] {
-//            // "PID", "NAME", "GENDER", "NATION", "DOB", "ZZZBH", "YXQQSRQ","YXQXJZRQ", "FZJGJGMC", "LZRQ", "ZZDZXZ"
-//                MessageResourceUtils.getMessage("T_LDRK_ZJZZXX.RequiredItems")
-//            });
-        params.put("RequiredItems", getRequiredItems("T_LDRK_ZJZZXX.RequiredItems"));
-        
+
+        // params.put("RequiredItems", new String[] {
+        // // "PID", "NAME", "GENDER", "NATION", "DOB", "ZZZBH", "YXQQSRQ","YXQXJZRQ", "FZJGJGMC", "LZRQ", "ZZDZXZ"
+        // MessageResourceUtils.getMessage("T_LDRK_ZJZZXX.RequiredItems")
+        // });
+        params.put("RequiredItems",
+                getRequiredItems("T_LDRK_ZJZZXX.RequiredItems"));
+
         // 调用返回结果
         String result = call.invoke(params);
         logger.info("调用接口返回[暂（居）住证信息数据查询服务方TC_RKXT.T_LDRK_ZJZZXX],xmlResult="
+                + result);
+        return result;
+    }
+
+    /**
+     * 流动人口基本信息数据查询服务 TC_RKXT.T_LDRK_JBXX
+     * 
+     * @param userPO
+     * @param pid
+     * @param dynamicCondition 动态条件
+     * @return
+     */
+    public static String queryLDRK_JBXXInfo(AuditUserPO userPO, String pid,
+            String dynamicCondition) {
+        logger.info("调用接口开始[流动人口基本信息数据查询服务TC_RKXT.T_LDRK_JBXX]");
+        if ("true".equals(MessageResourceUtils.getMessage("isDebug"))) {
+            return getXml("T_LDRK_JBXX.xml");
+        }
+
+        // 创建RbspService
+        RbspService service = new RbspService(
+                MessageResourceUtils.getMessage("T_LDRK_JBXX.senderId"),
+                MessageResourceUtils.getMessage("T_LDRK_JBXX.serviceId"));
+        // 设置用户身份编号
+        service.setUserCardId(userPO.getUserCardId());
+        // 设置用户单位
+        service.setUserDept(String.valueOf(userPO.getOrgId()));
+        // 设置用户名
+        service.setUserName(userPO.getUserName());
+        // 设置PKI编号
+        service.setPkiId(userPO.getUserPkiId());
+        // 设置超时
+        service.setTimeOut(MessageResourceUtils.getMessage("TimeOut.second"));
+        // 创建RbspCall
+        RbspCall call = service.createCall();
+        // 设置总线地址
+        call.setUrl(MessageResourceUtils.getMessage("T_LDRK_JBXX.url"));
+        // 设置WebService接口方法
+        call.setMethod(RbspConsts.METHOD_QUERY);
+        // 设置接口方法参数<参数名,值>
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("DataObjectCode",
+                MessageResourceUtils.getMessage("T_LDRK_JBXX.DataObjectCode"));
+        params.put("InfoCodeMode", "1");
+        if (pid.length() == 15) {
+            pid = IdentificationCodeUtil.update2eighteen(pid);
+        }
+        String condition = "PID='" + pid + "'";
+        // 添加动态条件
+        if (StringUtils.isNotBlank(dynamicCondition)) {
+            condition += dynamicCondition;
+        }
+        // 添加静态条件
+        if (StringUtils.isNotBlank(MessageResourceUtils
+                .getMessage("T_LDRK_JBXX.staticCondition"))) {
+            condition += MessageResourceUtils
+                    .getMessage("T_LDRK_JBXX.staticCondition");
+        }
+
+        params.put("Condition", condition);
+
+        params.put("RequiredItems",
+                getRequiredItems("T_LDRK_DJXX.RequiredItems"));
+
+        // 调用返回结果
+        String result = call.invoke(params);
+        logger.info("调用接口返回[流动人口基本信息数据查询服务TC_RKXT.T_LDRK_JBXX],xmlResult="
                 + result);
         return result;
     }
@@ -291,6 +379,7 @@ public class InfoRbspClient {
      * @param pid
      * @return
      */
+    @Deprecated
     public static String queryLDRKInfo(AuditUserPO userPO, String pid) {
         logger.info("调用接口开始[流动人口登记信息数据查询服务方TC_RKXT.T_LDRK_DJXX]");
         if ("true".equals(MessageResourceUtils.getMessage("isDebug"))) {
@@ -327,13 +416,14 @@ public class InfoRbspClient {
         }
         String condition = "PID='" + pid + "'";
         params.put("Condition", condition);
-//        params.put("RequiredItems", new String[] {
-//            // "PID", "USED_NAME", "NATIVE_PLACE", "HJD_QU", "HJD_FULL_ADDR","PHOTO_ID"
-//                MessageResourceUtils.getMessage("T_LDRK_DJXX.RequiredItems")
-//            });
-        
-        params.put("RequiredItems", getRequiredItems("T_LDRK_DJXX.RequiredItems"));
-        
+        // params.put("RequiredItems", new String[] {
+        // // "PID", "USED_NAME", "NATIVE_PLACE", "HJD_QU", "HJD_FULL_ADDR","PHOTO_ID"
+        // MessageResourceUtils.getMessage("T_LDRK_DJXX.RequiredItems")
+        // });
+
+        params.put("RequiredItems",
+                getRequiredItems("T_LDRK_DJXX.RequiredItems"));
+
         // 调用返回结果
         String result = call.invoke(params);
         logger.info("调用接口返回[流动人口登记信息数据查询服务方TC_RKXT.T_LDRK_DJXX],xmlResult="
@@ -382,13 +472,13 @@ public class InfoRbspClient {
         params.put("InfoCodeMode", "1");
         String condition = "PHOTO_ID='" + photoId + "'";
         params.put("Condition", condition);
-//        params.put("RequiredItems", new String[] {
-//            // "PHOTO_ID", "IMAGE"
-//                MessageResourceUtils.getMessage("T_PHOTO.RequiredItems")
-//            });
-        
+        // params.put("RequiredItems", new String[] {
+        // // "PHOTO_ID", "IMAGE"
+        // MessageResourceUtils.getMessage("T_PHOTO.RequiredItems")
+        // });
+
         params.put("RequiredItems", getRequiredItems("T_PHOTO.RequiredItems"));
-        
+
         // 调用返回结果PHOTO_ID
         String result = call.invoke(params);
         logger.info("调用接口返回[实有人口相片信息数据查询服务方TC_PHOTO.T_PHOTO],xmlResult="

@@ -16,6 +16,8 @@
   	<result column="RKLX" property="rklx" jdbcType="CHAR" />
   	<result column="CXCS" property="cxcs" jdbcType="INTEGER" />
   	<result column="SQRXM" property="sqrXm" jdbcType="VARCHAR" />
+  	<result column="SQRZJH" property="sqrzjh" jdbcType="VARCHAR" />
+  	
   	
   </resultMap>
   <sql id="Base_Column_List" >
@@ -370,7 +372,7 @@
   
   <select id="select4Page" resultMap="BaseResultMap" parameterType="com.ztesoft.web.byTheQuery.db.po.TBcxrxxPO" >
     select
-    	b.ID, s.xm as SQRXM, b.ZJH, b.ZJLX, b.XM, b.SFZZP, b.SFZF, b.ZFLY, b.SFDY, b.BCXRQ, b.XGRQ, b.RKLX, b.CXCS
+    	b.ID, s.xm as SQRXM,s.zjh as sqrzjh, b.ZJH, b.ZJLX, b.XM, b.SFZZP, b.SFZF, b.ZFLY, b.SFDY, b.BCXRQ, b.XGRQ, b.RKLX, b.CXCS
 	from t_bcxrxx b, t_sqrxx s 
     where b.sqr_id = s.id  
     <if test="zjh != null and zjh != ''">

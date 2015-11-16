@@ -389,6 +389,7 @@ Ext.onReady(function() {
 	'		</table>',
 	'	</div>',
   '',
+/** TODO @惜帅 隐藏迁移信息
 	'	<div class="div_second_title" id="part3Div">',
 	'		迁移信息',
 	'	</div>',
@@ -409,6 +410,7 @@ Ext.onReady(function() {
 	'		</table>',
 	'	</div>',
   '',
+*/
 	'	<div id="part4Div">',
 	'	<table class="tb2" width=100%>',
 	'		<tr>',

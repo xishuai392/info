@@ -34,7 +34,7 @@ public class TestRbspController {
         AuditUserPO auditUserPo = defaultUser();
         // 查询常住人口信息
         String czrkInfoResult = InfoRbspClient.queryCZRKbaseInfo(auditUserPo,
-                pid, whereField);
+                pid, whereField, null);
         logger.info("查询常住人口信息返回：" + czrkInfoResult);
         return czrkInfoResult;
     }
@@ -61,14 +61,25 @@ public class TestRbspController {
         return dzInfoResult;
     }
 
-    @RequestMapping("zzrk")
+    @RequestMapping("zjzzxx")
     @ResponseBody
-    public String queryZZRKInfo(String pid) {
+    public String queryZJZZXXInfo(String pid) {
         AuditUserPO auditUserPo = defaultUser();
         // 查询暂住人口信息
-        String zzrkInfoResult = InfoRbspClient.queryZZRKInfo(auditUserPo, pid);
+        String zzrkInfoResult = InfoRbspClient.queryZJZZXXInfo(auditUserPo, pid);
         logger.info("查询暂住人口信息返回：" + zzrkInfoResult);
         return zzrkInfoResult;
+    }
+
+    @RequestMapping("ldrkjbxx")
+    @ResponseBody
+    public String queryLDRK_JBXXInfo(String pid) {
+        AuditUserPO auditUserPo = defaultUser();
+        // 查流动人口信息
+        String ldrkInfoResult = InfoRbspClient.queryLDRK_JBXXInfo(auditUserPo,
+                pid, null);
+        logger.info("查询流动人口基本信息返回：" + ldrkInfoResult);
+        return ldrkInfoResult;
     }
 
     @RequestMapping("ldrk")

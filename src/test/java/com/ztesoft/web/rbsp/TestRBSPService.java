@@ -51,7 +51,7 @@ public class TestRBSPService {
         InfoRbspClient rbspService = new InfoRbspClient();
         AuditUserPO auditUserPo = new AuditUserPO();
         String result = rbspService.queryCZRKbaseInfo(auditUserPo, 
-                "422301194003157646", "PID");
+                "422301194003157646", "PID",null);
 
         System.out.println("======================打印结果============");
         System.out.println(result);

@@ -23,11 +23,25 @@ public class TBcxrxxPO extends AbstractDto{
 	private Integer  cxcs;
 	
     private String sqrXm;//申请人姓名
+
+    private String sqrzjh;//申请人证件号
 	private Date startDate;//查询开始时间
 	private String startDateStr;// 开始日期
     private Date endDate;//查询结束时间
     private String endDateStr;// 结束日期
     
+    /**
+     * @return the sqrzjh
+     */
+    public String getSqrzjh() {
+        return sqrzjh;
+    }
+    /**
+     * @param sqrzjh the sqrzjh to set
+     */
+    public void setSqrzjh(String sqrzjh) {
+        this.sqrzjh = sqrzjh;
+    }
     /**
      * @return the startDateStr
      */

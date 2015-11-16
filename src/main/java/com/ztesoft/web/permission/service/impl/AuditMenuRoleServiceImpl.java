@@ -170,20 +170,21 @@ public class AuditMenuRoleServiceImpl implements IAuditMenuRoleService {
 
         if (null == menuIds || menuIds.length == 0)
             return true;
-        
-        List<AuditMenuRolePO> newRecords = new ArrayList<AuditMenuRolePO>();
+
+//        List<AuditMenuRolePO> newRecords = new ArrayList<AuditMenuRolePO>();
         Integer[] keys = sequenceGenerator.sequenceBatchIntValue(
                 TableInfoConstants.AUDIT_MENU_ROLE,
                 TableInfoConstants.AUDIT_MENU_ROLE_PKFIELD, menuIds.length);
         int i = 0;
         for (int menuId : menuIds) {
             AuditMenuRolePO tmp = new AuditMenuRolePO();
-                tmp.setMenuRoleId(keys[i++]);
-                tmp.setRoleId(roleId);
-                tmp.setMenuId(menuId);
-                newRecords.add(tmp);
+            tmp.setMenuRoleId(keys[i++]);
+            tmp.setRoleId(roleId);
+            tmp.setMenuId(menuId);
+            auditMenuRoleDao.insert(tmp);
+//            newRecords.add(tmp);
         }
-        auditMenuRoleDao.insertBatch(newRecords);
+//        auditMenuRoleDao.insertBatch(newRecords);
 
         return true;
     }

@@ -102,7 +102,11 @@ Ext.define('component.byTheQuery.view.TBcxrxxPanel', {
 	            dataIndex : "sqrXm",
 	            flex : 1
 	        },
-	        
+	        {
+	        	text : "申请人证件号",
+	            dataIndex : "sqrzjh",
+	            flex : 1
+	        },
 	        {
 	        	text : "被查询人姓名",
 	            dataIndex : "xm",
@@ -146,6 +150,9 @@ Ext.define('component.byTheQuery.view.TBcxrxxPanel', {
 	        {
 	        	text : "查询日期",
 	            dataIndex : "bcxrq",
+	            renderer : function(value) {
+	            	return value.substring(0,4)+"-"+value.substring(4,6)+"-"+value.substring(6,8);
+	            },
 	            flex : 1
 	        },
 	        {
