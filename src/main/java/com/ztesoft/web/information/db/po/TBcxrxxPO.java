@@ -2,7 +2,9 @@ package com.ztesoft.web.information.db.po;
 
 import java.math.*;
 import java.util.*;
+
 import org.apache.commons.lang.StringUtils;
+
 import com.ztesoft.framework.dto.AbstractDto;
 
 public class TBcxrxxPO extends AbstractDto{
@@ -19,6 +21,92 @@ public class TBcxrxxPO extends AbstractDto{
 	private String  xgrq;
 	private String  rklx;
 	private Integer  cxcs;
+	
+	private String sqrXm;//申请人姓名
+
+    private String sqrzjh;//申请人证件号
+    private Date startDate;//查询开始时间
+    private String startDateStr;// 开始日期
+    private Date endDate;//查询结束时间
+    private String endDateStr;// 结束日期
+    private String sqrczdw;//操作单位
+    private String sqrczr;//操作人
+    private String sqrcxbs;//10：终端，20：pc端
+    private String sqrzjlx;//证件类型（10：身份证，20：其他）
+    
+    
+    /**
+     * @return the sqrXm
+     */
+    public String getSqrXm() {
+        return sqrXm;
+    }
+    /**
+     * @param sqrXm the sqrXm to set
+     */
+    public void setSqrXm(String sqrXm) {
+        this.sqrXm = sqrXm;
+    }
+    /**
+     * @return the sqrzjh
+     */
+    public String getSqrzjh() {
+        return sqrzjh;
+    }
+    /**
+     * @param sqrzjh the sqrzjh to set
+     */
+    public void setSqrzjh(String sqrzjh) {
+        this.sqrzjh = sqrzjh;
+    }
+    /**
+     * @return the startDate
+     */
+    public Date getStartDate() {
+        return startDate;
+    }
+    /**
+     * @param startDate the startDate to set
+     */
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+    /**
+     * @return the startDateStr
+     */
+    public String getStartDateStr() {
+        return startDateStr;
+    }
+    /**
+     * @param startDateStr the startDateStr to set
+     */
+    public void setStartDateStr(String startDateStr) {
+        this.startDateStr = startDateStr;
+    }
+    /**
+     * @return the endDate
+     */
+    public Date getEndDate() {
+        return endDate;
+    }
+    /**
+     * @param endDate the endDate to set
+     */
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+    /**
+     * @return the endDateStr
+     */
+    public String getEndDateStr() {
+        return endDateStr;
+    }
+    /**
+     * @param endDateStr the endDateStr to set
+     */
+    public void setEndDateStr(String endDateStr) {
+        this.endDateStr = endDateStr;
+    }
     public String getId() {
         return StringUtils.isBlank(id) ? id : id.trim();
     }

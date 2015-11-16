@@ -21,7 +21,7 @@ import com.ztesoft.web.information.service.ITBcxrxxService;
 import com.ztesoft.web.information.service.ITSqrxxService;
 
 /**
- * <Description>tbcxrxx管理 <br>
+ * <Description>修改操作记录 <br>
  * 
  * @author codeCreater <br>
  * @version 1.0<br>
@@ -44,14 +44,25 @@ public class TBcxrxxController {
     @Autowired
     private ITSqrxxService tSqrxxService;
 
-    @RequestMapping("index")
-    public String index(Model model) {
+    @RequestMapping("modifyIndex")
+    public String modifyIndex(Model model) {
         // ///////
         // TODO 根据业务场景，进行条件分支跳转、设置页面默认值等
 
         // ///////
 
         return "information/jsp/tBcxrxx";
+    }
+
+    /**
+     * 修改操作记录，查询分页
+     */
+    @RequestMapping("select4Page")
+    @ResponseBody
+    public Page<TBcxrxxPO> select4Page(TBcxrxxPO record,
+            Page<TBcxrxxPO> resultPage) throws BaseAppException {
+        resultPage = tBcxrxxService.select4Page(record, resultPage);
+        return resultPage;
     }
 
     @RequestMapping("queryRecordByPage")

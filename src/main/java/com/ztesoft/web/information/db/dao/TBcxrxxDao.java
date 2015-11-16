@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 import com.ztesoft.core.common.Page;
 import com.ztesoft.framework.exception.SysRuntimeException;
 import com.ztesoft.framework.util.StringUtils;
-
 import com.ztesoft.web.information.db.arg.TBcxrxxArg;
 import com.ztesoft.web.information.db.arg.TBcxrxxArg.TBcxrxxCriteria;
 import com.ztesoft.web.information.db.dao.mapper.ITBcxrxxMapper;
@@ -56,6 +55,14 @@ public class TBcxrxxDao extends SqlSessionDaoSupport {
         return resultPage;
     }
 
+    public Page<TBcxrxxPO> select4Page(TBcxrxxPO record,
+            Page<TBcxrxxPO> resultPage) {
+        List<TBcxrxxPO> resultList = getMapper()
+                .select4Page(record, resultPage);
+        resultPage.setResultList(resultList);
+        return resultPage;
+    }
+
     public int insert(TBcxrxxPO record) {
         return getMapper().insert(record);
     }
@@ -86,6 +93,7 @@ public class TBcxrxxDao extends SqlSessionDaoSupport {
 
     /**
      * 根据传入的Map条件进行查询，当前仅支持所有Map中Key字段的EqualTo查询
+     * 
      * @param params Map,Key=字段名，value=查询值
      * @return
      */
@@ -111,7 +119,9 @@ public class TBcxrxxDao extends SqlSessionDaoSupport {
                 Object value = params.get(key);
                 for (Method method : criteriaClass.getMethods()) {
                     if (method.getName().equals(
-                            "and"+ StringUtils.toUpperCaseFirstOne(key.toString()) + "EqualTo")) {
+                            "and"
+                                    + StringUtils.toUpperCaseFirstOne(key
+                                            .toString()) + "EqualTo")) {
                         try {
                             method.invoke(criteria, value);
                         }
@@ -127,7 +137,7 @@ public class TBcxrxxDao extends SqlSessionDaoSupport {
     }
 
     public ITBcxrxxMapper getMapper() {
-    	return getSqlSession().getMapper(ITBcxrxxMapper.class);
+        return getSqlSession().getMapper(ITBcxrxxMapper.class);
     }
 
 }

@@ -16,8 +16,8 @@ import com.ztesoft.core.convert.IArgConversionService;
 import com.ztesoft.core.idproduce.ISequenceGenerator;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
+import com.ztesoft.framework.util.DateUtils;
 import com.ztesoft.framework.util.Utils;
-
 import com.ztesoft.web.information.db.arg.TBcxrxxArg;
 import com.ztesoft.web.information.db.arg.TBcxrxxArg.TBcxrxxCriteria;
 import com.ztesoft.web.information.db.dao.TBcxrxxDao;
@@ -43,7 +43,6 @@ public class TBcxrxxServiceImpl implements ITBcxrxxService {
 
     @Autowired
     private TBcxrxxDao tBcxrxxDao;
-    
 
     /**
      * 查询条件转换成Arg类的服务接口
@@ -56,7 +55,6 @@ public class TBcxrxxServiceImpl implements ITBcxrxxService {
      */
     @Resource(name = "sequenceProcGenerator")
     private ISequenceGenerator sequenceGenerator;
-    
 
     @Override
     public TBcxrxxPO selectByPrimaryKey(String key) throws BaseAppException {
@@ -68,16 +66,18 @@ public class TBcxrxxServiceImpl implements ITBcxrxxService {
     }
 
     @Override
-    public List<TBcxrxxPO> selectByArg(TBcxrxxPO record) throws BaseAppException {
+    public List<TBcxrxxPO> selectByArg(TBcxrxxPO record)
+            throws BaseAppException {
         logger.debug("selectByArg begin...record={0}", record);
 
         // 第一种方式：自己创建arg，自行设置查询条件及操作符
-        //TBcxrxxArg arg = new TBcxrxxArg();
-        //TBcxrxxCriteria criteria = arg.createCriteria();
-        
+        // TBcxrxxArg arg = new TBcxrxxArg();
+        // TBcxrxxCriteria criteria = arg.createCriteria();
+
         // 第二种方式：利用arg转换服务，转换出arg，带上查询条件及操作符，
         // 转换后，还可以自行对arg进行设置修改
-        TBcxrxxArg arg = argConversionService.invokeArg(TBcxrxxArg.class, record);
+        TBcxrxxArg arg = argConversionService.invokeArg(TBcxrxxArg.class,
+                record);
 
         // ///////
         // TODO 根据业务场景，设置查询条件，示例
@@ -90,8 +90,8 @@ public class TBcxrxxServiceImpl implements ITBcxrxxService {
     }
 
     @Override
-    public Page<TBcxrxxPO> selectByArgAndPage(TBcxrxxPO record, Page<TBcxrxxPO> resultPage)
-            throws BaseAppException {
+    public Page<TBcxrxxPO> selectByArgAndPage(TBcxrxxPO record,
+            Page<TBcxrxxPO> resultPage) throws BaseAppException {
         logger.debug("selectByArgAndPage begin...record={0}", record);
 
         // 第一种方式：自己创建arg，自行设置查询条件及操作符
@@ -104,10 +104,10 @@ public class TBcxrxxServiceImpl implements ITBcxrxxService {
 
         // 第二种方式：利用arg转换服务，转换出arg，带上查询条件及操作符，
         // 转换后，还可以自行对arg进行设置修改
-        TBcxrxxArg arg = argConversionService.invokeArg(TBcxrxxArg.class, record);
+        TBcxrxxArg arg = argConversionService.invokeArg(TBcxrxxArg.class,
+                record);
 
         resultPage = tBcxrxxDao.selectByArgAndPage(arg, resultPage);
-
 
         return resultPage;
     }
@@ -149,6 +149,20 @@ public class TBcxrxxServiceImpl implements ITBcxrxxService {
         // ///////
 
         return tBcxrxxDao.deleteByPrimaryKey(record.getId());
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see com.ztesoft.web.information.service.ITBcxrxxService#select4Page(com.ztesoft.web.information.db.po.TBcxrxxPO, com.ztesoft.core.common.Page)
+     */
+    @Override
+    public Page<TBcxrxxPO> select4Page(TBcxrxxPO record,
+            Page<TBcxrxxPO> resultPage) throws BaseAppException {
+        record.setStartDateStr(DateUtils.date2String(record.getStartDate(),
+                DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
+        record.setEndDateStr(DateUtils.date2String(record.getEndDate(),
+                DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
+        return tBcxrxxDao.select4Page(record, resultPage);
     }
 
 }

@@ -28,8 +28,8 @@ public interface ITBcxrxxService {
 
     List<TBcxrxxPO> selectByArg(TBcxrxxPO record) throws BaseAppException;
 
-    Page<TBcxrxxPO> selectByArgAndPage(TBcxrxxPO record, Page<TBcxrxxPO> resultPage)
-            throws BaseAppException;
+    Page<TBcxrxxPO> selectByArgAndPage(TBcxrxxPO record,
+            Page<TBcxrxxPO> resultPage) throws BaseAppException;
 
     int add(TBcxrxxPO record) throws BaseAppException;
 
@@ -37,4 +37,6 @@ public interface ITBcxrxxService {
 
     int delete(TBcxrxxPO record) throws BaseAppException;
 
+    Page<TBcxrxxPO> select4Page(TBcxrxxPO record, Page<TBcxrxxPO> resultPage)
+            throws BaseAppException;
 }

@@ -39,4 +39,5 @@ public interface ITBcxrxxMapper {
     
     int deleteByPrimaryKey(String id);
     
+    List<TBcxrxxPO> select4Page( TBcxrxxPO record, RowBounds rowBound);
 }

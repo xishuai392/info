@@ -185,60 +185,61 @@ public class InformationQueryController {
         List<QueryResultInfo> queryResultInfoList = new ArrayList<QueryResultInfo>();
         if (czrkbaseInfoList.size() > 0) {
 
-            // 常口最终规定只会有一条正常数据
-            Map<String, String> rowMap = buildCZRKLastlyInfo(czrkbaseInfoList);
-            // for (Map<String, String> rowMap : czrkbaseInfoList) {
-            {
-                QueryResultInfo resultInfo = new QueryResultInfo();
-                String uuid = UuidUtils.generatorUUID();
+            // TODO @惜帅 常口最终规定只会有一条正常数据
+            // Map<String, String> rowMap = buildCZRKLastlyInfo(czrkbaseInfoList);
+            for (Map<String, String> rowMap : czrkbaseInfoList) {
+                {
+                    QueryResultInfo resultInfo = new QueryResultInfo();
+                    String uuid = UuidUtils.generatorUUID();
 
-                resultInfo.setBcxrxxId(uuid);
-                // resultInfo.setIdCardNum(pid);
-                // 从接口数据获取，保证完全正确
-                resultInfo.setIdCardNum(rowMap.get("PID"));
-                // 出生日期
-                String dobStr = rowMap.get("DOB");
-                if (StringUtils.isNotBlank(dobStr)) {
-                    if (dobStr.length() > 10) {
-                        resultInfo.setBirthDate(dobStr.substring(0, 10));
+                    resultInfo.setBcxrxxId(uuid);
+                    // resultInfo.setIdCardNum(pid);
+                    // 从接口数据获取，保证完全正确
+                    resultInfo.setIdCardNum(rowMap.get("PID"));
+                    // 出生日期
+                    String dobStr = rowMap.get("DOB");
+                    if (StringUtils.isNotBlank(dobStr)) {
+                        if (dobStr.length() > 10) {
+                            resultInfo.setBirthDate(dobStr.substring(0, 10));
+                        }
+                        else {
+                            resultInfo.setBirthDate(dobStr);
+                        }
                     }
-                    else {
-                        resultInfo.setBirthDate(dobStr);
+                    // TODO 迁往地 住址
+                    // String huId = rowMap.get("HU_ID");
+                    // String allFullAddr = buildAllFullAddr(auditUserPo, pid, huId);
+                    // resultInfo.setAddress(allFullAddr);
+
+                    resultInfo.setAddress(rowMap.get("TO_ADDR"));
+
+                    resultInfo.setIsHavingTR("");
+                    resultInfo.setName(rowMap.get("NAME"));// 姓名
+                    if (StringUtils.isNotBlank(rowMap.get("NAME")))
+                        bcxrxm = rowMap.get("NAME");// 姓名
+                    resultInfo.setPopulationType("户籍人口");
+                    queryResultInfoList.add(resultInfo);
+
+                    try {
+                        // 被查询人信息
+                        TBcxrxxPO bcxrxxPO = new TBcxrxxPO();
+                        bcxrxxPO.setId(uuid);
+                        bcxrxxPO.setSqrId(reqInfo.getSqrxxId());
+                        bcxrxxPO.setZjlx("10");// 证件类型（10：身份证，20：其他）
+                        bcxrxxPO.setZjh(pid);
+                        bcxrxxPO.setXm(bcxrxm);
+                        bcxrxxPO.setSfzf("0");// 是否作废（1：是，0：否）默认为“否”
+                        bcxrxxPO.setSfdy("0");// 是否打印（1：是，0：否）默认为“否”
+                        bcxrxxPO.setBcxrq(DateUtils.date2String(new Date(),
+                                DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));// 被查询日期
+                        bcxrxxPO.setRklx("1");// 人口类型（1：户籍人口，2：暂住人口）
+                        bcxrxxPO.setCxcs(0);// 查询次数
+                        // 记录日志
+                        bcxrxxService.add(bcxrxxPO);
                     }
-                }
-                // TODO 迁往地 住址
-                // String huId = rowMap.get("HU_ID");
-                // String allFullAddr = buildAllFullAddr(auditUserPo, pid, huId);
-                // resultInfo.setAddress(allFullAddr);
-
-                resultInfo.setAddress(rowMap.get("TO_ADDR"));
-
-                resultInfo.setIsHavingTR("");
-                resultInfo.setName(rowMap.get("NAME"));// 姓名
-                if (StringUtils.isNotBlank(rowMap.get("NAME")))
-                    bcxrxm = rowMap.get("NAME");// 姓名
-                resultInfo.setPopulationType("户籍人口");
-                queryResultInfoList.add(resultInfo);
-
-                try {
-                    // 被查询人信息
-                    TBcxrxxPO bcxrxxPO = new TBcxrxxPO();
-                    bcxrxxPO.setId(uuid);
-                    bcxrxxPO.setSqrId(reqInfo.getSqrxxId());
-                    bcxrxxPO.setZjlx("10");// 证件类型（10：身份证，20：其他）
-                    bcxrxxPO.setZjh(pid);
-                    bcxrxxPO.setXm(bcxrxm);
-                    bcxrxxPO.setSfzf("0");// 是否作废（1：是，0：否）默认为“否”
-                    bcxrxxPO.setSfdy("0");// 是否打印（1：是，0：否）默认为“否”
-                    bcxrxxPO.setBcxrq(DateUtils.date2String(new Date(),
-                            DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));// 被查询日期
-                    bcxrxxPO.setRklx("1");// 人口类型（1：户籍人口，2：暂住人口）
-                    bcxrxxPO.setCxcs(0);// 查询次数
-                    // 记录日志
-                    bcxrxxService.add(bcxrxxPO);
-                }
-                catch (Exception e) {
-                    logger.error("插入被查询人信息时发生错误", e);
+                    catch (Exception e) {
+                        logger.error("插入被查询人信息时发生错误", e);
+                    }
                 }
             }
         }
@@ -592,8 +593,8 @@ public class InformationQueryController {
             /**
              * 查询 暂（居）住证信息数据查询服务
              */
-            String resultLDRK_ZJZZ = InfoRbspClient.queryLDRK_JBXXInfo(
-                    auditUserPo, pid, null);
+            String resultLDRK_ZJZZ = InfoRbspClient.queryZJZZXXInfo(
+                    auditUserPo, pid);
             InfoResultVO ldrk_zjzzVO = InfoXmlParser.parserXML(resultLDRK_ZJZZ);
             List<Map<String, String>> ldrk_zjzzList = InfoXmlParser
                     .parserResultVO(ldrk_zjzzVO);
@@ -608,7 +609,6 @@ public class InformationQueryController {
         else {
             ExceptionHandler.publish("APP-01-0021", "该身份证查询不到暂（居）住证信息！");
         }
-
 
         try {
             // 更新日志
@@ -842,7 +842,6 @@ public class InformationQueryController {
         // TODO 惜帅 常住人口展现最新的一条的基本信息
         return czrkbaseInfoList.get(0);
     }
-
 
     /**
      * 获取最新的一条流动人口基本信息

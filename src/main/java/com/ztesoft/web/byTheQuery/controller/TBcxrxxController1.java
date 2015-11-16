@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ztesoft.core.common.Page;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
-import com.ztesoft.web.byTheQuery.db.po.TBcxrxxPO;
+import com.ztesoft.web.information.db.po.TBcxrxxPO;
 import com.ztesoft.web.byTheQuery.service.ITBcxrxxService;
 
 

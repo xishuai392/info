@@ -85,20 +85,9 @@ Ext.define('component.byTheQuery.view.TBcxrxxPanel', {
             isPage : true,
             store : me.createStore(),
             columns : [
+	        
 	        {
-	        	text : "id",
-	            dataIndex : "id",
-	            hidden : true,
-	            flex : 1
-	        },
-	        {
-	        	text : "申请人ID",
-	            dataIndex : "sqrId",
-	            hidden : true,
-	            flex : 1
-	        },
-	        {
-	        	text : "申请人",
+	        	text : "申请人姓名",
 	            dataIndex : "sqrXm",
 	            flex : 1
 	        },
@@ -115,6 +104,26 @@ Ext.define('component.byTheQuery.view.TBcxrxxPanel', {
 	        {
 	        	text : "被查询人证件号",
 	            dataIndex : "zjh",
+	            flex : 1
+	        },
+	        {
+	        	text : "查询日期",
+	            dataIndex : "bcxrq",
+	            renderer : function(value) {
+	            	return value.substring(0,4)+"-"+value.substring(4,6)+"-"+value.substring(6,8);
+	            },
+	            flex : 1
+	        },
+	        {
+	        	text : "id",
+	            dataIndex : "id",
+	            hidden : true,
+	            flex : 1
+	        },
+	        {
+	        	text : "申请人ID",
+	            dataIndex : "sqrId",
+	            hidden : true,
 	            flex : 1
 	        },
 	        {
@@ -147,14 +156,7 @@ Ext.define('component.byTheQuery.view.TBcxrxxPanel', {
 	            hidden : true,
 	            flex : 1
 	        },
-	        {
-	        	text : "查询日期",
-	            dataIndex : "bcxrq",
-	            renderer : function(value) {
-	            	return value.substring(0,4)+"-"+value.substring(4,6)+"-"+value.substring(6,8);
-	            },
-	            flex : 1
-	        },
+	        
 	        {
 	        	text : "xgrq",
 	            dataIndex : "xgrq",

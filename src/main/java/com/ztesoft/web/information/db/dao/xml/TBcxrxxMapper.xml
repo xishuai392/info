@@ -15,6 +15,14 @@
   	<result column="XGRQ" property="xgrq" jdbcType="VARCHAR" />
   	<result column="RKLX" property="rklx" jdbcType="CHAR" />
   	<result column="CXCS" property="cxcs" jdbcType="INTEGER" />
+  	
+  	<result column="SQRXM" property="sqrXm" jdbcType="VARCHAR" />
+  	<result column="SQRZJH" property="sqrzjh" jdbcType="VARCHAR" />
+  	<result column="SQRCZDW" property="sqrczdw" jdbcType="VARCHAR" />
+  	<result column="SQRCZR" property="sqrczr" jdbcType="VARCHAR" />
+  	<result column="SQRCXBS" property="sqrcxbs" jdbcType="VARCHAR" />
+  	<result column="SQRZJLX" property="sqrzjlx" jdbcType="VARCHAR" />
+  	
   </resultMap>
   <sql id="Base_Column_List" >
   	ID,SQR_ID,ZJH,ZJLX,XM,SFZZP,SFZF,ZFLY,SFDY,BCXRQ,XGRQ,RKLX,CXCS
@@ -363,4 +371,32 @@
 	 delete from T_BCXRXX
 	 where ID = #{id,jdbcType=VARCHAR}
   </delete>
+  
+  
+  
+  
+  <!--关联申请人、被查询人信息一起展现 -->
+    <select id="select4Page" resultMap="BaseResultMap" parameterType="com.ztesoft.web.information.db.po.TBcxrxxPO" >
+    select
+    	b.ID, b.ZJH, b.ZJLX, b.XM, b.SFZZP, b.SFZF, b.ZFLY, b.SFDY, b.BCXRQ, b.XGRQ, b.RKLX, b.CXCS,
+    	 s.xm as SQRXM,s.zjh as sqrzjh,s.zjlx as sqrzjlx,s.czdw as sqrczdw,s.czr as sqrczr,s.cxbs as sqrcxbs
+	from t_bcxrxx b, t_sqrxx s 
+    where b.sqr_id = s.id  
+    <if test="zjh != null and zjh != ''">
+    	and b.ZJH like '%${zjh}%'
+    </if>
+    <if test="xm != null and xm !=''">
+    	and b.XM like '%${xm}%'  
+    </if>
+    <if test="sqrXm != null and sqrXm !=''">
+    	and s.XM like '%${sqrXm}%'    
+    </if>
+    <if test="startDateStr != null and endDateStr != null ">
+    	and b.BCXRQ BETWEEN #{startDateStr} AND #{endDateStr}
+    </if>
+    order by b.BCXRQ
+  </select>
+  
+  
+  
 </mapper>  

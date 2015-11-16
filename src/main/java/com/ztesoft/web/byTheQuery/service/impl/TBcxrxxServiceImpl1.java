@@ -3,8 +3,7 @@
  */
 package com.ztesoft.web.byTheQuery.service.impl;
 
-import java.math.*;
-import java.util.*;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -17,12 +16,10 @@ import com.ztesoft.core.idproduce.ISequenceGenerator;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
 import com.ztesoft.framework.util.DateUtils;
-import com.ztesoft.framework.util.Utils;
-import com.ztesoft.web.byTheQuery.db.arg.TBcxrxxArg;
-import com.ztesoft.web.byTheQuery.db.arg.TBcxrxxArg.TBcxrxxCriteria;
-import com.ztesoft.web.byTheQuery.db.dao.TBcxrxxDao1;
-import com.ztesoft.web.byTheQuery.db.po.TBcxrxxPO;
+import com.ztesoft.web.information.db.arg.TBcxrxxArg;
+import com.ztesoft.web.information.db.po.TBcxrxxPO;
 import com.ztesoft.web.byTheQuery.service.ITBcxrxxService;
+import com.ztesoft.web.information.db.dao.TBcxrxxDao;
 
 /**
  * <Description> <br>
@@ -42,7 +39,7 @@ public class TBcxrxxServiceImpl1 implements ITBcxrxxService {
             .getLogger(TBcxrxxServiceImpl1.class);
 
     @Autowired
-    private TBcxrxxDao1 tBcxrxxDao;
+    private TBcxrxxDao tBcxrxxDao;
     
 
     /**

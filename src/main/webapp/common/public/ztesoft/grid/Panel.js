@@ -58,6 +58,13 @@ Ext.define("ZTEsoft.grid.Panel", {
 			}else{
 				config.dockedItems=[paging];
 			}
+            config.store.on("load", function(thiz, records) {
+            	//如果当前页记录数为0，而总记录数不为0，则继续加载上一页
+            	if(records.length == 0 && thiz.totalCount != 0){
+            		thiz.currentPage = thiz.currentPage - 1;
+            		thiz.load();
+            	}
+            });
         }
 
         // 单元格提示
