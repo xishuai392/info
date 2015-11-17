@@ -99,9 +99,9 @@ public class InfoRbspClient {
             }
             // 添加静态条件
             if (StringUtils.isNotBlank(MessageResourceUtils
-                    .getMessage("T_LDRK_JBXX.staticCondition"))) {
+                    .getMessage("T_HUJI.staticCondition"))) {
                 condition += MessageResourceUtils
-                        .getMessage("T_LDRK_JBXX.staticCondition");
+                        .getMessage("T_HUJI.staticCondition");
             }
 
             params.put("Condition", condition);
