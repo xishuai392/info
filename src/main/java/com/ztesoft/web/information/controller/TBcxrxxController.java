@@ -2,6 +2,7 @@ package com.ztesoft.web.information.controller;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ztesoft.core.common.Page;
 import com.ztesoft.framework.dto.AbstractDto;
 import com.ztesoft.framework.exception.BaseAppException;
+import com.ztesoft.framework.exception.ExceptionHandler;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
 import com.ztesoft.framework.util.DateUtils;
 import com.ztesoft.framework.util.MessageResourceUtils;
@@ -63,6 +65,31 @@ public class TBcxrxxController {
             Page<TBcxrxxPO> resultPage) throws BaseAppException {
         resultPage = tBcxrxxService.select4Page(record, resultPage);
         return resultPage;
+    }
+
+    @RequestMapping("updateRecordState")
+    @ResponseBody
+    public String updateRecordState(String ids, String zfly, boolean isDisabled)
+            throws BaseAppException {
+        if (StringUtils.isBlank(ids)) {
+            return "false";
+        }
+        String[] idAry = ids.split(",");
+        for (String id : idAry) {
+            TBcxrxxPO record = new TBcxrxxPO();
+            record.setId(id.trim());
+            record.setZfly(zfly);
+            // 是否作废（1：是，0：否）默认为“否”
+            if (isDisabled) {
+                record.setSfzf("1");
+            }
+            else {
+                record.setSfzf("0");
+            }
+            tBcxrxxService.update(record);
+        }
+
+        return "true";
     }
 
     @RequestMapping("queryRecordByPage")
