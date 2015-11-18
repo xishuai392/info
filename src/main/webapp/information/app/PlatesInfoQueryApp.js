@@ -176,7 +176,7 @@ Ext.onReady(function() {
                 var CVR_IDCard = document.getElementById("CVR_IDCard");					
 				var strReadResult = CVR_IDCard.ReadCard();
 				
-				strReadResult = "0";
+//				strReadResult = "0";
 				if(strReadResult == "0"){
 	              var config = {
 			            url : 'plates/queryByPlates.do',

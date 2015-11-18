@@ -779,31 +779,34 @@ public class InformationQueryController {
         if ("女".equals(TransUtils.transSex(rowInfoMap.get("GENDER")))) {
             whereFiled = "MA_PID";
         }
-        String czrkInfoResult = InfoRbspClient.queryCZRKbaseInfo(auditUserPO,
-                pid, whereFiled, null);
-        InfoResultVO czrkVO = InfoXmlParser.parserXML(czrkInfoResult);
-        List<Map<String, String>> czrkInfoList = InfoXmlParser
-                .parserResultVO(czrkVO);
-
-        if (null != czrkInfoList && czrkInfoList.size() > 0) {
-            for (Map<String, String> oneChildMap : czrkInfoList) {
-                FamilyInfo familyInfoChild = new FamilyInfo();
-                familyInfoChild.setRelationType("子女");
-                if ("男".equals(TransUtils.transSex(oneChildMap.get("GENDER")))) {
-                    familyInfoChild.setRelationShip("儿子");
+        
+        if(StringUtils.isNotBlank(whereFiled)){
+            String czrkInfoResult = InfoRbspClient.queryCZRKbaseInfo(auditUserPO,
+                    pid, whereFiled, null);
+            InfoResultVO czrkVO = InfoXmlParser.parserXML(czrkInfoResult);
+            List<Map<String, String>> czrkInfoList = InfoXmlParser
+                    .parserResultVO(czrkVO);
+    
+            if (null != czrkInfoList && czrkInfoList.size() > 0) {
+                for (Map<String, String> oneChildMap : czrkInfoList) {
+                    FamilyInfo familyInfoChild = new FamilyInfo();
+                    familyInfoChild.setRelationType("子女");
+                    if ("男".equals(TransUtils.transSex(oneChildMap.get("GENDER")))) {
+                        familyInfoChild.setRelationShip("儿子");
+                    }
+                    if ("女".equals(TransUtils.transSex(oneChildMap.get("GENDER")))) {
+                        familyInfoChild.setRelationShip("女儿");
+                    }
+                    // TODO 惜帅 子女信息
+                    familyInfoChild.setIdCardNum(oneChildMap.get("PID"));
+                    familyInfoChild.setCertificateType("身份证");
+                    familyInfoChild.setCertificateNum(oneChildMap.get("PID"));
+                    familyInfoChild.setForeignFirstName("");
+                    familyInfoChild.setForeignLastName("");
+                    familyInfoChild.setName(oneChildMap.get("NAME"));
+                    familyInfoChild.setTelephoneNum("");
+                    familyInfoList.add(familyInfoChild);
                 }
-                if ("女".equals(TransUtils.transSex(oneChildMap.get("GENDER")))) {
-                    familyInfoChild.setRelationShip("女儿");
-                }
-                // TODO 惜帅 子女信息
-                familyInfoChild.setIdCardNum(oneChildMap.get("PID"));
-                familyInfoChild.setCertificateType("身份证");
-                familyInfoChild.setCertificateNum(oneChildMap.get("PID"));
-                familyInfoChild.setForeignFirstName("");
-                familyInfoChild.setForeignLastName("");
-                familyInfoChild.setName(oneChildMap.get("NAME"));
-                familyInfoChild.setTelephoneNum("");
-                familyInfoList.add(familyInfoChild);
             }
         }
         return familyInfoList;
