@@ -67,7 +67,7 @@ public class PlatesInfoQueryController {
     private ITSqrxxService sqrxxService;
 
     @Autowired
-    InformationQueryController informationQueryController ;
+    InformationQueryController informationQueryController;
 
     @RequestMapping("index")
     public String index(Model model) {
@@ -81,8 +81,8 @@ public class PlatesInfoQueryController {
         auditUserPo.setUserCardId(MessageResourceUtils
                 .getMessage("Plates.UserCardId"));
         // 设置用户单位
-        auditUserPo.setOrgId(Long.parseLong(MessageResourceUtils
-                .getMessage("Plates.UserDeptId")));
+        auditUserPo.setOrgCode(MessageResourceUtils
+                .getMessage("Plates.UserDeptId"));
         // 设置用户名
         auditUserPo.setUserName(MessageResourceUtils
                 .getMessage("Plates.UserName"));
@@ -114,11 +114,11 @@ public class PlatesInfoQueryController {
         AuditUserPO auditUserPo = defaultUser();
         // 查询身份证号码
         String pid = reqInfo.getCardNo();
-        
-        if(StringUtils.isBlank(pid)){
+
+        if (StringUtils.isBlank(pid)) {
             ExceptionHandler.publish("APP-01-0030", "查询的身份证号不能为空！");
         }
-        
+
         if (pid.length() == 15) {
             pid = IdentificationCodeUtil.update2eighteen(pid);
         }

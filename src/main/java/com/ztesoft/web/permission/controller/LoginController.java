@@ -59,6 +59,7 @@ public class LoginController implements IConstants {
             AuditOrganizationPO orgInfo = auditOrganizationService
                     .selectByPrimaryKey(orgId);
             userInfo.setOrgName(orgInfo.getOrgName());
+            userInfo.setOrgCode(orgInfo.getOrgCode());
 
             HttpSession session = request.getSession(true);
             logger.info("用户登录userInfo:=" + userInfo);

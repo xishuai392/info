@@ -76,6 +76,7 @@ Ext.define('component.permission.view.AuditOrganizationWin', {
         if (me.winType == WEBConstants.ACTIONTYPE.NEW) {
 
             // TODO 隐藏或显示某些字段，或设定默认值等
+        	me.formPanel.getForm().findField("winParentOrgId").setVisible(false);
             // me.formPanel.getForm().findField("createdDate").setVisible(false);
         }
         // 详情
@@ -131,6 +132,7 @@ Ext.define('component.permission.view.AuditOrganizationWin', {
 	      	{
 	            fieldLabel : "组织编码",
 	            xtype : "textfield",
+	            allowBlank : false,
 	            maxLength : 32,
 	            name : "orgCode"
         	},

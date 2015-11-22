@@ -74,7 +74,7 @@
 
 	</head>
 	<body style="width: 100%;height: 100%">
-		
+		<div></div>
 		<div id="doccameraOcx" >
 		<!-- 捷易拍DoccameraOcx控件_V3.7.1500802 ----
 			<div id="preview_doccamera"  >

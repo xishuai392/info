@@ -127,6 +127,7 @@ public class InformationQueryController {
         QueryRespInfo respInfo = new QueryRespInfo();
         String uuid = UuidUtils.generatorUUID();
         reqInfo.setId(uuid);
+        // 记录的是操作人组织ID
         reqInfo.setCzdw(String.valueOf(auditUserPo.getOrgId()));
         reqInfo.setCzr(String.valueOf(auditUserPo.getUserId()));
         reqInfo.setCxrq(DateUtils.date2String(new Date(),
@@ -779,22 +780,24 @@ public class InformationQueryController {
         if ("女".equals(TransUtils.transSex(rowInfoMap.get("GENDER")))) {
             whereFiled = "MA_PID";
         }
-        
-        if(StringUtils.isNotBlank(whereFiled)){
-            String czrkInfoResult = InfoRbspClient.queryCZRKbaseInfo(auditUserPO,
-                    pid, whereFiled, null);
+
+        if (StringUtils.isNotBlank(whereFiled)) {
+            String czrkInfoResult = InfoRbspClient.queryCZRKbaseInfo(
+                    auditUserPO, pid, whereFiled, null);
             InfoResultVO czrkVO = InfoXmlParser.parserXML(czrkInfoResult);
             List<Map<String, String>> czrkInfoList = InfoXmlParser
                     .parserResultVO(czrkVO);
-    
+
             if (null != czrkInfoList && czrkInfoList.size() > 0) {
                 for (Map<String, String> oneChildMap : czrkInfoList) {
                     FamilyInfo familyInfoChild = new FamilyInfo();
                     familyInfoChild.setRelationType("子女");
-                    if ("男".equals(TransUtils.transSex(oneChildMap.get("GENDER")))) {
+                    if ("男".equals(TransUtils.transSex(oneChildMap
+                            .get("GENDER")))) {
                         familyInfoChild.setRelationShip("儿子");
                     }
-                    if ("女".equals(TransUtils.transSex(oneChildMap.get("GENDER")))) {
+                    if ("女".equals(TransUtils.transSex(oneChildMap
+                            .get("GENDER")))) {
                         familyInfoChild.setRelationShip("女儿");
                     }
                     // TODO 惜帅 子女信息
@@ -978,7 +981,7 @@ public class InformationQueryController {
             infoOne.setTrCardCompany(zzrkInfoMap.get(""));
             infoOne.setTrCardIssuneOffice(zzrkInfoMap.get("FZJGJGMC"));
             infoOne.setTrNum(zzrkInfoMap.get("ZZZBH"));
-            // TODO 惜帅 根据确定的格式得到相差时间
+
             try {
                 if (StringUtils.isNotBlank(zzrkInfoMap.get("YXQQSRQ"))) {
                     Date startDate = DateUtils.string2Date(zzrkInfoMap
@@ -987,24 +990,68 @@ public class InformationQueryController {
 
                     infoOne.setStartDate4Compar(startDate);
 
-                    if (StringUtils.isNotBlank(zzrkInfoMap.get("YXQXJZRQ"))) {
-                        Date endDate = DateUtils.string2Date(zzrkInfoMap
-                                .get("YXQXJZRQ"), MessageResourceUtils
-                                .getMessage("T_LDRK_ZJZZXX.date.format"));
-                        // ArrayList<Date> list = DateUtils.getIntervalDay(startDate, endDate);
-                        infoOne.setIntervalTime(String.valueOf(DateUtils
-                                .compareDate(endDate, startDate, 0)) + "天");
-                    }
+                }
+                else {
+                    // 设置初始化日期，用于比较排序
+                }
+
+                if (StringUtils.isNotBlank(zzrkInfoMap.get("YXQXJZRQ"))) {
+                    Date endDate = DateUtils.string2Date(zzrkInfoMap
+                            .get("YXQXJZRQ"), MessageResourceUtils
+                            .getMessage("T_LDRK_ZJZZXX.date.format"));
+                    infoOne.setEndDate4Compar(endDate);
+
                 }
 
             }
             catch (Exception e) {
-                logger.error(e);
+                logger.error("将暂（居）住证信息起始日期/结束日期转换为Date时发生异常", e);
             }
 
             trInfoList.add(infoOne);
         }
         Collections.sort(trInfoList);
+
+        // TODO 惜帅 根据确定的格式得到相差时间
+        // 拿到已经排好序的列表，两两比较，计算时间间隔
+        Date preStartDate4Compar = null;// 上一条记录的 起始日期
+        Date preEndDate4Compar = null;// 上一条记录的 截止日期
+        for (TRinfo oneTRInfo : trInfoList) {
+            try {
+                if (null == preStartDate4Compar || null == preEndDate4Compar
+                        || null == oneTRInfo.getStartDate4Compar()
+                        || null == oneTRInfo.getEndDate4Compar()) {
+                    oneTRInfo
+                            .setIntervalTime(MessageResourceUtils
+                                    .getMessage("T_LDRK_ZJZZXX.date.defaultIntervalTime"));
+
+                }
+                else {
+                    int s2s = DateUtils.compareDate(
+                            oneTRInfo.getStartDate4Compar(),
+                            preStartDate4Compar, 0);
+                    int s2e = DateUtils.compareDate(
+                            oneTRInfo.getStartDate4Compar(), preEndDate4Compar,
+                            0);
+                    if (s2e <= 0) {
+                        // 如果当前StartDate4Compar落在preStartDate4Compar与preEndDate4Compar之间
+                        oneTRInfo.setIntervalTime("0天");
+                    }
+                    else {
+                        oneTRInfo.setIntervalTime(String.valueOf(s2e) + "天");
+                    }
+
+                }
+            }
+            catch (Exception e) {
+                logger.error("将暂（居）住证信息起始日期/结束日期进行计算间隔时间时发生异常", e);
+            }
+
+            // 设置比较游标
+            preStartDate4Compar = oneTRInfo.getStartDate4Compar();
+            preEndDate4Compar = oneTRInfo.getEndDate4Compar();
+        }
+
         return trInfoList;
     }
 

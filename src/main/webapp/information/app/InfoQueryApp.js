@@ -125,6 +125,8 @@ Ext.onReady(function() {
 	var winHeight = (parseInt(Ext.getBody().getHeight())*0.8);
 	
 	
+	
+	
     // 1、申请人信息填写
     sqrxxPanel = Ext.create("ZTEsoft.form.SearchForm", {
     	id : 'card0',
@@ -1239,6 +1241,8 @@ Ext.onReady(function() {
 	//changzhuWinTp.compile() ;
     
 	
+	
+	
 	//6、本市户籍人口信息 常住
     changzhuWin = Ext.create('ZTEsoft.window.Window',{
     	id : 'card5',
@@ -1255,6 +1259,12 @@ Ext.onReady(function() {
         	}
         )],
         resizable : true,
+        listeners : {
+        	'show' : function( thiz, eOpts ){
+        		thiz.setHeight(parseInt(Ext.getBody().getHeight()));
+        		console.log('setHeight');
+        	}
+        },
         buttons: [{
 		        text: '继续查询',
 		        icon : ctx + '/common/images/icons/magnifier.png',
@@ -1444,6 +1454,12 @@ Ext.onReady(function() {
         	}
         )],
         resizable : true,
+        listeners : {
+        	'show' : function( thiz, eOpts ){
+        		thiz.setHeight(parseInt(Ext.getBody().getHeight()));
+        		console.log('setHeight');
+        	}
+        },
         buttons: [{
 		        text: '继续查询',
 		        icon : ctx + '/common/images/icons/magnifier.png',

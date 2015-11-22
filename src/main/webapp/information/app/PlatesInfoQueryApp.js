@@ -176,7 +176,9 @@ Ext.onReady(function() {
                 var CVR_IDCard = document.getElementById("CVR_IDCard");					
 				var strReadResult = CVR_IDCard.ReadCard();
 				
+				//TODO  @惜帅  调试隐藏
 //				strReadResult = "0";
+				
 				if(strReadResult == "0"){
 	              var config = {
 			            url : 'plates/queryByPlates.do',
@@ -709,7 +711,11 @@ Ext.onReady(function() {
     
     //人口信息查询主要面板
     infoMainPanel = Ext.create('Ext.Panel', { 
-	    //title: '人口信息查询', 
+	    //title: '厦门市人口信息查询', 
+    	tbar : ['->',{
+    		id : 'showSeconds',
+    		text : ''
+    	}],
 	    layout: 'card', 
 	    region : "center",
 	    activeItem: 0,    //默认活动项 
@@ -725,17 +731,19 @@ Ext.onReady(function() {
 
     
     
-    // 定义时间初始时间为10秒
-    var intervalTimes = 10;
+    //TODO @惜帅  定义时间初始时间为30秒
+    var intervalTimes = 30;
     var times = intervalTimes;
     // 该方法用于重置时间
     defaultTimes = function () {
         // 测试弹出
         times = intervalTimes;
+        //Ext.getCmp('showSeconds').setText(times+'S');
     };
     // 判断是否超过10秒无操作。
     timesReduce = function () {
         times--;
+        //Ext.getCmp('showSeconds').setText(times+'S');
         // alert(times);
         if (times <= 0) {
             // alert('跳转');

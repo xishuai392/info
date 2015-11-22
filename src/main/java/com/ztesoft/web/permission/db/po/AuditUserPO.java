@@ -31,6 +31,22 @@ public class AuditUserPO extends AbstractDto {
     private String userPkiId;
 
     private String orgName;// 部门名称
+    
+    private String orgCode;//部门编码，用于传递到接口服务
+
+    /**
+     * @return the orgCode
+     */
+    public String getOrgCode() {
+        return orgCode;
+    }
+
+    /**
+     * @param orgCode the orgCode to set
+     */
+    public void setOrgCode(String orgCode) {
+        this.orgCode = orgCode;
+    }
 
     /**
      * @return the orgName

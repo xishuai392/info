@@ -100,7 +100,7 @@ Ext.define('ZTEsoft.window.PopWindow', {
 			}else{
 				me.down('[name=okBtn]').show();
 				me.down('[name=cancelBtn]').show();
-				me.down('[name=resetBtn]').show();
+				me.down('[name=resetBtn]').hide();
 				me.down('[name=closeBtn]').hide();
 			}
 		});

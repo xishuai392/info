@@ -65,7 +65,7 @@ public class InfoRbspClient {
             // 设置用户身份编号
             service.setUserCardId(userPO.getUserCardId());
             // 设置用户单位
-            service.setUserDept(String.valueOf(userPO.getOrgId()));
+            service.setUserDept(String.valueOf(userPO.getOrgCode()));
             // 设置用户名
             service.setUserName(userPO.getUserName());
             // 设置PKI编号
@@ -155,7 +155,7 @@ public class InfoRbspClient {
         // 设置用户身份编号
         service.setUserCardId(userPO.getUserCardId());
         // 设置用户单位
-        service.setUserDept(String.valueOf(userPO.getOrgId()));
+        service.setUserDept(String.valueOf(userPO.getOrgCode()));
         // 设置用户名
         service.setUserName(userPO.getUserName());
         // 设置PKI编号
@@ -210,7 +210,7 @@ public class InfoRbspClient {
         // 设置用户身份编号
         service.setUserCardId(userPO.getUserCardId());
         // 设置用户单位
-        service.setUserDept(String.valueOf(userPO.getOrgId()));
+        service.setUserDept(String.valueOf(userPO.getOrgCode()));
         // 设置用户名
         service.setUserName(userPO.getUserName());
         // 设置PKI编号
@@ -266,7 +266,7 @@ public class InfoRbspClient {
         // 设置用户身份编号
         service.setUserCardId(userPO.getUserCardId());
         // 设置用户单位
-        service.setUserDept(String.valueOf(userPO.getOrgId()));
+        service.setUserDept(String.valueOf(userPO.getOrgCode()));
         // 设置用户名
         service.setUserName(userPO.getUserName());
         // 设置PKI编号
@@ -326,7 +326,7 @@ public class InfoRbspClient {
         // 设置用户身份编号
         service.setUserCardId(userPO.getUserCardId());
         // 设置用户单位
-        service.setUserDept(String.valueOf(userPO.getOrgId()));
+        service.setUserDept(String.valueOf(userPO.getOrgCode()));
         // 设置用户名
         service.setUserName(userPO.getUserName());
         // 设置PKI编号
@@ -362,7 +362,7 @@ public class InfoRbspClient {
         params.put("Condition", condition);
 
         params.put("RequiredItems",
-                getRequiredItems("T_LDRK_DJXX.RequiredItems"));
+                getRequiredItems("T_LDRK_JBXX.RequiredItems"));
 
         // 调用返回结果
         String result = call.invoke(params);
@@ -393,7 +393,7 @@ public class InfoRbspClient {
         // 设置用户身份编号
         service.setUserCardId(userPO.getUserCardId());
         // 设置用户单位
-        service.setUserDept(String.valueOf(userPO.getOrgId()));
+        service.setUserDept(String.valueOf(userPO.getOrgCode()));
         // 设置用户名
         service.setUserName(userPO.getUserName());
         // 设置PKI编号
@@ -452,7 +452,7 @@ public class InfoRbspClient {
         // 设置用户身份编号
         service.setUserCardId(userPO.getUserCardId());
         // 设置用户单位
-        service.setUserDept(String.valueOf(userPO.getOrgId()));
+        service.setUserDept(String.valueOf(userPO.getOrgCode()));
         // 设置用户名
         service.setUserName(userPO.getUserName());
         // 设置PKI编号
