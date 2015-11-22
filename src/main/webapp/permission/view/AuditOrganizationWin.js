@@ -109,14 +109,14 @@ Ext.define('component.permission.view.AuditOrganizationWin', {
 	            name : "orgId"
         	},
         	{
-	            fieldLabel : "父组织ID",
+	            fieldLabel : "上级组织ID",
 	            xtype : "textfield",
 	            readOnly : true,
 	            id : 'winParentOrgId',
 	            name : "parentOrgId"
         	},
         	{
-	            fieldLabel : "父组织",
+	            fieldLabel : "上级组织",
 	            xtype : "textfield",
 	            readOnly : true,
 	            id : 'winParentOrgName',
