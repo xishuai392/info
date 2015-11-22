@@ -1261,7 +1261,8 @@ Ext.onReady(function() {
         resizable : true,
         listeners : {
         	'show' : function( thiz, eOpts ){
-        		thiz.setHeight(parseInt(Ext.getBody().getHeight()));
+        		var winH = 600>parseInt(Ext.getBody().getHeight())?600:parseInt(Ext.getBody().getHeight());
+        		thiz.setHeight(winH);
         		console.log('setHeight');
         	}
         },
@@ -1456,7 +1457,8 @@ Ext.onReady(function() {
         resizable : true,
         listeners : {
         	'show' : function( thiz, eOpts ){
-        		thiz.setHeight(parseInt(Ext.getBody().getHeight()));
+        		var winH = 600>parseInt(Ext.getBody().getHeight())?600:parseInt(Ext.getBody().getHeight());
+        		thiz.setHeight(winH);
         		console.log('setHeight');
         	}
         },

@@ -75,7 +75,7 @@ Ext.onReady(function() {
 	var btnWidth = (parseInt(Ext.getBody().getWidth())/5);
 	
 	//弹出窗口宽高
-	var winHeight = (parseInt(Ext.getBody().getHeight())*0.9);
+	var winHeight = (parseInt(Ext.getBody().getHeight())*1);
 	
 	console.log("Ext.getBody().getHeight():"+Ext.getBody().getHeight());
 	console.log("Ext.getBody().getWidth():"+Ext.getBody().getWidth());
