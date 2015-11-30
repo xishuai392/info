@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ztesoft.framework.exception.BaseAppException;
+import com.ztesoft.framework.exception.ExceptionHandler;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
 import com.ztesoft.framework.util.DateUtils;
 import com.ztesoft.framework.util.UuidUtils;
@@ -48,9 +49,10 @@ public class ScanContorller {
     @RequestMapping(value = "/upload")
     @ResponseBody
     public String upload(
-            @RequestParam(value = "upload", required = false) MultipartFile file,
+            @RequestParam(value = "upload", required = true) MultipartFile file,
             @RequestParam(value = "sqrxxId", required = true) String sqrxxId,
-            HttpServletRequest request, ModelMap model) {
+            @RequestParam(value = "mc", required = true) String mc,
+            HttpServletRequest request, ModelMap model) throws Exception {
 
         logger.debug("上传文件名：" + file.getOriginalFilename());
         String pathRoot = request.getSession().getServletContext()
@@ -71,6 +73,7 @@ public class ScanContorller {
             targetFile.mkdirs();
         }
 
+        TSqrxxfjPO sqrxxfjDto = new TSqrxxfjPO();
         // 保存
         try {
 
@@ -78,20 +81,24 @@ public class ScanContorller {
 
             // 更新文件操作日志
 
-            TSqrxxfjPO sqrxxfjDto = new TSqrxxfjPO();
             sqrxxfjDto.setId(uuid);
-            sqrxxfjDto.setDz(subPath + File.separator + fileName);
-            sqrxxfjDto.setMc(uuid);
+            String imagePath = new File(path + File.separator + fileName).toURI()
+                    .toString();
+            sqrxxfjDto.setDz(imagePath.substring(imagePath.indexOf("scanImages") + 10));
+            sqrxxfjDto.setMc(mc);
             sqrxxfjDto.setSqrId(sqrxxId);
             sqrxxfjService.add(sqrxxfjDto);
         }
         catch (Exception e) {
             logger.error("保存上传文件时发生异常：", e);
+            ExceptionHandler.publish("APP-00-0010", e);
         }
         model.addAttribute("fileUrl", path + File.separator + fileName);
         model.addAttribute("fjId", uuid);
 
-        return "{\"success\":true,\"imageName\":\"" + uuid + "\"}";
+        return "{\"success\":true,\"id\":\"" + uuid + "\",\"mc\":\""
+                + sqrxxfjDto.getMc() + "\",\"dz\":\"" + sqrxxfjDto.getDz()
+                + "\"}";
     }
 
     private String getSubPath() {
@@ -137,8 +144,8 @@ public class ScanContorller {
         boolean isSave = TransUtils.base64String2Image(path + File.separator
                 + fileName, reqInfo.getImageBase64Str());
 
-        String imagePath = new File(path + File.separator + fileName)
-                .toURI().toString();
+        String imagePath = new File(path + File.separator + fileName).toURI()
+                .toString();
 
         TSqrxxfjPO sqrxxfjDto = new TSqrxxfjPO();
         sqrxxfjDto.setId(uuid);

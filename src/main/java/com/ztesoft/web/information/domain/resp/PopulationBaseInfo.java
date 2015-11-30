@@ -59,6 +59,25 @@ public class PopulationBaseInfo {
 
     // 户籍详细地址
     private String householdRegisterDetailAddress;
+    
+    //暂口 填报日期
+    private String fillDate;
+    
+    
+
+    /**
+     * @return the fillDate
+     */
+    public String getFillDate() {
+        return fillDate;
+    }
+
+    /**
+     * @param fillDate the fillDate to set
+     */
+    public void setFillDate(String fillDate) {
+        this.fillDate = fillDate;
+    }
 
     public String getName() {
         return name;

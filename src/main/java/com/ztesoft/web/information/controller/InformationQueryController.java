@@ -602,8 +602,13 @@ public class InformationQueryController {
 
             if (null != ldrk_zjzzList && ldrk_zjzzList.size() > 0) {
                 // 拼装ZK暂住信息，暂（居）住证信息数据查询服务
-                trPopulationInfo
-                        .setTrInfoList(buildZjzzInfoList(ldrk_zjzzList));
+                List<TRinfo> zjzzList = buildZjzzInfoList(ldrk_zjzzList);
+                trPopulationInfo.setTrInfoList(zjzzList);
+
+                // 取最新暂（居）住证信息的“填报日期”放置到基本信息中
+                TRinfo lastIRinfo = zjzzList.get(zjzzList.size() - 1);
+                trPopulationInfo.getBaseInfo().setFillDate(
+                        lastIRinfo.getFillDate());
             }
 
         }
@@ -1033,12 +1038,14 @@ public class InformationQueryController {
                     int s2e = DateUtils.compareDate(
                             oneTRInfo.getStartDate4Compar(), preEndDate4Compar,
                             0);
-                    if (s2e <= 0) {
+                    if (s2e <= 1) {// 为啥是s2e <= 1而不是s2e <= 0呢？因为是算间隔
                         // 如果当前StartDate4Compar落在preStartDate4Compar与preEndDate4Compar之间
                         oneTRInfo.setIntervalTime("0天");
                     }
                     else {
-                        oneTRInfo.setIntervalTime(String.valueOf(s2e) + "天");
+                        // oneTRInfo.setIntervalTime(String.valueOf(s2e) + "天");
+                        oneTRInfo
+                                .setIntervalTime(String.valueOf(s2e - 1) + "天");
                     }
 
                 }

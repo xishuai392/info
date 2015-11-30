@@ -896,9 +896,10 @@ public final class DateUtils {
      * 
      * @author: panxb
      * @date: 2012-3-6 下午03:02:02
-     * @param date1
-     * @param date2
-     * @param stype
+     * @param date1 需要比较的时间 不能为空(null),需要正确的日期格式
+     * @param date2 被比较的时间 为空(null)则为当前时间
+     * @param stype 返回值类型 0为多少天，1为多少个月，2为多少年
+     * @return 如果date1比date2提早，返回负数；反之亦然
      * @return
      */
     public static int compareDate(Date date1, Date date2, int stype) {

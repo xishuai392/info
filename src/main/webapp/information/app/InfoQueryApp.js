@@ -252,58 +252,115 @@ Ext.onReady(function() {
 
     });
     
+    
+    
     //文件上传
     var fileUploadForm = Ext.create('Ext.form.Panel',{
     	//fileUpload : true,  
-        layout : "form",  
-        region : 'east',
-        width : 300,
+//        layout : "column",  
+//        region : 'east',
+        //width : 400,
         frame : true,
         id : "fileUploadForm", 
         items : [{  
             id : 'upload',  
             name : 'upload',
             xtype: 'filefield',
+            columnWidth : .7,
             //inputType : "file",
-            fieldLabel : '上传图片',
+            fieldLabel : '选择图片',
+            labelAlign : 'right',
             emptyText: '请选择一张照片...',
             allowBlank: false,
+            frame : true,
             clear : true,
-            buttonText: '',
+            buttonText: '浏览',
             buttonConfig: {
                 icon: ctx + '/common/images/icons/image_add.png'
             },
-            anchor : '40%'  
+            listeners : {
+            	change : function(thiz, text , eOpts){
+            		var sub = text.substring(0,text.lastIndexOf('.'));
+            		if(Ext.isEmpty(thiz.up('form').getForm().findField('mc').getValue())){
+            			thiz.up('form').getForm().findField('mc').setValue(sub);
+            		}
+            		
+            	}
+            },
+            anchor : '90%'  
+        },{
+        	xtype: 'textfield',
+        	labelAlign : 'right',
+        	fieldLabel : "扫描件名称",
+        	name : 'mc',
+        	allowBlank: false,
+        	anchor : '90%' 
         },{
         	xtype : 'textfield',
         	name : 'sqrxxId',
         	hidden : true,
         	id : 'fileUpload_sqrxxId'
         }],
-        buttons: [{
-        	text: '上传',  
-            handler: function() {  
-               var form = this.up('form').getForm();  
-               var sqrxxId = sqrxxPanel.getForm().findField('mainId').getValue();
-               form.findField('sqrxxId').setValue(sqrxxId);
-               
-               if (form.isValid()) {  
-                    form.submit({
-	                   	url :  ctx+"/scan/upload.do",  
-	                   	method : "POST",
-	                    waitMsg: '正在上传...',  
-	                    success: function(fp, o) {  
-	                    	console.log(o.result);
-	                    	console.log(o.result.imageName);
-	                    	Ext.Msg.alert('Success', 'Your photo "' + o.result.imageName + '" has been uploaded.');  
-	                    },  
-		                failure : function(form, action) {  
-		                    alert("failure");  
-		                }  
-                   });  
-               }  
-           }
-        }]
+        buttons : [
+        	{
+                text : '确定',
+                iconCls : 'accept',
+                name : 'okBtn',
+                handler: function() {  
+	               var form = this.up('form').getForm();  
+	               //申请人信息表主键
+	               var sqrxxId = sqrxxPanel.getForm().findField('mainId').getValue();
+	               form.findField('sqrxxId').setValue(sqrxxId);
+							
+	               if (form.isValid()) {  
+	                    form.submit({
+		                   	url :  ctx+"/scan/upload.do",  
+		                   	method : "POST",
+		                    waitMsg: '正在上传...',  
+		                    success: function(fp, o) {  
+		                    	console.log(fp);console.log(o);
+		                    	//加载图片
+				            	var thizImageModel = Ext.create("component.information.model.ImageModel");
+				            	thizImageModel.data.id = o.result.id;
+				            	thizImageModel.data.mc = o.result.mc;
+				            	thizImageModel.data.url = ctx+'/scanImages'+o.result.dz;
+				            	
+								//console.log(thizImageModel);
+	                    
+								imageStore.add(thizImageModel);
+								//imageStore.add(tmp);
+				            	ExtUtils.tip("提示","扫描图片已上传服务器..."); 
+				            	fileUploadForm.getForm().reset();
+				            	fileUploadWindow.close();
+		                    },  
+			                failure : function(form, action) {  
+			                    ExtUtils.tip("错误","扫描图片上传失败...");  
+			                }  
+	                   });  
+	               }  
+	           }
+            }, {
+                text : '取消',
+                iconCls : 'arrow_undo',
+                name : 'cancelBtn',
+                handler : function(){
+                	this.up('window').close();
+                }
+            }
+        ]
+    });
+    
+    //上传的窗口
+    var fileUploadWindow = Ext.create('Ext.window.Window',{
+    	title : '上传本地图片',
+    	width : 400,
+        height : 150,
+        layout : 'fit',
+        closeAction : 'hide',
+        items : [fileUploadForm],
+        buttons : {
+        	
+        }
     });
  
 
@@ -581,12 +638,19 @@ Ext.onReady(function() {
 	            }
 	        }),
     		tbar: [ {
-		        text: '开始扫描', 
+		        text: '扫描仪上传', 
 		        scale   : 'medium',
 		        icon : ctx + '/common/images/barcode_scanner_24px.png',
 		        handler: function(){
 		        	Ext.MessageBox.prompt('扫描件', '请输入该扫描件的名称:', saveImagesFn);
 		        } 
+		    },'-',{
+		    	text: '本地图片上传', 
+		    	scale   : 'large',
+		    	icon: ctx + '/common/images/cloud_upload_32.png',
+		    	handler: function(){
+		        	fileUploadWindow.show();
+		        }
 		    },'->',
 		    /**
 		    '<span style="color:red">提示：鼠标移动到图片上可以放大预览，双击可以打开原始图片.</span>',
@@ -900,7 +964,31 @@ Ext.onReady(function() {
             allowBlank : false,
             width: 500,
             name : "idCardNum"
-        }],
+        },{
+			xtype : 'tbspacer',
+			width : 5
+		}, {
+			xtype : 'ztequerybutton',
+			formBind: true,
+			handler : function() {
+	            var form = this.up('form').getForm();
+	            if (form.isValid()) {
+	            	
+	            	//通过表单校验
+	            	var layout = infoMainPanel.getLayout();
+	            	layout.setActiveItem(4);//下一步：显示查询结果
+	            	
+	            	bcxrStore.getProxy().extraParams = {
+			        	//申请人信息表主键uuid
+						sqrxxId : sqrxxPanel.getForm().findField('mainId').getValue(),
+						//被查询人的身份证信息
+						idCardNum : bcxrxxPanel.getForm().findField("idCardNum").getValue()
+				
+			        };
+			        bcxrStore.load();
+	            }
+	        }
+		}],
         // 重置 和下一步 按钮.
 	    buttons: [{
 	        text: '第一步',
@@ -927,7 +1015,8 @@ Ext.onReady(function() {
 	        handler: function() {
 	            this.up('form').getForm().reset();
 	        }
-	    },{
+	    }
+	    /**,{
 	        text: '查询',
 	        icon : ctx + '/common/images/icons/magnifier.png',
 	        formBind: true, //only enabled once the form is valid
@@ -949,7 +1038,8 @@ Ext.onReady(function() {
 			        bcxrStore.load();
 	            }
 	        }
-	    }]
+	    }**/
+	    ]
     });
     
     bcxrStore = Ext.create('component.information.store.QueryResultInfoStore');
@@ -1115,57 +1205,62 @@ Ext.onReady(function() {
 	'	<div id="part1TableCZ">',
 	'		<table class="tbl" width=100%>',
 	'			<tr>',
-	'				<td width=100>姓名</td>',
-	'				<td class="textInfoLeft">{[values.baseInfo.name]}</td>',
-	'				<td>曾用名</td>',
-	'				<td class="textInfoLeft">{[values.baseInfo.aliaName]}</td>',
-	'				<td>性别</td>',
-	'				<td class="textInfoLeft">{[values.baseInfo.sex]}</td>',
+	'				<td colspan=1 width=100 class="NoNewline">公民身份证号码</td>',
+	'				<td colspan=2 class="textInfoLeft NoNewline"  >{[values.baseInfo.idCardNum]}</td>',
+	'				<td colspan=1 >姓名</td>',
+	'				<td colspan=2 class="textInfoLeft NoNewline">{[values.baseInfo.name]}</td>',
 	'				<td colspan=2 rowspan=6 width=162px  height=199px>' ,
 	'					<div style="width:160px; height:197px" >',
 	'					<img alt="照片" style="width:100%; height:100%" ',
 	'						src="'+ctx+"/personImages/"+'{[values.baseInfo.photoGif]}"></div></td>',
 	'			</tr>',
 	'			<tr>',
+	'				<td>曾用名</td>',
+	'				<td colspan=2 class="textInfoLeft">{[values.baseInfo.aliaName]}</td>',
+	'				<td>性别</td>',
+	'				<td colspan=2 class="textInfoLeft">{[values.baseInfo.sex]}</td>',
+
+	'			</tr>',
+	'			<tr>',
 	'				<td>民族</td>',
-	'				<td class="textInfoLeft">{[values.baseInfo.nation]}</td>',
+	'				<td colspan=2 class="textInfoLeft">{[values.baseInfo.nation]}</td>',
 	'				<td>出生日期</td>',
-	'				<td class="textInfoLeft">{[values.baseInfo.birthDate]}</td>',
-	'				<td>公民身份证号码</td>',
-	'				<td class="textInfoLeft"  width=130>{[values.baseInfo.idCardNum]}</td>',
+	'				<td colspan=2 class="textInfoLeft">{[values.baseInfo.birthDate]}</td>',
+
 	'			</tr>',
 	'			<tr>',
-	'				<td>&nbsp;&nbsp;</td>',
-	'				<td>国家(地区)</td>',
-	'				<td colspan=2>省市县(区)</td>',
-	'				<td colspan=2>详址</td>',
-	'			</tr>',
-	'			<tr>',
-	'				<td>籍贯</td>',
-	'				<td class="textInfoLeft">{[values.baseInfo.nativePlaceNation]}</td>',
-	'				<td class="textInfoLeft" colspan=2>{[values.baseInfo.nativePlaceProvince]}</td>',
-	'				<td class="textInfoLeft" colspan=2>{[values.baseInfo.nativePlaceDetailAddress]}</td>',
-	'			</tr>',
-	'			<tr>',
-	'				<td>出生地</td>',
-	'				<td class="textInfoLeft">{[values.baseInfo.birthPlaceNation]}</td>',
-	'				<td class="textInfoLeft" colspan=2>{[values.baseInfo.birthPlaceProvince]}</td>',
-	'				<td class="textInfoLeft" colspan=2>{[values.baseInfo.birthPlaceDetailAddress]}</td>',
-	'			</tr>',
-	'			<tr>',
-	'				<td>身份证签发机关</td>',
-	'				<td class="textInfoLeft" colspan=2>{[values.baseInfo.idCardIssuneOffice]}</td>',
-	'				<td colspan=1>身份证有效期限</td>',
-	'				<td class="textInfoLeft" colspan=2>{[values.baseInfo.idCardExciptyTime]}</td>',
+	'				<td class="NoNewline">身份证签发机关</td>',
+	'				<td colspan=2 class="textInfoLeft">{[values.baseInfo.idCardIssuneOffice]}</td>',
+	'				<td colspan=2>身份证有效期限</td>',
+	'				<td colspan=1 class="textInfoLeft" colspan=2>{[values.baseInfo.idCardExciptyTime]}</td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>住址</td>',
-	'				<td class="textInfoLeft" colspan=7>{[values.baseInfo.liveAddress]}</td>',
+	'				<td class="textInfoLeft" colspan=5>{[values.baseInfo.liveAddress]}</td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>派出所</td>',
-	'				<td class="textInfoLeft" colspan=7>{[values.baseInfo.policeStation]}</td>',
+	'				<td class="textInfoLeft" colspan=5>{[values.baseInfo.policeStation]}</td>',
 	'			</tr>',
+	'			<tr>',
+	'				<td>&nbsp;&nbsp;</td>',
+	'				<td colspan=2>国家(地区)</td>',
+	'				<td colspan=2>省市县(区)</td>',
+	'				<td colspan=3>详址</td>',
+	'			</tr>',
+	'			<tr>',
+	'				<td>籍贯</td>',
+	'				<td colspan=2 class="textInfoLeft NoNewline">{[values.baseInfo.nativePlaceNation]}</td>',
+	'				<td colspan=2 class="textInfoLeft NoNewline">{[values.baseInfo.nativePlaceProvince]}</td>',
+	'				<td colspan=3 class="textInfoLeft NoNewline" >{[values.baseInfo.nativePlaceDetailAddress]}</td>',
+	'			</tr>',
+	'			<tr>',
+	'				<td>出生地</td>',
+	'				<td colspan=2 class="textInfoLeft NoNewline">{[values.baseInfo.birthPlaceNation]}</td>',
+	'				<td colspan=2 class="textInfoLeft NoNewline" >{[values.baseInfo.birthPlaceProvince]}</td>',
+	'				<td colspan=3 class="textInfoLeft NoNewline" >{[values.baseInfo.birthPlaceDetailAddress]}</td>',
+	'			</tr>',
+
 	'		</table>',
 	'	</div>',
   '',
@@ -1247,7 +1342,7 @@ Ext.onReady(function() {
     changzhuWin = Ext.create('ZTEsoft.window.Window',{
     	id : 'card5',
     	width : 800,
-        height : 600,
+        height : 400,
         layout : 'fit',
         closeAction : 'hide',
         //overflowY :'scroll',
@@ -1261,9 +1356,9 @@ Ext.onReady(function() {
         resizable : true,
         listeners : {
         	'show' : function( thiz, eOpts ){
-        		var winH = 600>parseInt(Ext.getBody().getHeight())?600:parseInt(Ext.getBody().getHeight());
+        		var winH = 400>parseInt(Ext.getBody().getHeight())?400:parseInt(Ext.getBody().getHeight());
         		thiz.setHeight(winH);
-        		console.log('setHeight');
+        		console.log('setHeight'+winH);
         	}
         },
         buttons: [{
@@ -1368,10 +1463,10 @@ Ext.onReady(function() {
 	'				<td class="textInfoLeft">{[values.baseInfo.sex]}</td>',
 	'			</tr>',
 	'			<tr>',
-	'				<td>出生日期</td>',
-	'				<td class="textInfoLeft">{[values.baseInfo.birthDate]}</td>',
 	'				<td>民族</td>',
 	'				<td class="textInfoLeft">{[values.baseInfo.nation]}</td>',
+	'				<td>出生日期</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.birthDate]}</td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>籍贯</td>',
@@ -1385,6 +1480,10 @@ Ext.onReady(function() {
 	'				<td>户籍详细地址</td>',
 	'				<td class="textInfoLeft" colspan=3>{[values.baseInfo.householdRegisterDetailAddress]}</td>',
 	'			</tr>',
+	'			<tr>',
+	'				<td>填报日期</td>',
+	'				<td class="textInfoLeft" colspan=5>{[values.baseInfo.fillDate]}</td>',
+	'			</tr>',
 	'		</table>',
 	'	</div>',
   '',
@@ -1394,28 +1493,25 @@ Ext.onReady(function() {
 	'	<div id="part2Table">',
 	'		<table class="tbl" width=100%>',
 	'			<tr>',
-	'				<td width=40>序号</td>',
+	'				<td width=35>序号</td>',
 	'				<td>暂住证编号</td>',
-	'				<td>起始日期</td>',
-	'				<td>截止日期</td>',
-	'				<td>间隔时间</td>',
+	'				<td width=75>起始日期</td>',
+	'				<td width=75>截止日期</td>',
+	'				<td width=65>间隔时间</td>',
 	'				<td>签发机构</td>',
 	'				<td>登记单位</td>',
-	'				<td>填报日期</td>',
 	'				<td>暂住地址</td>',
 	'			</tr>',
 	'			<tpl for="trInfoList">',
 	'			<tr>',
 	'				<td>{#}</td>',	
-	'				<td>{trNum}</td>',
+	'				<td class="NoNewline">{trNum}</td>',
 	'				<td>{startDate}</td>',
 	'				<td>{endDate}</td>',
 	'				<td>{intervalTime}</td>',
 	'				<td>{trCardIssuneOffice}</td>',
 	'				<td>{trCardCompany}</td>',
-	'				<td>{fillDate}</td>',
 	'				<td>{trAddress}</td>',
-
 	'			</tr>',
 	'			</tpl>',
 	'		</table>',
@@ -1444,7 +1540,7 @@ Ext.onReady(function() {
     zanzhuWin = Ext.create('ZTEsoft.window.Window',{
     	id : 'card7',
     	width : 800,
-        height : 600,
+        height : 400,
         layout : 'fit',
         //maximized : true,
         maximizable : true,
@@ -1457,7 +1553,7 @@ Ext.onReady(function() {
         resizable : true,
         listeners : {
         	'show' : function( thiz, eOpts ){
-        		var winH = 600>parseInt(Ext.getBody().getHeight())?600:parseInt(Ext.getBody().getHeight());
+        		var winH = 400>parseInt(Ext.getBody().getHeight())?400:parseInt(Ext.getBody().getHeight());
         		thiz.setHeight(winH);
         		console.log('setHeight');
         	}
