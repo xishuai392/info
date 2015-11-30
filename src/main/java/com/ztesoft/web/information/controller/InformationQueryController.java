@@ -429,6 +429,15 @@ public class InformationQueryController {
         permanentPopulationInfo.setMigrateInfo(migrateInfo);
 
         try {
+            /**
+             * modify by 惜帅 2015-11-30 如果被查询人ID为空，那么是点击父亲/母亲的身份证关联查询的，则不记录日志
+             * 
+             */
+            if(StringUtils.isBlank(reqInfo.getBcxrxxId())){
+                return;
+            }
+            
+            
             // 更新日志
             // 被查询人信息
             TBcxrxxPO bcxrxxPO = bcxrxxService.selectByPrimaryKey(reqInfo
@@ -697,7 +706,10 @@ public class InformationQueryController {
         FamilyInfo familyInfoFather = new FamilyInfo();
         familyInfoFather.setRelationType("父母");
         familyInfoFather.setRelationShip("父亲");
-        familyInfoFather.setIdCardNum(rowInfoMap.get("FA_PID"));
+        if(StringUtils.isNotBlank(rowInfoMap.get("FA_PID"))){
+//        familyInfoFather.setIdCardNum("<a href=\"javascript:openCZRKinfo("+rowInfoMap.get("FA_PID")+")\">"+rowInfoMap.get("FA_PID")+"</a>");
+            familyInfoFather.setIdCardNum("<a href=\"#\" pid=\""+rowInfoMap.get("FA_PID")+"\">"+rowInfoMap.get("FA_PID")+"</a>");
+        }
         familyInfoFather.setCertificateType(rowInfoMap.get("FA_CARD_TYPE"));
         familyInfoFather.setCertificateNum(rowInfoMap.get("FA_CARD_NO"));
         familyInfoFather.setForeignFirstName(rowInfoMap.get("FA_WWX"));
@@ -710,7 +722,10 @@ public class InformationQueryController {
         FamilyInfo familyInfoMother = new FamilyInfo();
         familyInfoMother.setRelationType("父母");
         familyInfoMother.setRelationShip("母亲");
-        familyInfoMother.setIdCardNum(rowInfoMap.get("MA_PID"));
+        if(StringUtils.isNotBlank(rowInfoMap.get("MA_PID"))){
+//            familyInfoMother.setIdCardNum(rowInfoMap.get("MA_PID"));
+            familyInfoMother.setIdCardNum("<a href=\"#\" pid=\""+rowInfoMap.get("MA_PID")+"\">"+rowInfoMap.get("MA_PID")+"</a>");
+        }
         familyInfoMother.setCertificateType(rowInfoMap.get("MA_CARD_TYPE"));
         familyInfoMother.setCertificateNum(rowInfoMap.get("MA_CARD_NO"));
         familyInfoMother.setForeignFirstName(rowInfoMap.get("MA_WWX"));

@@ -1110,6 +1110,8 @@ Ext.onReady(function() {
                     	//被查询人信息主键，记录打印次数用
                     	bcxrxxId = grid.getStore().getAt(rowIndex).data.bcxrxxId;
                     	if('户籍人口'==grid.getStore().getAt(rowIndex).data.populationType){
+                    		openCZRKinfo(grid.getStore().getAt(rowIndex).data.idCardNum,grid.getStore().getAt(rowIndex).data.bcxrxxId,grid.getStore().getAt(rowIndex).data.populationType);
+                    		/**
 	                    	var config = {
 					            url : 'information/queryCZRKinfo.do',
 					            params : {
@@ -1139,6 +1141,7 @@ Ext.onReady(function() {
 					            }
 					        };
 					        ExtUtils.doAjax(config);
+					        */
                     	}
                     	
                     	if('暂住人口'==grid.getStore().getAt(rowIndex).data.populationType){
@@ -1190,6 +1193,33 @@ Ext.onReady(function() {
     });
     
     
+    function openCZRKinfo(idCard,bcxrxxId,populationType){
+    	var config = {
+	            url : 'information/queryCZRKinfo.do',
+	            params : {
+	            	//申请人信息表主键uuid
+					sqrxxId : sqrxxPanel.getForm().findField('mainId').getValue(),
+					//身份证编号
+					idCardNum : idCard,
+	            	//被查询人信息主键
+	            	bcxrxxId : bcxrxxId||'',
+	            	populationType : populationType||'户籍人口'
+	            },
+	            callback : function(data){
+	            	changzhuWin.show();
+	            	//重写绑定模板 
+	            	changzhuWinTp.overwrite(changzhuWin.down('panel').getEl().getById("changzhuDetailDiv"), data);
+	            	//合并单元格
+	            	$("#familyInfoTable").rowspan({td:1}); 
+	            	$("a[href='#']").click(function(){
+	            		console.log(arguments);
+	            		console.log($(this).attr("pid"));
+	            		openCZRKinfo($(this).attr("pid"));
+	            	});
+	            }
+	        };
+	        ExtUtils.doAjax(config);
+    }
     
     
     
@@ -1357,7 +1387,7 @@ Ext.onReady(function() {
         listeners : {
         	'show' : function( thiz, eOpts ){
         		var winH = 400>parseInt(Ext.getBody().getHeight())?400:parseInt(Ext.getBody().getHeight());
-        		thiz.setHeight(winH);
+        		changzhuWin.setHeight(winH);
         		console.log('setHeight'+winH);
         	}
         },
@@ -1403,17 +1433,37 @@ Ext.onReady(function() {
 		            var html = preHtml + changzhuWin.down('panel').getEl().getById("changzhuDetailDiv").getHTML()+'</body></html>';
 		            var printHtml = "";
 		            var htmlArray = $.parseHTML(html);
-		            //console.log(htmlArray);
+//		            console.log("htmlArray");
+//		            console.log(htmlArray);
 		            $.each( htmlArray, function( i, item ) {
+		            	
+					    
+		            	var aEls = $(item).find("a[href='#']");
+		            	
+		            	if(aEls.length>0){
+		            		console.log(aEls);
+		            		$.each( aEls, function( j, aItem ) {
+		            			var pid = $(aItem).attr('pid');
+			            		$(aItem).after('<span>'+pid+'</span>');
+			            		$(aItem).remove();
+//			            		console.log(aEls);console.log("pid:"+pid);
+		            			
+		            		});
+		            		
+		            	}
+		            	
 		            	var delEls = $(item).find("table tr[action=子女]");
 		            	if(delEls.length>0){
 		            		delEls.remove();
 		            		printHtml = $(item).html();
 		            	}
-					    //console.log(delEls);
+		            	//console.log(delEls);
 					    //console.log($(item));
-					    
 					});
+					
+					console.log("printHtml");console.log(printHtml);
+					
+					
 		            //console.log(printHtml);
 		            /////console.log(changzhuWin.down('panel').getEl().getById("changzhuDetailDiv").getHTML());
 					
