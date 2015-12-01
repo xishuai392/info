@@ -968,7 +968,10 @@ Ext.onReady(function() {
 			xtype : 'tbspacer',
 			width : 5
 		}, {
-			xtype : 'ztequerybutton',
+			xtype : 'button',
+			icon : ctx + '/common/images/icons/magnifier.png',
+			name : 'query',
+			text : '&nbsp;&nbsp;查&nbsp;&nbsp;&nbsp;&nbsp;询&nbsp;&nbsp;',
 			formBind: true,
 			handler : function() {
 	            var form = this.up('form').getForm();
@@ -1211,8 +1214,9 @@ Ext.onReady(function() {
 	            	changzhuWinTp.overwrite(changzhuWin.down('panel').getEl().getById("changzhuDetailDiv"), data);
 	            	//合并单元格
 	            	$("#familyInfoTable").rowspan({td:1}); 
-	            	$("a[href='#']").click(function(){
-	            		console.log(arguments);
+	            	$("#part2TableCZ a").on('click',function(){
+//	            		console.log(arguments);
+//	            		alert($(this).attr("pid"));
 	            		console.log($(this).attr("pid"));
 	            		openCZRKinfo($(this).attr("pid"));
 	            	});
@@ -1438,7 +1442,7 @@ Ext.onReady(function() {
 		            $.each( htmlArray, function( i, item ) {
 		            	
 					    
-		            	var aEls = $(item).find("a[href='#']");
+		            	var aEls = $(item).find("#part2TableCZ a");
 		            	
 		            	if(aEls.length>0){
 		            		console.log(aEls);
