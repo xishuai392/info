@@ -340,7 +340,9 @@ public class InformationQueryController {
         permanentPopulationInfo.setDyrq(DateUtils.date2String(new Date(),
                 MessageResourceUtils.getMessage("Dyrq.format")));
 
-        buildCZRKInfo(reqInfo, request, auditUserPo, permanentPopulationInfo);
+        // PC端查询 10：终端，20：pc端
+        buildCZRKInfo(reqInfo, request, auditUserPo, permanentPopulationInfo,
+                "20");
 
         return permanentPopulationInfo;
     }
@@ -352,11 +354,12 @@ public class InformationQueryController {
      * @param request
      * @param auditUserPo
      * @param permanentPopulationInfo
+     * @param cxbs
      * @throws BaseAppException
      */
     public void buildCZRKInfo(QueryByOtherPeopleReqInfo reqInfo,
             HttpServletRequest request, AuditUserPO auditUserPo,
-            PermanetPopulationInfo permanentPopulationInfo)
+            PermanetPopulationInfo permanentPopulationInfo, String cxbs)
             throws BaseAppException {
         String pid = reqInfo.getIdCardNum();
         if (StringUtils.isBlank(pid)) {
@@ -414,7 +417,7 @@ public class InformationQueryController {
 
         // 拼装家庭关系及联系人信息
         List<FamilyInfo> familyInfoList = bulidFamilyInfo(auditUserPo, pid,
-                czrkInfoMap);
+                czrkInfoMap, cxbs);
 
         // 拼装基本信息
         PopulationBaseInfo baseInfo = buildBasePopulation(czrkInfoMap,
@@ -431,13 +434,11 @@ public class InformationQueryController {
         try {
             /**
              * modify by 惜帅 2015-11-30 如果被查询人ID为空，那么是点击父亲/母亲的身份证关联查询的，则不记录日志
-             * 
              */
-            if(StringUtils.isBlank(reqInfo.getBcxrxxId())){
+            if (StringUtils.isBlank(reqInfo.getBcxrxxId())) {
                 return;
             }
-            
-            
+
             // 更新日志
             // 被查询人信息
             TBcxrxxPO bcxrxxPO = bcxrxxService.selectByPrimaryKey(reqInfo
@@ -696,19 +697,31 @@ public class InformationQueryController {
      * 拼装CK 家庭关系及联系人信息
      * 
      * @param auditUserPO
+     * @param pid
      * @param rowInfoMap
+     * @param cxbs
      * @return
      * @throws BaseAppException
      */
     public List<FamilyInfo> bulidFamilyInfo(AuditUserPO auditUserPO,
-            String pid, Map<String, String> rowInfoMap) throws BaseAppException {
+            String pid, Map<String, String> rowInfoMap, String cxbs)
+            throws BaseAppException {
         List<FamilyInfo> familyInfoList = new ArrayList<FamilyInfo>();
         FamilyInfo familyInfoFather = new FamilyInfo();
         familyInfoFather.setRelationType("父母");
         familyInfoFather.setRelationShip("父亲");
-        if(StringUtils.isNotBlank(rowInfoMap.get("FA_PID"))){
-//        familyInfoFather.setIdCardNum("<a href=\"javascript:openCZRKinfo("+rowInfoMap.get("FA_PID")+")\">"+rowInfoMap.get("FA_PID")+"</a>");
-            familyInfoFather.setIdCardNum("<a href=\"#\" pid=\""+rowInfoMap.get("FA_PID")+"\">"+rowInfoMap.get("FA_PID")+"</a>");
+        if (StringUtils.isNotBlank(rowInfoMap.get("FA_PID"))) {
+            // 10：终端，20：pc端
+            if ("10".equals(cxbs)) {
+                familyInfoFather.setIdCardNum(rowInfoMap.get("FA_PID"));
+            }
+            else {
+                // familyInfoFather.setIdCardNum("<a href=\"javascript:openCZRKinfo("+rowInfoMap.get("FA_PID")+")\">"+rowInfoMap.get("FA_PID")+"</a>");
+                familyInfoFather.setIdCardNum("<a href=\"#\" pid=\""
+                        + rowInfoMap.get("FA_PID") + "\">"
+                        + rowInfoMap.get("FA_PID") + "</a>");
+            }
+
         }
         familyInfoFather.setCertificateType(rowInfoMap.get("FA_CARD_TYPE"));
         familyInfoFather.setCertificateNum(rowInfoMap.get("FA_CARD_NO"));
@@ -722,9 +735,17 @@ public class InformationQueryController {
         FamilyInfo familyInfoMother = new FamilyInfo();
         familyInfoMother.setRelationType("父母");
         familyInfoMother.setRelationShip("母亲");
-        if(StringUtils.isNotBlank(rowInfoMap.get("MA_PID"))){
-//            familyInfoMother.setIdCardNum(rowInfoMap.get("MA_PID"));
-            familyInfoMother.setIdCardNum("<a href=\"#\" pid=\""+rowInfoMap.get("MA_PID")+"\">"+rowInfoMap.get("MA_PID")+"</a>");
+        if (StringUtils.isNotBlank(rowInfoMap.get("MA_PID"))) {
+            // 10：终端，20：pc端
+            if ("10".equals(cxbs)) {
+                familyInfoMother.setIdCardNum(rowInfoMap.get("MA_PID"));
+            }
+            else {
+                familyInfoMother.setIdCardNum("<a href=\"#\" pid=\""
+                        + rowInfoMap.get("MA_PID") + "\">"
+                        + rowInfoMap.get("MA_PID") + "</a>");
+            }
+
         }
         familyInfoMother.setCertificateType(rowInfoMap.get("MA_CARD_TYPE"));
         familyInfoMother.setCertificateNum(rowInfoMap.get("MA_CARD_NO"));

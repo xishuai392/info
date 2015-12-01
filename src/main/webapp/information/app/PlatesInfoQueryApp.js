@@ -173,11 +173,11 @@ Ext.onReady(function() {
                 //TODO
                 //TODO
                 //TODO
-//                var CVR_IDCard = document.getElementById("CVR_IDCard");					
-//				var strReadResult = CVR_IDCard.ReadCard();
+                var CVR_IDCard = document.getElementById("CVR_IDCard");					
+				var strReadResult = CVR_IDCard.ReadCard();
 				
 				//TODO  @惜帅  调试隐藏
-				strReadResult = "0";
+//				strReadResult = "0";
 				
 				if(strReadResult == "0"){
 	              var config = {
@@ -189,8 +189,8 @@ Ext.onReady(function() {
 				            "born" : CVR_IDCard.Born,     //出生日期
 				            "address" : CVR_IDCard.Address, //地址
 				            //TODO  @惜帅  调试隐藏
-//				            "cardNo" : CVR_IDCard.CardNo, //身份号码
-				            "cardNo" : CVR_IDCard.CardNo||"35020419811021103X", //身份号码
+				            "cardNo" : CVR_IDCard.CardNo, //身份号码
+//				            "cardNo" : CVR_IDCard.CardNo||"35020419811021103X", //身份号码
 				            
 				            "issuedAt" : CVR_IDCard.IssuedAt,  //签发机关
 				            "effectedDate" : CVR_IDCard.EffectedDate,  //生效期限
@@ -718,10 +718,10 @@ Ext.onReady(function() {
     //人口信息查询主要面板
     infoMainPanel = Ext.create('Ext.Panel', { 
 	    //title: '厦门市人口信息查询', 
-    	tbar : ['->',{
-    		id : 'showSeconds',
-    		text : ''
-    	}],
+//    	tbar : ['->',{
+//    		id : 'showSeconds',
+//    		text : ''
+//    	}],
 	    layout: 'card', 
 	    region : "center",
 	    activeItem: 0,    //默认活动项 

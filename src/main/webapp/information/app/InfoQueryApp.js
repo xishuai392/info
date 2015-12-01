@@ -317,13 +317,13 @@ Ext.onReady(function() {
 		                   	url :  ctx+"/scan/upload.do",  
 		                   	method : "POST",
 		                    waitMsg: '正在上传...',  
-		                    success: function(fp, o) {  
-		                    	console.log(fp);console.log(o);
+		                    success: function(thizform, action) {  
+		                    	console.log(action.result);console.log(action);
 		                    	//加载图片
 				            	var thizImageModel = Ext.create("component.information.model.ImageModel");
-				            	thizImageModel.data.id = o.result.id;
-				            	thizImageModel.data.mc = o.result.mc;
-				            	thizImageModel.data.url = ctx+'/scanImages'+o.result.dz;
+				            	thizImageModel.data.id = action.result.id;
+				            	thizImageModel.data.mc = action.result.mc;
+				            	thizImageModel.data.url = ctx+'/scanImages'+action.result.dz;
 				            	
 								//console.log(thizImageModel);
 	                    

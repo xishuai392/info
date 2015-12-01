@@ -1,13 +1,17 @@
 package com.ztesoft.web.information.controller;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -16,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.alibaba.druid.support.json.JSONUtils;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.exception.ExceptionHandler;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
@@ -48,11 +53,14 @@ public class ScanContorller {
 
     @RequestMapping(value = "/upload")
     @ResponseBody
-    public String upload(
-            @RequestParam(value = "upload", required = true) MultipartFile file,
-            @RequestParam(value = "sqrxxId", required = true) String sqrxxId,
-            @RequestParam(value = "mc", required = true) String mc,
+    public ResponseEntity<String> upload(@RequestParam(value = "upload",
+            required = true) MultipartFile file, @RequestParam(
+            value = "sqrxxId", required = true) String sqrxxId, @RequestParam(
+            value = "mc", required = true) String mc,
             HttpServletRequest request, ModelMap model) throws Exception {
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.TEXT_HTML);
 
         logger.debug("上传文件名：" + file.getOriginalFilename());
         String pathRoot = request.getSession().getServletContext()
@@ -66,6 +74,8 @@ public class ScanContorller {
 
         String fileName = uuid + ".jpg";
         // String fileName = file.getOriginalFilename();
+
+        Map<String, Object> outmap = new HashMap<String, Object>();
 
         logger.debug("上传文件路径：" + path);
         File targetFile = new File(path, fileName);
@@ -82,9 +92,10 @@ public class ScanContorller {
             // 更新文件操作日志
 
             sqrxxfjDto.setId(uuid);
-            String imagePath = new File(path + File.separator + fileName).toURI()
-                    .toString();
-            sqrxxfjDto.setDz(imagePath.substring(imagePath.indexOf("scanImages") + 10));
+            String imagePath = new File(path + File.separator + fileName)
+                    .toURI().toString();
+            sqrxxfjDto.setDz(imagePath.substring(imagePath
+                    .indexOf("scanImages") + 10));
             sqrxxfjDto.setMc(mc);
             sqrxxfjDto.setSqrId(sqrxxId);
             sqrxxfjService.add(sqrxxfjDto);
@@ -96,9 +107,16 @@ public class ScanContorller {
         model.addAttribute("fileUrl", path + File.separator + fileName);
         model.addAttribute("fjId", uuid);
 
-        return "{\"success\":true,\"id\":\"" + uuid + "\",\"mc\":\""
-                + sqrxxfjDto.getMc() + "\",\"dz\":\"" + sqrxxfjDto.getDz()
-                + "\"}";
+        outmap.put("success", true);
+        outmap.put("id", uuid);
+        outmap.put("mc", sqrxxfjDto.getMc());
+        outmap.put("dz", sqrxxfjDto.getDz());
+        return new ResponseEntity<String>(JSONUtils.toJSONString(outmap),
+                responseHeaders, HttpStatus.OK);
+
+        // return "{\"success\":true,\"id\":\"" + uuid + "\",\"mc\":\""
+        // + sqrxxfjDto.getMc() + "\",\"dz\":\"" + sqrxxfjDto.getDz()
+        // + "\"}";
     }
 
     private String getSubPath() {

@@ -189,8 +189,9 @@ public class PlatesInfoQueryController {
                 .getMessage("Detail.tipMessage"));
         permanentPopulationInfo.setDyrq(DateUtils.date2String(new Date(),
                 MessageResourceUtils.getMessage("Dyrq.format")));
+        // PC端查询 10：终端，20：pc端
         informationQueryController.buildCZRKInfo(reqInfo, request, auditUserPo,
-                permanentPopulationInfo);
+                permanentPopulationInfo, "10");
         return permanentPopulationInfo;
     }
 
