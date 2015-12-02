@@ -280,7 +280,13 @@ Ext.onReady(function() {
             },
             listeners : {
             	change : function(thiz, text , eOpts){
-            		var sub = text.substring(0,text.lastIndexOf('.'));
+            		//alert(thiz.up('form').getForm().findField('upload').getValue());
+            		if(''==text){
+            			return ;
+            		}
+            		
+            		var start = text.lastIndexOf('\\');
+            		var sub = text.substring(start<0?0:(start+1),text.lastIndexOf('.'));
             		if(Ext.isEmpty(thiz.up('form').getForm().findField('mc').getValue())){
             			thiz.up('form').getForm().findField('mc').setValue(sub);
             		}
