@@ -903,7 +903,7 @@ public class InformationQueryController {
         // 记录生成时间 CREATETIME
         // 记录更新时间 UPDATETIME
 
-        Map<String, String> ldrk_jbxxLatelyMap = new HashMap<String, String>();
+        Map<String, String> ldrk_jbxxLatelyMap = ldrk_jbxxList.get(0);
         // 用于比较的时间，初始化为1970-01-01
         Date latelyDate = DateUtils.string2Date("1970-01-01",
                 DateUtils.STR_DATE_FORMAT_DAY_WITH_SPLIT);
