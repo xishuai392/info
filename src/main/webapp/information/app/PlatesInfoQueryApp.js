@@ -597,7 +597,7 @@ Ext.onReady(function() {
 	'		<table class="tbl" width=100%>',
 	'			<tr>',
 	'				<td width=35>序号</td>',
-	'				<td>暂住证编号</td>',
+	'				<td width=125>暂住证编号</td>',
 	'				<td width=70>起始日期</td>',
 	'				<td width=70>截止日期</td>',
 	'				<td width=60>间隔时间</td>',

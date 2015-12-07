@@ -125,6 +125,14 @@ public class PaginationInterceptor<K, V> implements Interceptor {
                     }
                 }
             }
+            
+            //fixed by pan.xiaobo 20151207 解决分页查询中，查询总数的SQL语句会丢失变量值问题
+            String[] metaParamsNames = metaObject.getGetterNames();
+            if (null != metaParamsNames) {
+                for (String paramName : metaParamsNames) {
+                    paramMap.put(paramName, metaObject.getValue(paramName));
+                }
+            }
         }
         if (null != additionalParameters)
             paramMap.putAll((Map) additionalParameters);
