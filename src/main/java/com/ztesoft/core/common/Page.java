@@ -30,7 +30,7 @@ public class Page<T> extends RowBounds {
     // 分页参数中，前台分页数对应于PageSize,每页记录数
     @JsonIgnore
     private int limit = FrameWorkConstants.DEFAULT_PAGE_SIZE;
-    
+
     @JsonIgnore
     private int offset;
 
@@ -47,8 +47,14 @@ public class Page<T> extends RowBounds {
 
     }
 
-    public Page(int pageNo, int pageSize) {
+    public Page(int start, int pageSize) {
+        setStart(start);
+        setLimit(pageSize);
+    }
+
+    public Page(int pageNo, int start, int pageSize) {
         setPage(pageNo);
+        setStart(start);
         setLimit(pageSize);
     }
 
