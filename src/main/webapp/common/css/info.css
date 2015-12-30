@@ -115,6 +115,7 @@
 .tb2 {
 	font-size: 12px;
 	color: #000;
+	table-layout: fixed; /**固定宽度*/
 	text-align: center;
 	border-collapse: collapse;
 	margin: 0;
@@ -156,4 +157,13 @@
 
 .tbl a:hover {
 	color: #e85000;
+}
+
+.index-redFlag-btn-custom .x-btn-inner {
+	color: red;
+}
+
+/*注意自定义over样式要加x-btn前缀 但是设置的时候不用加*/
+.x-btn-index-redFlag-btn-over-custom .x-btn-inner {
+	color: green;
 }

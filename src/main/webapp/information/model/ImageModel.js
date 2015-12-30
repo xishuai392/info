@@ -15,5 +15,11 @@ Ext.define('component.information.model.ImageModel', {
         name : 'sqrId'
     }, {
         name : 'dz'
+    }, {
+        name : 'fjlx'
+    }, {
+        name : 'vdef1'
+    }, {
+        name : 'vdef2'
     }]
 });

@@ -14,15 +14,15 @@ create table T_SQRXX
 (
    ID                   varchar(32) not null comment '编号',
    ZJH                  varchar(60) comment '证件号',
-   ZJLX                 varchar(10) comment '证件类型（10：身份证，20：其他）',
+   ZJLX                 varchar(10) comment '证件类型（10：身份证，20：其他，30：军官证）',
    XM                   varchar(30) comment '姓名',
-   CXSQRLX              varchar(10) comment '查询申请人类型（10：律师，20：党政军机关，30：司法机关，40：企事业单位，50：个人，60：人民团体，70：其他）',
+   CXSQRLX              varchar(10) comment '查询申请人类型（10：律师，20：党政军机关，30：司法机关，40：企事业单位，50：个人，60：人民团体）',
    CXRDW                varchar(100) comment '查询人单位',
    CXSY                 varchar(300) comment '查询事由',
    CXRQ                 varchar(10) comment '查询日期',
    CZDW                 varchar(32) comment '操作单位',
    CZR                  varchar(32) comment '操作人',
-   CXBS                 varchar(10) comment '10：终端，20：pc端',
+   CXBS                 varchar(10) comment '10：终端，20：pc端,30:网上查询',
    primary key (ID)
 );
 
@@ -47,6 +47,14 @@ public class QueryPeopleReqInfo {
 	private String  czdw;
 	private String  czr;
 	private String  cxbs;
+	
+	private String zjmc;//证件名称
+	    
+	private String vdef1;//预留字段
+	    
+	private String vdef2;//预留字段
+	
+	
 	public String getId() {
 		return id;
 	}
@@ -113,6 +121,42 @@ public class QueryPeopleReqInfo {
 	public void setCxbs(String cxbs) {
 		this.cxbs = cxbs;
 	}
+    /**
+     * @return the zjmc
+     */
+    public String getZjmc() {
+        return zjmc;
+    }
+    /**
+     * @param zjmc the zjmc to set
+     */
+    public void setZjmc(String zjmc) {
+        this.zjmc = zjmc;
+    }
+    /**
+     * @return the vdef1
+     */
+    public String getVdef1() {
+        return vdef1;
+    }
+    /**
+     * @param vdef1 the vdef1 to set
+     */
+    public void setVdef1(String vdef1) {
+        this.vdef1 = vdef1;
+    }
+    /**
+     * @return the vdef2
+     */
+    public String getVdef2() {
+        return vdef2;
+    }
+    /**
+     * @param vdef2 the vdef2 to set
+     */
+    public void setVdef2(String vdef2) {
+        this.vdef2 = vdef2;
+    }
 	
 	
 	

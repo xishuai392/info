@@ -56,7 +56,8 @@ public class ScanContorller {
     public ResponseEntity<String> upload(@RequestParam(value = "upload",
             required = true) MultipartFile file, @RequestParam(
             value = "sqrxxId", required = true) String sqrxxId, @RequestParam(
-            value = "mc", required = true) String mc,
+            value = "mc", required = true) String mc, @RequestParam(
+            value = "fjlx", required = true) String fjlx,
             HttpServletRequest request, ModelMap model) throws Exception {
 
         HttpHeaders responseHeaders = new HttpHeaders();
@@ -97,6 +98,7 @@ public class ScanContorller {
             sqrxxfjDto.setDz(imagePath.substring(imagePath
                     .indexOf("scanImages") + 10));
             sqrxxfjDto.setMc(mc);
+            sqrxxfjDto.setFjlx(fjlx);
             sqrxxfjDto.setSqrId(sqrxxId);
             sqrxxfjService.add(sqrxxfjDto);
         }
@@ -109,6 +111,7 @@ public class ScanContorller {
 
         outmap.put("success", true);
         outmap.put("id", uuid);
+        outmap.put("fjlx", fjlx);
         outmap.put("mc", sqrxxfjDto.getMc());
         outmap.put("dz", sqrxxfjDto.getDz());
         return new ResponseEntity<String>(JSONUtils.toJSONString(outmap),
@@ -167,6 +170,7 @@ public class ScanContorller {
 
         TSqrxxfjPO sqrxxfjDto = new TSqrxxfjPO();
         sqrxxfjDto.setId(uuid);
+        sqrxxfjDto.setFjlx(reqInfo.getFjlx());
         sqrxxfjDto
                 .setDz(imagePath.substring(imagePath.indexOf("scanImages") + 10));
         sqrxxfjDto.setMc(reqInfo.getFileName());

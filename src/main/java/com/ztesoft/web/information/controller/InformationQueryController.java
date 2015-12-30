@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.exception.ExceptionHandler;
@@ -102,9 +103,10 @@ public class InformationQueryController {
     private ITSqrxxService sqrxxService;
 
     @RequestMapping("index")
-    public String index(Model model) {
-
-        return "/information/jsp/infoQuery";
+    public ModelAndView index(Model model) {
+        ModelAndView view = new ModelAndView("/information/jsp/infoQuery");
+        view.addObject("thirdPartyZzrkUrl", MessageResourceUtils.getMessage("ThirdParty.zzrk.url"));
+        return view;
     }
 
     /**
@@ -182,7 +184,7 @@ public class InformationQueryController {
         List<Map<String, String>> czrkbaseInfoList = InfoXmlParser
                 .parserResultVO(czrkVO);
 
-        // 最终返回giel前台的结果集
+        // 最终返回给前台的结果集
         List<QueryResultInfo> queryResultInfoList = new ArrayList<QueryResultInfo>();
         if (czrkbaseInfoList.size() > 0) {
 
@@ -245,9 +247,22 @@ public class InformationQueryController {
             }
         }
 
+        
+        
+        {
+            QueryResultInfo resultInfo = new QueryResultInfo();
+            resultInfo.setAddress("");// 户籍详细地址
+            resultInfo.setIdCardNum(pid);
+            resultInfo.setIsHavingTR("已办证");
+            resultInfo.setName("");// 姓名
+            resultInfo.setPopulationType("暂住人口");
+            queryResultInfoList.add(resultInfo);
+        }
+        
         /**
          * 查询有办理过暂居住证的
          */
+        /************默认是有暂口数据的
         String resultLDRK_JBXX = InfoRbspClient.queryLDRK_JBXXInfo(auditUserPo,
                 pid, null);
         InfoResultVO ldrk_jbxxVO = InfoXmlParser.parserXML(resultLDRK_JBXX);
@@ -309,6 +324,7 @@ public class InformationQueryController {
 
             }
         }
+        */
 
         /************************ Get drag data end ********************************/
 
@@ -340,7 +356,7 @@ public class InformationQueryController {
         permanentPopulationInfo.setDyrq(DateUtils.date2String(new Date(),
                 MessageResourceUtils.getMessage("Dyrq.format")));
 
-        // PC端查询 10：终端，20：pc端
+        // PC端查询 10：终端，20：pc端,30:网上查询
         buildCZRKInfo(reqInfo, request, auditUserPo, permanentPopulationInfo,
                 "20");
 
@@ -711,8 +727,8 @@ public class InformationQueryController {
         familyInfoFather.setRelationType("父母");
         familyInfoFather.setRelationShip("父亲");
         if (StringUtils.isNotBlank(rowInfoMap.get("FA_PID"))) {
-            // 10：终端，20：pc端
-            if ("10".equals(cxbs)) {
+            // 10：终端，20：pc端,30:网上查询
+            if ("10".equals(cxbs) || "30".equals(cxbs)) {
                 familyInfoFather.setIdCardNum(rowInfoMap.get("FA_PID"));
             }
             else {
@@ -736,8 +752,8 @@ public class InformationQueryController {
         familyInfoMother.setRelationType("父母");
         familyInfoMother.setRelationShip("母亲");
         if (StringUtils.isNotBlank(rowInfoMap.get("MA_PID"))) {
-            // 10：终端，20：pc端
-            if ("10".equals(cxbs)) {
+            // 10：终端，20：pc端,30:网上查询
+            if ("10".equals(cxbs) || "30".equals(cxbs)) {
                 familyInfoMother.setIdCardNum(rowInfoMap.get("MA_PID"));
             }
             else {
@@ -759,6 +775,18 @@ public class InformationQueryController {
         FamilyInfo familyInfoSpouse = new FamilyInfo();
         familyInfoSpouse.setRelationType("配偶");
         familyInfoSpouse.setIdCardNum(rowInfoMap.get("PO_PID"));
+        if (StringUtils.isNotBlank(rowInfoMap.get("PO_PID"))) {
+            // 10：终端，20：pc端,30:网上查询
+            if ("10".equals(cxbs) || "30".equals(cxbs)) {
+                familyInfoSpouse.setIdCardNum(rowInfoMap.get("PO_PID"));
+            }
+            else {
+                familyInfoSpouse.setIdCardNum("<a href=\"#\" pid=\""
+                        + rowInfoMap.get("PO_PID") + "\">"
+                        + rowInfoMap.get("PO_PID") + "</a>");
+            }
+
+        }
         if ("男".equals(TransUtils.transSex(rowInfoMap.get("GENDER")))) {
             familyInfoSpouse.setRelationShip("妻子");
         }
@@ -780,6 +808,18 @@ public class InformationQueryController {
         familyInfoKeeper.setRelationType("监护人");
         familyInfoKeeper.setRelationShip("监护人1");
         familyInfoKeeper.setIdCardNum(rowInfoMap.get("GURARDIAN_1_PID"));
+        if (StringUtils.isNotBlank(rowInfoMap.get("GURARDIAN_1_PID"))) {
+            // 10：终端，20：pc端,30:网上查询
+            if ("10".equals(cxbs) || "30".equals(cxbs)) {
+                familyInfoKeeper.setIdCardNum(rowInfoMap.get("GURARDIAN_1_PID"));
+            }
+            else {
+                familyInfoKeeper.setIdCardNum("<a href=\"#\" pid=\""
+                        + rowInfoMap.get("GURARDIAN_1_PID") + "\">"
+                        + rowInfoMap.get("GURARDIAN_1_PID") + "</a>");
+            }
+        }
+        
         familyInfoKeeper.setCertificateType(rowInfoMap
                 .get("GURARDIAN_1_CARD_TYPE"));
         familyInfoKeeper.setCertificateNum(rowInfoMap
@@ -794,6 +834,18 @@ public class InformationQueryController {
         familyInfoKeeperTwo.setRelationType("监护人");
         familyInfoKeeperTwo.setRelationShip("监护人2");
         familyInfoKeeperTwo.setIdCardNum(rowInfoMap.get("GURARDIAN_2_PID"));
+        if (StringUtils.isNotBlank(rowInfoMap.get("GURARDIAN_2_PID"))) {
+            // 10：终端，20：pc端,30:网上查询
+            if ("10".equals(cxbs) || "30".equals(cxbs)) {
+                familyInfoKeeperTwo.setIdCardNum(rowInfoMap.get("GURARDIAN_2_PID"));
+            }
+            else {
+                familyInfoKeeperTwo.setIdCardNum("<a href=\"#\" pid=\""
+                        + rowInfoMap.get("GURARDIAN_2_PID") + "\">"
+                        + rowInfoMap.get("GURARDIAN_2_PID") + "</a>");
+            }
+        }
+        
         familyInfoKeeperTwo.setCertificateType(rowInfoMap
                 .get("GURARDIAN_2_CARD_TYPE"));
         familyInfoKeeperTwo.setCertificateNum(rowInfoMap
@@ -843,6 +895,17 @@ public class InformationQueryController {
                     }
                     // TODO 惜帅 子女信息
                     familyInfoChild.setIdCardNum(oneChildMap.get("PID"));
+                    if (StringUtils.isNotBlank(oneChildMap.get("PID"))) {
+                        // 10：终端，20：pc端,30:网上查询
+                        if ("10".equals(cxbs) || "30".equals(cxbs)) {
+                            familyInfoChild.setIdCardNum(oneChildMap.get("PID"));
+                        }
+                        else {
+                            familyInfoChild.setIdCardNum("<a href=\"#\" pid=\""
+                                    + oneChildMap.get("PID") + "\">"
+                                    + oneChildMap.get("PID") + "</a>");
+                        }
+                    }
                     familyInfoChild.setCertificateType("身份证");
                     familyInfoChild.setCertificateNum(oneChildMap.get("PID"));
                     familyInfoChild.setForeignFirstName("");

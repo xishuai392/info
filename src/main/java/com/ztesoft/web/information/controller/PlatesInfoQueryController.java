@@ -17,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.exception.ExceptionHandler;
@@ -70,9 +71,10 @@ public class PlatesInfoQueryController {
     InformationQueryController informationQueryController;
 
     @RequestMapping("index")
-    public String index(Model model) {
-
-        return "/information/jsp/platesInfoQuery";
+    public ModelAndView index(Model model) {
+        ModelAndView view = new ModelAndView("/information/jsp/platesInfoQuery");
+        view.addObject("thirdPartyZzrkUrl", MessageResourceUtils.getMessage("ThirdParty.zzrk.url"));
+        return view;
     }
 
     private AuditUserPO defaultUser() {
@@ -139,7 +141,7 @@ public class PlatesInfoQueryController {
             sqrxxRecord.setZjlx("10");
             sqrxxRecord.setXm(reqInfo.getName());
             sqrxxRecord.setCxsqrlx("50");// 查询申请人类型（10：律师，20：党政军机关，30：司法机关，40：企事业单位，50：个人，60：人民团体，70：其他）
-            sqrxxRecord.setCxbs("10");// 10：终端，20：pc端
+            sqrxxRecord.setCxbs("10");// 10：终端，20：pc端,30:网上查询
 
             // sqrxxRecord.setCzdw(MessageResourceUtils
             // .getMessage("Plates.UserDeptId"));
@@ -189,7 +191,7 @@ public class PlatesInfoQueryController {
                 .getMessage("Detail.tipMessage"));
         permanentPopulationInfo.setDyrq(DateUtils.date2String(new Date(),
                 MessageResourceUtils.getMessage("Dyrq.format")));
-        // PC端查询 10：终端，20：pc端
+        // PC端查询  10：终端，20：pc端,30:网上查询
         informationQueryController.buildCZRKInfo(reqInfo, request, auditUserPo,
                 permanentPopulationInfo, "10");
         return permanentPopulationInfo;

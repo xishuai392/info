@@ -5,6 +5,15 @@
  
 Ext.onReady(function() {
     var sqrxxPanel,zjPanel,ssxzlPanel,bcxrxxPanel,bcxrStore,bcxrGrid,changzhuWin,zanzhuWin,infoMainPanel;
+    var isClickFjlxBtn1 = false;
+    var isClickFjlxBtn2 = false;
+    var isClickFjlxBtn3 = false;
+    
+    //暂口信息查询外部第三方接口的URL
+    var baseUrl = Ext.get("thirdPartyZzrkUrl").getValue();
+    
+    //需要的附件类型组合
+    var needFjlxStr = "1";
     var LODOP;
     
     //被查询人信息主键——统计打印次数需要
@@ -162,8 +171,26 @@ Ext.onReady(function() {
             width: sqrxxPanelFieldWidth,
             store : new Ext.data.ArrayStore({
                 fields : ['value', 'text'],
-                data : [['10', '身份证'], ['20', '其他']]
-            })
+                data : [['10', '身份证'],['30', '军官证'], ['20', '其他']]
+            }),
+            listeners:{
+		         //scope: yourScope,
+		         'change': function(thiz,newValue ,oldValue ,eOpts ){
+		         		//console.log(thiz);console.log(newValue);console.log(oldValue);console.log(eOpts);
+		         		//如果选择“其他”，则显示证件类型（必填），否则隐藏
+		         		if('20'==newValue){
+		         			Ext.getCmp('sqr_zjmc').allowBlank = false;
+		         			Ext.getCmp('sqr_zjmc').show();
+		         		}else{
+		         			Ext.getCmp('sqr_zjmc').setValue('');
+		         			Ext.getCmp('sqr_zjmc').hide();
+		         			Ext.getCmp('sqr_zjmc').allowBlank = true;
+		         		}
+		         		var form = Ext.getCmp('card0').getForm();
+		         		//form.checkValidity();
+		         		form.isValid();
+		         }
+		    }
         },{
             fieldLabel : "姓名",
             xtype : "textfield",
@@ -185,22 +212,85 @@ Ext.onReady(function() {
             store : new Ext.data.ArrayStore({
                 fields : ['value', 'text'],
                 data : [['10', '律师'],['20', '党政军机关'],['30', '司法机关'],
-                	['40', '企事业单位'],['50', '个人'], ['60', '人民团体'],
-                	['70', '其他']]
-            })
+                	['40', '企事业单位'],['50', '个人'], ['60', '人民团体']]
+            }),
+            listeners:{
+		         //scope: yourScope,
+		         'change': function(thiz,newValue ,oldValue ,eOpts ){
+		         		//console.log(thiz);console.log(newValue);console.log(oldValue);console.log(eOpts);
+		         		
+		         		console.log(Ext.getCmp('sqr_cxrdw').getSubTplMarkup());
+		         		console.log(Ext.getCmp('sqr_cxsy').getSubTplMarkup());
+		         	
+		         		//除“个人”外，申请查询人单位、查询事由 必填
+		         		if('50'==newValue){
+		         			Ext.getCmp('sqr_cxrdw').allowBlank = true;
+		         			Ext.getCmp('sqr_cxsy').allowBlank = true;
+		         			Ext.getCmp('sqr_cxrdw').afterSubTpl='';
+		         			Ext.getCmp('sqr_cxsy').afterSubTpl='';
+		         		}else{
+		         			Ext.getCmp('sqr_cxrdw').allowBlank = false;
+		         			Ext.getCmp('sqr_cxsy').allowBlank = false;
+		         			Ext.getCmp('sqr_cxrdw').afterSubTpl=WEBConstants.REQUIRED;
+		         			Ext.getCmp('sqr_cxsy').afterSubTpl=WEBConstants.REQUIRED;
+		         		}
+		         		
+		         		//根据不同申请人类型，需要上传不同的附件，展示不同的按钮
+		         		if('20'==newValue||'40'==newValue||'60'==newValue){
+		         			//大类1
+		         			needFjlxStr = "1,2";
+		         			Ext.getCmp('fjlxBtn2').show();
+		         			Ext.getCmp('fjlxBtn3').hide();
+		         		}
+		         		if('30'==newValue){
+		         			//大类2
+		         			needFjlxStr = "1,2";
+		         			Ext.getCmp('fjlxBtn2').show();
+		         			Ext.getCmp('fjlxBtn3').hide();
+		         		}
+		         		if('10'==newValue){
+		         			//大类3
+		         			needFjlxStr = "1,2,3";
+		         			Ext.getCmp('fjlxBtn2').show();
+		         			Ext.getCmp('fjlxBtn3').show();
+		         		}
+		         		
+		         		if('50'==newValue){
+		         			//大类4
+		         			needFjlxStr = "1";
+		         			Ext.getCmp('fjlxBtn2').hide();
+		         			Ext.getCmp('fjlxBtn3').hide();
+		         		}
+		         		
+		         		var form = Ext.getCmp('card0').getForm();
+		         		//form.checkValidity();
+		         		form.isValid();
+		         }
+		    }
         },{
             fieldLabel : "申请查询人单位",
             xtype : "textfield",
+            id : 'sqr_cxrdw',
             width: sqrxxPanelFieldWidth,
             name : "cxrdw"
         },{
             fieldLabel : "查询事由",
             xtype : "textfield",
             grow      : true,
+            id : 'sqr_cxsy',
             width: sqrxxPanelFieldWidth,
             name : "cxsy"
         },{
-            fieldLabel : "cxbs",//查询标示
+            fieldLabel : "证件名称",
+            xtype : "textfield",
+            id : 'sqr_zjmc',
+            grow      : true,
+            hidden : true,
+            afterSubTpl : WEBConstants.REQUIRED,
+            width: sqrxxPanelFieldWidth,
+            name : "zjmc"
+        },{
+            fieldLabel : "cxbs",//查询标示  10：终端，20：pc端,30:网上查询
             xtype : "textfield",
             value : '20',
             width: sqrxxPanelFieldWidth,
@@ -213,6 +303,12 @@ Ext.onReady(function() {
             width: sqrxxPanelFieldWidth,
             hidden : true,
             name : "mainId"
+        },{
+        	xtype : 'textfield',
+        	name : 'fjlx',
+        	fieldLabel : "附件类型",
+        	hidden : true,
+        	id : 'fjlxId'
         }],
         // 重置 和下一步 按钮.
 	    buttons: [{
@@ -306,6 +402,11 @@ Ext.onReady(function() {
         	name : 'sqrxxId',
         	hidden : true,
         	id : 'fileUpload_sqrxxId'
+        },{
+        	xtype : 'textfield',
+        	name : 'fjlx',
+        	fieldLabel : "附件类型",
+        	hidden : true
         }],
         buttons : [
         	{
@@ -316,7 +417,14 @@ Ext.onReady(function() {
 	               var form = this.up('form').getForm();  
 	               //申请人信息表主键
 	               var sqrxxId = sqrxxPanel.getForm().findField('mainId').getValue();
+	               //附件类型
+	               var fjlx = sqrxxPanel.getForm().findField('fjlx').getValue();
+	               if(Ext.isEmpty(fjlx)){
+	               		ExtUtils.tip("错误","请先点击按钮选择附件类型..."); 
+	               		return ;
+	               }
 	               form.findField('sqrxxId').setValue(sqrxxId);
+	               form.findField('fjlx').setValue(fjlx);
 							
 	               if (form.isValid()) {  
 	                    form.submit({
@@ -328,7 +436,8 @@ Ext.onReady(function() {
 		                    	//加载图片
 				            	var thizImageModel = Ext.create("component.information.model.ImageModel");
 				            	thizImageModel.data.id = action.result.id;
-				            	thizImageModel.data.mc = action.result.mc;
+				            	thizImageModel.data.mc = form.findField('mc').getValue();
+				            	thizImageModel.data.fjlx = action.result.fjlx;
 				            	thizImageModel.data.url = ctx+'/scanImages'+action.result.dz;
 				            	
 								//console.log(thizImageModel);
@@ -358,7 +467,7 @@ Ext.onReady(function() {
     
     //上传的窗口
     var fileUploadWindow = Ext.create('Ext.window.Window',{
-    	title : '上传本地图片',
+    	title : '上传图片',
     	width : 400,
         height : 150,
         layout : 'fit',
@@ -381,6 +490,11 @@ Ext.onReady(function() {
     var saveImagesFn = function(btn, thizText){
     	//console.log(btn);console.log(thizText);
     	if('ok'==btn){
+    			if(Ext.isEmpty(sqrxxPanel.getForm().findField('fjlx').getValue())){
+               		ExtUtils.tip("错误","请先点击按钮选择附件类型..."); 
+               		return ;
+	            }
+    		
 				Ext.Msg.show({
 		            title : '请稍等',
 		            msg : '正在扫描,请稍等...',
@@ -415,6 +529,8 @@ Ext.onReady(function() {
 			        		//申请人信息表主键
 							sqrxxId : sqrxxPanel.getForm().findField('mainId').getValue(),
 							fileName : thizText,
+							//附件类型
+							fjlx : sqrxxPanel.getForm().findField('fjlx').getValue(),
 							imageBase64Str : imageBase64Str
 			        	};
 			        	var config = {
@@ -427,6 +543,7 @@ Ext.onReady(function() {
 				            	var thizImageModel = Ext.create("component.information.model.ImageModel");
 				            	thizImageModel.data.id = sqrxxfjDto.id;
 				            	thizImageModel.data.mc = sqrxxfjDto.mc;
+				            	thizImageModel.data.fjlx = sqrxxfjDto.fjlx;
 				            	thizImageModel.data.url = ctx+'/scanImages'+sqrxxfjDto.dz;
 				            	/**
 				            		{
@@ -519,198 +636,285 @@ Ext.onReady(function() {
 	    layout : 'border',
 	    items: [{ 
 	    	xtype : 'panel',
-	    	id: 'images-view',
 	    	region : 'center',
-	    	layout: 'fit',
-    		frame : false,
-    		items : Ext.create('Ext.view.View', {
-    			id : 'scanImagesView',
-	            store: imageStore,
-	            tpl: [
-	                '<tpl for=".">',
-	                    '<div class="thumb-wrap" id="{id}_div">',
-	                        '<div class="thumb"><img src="{url}" id="{id}_img" title="{mc}"></div>',
-	                        '<div style="padding-left: 3px;"><span class="x-editable">{mc}</span></div>',
-	                    '</div>',
-	                '</tpl>',
-	                '<div class="x-clear"></div>'
-	            ],
-	            multiSelect: true,
-	            height: 310,
-	            autoScroll : true,
-	            trackOver: false,
-	            overItemCls: 'x-item-over',
-	            itemSelector: 'div.thumb-wrap',
-	            emptyText: '请点击<开始扫描>按钮扫描图片...',
-	            plugins: [
-	                Ext.create('Ext.ux.DataView.DragSelector', {}),
-	                Ext.create('Ext.ux.DataView.LabelEditor', {
-	                	dataIndex: 'mc',
-	                	grow: true,
-            			selectOnFocus: true,
-	                	listeners: {
-					        complete : function(thiz, newValue, startValue, eOpts){
-					        	console.log("complete");
-					        	if(newValue !=startValue){
-					        		var params = {
-						        		//申请人信息附件表主键
-										id : thiz.activeRecord.data.id,
-										mc : newValue
-						        	};
-					        		var config = {
-					            		url : 'information/tsqrxxfj/update.do',
-							            params : params,
-							            timeout : 1200000, // 超时：20分钟
-							            callback : function(sqrxxfjDto){
-							            	//console.log(sqrxxfjDto);
-							            	ExtUtils.tip("提示","修改名称成功...");
-							            }
-							        };
-							        ExtUtils.doAjax(config);
-					        	}
-					        	//console.log(thiz.activeRecord);
-					        },
-					        staterestore : function( thiz, state, eOpts ){
-					        	console.log("staterestore");
-					        },
-					        statesave : function( thiz, state, eOpts ){
-					        	console.log("statesave");
-					        }
-					    }
-	                	})
-	            ],
-	            /**
-	            prepareData: function(data) {
-	                Ext.apply(data, {
-	                    mc: Ext.util.Format.ellipsis(data.mc, 15),
-	                    id: Ext.util.Format.fileSize(data.id)
-	                });
-	                return data;
-	            },
-	            **/
-	            listeners: {
-	                selectionchange: function(dv, nodes ){
-	                	
-	                    var l = nodes.length,
-	                        s = l !== 1 ? 's' : '';
-	                    //console.log(l);
-	                    //this.up('panel').setTitle('Simple DataView (' + l + ' item' + s + ' selected)');
-	                },
-	                itemdblclick : function(dv, record, item, index, e, eOpts){
-	                	console.log('dataview dbclick');
-	                	//console.log(record);
-	                	//console.log(item);
-	                	var id = record.data.id;
-	                	
-	                	
-	                	window.open(Ext.getDom(id+'_img').src);
-							
-
-	                	
-//	                	var custom = Ext.create('Ext.resizer.Resizer', {
-//					        target: id+"_img",
-//					        pinned:true,
-//					        minWidth:50,
-//					        minHeight: 50,
-//					        preserveRatio: true,
-//					        handles: 'all',
-//					        dynamic: true
-//					    });
-//					
-//					    var customEl = custom.getEl();
-//					    // move to the body to prevent overlap on my blog
-//					    document.body.insertBefore(customEl.dom, document.body.firstChild);
-//					
-//					    customEl.on('dblclick', function(){
-//					        customEl.hide(true);
-//					    });
-//	                	
-//					    customEl.center();
-	                	
-	                	
-	                	
-	                	
-//	                	Ext.create('Ext.resizer.Resizer', {
-//						    el: id+"_img",
-//						    handles: 'all',
-//						    minWidth: 200,
-//						    minHeight: 100,
-//						    maxWidth: 500,
-//						    maxHeight: 400,
-//						    pinned: true
-//						});
-	                	
-	                }
-	            }
-	        }),
-    		tbar: [ {
-		        text: '扫描仪上传', 
-		        scale   : 'medium',
-		        icon : ctx + '/common/images/barcode_scanner_24px.png',
-		        handler: function(){
-		        	Ext.MessageBox.prompt('扫描件', '请输入该扫描件的名称:', saveImagesFn);
-		        } 
-		    },'-',{
-		    	text: '本地图片上传', 
-		    	scale   : 'large',
-		    	icon: ctx + '/common/images/cloud_upload_32.png',
-		    	handler: function(){
-		        	fileUploadWindow.show();
-		        }
-		    },'->',
-		    /**
-		    '<span style="color:red">提示：鼠标移动到图片上可以放大预览，双击可以打开原始图片.</span>',
-		    */
-		    '<span style="color:red">提示：双击可以打开原始图片.</span>',
-		    '-',{
-		    	text : '删除',
-		    	icon : ctx + '/common/images/icons/delete.png',
-		        handler: function(){
-		        	Ext.MessageBox.confirm(StrConstants.HINT, StrConstants.HINT_DEL_CONFIRM, function(btn) {
-                        if (btn == 'yes') {
-                            var scanImagesView = Ext.getCmp('scanImagesView');
-				        	if(Ext.isObject(scanImagesView)){
-					        	var els = scanImagesView.getSelectedNodes();
-					        	if(els.length>0){
-					        		var records = scanImagesView.getRecords(els);
-					        		//console.log(records);
-					        		if(records.length>0){
-					        			var delIds = "" ;
-					        			Ext.Array.each(records, function(record, index, countriesItSelf) {
-										    //console.log(record);
-										    delIds += record.data.id+",";
-										});
-					        			var params = {
-					        				delIds : delIds
-					        			};
-						            	var config = {
-								            url : 'information/tsqrxxfj/deleteBatch.do',
+	    	layout : 'border',
+	    	tbar: ['<span style="color:red">请先点击选择附件类型—》</span>',
+	    		'-',{
+			        text: '工作证/身份证', 
+			        id : "fjlxBtn1",
+			        scale   : 'large',
+			        icon: ctx + '/common/images/Folder_Images_32px.png',
+			        handler: function(){
+			        	//工作证/身份证
+			        	if(!isClickFjlxBtn1){
+			        		//还没有选中
+			        		sqrxxPanel.getForm().findField('fjlx').setValue('1');
+			        		Ext.getCmp('fjlxBtn1').addCls('index-redFlag-btn-custom');
+			        		isClickFjlxBtn1 = true;
+			        		Ext.getCmp('fjlxBtn2').removeCls('index-redFlag-btn-custom');
+			        		Ext.getCmp('fjlxBtn3').removeCls('index-redFlag-btn-custom');
+			        	}else{
+			        		//已经选中过了，取消
+			        		sqrxxPanel.getForm().findField('fjlx').setValue('');
+			        		Ext.getCmp('fjlxBtn1').removeCls('index-redFlag-btn-custom');
+			        		isClickFjlxBtn1 = false;
+			        	}
+			        } 
+			    },'-',{
+			    	text: '介绍信', 
+			    	id : "fjlxBtn2",
+			    	hidden : true,
+			    	scale   : 'large',
+			    	icon: ctx + '/common/images/Folder_Images_32px.png',
+			    	handler: function(){
+			        	//介绍信
+			    		
+			    		if(!isClickFjlxBtn2){
+			        		//还没有选中
+			    			sqrxxPanel.getForm().findField('fjlx').setValue('2');
+			        		Ext.getCmp('fjlxBtn2').addCls('index-redFlag-btn-custom');
+			        		isClickFjlxBtn2 = true;
+			        		Ext.getCmp('fjlxBtn1').removeCls('index-redFlag-btn-custom');
+			        		Ext.getCmp('fjlxBtn3').removeCls('index-redFlag-btn-custom');
+			        	}else{
+			        		//已经选中过了，取消
+			        		sqrxxPanel.getForm().findField('fjlx').setValue('');
+			        		Ext.getCmp('fjlxBtn2').removeCls('index-redFlag-btn-custom');
+			        		isClickFjlxBtn2 = false;
+			        	}
+			        }
+			    },'-',{
+			    	text: '委托协议/受理通知书', 
+			    	id : "fjlxBtn3",
+			    	hidden : true,
+			    	scale   : 'large',
+			    	icon: ctx + '/common/images/Folder_Images_32px.png',
+			    	handler: function(){
+			        	//委托协议/受理通知书
+			    		
+			    		if(!isClickFjlxBtn3){
+			        		//还没有选中
+			    			sqrxxPanel.getForm().findField('fjlx').setValue('3');
+			        		Ext.getCmp('fjlxBtn3').addCls('index-redFlag-btn-custom');
+			        		isClickFjlxBtn3 = true;
+			        		Ext.getCmp('fjlxBtn1').removeCls('index-redFlag-btn-custom');
+			        		Ext.getCmp('fjlxBtn2').removeCls('index-redFlag-btn-custom');
+			        	}else{
+			        		//已经选中过了，取消
+			        		sqrxxPanel.getForm().findField('fjlx').setValue('');
+			        		Ext.getCmp('fjlxBtn3').removeCls('index-redFlag-btn-custom');
+			        		isClickFjlxBtn3 = false;
+			        	}
+			        }
+			    }
+	    	],
+	    	items : [{ 
+		    	xtype : 'panel',
+		    	id: 'images-view',
+		    	region : 'center',
+		    	layout: 'fit',
+	    		frame : false,
+	    		items : Ext.create('Ext.view.View', {
+	    			id : 'scanImagesView',
+		            store: imageStore,
+		            tpl: [
+		                '<tpl for=".">',
+		                    '<div class="thumb-wrap" id="{id}_div">',
+		                        '<div class="thumb"><img src="{url}" id="{id}_img" title="{mc}"></div>',
+		                        '<div style="padding-left: 3px;"><span class="x-editable">{mc}</span></div>',
+		                    '</div>',
+		                '</tpl>',
+		                '<div class="x-clear"></div>'
+		            ],
+		            multiSelect: true,
+		            height: 310,
+		            autoScroll : true,
+		            trackOver: false,
+		            overItemCls: 'x-item-over',
+		            itemSelector: 'div.thumb-wrap',
+		            emptyText: '请点击<开始扫描>按钮扫描图片...',
+		            plugins: [
+		                Ext.create('Ext.ux.DataView.DragSelector', {}),
+		                Ext.create('Ext.ux.DataView.LabelEditor', {
+		                	dataIndex: 'mc',
+		                	grow: true,
+	            			selectOnFocus: true,
+		                	listeners: {
+						        complete : function(thiz, newValue, startValue, eOpts){
+						        	console.log("complete");
+						        	if(newValue !=startValue){
+						        		var params = {
+							        		//申请人信息附件表主键
+											id : thiz.activeRecord.data.id,
+											mc : newValue
+							        	};
+						        		var config = {
+						            		url : 'information/tsqrxxfj/update.do',
 								            params : params,
-								            callback : function(jsonData){
-								            	imageStore.remove(records);
-								            	ExtUtils.tip("提示","删除成功...");
+								            timeout : 1200000, // 超时：20分钟
+								            callback : function(sqrxxfjDto){
+								            	//console.log(sqrxxfjDto);
+								            	ExtUtils.tip("提示","修改名称成功...");
 								            }
 								        };
 								        ExtUtils.doAjax(config);
-					        			
-					        		}else{
-					        			ExtUtils.tip("提示","您还未选中扫描的图片...");
-					        		}
+						        	}
+						        	//console.log(thiz.activeRecord);
+						        },
+						        staterestore : function( thiz, state, eOpts ){
+						        	console.log("staterestore");
+						        },
+						        statesave : function( thiz, state, eOpts ){
+						        	console.log("statesave");
+						        }
+						    }
+		                	})
+		            ],
+		            /**
+		            prepareData: function(data) {
+		                Ext.apply(data, {
+		                    mc: Ext.util.Format.ellipsis(data.mc, 15),
+		                    id: Ext.util.Format.fileSize(data.id)
+		                });
+		                return data;
+		            },
+		            **/
+		            listeners: {
+		                selectionchange: function(dv, nodes ){
+		                	
+		                    var l = nodes.length,
+		                        s = l !== 1 ? 's' : '';
+		                    //console.log(l);
+		                    //this.up('panel').setTitle('Simple DataView (' + l + ' item' + s + ' selected)');
+		                },
+		                itemdblclick : function(dv, record, item, index, e, eOpts){
+		                	console.log('dataview dbclick');
+		                	//console.log(record);
+		                	//console.log(item);
+		                	var id = record.data.id;
+		                	
+		                	
+		                	window.open(Ext.getDom(id+'_img').src);
+								
+	
+		                	
+	//	                	var custom = Ext.create('Ext.resizer.Resizer', {
+	//					        target: id+"_img",
+	//					        pinned:true,
+	//					        minWidth:50,
+	//					        minHeight: 50,
+	//					        preserveRatio: true,
+	//					        handles: 'all',
+	//					        dynamic: true
+	//					    });
+	//					
+	//					    var customEl = custom.getEl();
+	//					    // move to the body to prevent overlap on my blog
+	//					    document.body.insertBefore(customEl.dom, document.body.firstChild);
+	//					
+	//					    customEl.on('dblclick', function(){
+	//					        customEl.hide(true);
+	//					    });
+	//	                	
+	//					    customEl.center();
+		                	
+		                	
+		                	
+		                	
+	//	                	Ext.create('Ext.resizer.Resizer', {
+	//						    el: id+"_img",
+	//						    handles: 'all',
+	//						    minWidth: 200,
+	//						    minHeight: 100,
+	//						    maxWidth: 500,
+	//						    maxHeight: 400,
+	//						    pinned: true
+	//						});
+		                	
+		                }
+		            }
+		        }),
+	    		tbar: [ {
+			        text: '扫描仪上传', 
+			        scale   : 'medium',
+			        icon : ctx + '/common/images/barcode_scanner_24px.png',
+			        handler: function(){
+			        	//附件类型
+		                var fjlx = sqrxxPanel.getForm().findField('fjlx').getValue();
+		                if(Ext.isEmpty(fjlx)){
+		               		ExtUtils.tip("错误","请先点击按钮选择附件类型..."); 
+		               		return ;
+		                }
+			        	Ext.MessageBox.prompt('扫描件', '请输入该扫描件的名称:', saveImagesFn);
+			        } 
+			    },'-',{
+			    	text: '本地图片上传', 
+			    	scale   : 'large',
+			    	icon: ctx + '/common/images/cloud_upload_32.png',
+			    	handler: function(){
+			    		//附件类型
+		                var fjlx = sqrxxPanel.getForm().findField('fjlx').getValue();
+		                if(Ext.isEmpty(fjlx)){
+		               		ExtUtils.tip("错误","请先点击按钮选择附件类型..."); 
+		               		return ;
+		                }
+			        	fileUploadWindow.show();
+			        }
+			    },'->',
+			    /**
+			    '<span style="color:red">提示：鼠标移动到图片上可以放大预览，双击可以打开原始图片.</span>',
+			    */
+			    '<span style="color:red">提示：双击可以打开原始图片.</span>',
+			    '-',{
+			    	text : '删除',
+			    	icon : ctx + '/common/images/icons/delete.png',
+			        handler: function(){
+			        	Ext.MessageBox.confirm(StrConstants.HINT, StrConstants.HINT_DEL_CONFIRM, function(btn) {
+	                        if (btn == 'yes') {
+	                            var scanImagesView = Ext.getCmp('scanImagesView');
+					        	if(Ext.isObject(scanImagesView)){
+						        	var els = scanImagesView.getSelectedNodes();
+						        	if(els.length>0){
+						        		var records = scanImagesView.getRecords(els);
+						        		//console.log(records);
+						        		if(records.length>0){
+						        			var delIds = "" ;
+						        			Ext.Array.each(records, function(record, index, countriesItSelf) {
+											    //console.log(record);
+											    delIds += record.data.id+",";
+											});
+						        			var params = {
+						        				delIds : delIds
+						        			};
+							            	var config = {
+									            url : 'information/tsqrxxfj/deleteBatch.do',
+									            params : params,
+									            callback : function(jsonData){
+									            	imageStore.remove(records);
+									            	ExtUtils.tip("提示","删除成功...");
+									            }
+									        };
+									        ExtUtils.doAjax(config);
+						        			
+						        		}else{
+						        			ExtUtils.tip("提示","您还未选中扫描的图片...");
+						        		}
+						        	}else{
+						        		ExtUtils.tip("提示","您还未选中扫描的图片...");
+						        	}
+						        	//console.log(els);
+						        	
 					        	}else{
-					        		ExtUtils.tip("提示","您还未选中扫描的图片...");
+					        		ExtUtils.tip("提示","扫描图片展示区域异常...");
 					        	}
-					        	//console.log(els);
-					        	
-				        	}else{
-				        		ExtUtils.tip("提示","扫描图片展示区域异常...");
-				        	}
-                        	
-                        }
-
-                    });
-                        
-		        	
-		        } 
+	                        	
+	                        }
+	
+	                    });
+	                        
+			        	
+			        } 
+			    }]
 		    }]
 	    },{ 
 	    	xtype : 'panel',
@@ -847,7 +1051,51 @@ Ext.onReady(function() {
 	        text: '下一步',
 	        iconCls : 'x-btn-icon-el x-tbar-page-next',
 	        formBind: true, //only enabled once the form is valid
+	        
 	        handler: function() {
+	        	//判断是否该上传的附件都上传了=====
+	        	if(imageStore.getCount()==0){
+	        		ExtUtils.tip("错误","按要求上传相应的附件..."); 
+	        		return ;
+	        	}
+	        	
+	        	
+	        	var needFjlxAry = needFjlxStr.split(',');
+	        	console.log(needFjlxAry.length);
+	        	var hasFjlxAry = new Array();
+	        	for(var j=0;j<needFjlxAry.length;j++){ 
+	        		hasFjlxAry[j]="false";
+	        	}
+	        	
+	        	for(var i =0;i<imageStore.getCount();i++){
+					var model = imageStore.getAt(i); //遍历每一行
+					console.log(model);
+					console.log(i+':'+model.data.fjlx);
+					hasFjlxAry[parseInt(model.data.fjlx)-1]="true";
+				}
+				console.log(hasFjlxAry);
+	        	
+				var valid = true;
+				var msg = "按要求上传[工作证/身份证]...";
+				for(var k=0;k<needFjlxAry.length;k++){ 
+					if("false"==hasFjlxAry[k]){
+						valid = false;
+						if(k==1){
+							msg = "按要求上传[介绍信]...";
+						}
+						if(k==2){
+							msg = "按要求上传[委托协议/受理通知书]...";
+						}
+						break;
+					}
+	        	}
+	        	
+	        	if(!valid){
+	        		ExtUtils.tip("错误",msg); 
+					return false;
+	        	}
+	        	
+	        	
 	        	var layout = infoMainPanel.getLayout();
 	        	
 	        	layout.setActiveItem(3);//下一步：被查询人信息
@@ -894,7 +1142,7 @@ Ext.onReady(function() {
     });
     
     
-    //3、介绍信及相关资料扫描
+    //3、介绍信及相关资料扫描===没用
     ssxzlPanel = Ext.create('Ext.Panel', { 
 	    title: '介绍信及相关资料扫描', 
 	    id : 'card2', 
@@ -1154,6 +1402,23 @@ Ext.onReady(function() {
                     	}
                     	
                     	if('暂住人口'==grid.getStore().getAt(rowIndex).data.populationType){
+                    		//TODO @惜帅，20151230 调用外部接口，打开新页面
+                    		var width = screen.availWidth-3;
+							var height = screen.availHeight-20;
+							var left = -4;
+							var top = -4;  
+							
+							var url = baseUrl + grid.getStore().getAt(rowIndex).data.idCardNum;
+							var zankouMainWin = window.open(url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
+							zankouMainWin.moveTo(left, top);
+							zankouMainWin.focus();
+							//self.blur();
+							//window.onfocus=function (){zankouMainWin.focus();};
+      						//window.onclick=function (){zankouMainWin.focus();};
+                    	}
+                    	
+                    	/**
+                    	if('暂住人口'==grid.getStore().getAt(rowIndex).data.populationType){
                     		var config = {
 					            url : 'information/queryZZRKinfo.do',
 					            params : {
@@ -1175,7 +1440,7 @@ Ext.onReady(function() {
 					        };
 					        ExtUtils.doAjax(config);
                     	}
-                    	
+                    	**/
         
                     	
                     } 
@@ -1361,13 +1626,16 @@ Ext.onReady(function() {
 	'	<div id="part4Div">',
 	'	<table class="tb2" width=100%>',
 	'		<tr>',
-	'			<td colspan=6  class="textInfoLeft">{[values.tipMessage]}</td>',
-	'			<td class="textInfoRight">操作单位：</td>',
-	'			<td class="textInfoLeft">{[values.czdw]}</td>',
-	'			<td class="textInfoRight">操作人：</td>',
-	'			<td class="textInfoLeft">{[values.czr]}</td>',
-	'			<td class="textInfoRight">打印日期：</td>',
-	'			<td class="textInfoLeft">{[values.dyrq]}</td>',
+	'			<td colspan=18  class="textInfoLeft">{[values.tipMessage]}</td>',
+	'		</tr>',
+	'		<tr>',
+	'			<td colspan=4 class="textInfoRight">&nbsp;</td>',
+	'			<td colspan=2 class="textInfoRight">操作单位：</td>',
+	'			<td colspan=4 class="textInfoLeft">{[values.czdw]}</td>',
+	'			<td colspan=2 class="textInfoRight">操作人：</td>',
+	'			<td colspan=2 class="textInfoLeft">{[values.czr]}</td>',
+	'			<td colspan=2 class="textInfoRight">打印日期：</td>',
+	'			<td colspan=2 class="textInfoLeft">{[values.dyrq]}</td>',
 	'		</tr>',
 	'	</table>',
 	'	</div>',
@@ -1581,13 +1849,16 @@ Ext.onReady(function() {
 	'	<div id="part3Div">',
 	'	<table class="tb2" width=100%>',
 	'		<tr>',
-	'			<td colspan=6  class="textInfoLeft">{[values.tipMessage]}</td>',
-	'			<td class="textInfoRight">操作单位：</td>',
-	'			<td class="textInfoLeft">{[values.czdw]}</td>',
-	'			<td class="textInfoRight">操作人：</td>',
-	'			<td class="textInfoLeft">{[values.czr]}</td>',
-	'			<td class="textInfoRight">打印日期：</td>',
-	'			<td class="textInfoLeft">{[values.dyrq]}</td>',
+	'			<td colspan=18  class="textInfoLeft">{[values.tipMessage]}</td>',
+	'		</tr>',
+	'		<tr>',
+	'			<td colspan=4 class="textInfoRight">&nbsp;</td>',
+	'			<td colspan=2 class="textInfoRight">操作单位：</td>',
+	'			<td colspan=4 class="textInfoLeft">{[values.czdw]}</td>',
+	'			<td colspan=2 class="textInfoRight">操作人：</td>',
+	'			<td colspan=2 class="textInfoLeft">{[values.czr]}</td>',
+	'			<td colspan=2 class="textInfoRight">打印日期：</td>',
+	'			<td colspan=2 class="textInfoLeft">{[values.dyrq]}</td>',
 	'		</tr>',
 	'	</table>',
 	'	</div>',
@@ -1710,6 +1981,18 @@ Ext.onReady(function() {
     	imageStore.removeAll();
     	bcxrStore.removeAll();
     	bcxrxxId = "";
+    	needFjlxStr = "1";
+    	isClickFjlxBtn1 = false;
+    	isClickFjlxBtn2 = false;
+    	isClickFjlxBtn3 = false;
+    	
+    	Ext.getCmp('fjlxBtn2').hide();
+		Ext.getCmp('fjlxBtn3').hide();
+		Ext.getCmp('fjlxBtn1').removeCls('index-redFlag-btn-custom');
+		Ext.getCmp('fjlxBtn2').removeCls('index-redFlag-btn-custom');
+		Ext.getCmp('fjlxBtn3').removeCls('index-redFlag-btn-custom');
+		Ext.getCmp('fjlxBtn2').hide();
+		Ext.getCmp('fjlxBtn3').hide();
     };
 
 });

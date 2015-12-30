@@ -152,7 +152,7 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
                 editable : false,
                 store : new Ext.data.ArrayStore({
                     fields : ['value', 'text'],
-                    data : [['10', '身份证'], ['20', '其他']]
+                    data : [['10', '身份证'],['30', '军官证'], ['20', '其他']]
                 })
             }, {
                 fieldLabel : "查询类型",

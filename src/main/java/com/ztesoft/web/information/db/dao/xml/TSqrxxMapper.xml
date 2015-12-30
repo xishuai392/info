@@ -13,9 +13,12 @@
   	<result column="CZDW" property="czdw" jdbcType="VARCHAR" />
   	<result column="CZR" property="czr" jdbcType="VARCHAR" />
   	<result column="CXBS" property="cxbs" jdbcType="VARCHAR" />
+  <result column="ZJMC" property="zjmc" jdbcType="VARCHAR" />
+  	<result column="VDEF1" property="vdef1" jdbcType="VARCHAR" />
+  	<result column="VDEF2" property="vdef2" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-  	ID,ZJH,ZJLX,XM,CXSQRLX,CXRDW,CXSY,CXRQ,CZDW,CZR,CXBS
+  	ID,ZJH,ZJLX,XM,CXSQRLX,CXRDW,CXSY,CXRQ,CZDW,CZR,CXBS,ZJMC,VDEF1,VDEF2
   </sql>
   <sql id="Arg_Where_Clause" >
     <where >
@@ -133,8 +136,8 @@
 	where ID = #{id,jdbcType=VARCHAR}
   </select>
   <insert id="insert" parameterType="com.ztesoft.web.information.db.po.TSqrxxPO"  >
-		insert into T_SQRXX(ID,ZJH,ZJLX,XM,CXSQRLX,CXRDW,CXSY,CXRQ,CZDW,CZR,CXBS)
-		values (#{id,jdbcType=VARCHAR},#{zjh,jdbcType=VARCHAR},#{zjlx,jdbcType=VARCHAR},#{xm,jdbcType=VARCHAR},#{cxsqrlx,jdbcType=VARCHAR},#{cxrdw,jdbcType=VARCHAR},#{cxsy,jdbcType=VARCHAR},#{cxrq,jdbcType=VARCHAR},#{czdw,jdbcType=VARCHAR},#{czr,jdbcType=VARCHAR},#{cxbs,jdbcType=VARCHAR})
+		insert into T_SQRXX(ID,ZJH,ZJLX,XM,CXSQRLX,CXRDW,CXSY,CXRQ,CZDW,CZR,CXBS,ZJMC,VDEF1,VDEF2)
+		values (#{id,jdbcType=VARCHAR},#{zjh,jdbcType=VARCHAR},#{zjlx,jdbcType=VARCHAR},#{xm,jdbcType=VARCHAR},#{cxsqrlx,jdbcType=VARCHAR},#{cxrdw,jdbcType=VARCHAR},#{cxsy,jdbcType=VARCHAR},#{cxrq,jdbcType=VARCHAR},#{czdw,jdbcType=VARCHAR},#{czr,jdbcType=VARCHAR},#{cxbs,jdbcType=VARCHAR},#{zjmc,jdbcType=VARCHAR},#{vdef1,jdbcType=VARCHAR},#{vdef2,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ztesoft.web.information.db.po.TSqrxxPO">
 		insert into T_SQRXX
@@ -172,6 +175,15 @@
 		<if test="cxbs != null" >
 			CXBS,
 		</if>
+ 	<if test="zjmc != null" >
+			ZJMC,
+		</if>
+		<if test="vdef1 != null" >
+			VDEF1,
+		</if>
+		<if test="vdef2 != null" >
+			VDEF2,
+		</if>
  	</trim>
 	<trim prefix="values (" suffix=")" suffixOverrides="," >
 		<if test="id != null" >
@@ -206,6 +218,15 @@
 		</if>
 		<if test="cxbs != null" >
 			#{cxbs,jdbcType=VARCHAR},
+		</if>
+ 	<if test="zjmc != null" >
+			#{zjmc,jdbcType=VARCHAR},
+		</if>
+		<if test="vdef1 != null" >
+			#{vdef1,jdbcType=VARCHAR},
+		</if>
+		<if test="vdef2 != null" >
+			#{vdef2,jdbcType=VARCHAR},
 		</if>
  	</trim> 	
   </insert>	
@@ -247,7 +268,16 @@
 			CZR= #{record.czr,jdbcType=VARCHAR},
 		</if>
 		<if test="record.cxbs != null" >
-			CXBS= #{record.cxbs,jdbcType=VARCHAR}
+			CXBS= #{record.cxbs,jdbcType=VARCHAR},
+		</if>
+		<if test="record.zjmc != null" >
+			ZJMC= #{record.zjmc,jdbcType=VARCHAR},
+		</if>
+		<if test="record.vdef1 != null" >
+			VDEF1= #{record.vdef1,jdbcType=VARCHAR},
+		</if>
+		<if test="record.vdef2 != null" >
+			VDEF2= #{record.vdef2,jdbcType=VARCHAR}
 		</if>
     </set>
     <if test="_parameter != null" >
@@ -267,7 +297,10 @@
 		CXRQ = #{record.cxrq,jdbcType=VARCHAR},
 		CZDW = #{record.czdw,jdbcType=VARCHAR},
 		CZR = #{record.czr,jdbcType=VARCHAR},
-		CXBS = #{record.cxbs,jdbcType=VARCHAR}
+		CXBS = #{record.cxbs,jdbcType=VARCHAR},
+		ZJMC = #{record.zjmc,jdbcType=VARCHAR},
+		VDEF1 = #{record.vdef1,jdbcType=VARCHAR},
+		VDEF2 = #{record.vdef2,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Arg_Where_Clause" />
     </if>
@@ -303,7 +336,16 @@
 		CZR = #{czr,jdbcType=VARCHAR},
 	</if>
 	<if test="cxbs != null" >
-		CXBS = #{cxbs,jdbcType=VARCHAR}
+		CXBS = #{cxbs,jdbcType=VARCHAR},
+	</if>
+	<if test="zjmc != null" >
+		ZJMC = #{zjmc,jdbcType=VARCHAR},
+	</if>
+	<if test="vdef1 != null" >
+		VDEF1 = #{vdef1,jdbcType=VARCHAR},
+	</if>
+	<if test="vdef2 != null" >
+		VDEF2 = #{vdef2,jdbcType=VARCHAR}
 	</if>
 	</set >
 	 where ID = #{id,jdbcType=VARCHAR}
@@ -320,7 +362,10 @@
 			CXRQ = #{cxrq,jdbcType=VARCHAR},
 			CZDW = #{czdw,jdbcType=VARCHAR},
 			CZR = #{czr,jdbcType=VARCHAR},
-			CXBS = #{cxbs,jdbcType=VARCHAR}
+			CXBS = #{cxbs,jdbcType=VARCHAR},
+			ZJMC = #{zjmc,jdbcType=VARCHAR},
+			VDEF1 = #{vdef1,jdbcType=VARCHAR},
+			VDEF2 = #{vdef2,jdbcType=VARCHAR}
 	 where ID = #{id,jdbcType=VARCHAR}
    </update>
   <delete id="deleteByArg" parameterType="com.ztesoft.web.information.db.arg.TSqrxxArg" >

@@ -178,9 +178,11 @@
             <img src="${ctx}/resources/images/logo-hs.png" alt=""/> -->
           </div>
           <div class="h-l-copyRight">
-            <p>Copyright &copy; 2014
+          	<!--
+            <p>Copyright &copy; 2015-2017
               <a href="http://www.baidu.com" title="点击进入xx官网">BAIDU.COM</a>
               |  技术支持：xx信息技术有限公司</p>
+             -->
           </div>
         </div>
       </div>

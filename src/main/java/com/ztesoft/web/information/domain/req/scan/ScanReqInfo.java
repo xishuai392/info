@@ -14,6 +14,23 @@ public class ScanReqInfo {
 
     // 图片 base64编码字符串
     private String imageBase64Str;
+    
+    //附件类型
+    private String fjlx;
+
+    /**
+     * @return the fjlx
+     */
+    public String getFjlx() {
+        return fjlx;
+    }
+
+    /**
+     * @param fjlx the fjlx to set
+     */
+    public void setFjlx(String fjlx) {
+        this.fjlx = fjlx;
+    }
 
     /**
      * @return the imageBase64Str

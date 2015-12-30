@@ -6,9 +6,12 @@
   	<result column="SQR_ID" property="sqrId" jdbcType="VARCHAR" />
   	<result column="MC" property="mc" jdbcType="VARCHAR" />
   	<result column="DZ" property="dz" jdbcType="VARCHAR" />
+  <result column="FJLX" property="fjlx" jdbcType="VARCHAR" />
+  	<result column="VDEF1" property="vdef1" jdbcType="VARCHAR" />
+  	<result column="VDEF2" property="vdef2" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-  	ID,SQR_ID,MC,DZ
+  	ID,SQR_ID,MC,DZ,FJLX,VDEF1,VDEF2
   </sql>
   <sql id="Arg_Where_Clause" >
     <where >
@@ -133,8 +136,8 @@
 	where SQR_ID = #{sqrId,jdbcType=VARCHAR}
   </select>
   <insert id="insert" parameterType="com.ztesoft.web.operateRecord.db.po.TSqrxxfjPO"  >
-		insert into T_SQRXXFJ(ID,SQR_ID,MC,DZ)
-		values (#{id,jdbcType=VARCHAR},#{sqrId,jdbcType=VARCHAR},#{mc,jdbcType=VARCHAR},#{dz,jdbcType=VARCHAR})
+		insert into T_SQRXXFJ(ID,SQR_ID,MC,DZ,FJLX,VDEF1,VDEF2)
+		values (#{id,jdbcType=VARCHAR},#{sqrId,jdbcType=VARCHAR},#{mc,jdbcType=VARCHAR},#{dz,jdbcType=VARCHAR},#{fjlx,jdbcType=VARCHAR},#{vdef1,jdbcType=VARCHAR},#{vdef2,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ztesoft.web.operateRecord.db.po.TSqrxxfjPO">
 		insert into T_SQRXXFJ
@@ -151,6 +154,15 @@
 		<if test="dz != null" >
 			DZ,
 		</if>
+ 	<if test="fjlx != null" >
+			FJLX,
+		</if>
+		<if test="vdef1 != null" >
+			VDEF1,
+		</if>
+		<if test="vdef2 != null" >
+			VDEF2,
+		</if>
  	</trim>
 	<trim prefix="values (" suffix=")" suffixOverrides="," >
 		<if test="id != null" >
@@ -165,10 +177,19 @@
 		<if test="dz != null" >
 			#{dz,jdbcType=VARCHAR},
 		</if>
+ 	<if test="fjlx != null" >
+			#{fjlx,jdbcType=VARCHAR},
+		</if>
+		<if test="vdef1 != null" >
+			#{vdef1,jdbcType=VARCHAR},
+		</if>
+		<if test="vdef2 != null" >
+			#{vdef2,jdbcType=VARCHAR},
+		</if>
  	</trim> 	
   </insert>	
   <insert id="insertBatch" parameterType="list"  >
-	insert into T_SQRXXFJ(ID,SQR_ID,MC,DZ)
+	insert into T_SQRXXFJ(ID,SQR_ID,MC,DZ,FJLX,VDEF1,VDEF2)
 	 values 
 	 <foreach collection="list" item="item" index="index" separator=",">
 	 		(#{item.id,jdbcType=VARCHAR},#{item.sqrId,jdbcType=VARCHAR},#{item.mc,jdbcType=VARCHAR},#{item.dz,jdbcType=VARCHAR})
@@ -184,7 +205,16 @@
 			MC= #{record.mc,jdbcType=VARCHAR},
 		</if>
 		<if test="record.dz != null" >
-			DZ= #{record.dz,jdbcType=VARCHAR}
+			DZ= #{record.dz,jdbcType=VARCHAR},
+		</if>
+		<if test="record.fjlx != null" >
+			FJLX= #{record.fjlx,jdbcType=VARCHAR},
+		</if>
+		<if test="record.vdef1 != null" >
+			VDEF1= #{record.vdef1,jdbcType=VARCHAR},
+		</if>
+		<if test="record.vdef2 != null" >
+			VDEF2= #{record.vdef2,jdbcType=VARCHAR}
 		</if>
     </set>
     <if test="_parameter != null" >
@@ -197,7 +227,10 @@
 		ID = #{record.id,jdbcType=VARCHAR},
 		SQR_ID = #{record.sqrId,jdbcType=VARCHAR},
 		MC = #{record.mc,jdbcType=VARCHAR},
-		DZ = #{record.dz,jdbcType=VARCHAR}
+		DZ = #{record.dz,jdbcType=VARCHAR},
+		FJLX = #{record.fjlx,jdbcType=VARCHAR},
+		VDEF1 = #{record.vdef1,jdbcType=VARCHAR},
+		VDEF2 = #{record.vdef2,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Arg_Where_Clause" />
     </if>
@@ -212,7 +245,16 @@
 		MC = #{mc,jdbcType=VARCHAR},
 	</if>
 	<if test="dz != null" >
-		DZ = #{dz,jdbcType=VARCHAR}
+		DZ = #{dz,jdbcType=VARCHAR},
+	</if>
+	<if test="fjlx != null" >
+		FJLX = #{fjlx,jdbcType=VARCHAR},
+	</if>
+	<if test="vdef1 != null" >
+		VDEF1 = #{vdef1,jdbcType=VARCHAR},
+	</if>
+	<if test="vdef2 != null" >
+		VDEF2 = #{vdef2,jdbcType=VARCHAR}
 	</if>
 	</set >
 	 where ID = #{id,jdbcType=VARCHAR}
@@ -222,7 +264,10 @@
 		set 
 			SQR_ID = #{sqrId,jdbcType=VARCHAR},
 			MC = #{mc,jdbcType=VARCHAR},
-			DZ = #{dz,jdbcType=VARCHAR}
+			DZ = #{dz,jdbcType=VARCHAR},
+			FJLX = #{fjlx,jdbcType=VARCHAR},
+			VDEF1 = #{vdef1,jdbcType=VARCHAR},
+			VDEF2 = #{vdef2,jdbcType=VARCHAR}
 	 where ID = #{id,jdbcType=VARCHAR}
    </update>
   <delete id="deleteByArg" parameterType="com.ztesoft.web.operateRecord.db.arg.TSqrxxfjArg" >

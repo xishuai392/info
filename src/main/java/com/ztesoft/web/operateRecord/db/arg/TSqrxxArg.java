@@ -1178,6 +1178,273 @@ public class TSqrxxArg {
             addCriterion("CXBS not between ", value1, value2, "CXBS");
             return (TSqrxxCriteria) this;
         }
+        public TSqrxxCriteria andZjmcIsNull() {
+            addCriterion("ZJMC is null");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andZjmcIsNotNull() {
+            addCriterion("ZJMC is not null");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andZjmcEqualTo(String value) {
+            addCriterion("ZJMC =", value, "ZJMC");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andZjmcNotEqualTo(String value) {
+            addCriterion("ZJMC <>", value, "ZJMC");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andZjmcGreaterThan(String value) {
+            addCriterion("ZJMC >", value, "ZJMC");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andZjmcGreaterThanOrEqualTo(String value) {
+            addCriterion("ZJMC >=", value, "ZJMC");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andZjmcLessThan(String value) {
+            addCriterion("ZJMC <", value, "ZJMC");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andZjmcLessThanOrEqualTo(String value) {
+            addCriterion("ZJMC <=", value, "ZJMC");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andZjmcLike(String value) {
+            addCriterion("ZJMC like ", value, "ZJMC", 1);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andZjmcNotLike(String value) {
+            addCriterion("ZJMC  not like ", value, "ZJMC", 1);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andZjmcLeftLike(String value) {
+            addCriterion("ZJMC like ", value, "ZJMC", 0);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andZjmcNotLeftLike(String value) {
+            addCriterion("ZJMC  not like ", value, "ZJMC", 0);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andZjmcRightLike(String value) {
+            addCriterion("ZJMC like ", value, "ZJMC", 2);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andZjmcNotRightLike(String value) {
+            addCriterion("ZJMC  not like ", value, "ZJMC", 2);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andZjmcIn(List<String> values) {
+            addCriterion("ZJMC  in ", values, "ZJMC");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andZjmcNotIn(List<String> values) {
+            addCriterion("ZJMC not in ", values, "ZJMC");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andZjmcBetween(String value1, String value2) {
+            addCriterion("ZJMC between ", value1, value2, "ZJMC");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andZjmcNotBetween(String value1, String value2) {
+            addCriterion("ZJMC not between ", value1, value2, "ZJMC");
+            return (TSqrxxCriteria) this;
+        }
+        public TSqrxxCriteria andVdef1IsNull() {
+            addCriterion("VDEF1 is null");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef1IsNotNull() {
+            addCriterion("VDEF1 is not null");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef1EqualTo(String value) {
+            addCriterion("VDEF1 =", value, "VDEF1");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef1NotEqualTo(String value) {
+            addCriterion("VDEF1 <>", value, "VDEF1");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef1GreaterThan(String value) {
+            addCriterion("VDEF1 >", value, "VDEF1");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef1GreaterThanOrEqualTo(String value) {
+            addCriterion("VDEF1 >=", value, "VDEF1");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef1LessThan(String value) {
+            addCriterion("VDEF1 <", value, "VDEF1");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef1LessThanOrEqualTo(String value) {
+            addCriterion("VDEF1 <=", value, "VDEF1");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef1Like(String value) {
+            addCriterion("VDEF1 like ", value, "VDEF1", 1);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef1NotLike(String value) {
+            addCriterion("VDEF1  not like ", value, "VDEF1", 1);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef1LeftLike(String value) {
+            addCriterion("VDEF1 like ", value, "VDEF1", 0);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef1NotLeftLike(String value) {
+            addCriterion("VDEF1  not like ", value, "VDEF1", 0);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef1RightLike(String value) {
+            addCriterion("VDEF1 like ", value, "VDEF1", 2);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef1NotRightLike(String value) {
+            addCriterion("VDEF1  not like ", value, "VDEF1", 2);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef1In(List<String> values) {
+            addCriterion("VDEF1  in ", values, "VDEF1");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef1NotIn(List<String> values) {
+            addCriterion("VDEF1 not in ", values, "VDEF1");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef1Between(String value1, String value2) {
+            addCriterion("VDEF1 between ", value1, value2, "VDEF1");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef1NotBetween(String value1, String value2) {
+            addCriterion("VDEF1 not between ", value1, value2, "VDEF1");
+            return (TSqrxxCriteria) this;
+        }
+        public TSqrxxCriteria andVdef2IsNull() {
+            addCriterion("VDEF2 is null");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef2IsNotNull() {
+            addCriterion("VDEF2 is not null");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef2EqualTo(String value) {
+            addCriterion("VDEF2 =", value, "VDEF2");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef2NotEqualTo(String value) {
+            addCriterion("VDEF2 <>", value, "VDEF2");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef2GreaterThan(String value) {
+            addCriterion("VDEF2 >", value, "VDEF2");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef2GreaterThanOrEqualTo(String value) {
+            addCriterion("VDEF2 >=", value, "VDEF2");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef2LessThan(String value) {
+            addCriterion("VDEF2 <", value, "VDEF2");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef2LessThanOrEqualTo(String value) {
+            addCriterion("VDEF2 <=", value, "VDEF2");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef2Like(String value) {
+            addCriterion("VDEF2 like ", value, "VDEF2", 1);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef2NotLike(String value) {
+            addCriterion("VDEF2  not like ", value, "VDEF2", 1);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef2LeftLike(String value) {
+            addCriterion("VDEF2 like ", value, "VDEF2", 0);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef2NotLeftLike(String value) {
+            addCriterion("VDEF2  not like ", value, "VDEF2", 0);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef2RightLike(String value) {
+            addCriterion("VDEF2 like ", value, "VDEF2", 2);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef2NotRightLike(String value) {
+            addCriterion("VDEF2  not like ", value, "VDEF2", 2);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef2In(List<String> values) {
+            addCriterion("VDEF2  in ", values, "VDEF2");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef2NotIn(List<String> values) {
+            addCriterion("VDEF2 not in ", values, "VDEF2");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef2Between(String value1, String value2) {
+            addCriterion("VDEF2 between ", value1, value2, "VDEF2");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andVdef2NotBetween(String value1, String value2) {
+            addCriterion("VDEF2 not between ", value1, value2, "VDEF2");
+            return (TSqrxxCriteria) this;
+        }
 
     }
 

@@ -61,6 +61,7 @@
 		
 	</head>
 	<body style="width: 100%;height: 100%">
+		<input id="thirdPartyZzrkUrl" type="hidden" value="${thirdPartyZzrkUrl}">
 	</body>
 </html>
 

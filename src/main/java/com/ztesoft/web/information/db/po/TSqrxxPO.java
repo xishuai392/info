@@ -2,7 +2,9 @@ package com.ztesoft.web.information.db.po;
 
 import java.math.*;
 import java.util.*;
+
 import org.apache.commons.lang.StringUtils;
+
 import com.ztesoft.framework.dto.AbstractDto;
 
 public class TSqrxxPO extends AbstractDto{
@@ -17,6 +19,12 @@ public class TSqrxxPO extends AbstractDto{
 	private String  czdw;
 	private String  czr;
 	private String  cxbs;
+	private String zjmc;
+    
+    private String vdef1;
+    
+    private String vdef2;
+    
     public String getId() {
         return StringUtils.isBlank(id) ? id : id.trim();
     }
@@ -102,6 +110,42 @@ public class TSqrxxPO extends AbstractDto{
     }
     public void setCxbs(String cxbs) {
         this.cxbs = cxbs;
+    }
+    /**
+     * @return the zjmc
+     */
+    public String getZjmc() {
+        return zjmc;
+    }
+    /**
+     * @param zjmc the zjmc to set
+     */
+    public void setZjmc(String zjmc) {
+        this.zjmc = zjmc;
+    }
+    /**
+     * @return the vdef1
+     */
+    public String getVdef1() {
+        return vdef1;
+    }
+    /**
+     * @param vdef1 the vdef1 to set
+     */
+    public void setVdef1(String vdef1) {
+        this.vdef1 = vdef1;
+    }
+    /**
+     * @return the vdef2
+     */
+    public String getVdef2() {
+        return vdef2;
+    }
+    /**
+     * @param vdef2 the vdef2 to set
+     */
+    public void setVdef2(String vdef2) {
+        this.vdef2 = vdef2;
     }
     
     

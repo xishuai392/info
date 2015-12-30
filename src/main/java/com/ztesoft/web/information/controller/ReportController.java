@@ -108,7 +108,7 @@ public class ReportController {
     @RequestMapping("queryPlatesQryPrintData")
     @ResponseBody
     public List<ReportResultDto> queryPlatesQryPrintData(ReportQueryDto reqInfo) {
-        reqInfo.setCxbs("10");// 10：终端
+        reqInfo.setCxbs("10");// 10：终端，20：pc端,30:网上查询
         reqInfo.setStartDateStr(DateUtils.date2String(reqInfo.getStartDate(),
                 DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
         reqInfo.setEndDateStr(DateUtils.date2String(reqInfo.getEndDate(),

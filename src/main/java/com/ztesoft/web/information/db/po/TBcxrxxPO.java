@@ -31,7 +31,7 @@ public class TBcxrxxPO extends AbstractDto{
     private String endDateStr;// 结束日期
     private String sqrczdw;//操作单位
     private String sqrczr;//操作人
-    private String sqrcxbs;//10：终端，20：pc端
+    private String sqrcxbs;//10：终端，20：pc端,30:网上查询
     private String sqrzjlx;//证件类型（10：身份证，20：其他）
     
     

@@ -32,7 +32,7 @@ public class ReportQueryDto extends AbstractDto {
 
     private String czr;// 操作人（终端：终端名）
 
-    private String cxbs;// 查询标识：10：终端，20：pc端
+    private String cxbs;// 查询标识：10：终端，20：pc端,30:网上查询
 
     private String czdwSplitByComma;// in条件的操作单位，以逗号分隔
 

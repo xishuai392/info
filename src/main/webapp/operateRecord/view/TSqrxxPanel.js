@@ -108,7 +108,12 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
 	        	text : "证件类型",
 	            dataIndex : "zjlx",
 	            renderer : function(value) {
-	                return value == '10' ? '身份证' : '其他';
+	            	//'10', '身份证'],['30', '军官证'], ['20', '其他']
+	            	if(value == '10')
+	            		return '身份证';
+	            	if(value == '30')
+	            		return '军官证';	
+	                return '其他';
 	            },
 	            flex : 1
 	        },
