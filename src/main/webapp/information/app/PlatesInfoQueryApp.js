@@ -10,6 +10,9 @@ Ext.onReady(function() {
 	//被查询人信息主键、身份证号——统计打印次数需要
     var bcxrxxId,sqrIdCardNum;
 	
+    //暂口信息查询外部第三方接口的URL
+    var baseUrl = Ext.get("thirdPartyZzrkUrl").getValue();
+    
     var sqrxxPanel,zjPanel,ssxzlPanel,bcxrxxPanel,bcxrStore,bcxrGrid,changzhuWin,zanzhuWin,infoMainPanel;
     var LODOP;
     
@@ -211,7 +214,25 @@ Ext.onReady(function() {
                     		
 			            	//户籍人口
 			            	if("1"==data.populationType){
-				            	var config = {
+			            		
+			            		var width = screen.availWidth-3;
+								var height = screen.availHeight-20;
+								var left = -4;
+								var top = -4; 
+			
+	                    		var url = ctx + '/information/czrkDetail.do?idCardNum='+data.idCardNum;// 身份证号码
+	                    		url += "&bcxrxxId="+data.bcxrxxId;//被查询人信息主键
+	                    		url += "&sqrxxId="+data.sqrxxId;//申请人信息表主键uuid
+	                    		url += "&cxbs=10";
+	                    		url += "&a="+ new Date();
+	                    		var changkouMainWin = window.open(url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
+								//changkouMainWin.moveTo(left, top);
+								changkouMainWin.focus();
+			            		
+			            		
+			            		
+			            		/**
+				            	var configTmp = {
 						            url : 'plates/queryCZRKinfo.do',
 						            params : {
 						            	//申请人信息表主键uuid
@@ -240,12 +261,28 @@ Ext.onReady(function() {
 						            	//changzhuWin.down('panel').fireEvent('resize');
 						            }
 						        };
-						        ExtUtils.doAjax(config);
+						        ExtUtils.doAjax(configTmp);
+						        */
 			            	}
 			            	
 			            	//暂住人口
 			            	if("2"==data.populationType){
-	                    		var config = {
+			            		//TODO @惜帅，20151230 调用外部接口，打开新页面
+	                    		var width = screen.availWidth-3;
+								var height = screen.availHeight-20;
+								var left = -4;
+								var top = -4;  
+								
+								var url = baseUrl + data.idCardNum+"&a="+new Date();
+								var zankouMainWin = window.open(url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
+								//zankouMainWin.moveTo(left, top);
+								zankouMainWin.focus();
+			            	}
+			            	
+			            	/**
+			            	//暂住人口
+			            	if("2"==data.populationType){
+	                    		var configTmp = {
 						            url : 'plates/queryZZRKinfo.do',
 						            params : {
 						            	//申请人信息表主键uuid
@@ -265,8 +302,9 @@ Ext.onReady(function() {
 						            	//console.log(zanzhuWin.down('panel').getEl().getById("zanzhuDetailDiv").getHTML());
 						            }
 						        };
-						        ExtUtils.doAjax(config);
+						        ExtUtils.doAjax(configTmp);
 	                    	}
+	                    	*/
 			            	
 			            }
 			        };

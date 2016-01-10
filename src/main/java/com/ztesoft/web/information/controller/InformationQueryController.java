@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -102,10 +103,51 @@ public class InformationQueryController {
     @Autowired
     private ITSqrxxService sqrxxService;
 
+    /**
+     * PC端首页
+     * @param model
+     * @return
+     */
     @RequestMapping("index")
     public ModelAndView index(Model model) {
         ModelAndView view = new ModelAndView("/information/jsp/infoQuery");
         view.addObject("thirdPartyZzrkUrl", MessageResourceUtils.getMessage("ThirdParty.zzrk.url"));
+        return view;
+    }
+    
+    /**
+     * 网上查询首页
+     * @param model
+     * @return
+     */
+    @RequestMapping("wscxIndex")
+    public ModelAndView wscxIndex(Model model) {
+        ModelAndView view = new ModelAndView("/information/jsp/wscxInfoQuery");
+        view.addObject("thirdPartyZzrkUrl", MessageResourceUtils.getMessage("ThirdParty.zzrk.url"));
+        return view;
+    }
+    
+    /**
+     * 常住人口详情页面（新开页面）兼容PC\网上查询等
+     * @param idCardNum
+     * @param sqrxxId
+     * @param bcxrxxId
+     * @param cxbs
+     * @return
+     */
+    @RequestMapping("czrkDetail")
+    public ModelAndView czrkDetail(@RequestParam(value="idCardNum", required=true)String idCardNum,
+            @RequestParam(value="sqrxxId", required=true)String sqrxxId,
+            @RequestParam(value="bcxrxxId", required=true)String bcxrxxId,
+            @RequestParam(value="cxbs", required=true)String cxbs ) {
+        String populationType = "户籍人口";
+        ModelAndView view = new ModelAndView("/information/jsp/czrkDetail");
+        view.addObject("thirdPartyZzrkUrl", MessageResourceUtils.getMessage("ThirdParty.zzrk.url"));
+        view.addObject("idCardNum", idCardNum);
+        view.addObject("sqrxxId", sqrxxId);
+        view.addObject("bcxrxxId", bcxrxxId);
+        view.addObject("populationType", populationType);
+        view.addObject("cxbs", cxbs);
         return view;
     }
 
@@ -248,7 +290,7 @@ public class InformationQueryController {
         }
 
         
-        
+        /**
         {
             QueryResultInfo resultInfo = new QueryResultInfo();
             resultInfo.setAddress("");// 户籍详细地址
@@ -257,12 +299,12 @@ public class InformationQueryController {
             resultInfo.setName("");// 姓名
             resultInfo.setPopulationType("暂住人口");
             queryResultInfoList.add(resultInfo);
-        }
+        }*/
         
         /**
          * 查询有办理过暂居住证的
          */
-        /************默认是有暂口数据的
+        
         String resultLDRK_JBXX = InfoRbspClient.queryLDRK_JBXXInfo(auditUserPo,
                 pid, null);
         InfoResultVO ldrk_jbxxVO = InfoXmlParser.parserXML(resultLDRK_JBXX);
@@ -324,7 +366,7 @@ public class InformationQueryController {
 
             }
         }
-        */
+        
 
         /************************ Get drag data end ********************************/
 

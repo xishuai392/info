@@ -166,8 +166,8 @@ Ext.onReady(function() {
 		var conditionHtml = '	<div id="part3Div">'+
 	'	<table class="tb2" width=100%>'+
 	'		<tr>'+
-	'			<td colspan=6  class="textInfoRight">起止时间：</td>'+
-	'			<td class="textInfoLeft">'+searchForm.getForm().findField('startDate').getRawValue()+' 至 '+searchForm.getForm().findField('endDate').getRawValue()+'</td>'+
+	'			<td colspan=2  class="textInfoRight">起止时间：</td>'+
+	'			<td colspan=4 class="textInfoLeft">'+searchForm.getForm().findField('startDate').getRawValue()+' 至 '+searchForm.getForm().findField('endDate').getRawValue()+'</td>'+
 	'			<td class="textInfoLeft">&nbsp;</td>'+
 	'			<td class="textInfoLeft">&nbsp;</td>'+
 	'			<td class="textInfoLeft">&nbsp;</td>'+

@@ -292,7 +292,7 @@ Ext.onReady(function() {
         },{
             fieldLabel : "cxbs",//查询标示  10：终端，20：pc端,30:网上查询
             xtype : "textfield",
-            value : '20',
+            value : '30',
             width: sqrxxPanelFieldWidth,
             hidden : true,
             name : "cxbs"
@@ -470,7 +470,6 @@ Ext.onReady(function() {
     	title : '上传图片',
     	width : 400,
         height : 150,
-        modal : true,
         layout : 'fit',
         closeAction : 'hide',
         items : [fileUploadForm],
@@ -1054,6 +1053,7 @@ Ext.onReady(function() {
 	        formBind: true, //only enabled once the form is valid
 	        
 	        handler: function() {
+	        	/**网上查询，不必要求必须上传附件
 	        	//判断是否该上传的附件都上传了=====
 	        	if(imageStore.getCount()==0){
 	        		ExtUtils.tip("错误","按要求上传相应的附件..."); 
@@ -1095,6 +1095,7 @@ Ext.onReady(function() {
 	        		ExtUtils.tip("错误",msg); 
 					return false;
 	        	}
+	        	**/
 	        	
 	        	
 	        	var layout = infoMainPanel.getLayout();
@@ -1377,7 +1378,7 @@ Ext.onReady(function() {
                     		var url = ctx + '/information/czrkDetail.do?idCardNum='+grid.getStore().getAt(rowIndex).data.idCardNum;
                     		url += "&bcxrxxId="+grid.getStore().getAt(rowIndex).data.bcxrxxId;
                     		url += "&sqrxxId="+sqrxxPanel.getForm().findField('mainId').getValue();
-                    		url += "&cxbs=20";
+                    		url += "&cxbs=30";
                     		url += "&a="+ new Date();
                     		var changkouMainWin = window.open(url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
 							//changkouMainWin.moveTo(left, top);
@@ -1705,7 +1706,7 @@ Ext.onReady(function() {
 		        		//被查询人信息主键，记录打印次数用
                     	bcxrxxId : bcxrxxId,
                     	//cxbs 查询标示  10：终端，20：pc端,30:网上查询
-                    	cxbs : "20",
+                    	cxbs : "30",
                     	//身份证编号
 						idCardNum : bcxrxxPanel.getForm().findField('idCardNum').getValue()
 						
@@ -1924,7 +1925,7 @@ Ext.onReady(function() {
 		        		//被查询人信息主键，记录打印次数用
                     	bcxrxxId : bcxrxxId,
                     	//cxbs 查询标示  10：终端，20：pc端,30:网上查询
-                    	cxbs : "20",
+                    	cxbs : "30",
                     	//身份证编号
 						idCardNum : bcxrxxPanel.getForm().findField('idCardNum').getValue()
 		        	};
