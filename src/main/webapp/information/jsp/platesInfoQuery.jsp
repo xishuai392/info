@@ -5,7 +5,7 @@
 
 <html>
 	<head>
-		<title>人口信息查询  </title>
+		<title>厦门市人口信息查询服务管理系统 </title>
 		<link rel="stylesheet" type="text/css"
 			href="<%=request.getContextPath()%>/common/css/info.css">
 		<style type="text/css">

@@ -40,7 +40,7 @@
 		</init-param>
 		<init-param>
 			<param-name>excludeUrl</param-name>
-			<param-value>/login.jsp,/login/login.do,/login/doLogin.do,/login/loginOut.do,/login/loginCheck.do,/plates/index.do,/plates/queryByPlates.do,/plates/queryCZRKinfo.do,/plates/queryZZRKinfo.do,/information/tbcxrxx/canPrint.do</param-value>
+			<param-value>/login.jsp,/login/login.do,/login/doLogin.do,/login/loginOut.do,/login/loginCheck.do,/plates/index.do,/plates/queryByPlates.do,/plates/queryCZRKinfo.do,/plates/queryZZRKinfo.do,/information/tbcxrxx/canPrint.do,/information/tbcxrxx/checkPrintMark.do,/information/czrkDetail.do,/information/zzrkDetail.do</param-value>
 			<description>不需要过滤的url，多个以逗号分隔</description>
 		</init-param>
 	</filter>

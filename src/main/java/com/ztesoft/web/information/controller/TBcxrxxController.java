@@ -143,7 +143,7 @@ public class TBcxrxxController {
      */
     @RequestMapping("canPrint")
     @ResponseBody
-    public CanPrintResult canPrint(String bcxrxxId, String cxbs,
+    public CanPrintResult canPrintAndMark(String bcxrxxId, String cxbs,
             String idCardNum) throws BaseAppException {
 
         CanPrintResult result = new CanPrintResult();
@@ -155,11 +155,12 @@ public class TBcxrxxController {
             return result;
         }
 
-        if ("20".equals(cxbs)) {
-            // pc端，直接记录查询次数，不需要控制
+        if (!"10".equals(cxbs)) {
+            // pc端、网上查询，直接记录查询次数，不需要控制
             TBcxrxxPO newRecord = new TBcxrxxPO();
             newRecord.setSfdy("1");
             newRecord.setId(bcxrxxId);
+            newRecord.setDycs(record.getDycs() + 1);
             tBcxrxxService.update(newRecord);
         }
         else {
@@ -191,7 +192,60 @@ public class TBcxrxxController {
             TBcxrxxPO newRecord = new TBcxrxxPO();
             newRecord.setSfdy("1");
             newRecord.setId(bcxrxxId);
+            newRecord.setDycs(record.getDycs() + 1);
             tBcxrxxService.update(newRecord);
+        }
+
+        return result;
+
+    }
+
+    /**
+     * 仅判断是否可以打印
+     * 
+     * @param bcxrxxId
+     * @param cxbs
+     * @param idCardNum
+     * @return
+     * @throws BaseAppException
+     */
+    @RequestMapping("checkPrintMark")
+    @ResponseBody
+    public CanPrintResult checkPrintMark(String bcxrxxId, String cxbs,
+            String idCardNum) throws BaseAppException {
+
+        CanPrintResult result = new CanPrintResult();
+        // 先去捞库里的记录
+        TBcxrxxPO record = tBcxrxxService.selectByPrimaryKey(bcxrxxId);
+        if (null == record) {
+            result.setCanPrint(false);
+            result.setMessage("您查询的记录不存在，请重新查询");
+            return result;
+        }
+
+        try {
+            // 配置文件里设定的最多次数
+            int maxPrint = Integer.parseInt(MessageResourceUtils
+                    .getMessage("maxPrintByDay"));
+
+            TSqrxxPO queryVO = new TSqrxxPO();
+            queryVO.setCxbs("10");// 终端
+            queryVO.setZjh(idCardNum);
+            queryVO.setCxrq(DateUtils.date2String(new Date(),
+                    DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
+
+            int printTimes = tSqrxxService.countPrintByZD(queryVO);
+
+            if (printTimes >= maxPrint) {
+                // 不可以打印了
+                result.setCanPrint(false);
+                result.setMessage(MessageResourceUtils
+                        .getMessage("maxPrintByDay。errorMessage"));
+                return result;
+            }
+        }
+        catch (Exception e) {
+            logger.error("查询终端用户当天打印次数时发生错误。", e);
         }
 
         return result;

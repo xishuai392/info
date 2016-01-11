@@ -9,6 +9,11 @@ Ext.onReady(function() {
 	
 	//被查询人信息主键、身份证号——统计打印次数需要
     var bcxrxxId,sqrIdCardNum;
+    
+    //按钮名称
+    var btnTitle1="厦门户籍人口基本信息查询";
+    var btnTitle2="厦门暂（居）住人口基本信息查询";
+    var btnTitle3="外来务工子女就学-暂住人口信息查询表";
 	
     //暂口信息查询外部第三方接口的URL
     var baseUrl = Ext.get("thirdPartyZzrkUrl").getValue();
@@ -75,7 +80,7 @@ Ext.onReady(function() {
 
 	//首页按钮宽高
 	var btnHeight = (parseInt(Ext.getBody().getHeight())/5);
-	var btnWidth = (parseInt(Ext.getBody().getWidth())/5);
+	var btnWidth = (parseInt(Ext.getBody().getWidth())/2);
 	
 	//弹出窗口宽高
 	var winHeight = (parseInt(Ext.getBody().getHeight())*1);
@@ -87,7 +92,7 @@ Ext.onReady(function() {
 	console.log("btnWidth:"+btnWidth);
 	
 	
-	var populationType = 1;
+	var queryType = 1;
 	//1、首页
 	indexPanel = Ext.create('Ext.panel.Panel', {
         region : 'center',
@@ -104,34 +109,51 @@ Ext.onReady(function() {
         id : 'card0', 
         items : [{
             xtype : 'button',
-            region : 'north',
+            //region : 'north',
             id : 'czQryBtn',
-            text: '<span style="font-size:26px !important;font-family:microsoft yahei !important;">常住人口信息查询</span>',
+            text: '<span style="font-size:26px !important;font-family:microsoft yahei !important;">'+btnTitle1+'</span>',
             width : btnWidth,
             height : btnHeight,
             handler : function() {
-                console.log('常住人口信息查询');
-                populationType = 1;
+                console.log('厦门户籍人口基本信息查询');
+                queryType = 1;
                 var layout = infoMainPanel.getLayout();
 	            layout.setActiveItem(1);//第2步：证件扫描
-	            Ext.getCmp('titleBtn').setText("<span style='font-size:16px !important;font-family:microsoft yahei !important;color:blue;'>您正在进行常住人口信息查询...</span>");
+	            Ext.getCmp('titleBtn').setText("<span style='font-size:16px !important;font-family:microsoft yahei !important;color:blue;'>您正在进行"+btnTitle1+"...</span>");
             }
 
         },{
             xtype : 'button',
-            region : 'center',
+            //region : 'center',
             id : 'zzQryBtn',
             cls : 'btnQueryCls',
-            text: '<span style="font-size:26px !important;font-family:microsoft yahei !important;">暂住人口信息查询</span>',
+            text: '<span style="font-size:26px !important;font-family:microsoft yahei !important;">'+btnTitle2+'</span>',
             //cls : 'btntransparent',
             width : btnWidth,
             height : btnHeight,
             handler : function() {
-                console.log('暂住人口信息查询');
-                populationType = 2;
+                console.log('厦门暂（居）住人口基本信息查询');
+                queryType = 2;
                 var layout = infoMainPanel.getLayout();
 	            layout.setActiveItem(1);//第2步：证件扫描
-	            Ext.getCmp('titleBtn').setText("<span style='font-size:16px !important;font-family:microsoft yahei !important;color:blue;'>您正在进行暂住人口信息查询...</span>");
+	            Ext.getCmp('titleBtn').setText("<span style='font-size:16px !important;font-family:microsoft yahei !important;color:blue;'>"+btnTitle2+"...</span>");
+            }
+
+        },{
+            xtype : 'button',
+            //region : 'south',
+            id : 'wlzzQryBtn',
+            cls : 'btnQueryCls',
+            text: '<span style="font-size:26px !important;font-family:microsoft yahei !important;">外来务工子女就学证明</span><br><span style="font-size:16px !important;font-family:microsoft yahei !important;">暂住人口信息查询表打印</span>',
+            //cls : 'btntransparent',
+            width : btnWidth,
+            height : btnHeight,
+            handler : function() {
+                console.log('外来务工子女就学-暂住人口信息查询表');
+                queryType = 3;
+                var layout = infoMainPanel.getLayout();
+	            layout.setActiveItem(1);//第2步：证件扫描
+	            Ext.getCmp('titleBtn').setText("<span style='font-size:16px !important;font-family:microsoft yahei !important;color:blue;'>您正在进行"+btnTitle3+"...</span>");
             }
 
         }]
@@ -171,16 +193,18 @@ Ext.onReady(function() {
             handler : function() {
                 console.log('开始读取身份证');
                 
+                
+                
                 //TODO  @惜帅  调试隐藏
                 //TODO
                 //TODO
                 //TODO
                 //TODO
-                var CVR_IDCard = document.getElementById("CVR_IDCard");					
-				var strReadResult = CVR_IDCard.ReadCard();
+                //var CVR_IDCard = document.getElementById("CVR_IDCard");					
+				//var strReadResult = CVR_IDCard.ReadCard();
 				
 				//TODO  @惜帅  调试隐藏
-//				strReadResult = "0";
+				strReadResult = "0";
 				
 				if(strReadResult == "0"){
 	              var config = {
@@ -192,8 +216,8 @@ Ext.onReady(function() {
 				            "born" : CVR_IDCard.Born,     //出生日期
 				            "address" : CVR_IDCard.Address, //地址
 				            //TODO  @惜帅  调试隐藏
-				            "cardNo" : CVR_IDCard.CardNo, //身份号码
-//				            "cardNo" : CVR_IDCard.CardNo||"35020419811021103X", //身份号码
+//				            "cardNo" : CVR_IDCard.CardNo, //身份号码
+				            "cardNo" : CVR_IDCard.CardNo||"35020419811021103X", //身份号码
 				            
 				            "issuedAt" : CVR_IDCard.IssuedAt,  //签发机关
 				            "effectedDate" : CVR_IDCard.EffectedDate,  //生效期限
@@ -203,7 +227,7 @@ Ext.onReady(function() {
 				            "picture" : CVR_IDCard.Picture,  //照片编码
 				            "picturelen" : CVR_IDCard.PictureLen,//编码长度
 			            	// 人口类型（1：户籍人口，2：暂住人口）
-							"populationType" : populationType
+							"populationType" : 1==queryType ? 1:2
 			            },
 			            callback : function(data){
 			            	//返回被查询人信息
@@ -213,7 +237,7 @@ Ext.onReady(function() {
                     		sqrIdCardNum = data.idCardNum;
                     		
 			            	//户籍人口
-			            	if("1"==data.populationType){
+			            	if(1==queryType){
 			            		
 			            		var width = screen.availWidth-3;
 								var height = screen.availHeight-20;
@@ -266,17 +290,63 @@ Ext.onReady(function() {
 			            	}
 			            	
 			            	//暂住人口
-			            	if("2"==data.populationType){
-			            		//TODO @惜帅，20151230 调用外部接口，打开新页面
-	                    		var width = screen.availWidth-3;
+			            	if(2==queryType){
+			            		var width = screen.availWidth-3;
 								var height = screen.availHeight-20;
 								var left = -4;
-								var top = -4;  
-								
-								var url = baseUrl + data.idCardNum+"&a="+new Date();
-								var zankouMainWin = window.open(url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
-								//zankouMainWin.moveTo(left, top);
-								zankouMainWin.focus();
+								var top = -4; 
+			
+	                    		var url = ctx + '/information/zzrkDetail.do?idCardNum='+data.idCardNum;// 身份证号码
+	                    		url += "&bcxrxxId="+data.bcxrxxId;//被查询人信息主键
+	                    		url += "&sqrxxId="+data.sqrxxId;//申请人信息表主键uuid
+	                    		url += "&cxbs=10";
+	                    		url += "&a="+ new Date();
+	                    		var zanzhuMainWin = window.open(url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
+								//zanzhuMainWin.moveTo(left, top);
+								zanzhuMainWin.focus();
+			            	}
+			            	
+			            	//暂住人口-外来务工子女就学-暂住人口信息查询表
+			            	if(3==queryType){
+			            		
+			            		//记录打印状态
+								var params = {
+					        		//被查询人信息主键，记录打印次数用
+			                    	bcxrxxId : data.bcxrxxId,
+			                    	//cxbs 10：终端，20：pc端,30:网上查询
+			                    	cxbs : '10',
+			                    	//身份证编号
+									idCardNum : data.idCardNum
+									
+					        	};
+				        		var config = {
+				            		url : 'information/tbcxrxx/canPrint.do',
+						            params : params,
+						            callback : function(canPrintResult){
+						            	if(canPrintResult.canPrint){
+						            		//可以打开连接
+						            		//TODO @惜帅，20151230 调用外部接口，打开新页面
+				                    		var width = screen.availWidth-3;
+											var height = screen.availHeight-20;
+											var left = -4;
+											var top = -4;  
+											
+											var url = baseUrl + data.idCardNum+"&a="+new Date();
+											var zankouMainWin = window.open(url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
+											//zankouMainWin.moveTo(left, top);
+											zankouMainWin.focus();
+						            		
+				            			}else{
+						            		ExtUtils.error(canPrintResult.message);
+						            	}
+						            }
+						        };
+						        ExtUtils.doAjax(config);
+			            		
+			            		
+			            		
+			            		
+			            		
 			            	}
 			            	
 			            	/**

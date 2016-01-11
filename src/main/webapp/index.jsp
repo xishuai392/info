@@ -4,7 +4,7 @@
 <%@ include file="/common/common.inc.jsp" %>
 <html>
 <head>
-    <title>人口信息查询服务管理系统</title>
+    <title>厦门市人口信息查询服务管理系统</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 </head>
 <body>

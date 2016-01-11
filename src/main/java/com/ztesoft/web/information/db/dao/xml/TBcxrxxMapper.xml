@@ -15,6 +15,7 @@
   	<result column="XGRQ" property="xgrq" jdbcType="VARCHAR" />
   	<result column="RKLX" property="rklx" jdbcType="CHAR" />
   	<result column="CXCS" property="cxcs" jdbcType="INTEGER" />
+  	<result column="DYCS" property="dycs" jdbcType="INTEGER" />
   	
   	<result column="SQRXM" property="sqrXm" jdbcType="VARCHAR" />
   	<result column="SQRZJH" property="sqrzjh" jdbcType="VARCHAR" />
@@ -25,7 +26,7 @@
   	
   </resultMap>
   <sql id="Base_Column_List" >
-  	ID,SQR_ID,ZJH,ZJLX,XM,SFZZP,SFZF,ZFLY,SFDY,BCXRQ,XGRQ,RKLX,CXCS
+  	ID,SQR_ID,ZJH,ZJLX,XM,SFZZP,SFZF,ZFLY,SFDY,BCXRQ,XGRQ,RKLX,CXCS,DYCS
   </sql>
   <sql id="Arg_Where_Clause" >
     <where >
@@ -143,8 +144,8 @@
 	where ID = #{id,jdbcType=VARCHAR}
   </select>
   <insert id="insert" parameterType="com.ztesoft.web.information.db.po.TBcxrxxPO"  >
-		insert into T_BCXRXX(ID,SQR_ID,ZJH,ZJLX,XM,SFZZP,SFZF,ZFLY,SFDY,BCXRQ,XGRQ,RKLX,CXCS)
-		values (#{id,jdbcType=VARCHAR},#{sqrId,jdbcType=VARCHAR},#{zjh,jdbcType=VARCHAR},#{zjlx,jdbcType=VARCHAR},#{xm,jdbcType=VARCHAR},#{sfzzp,jdbcType=VARCHAR},#{sfzf,jdbcType=CHAR},#{zfly,jdbcType=VARCHAR},#{sfdy,jdbcType=CHAR},#{bcxrq,jdbcType=VARCHAR},#{xgrq,jdbcType=VARCHAR},#{rklx,jdbcType=CHAR},#{cxcs,jdbcType=INTEGER})
+		insert into T_BCXRXX(ID,SQR_ID,ZJH,ZJLX,XM,SFZZP,SFZF,ZFLY,SFDY,BCXRQ,XGRQ,RKLX,CXCS,DYCS)
+		values (#{id,jdbcType=VARCHAR},#{sqrId,jdbcType=VARCHAR},#{zjh,jdbcType=VARCHAR},#{zjlx,jdbcType=VARCHAR},#{xm,jdbcType=VARCHAR},#{sfzzp,jdbcType=VARCHAR},#{sfzf,jdbcType=CHAR},#{zfly,jdbcType=VARCHAR},#{sfdy,jdbcType=CHAR},#{bcxrq,jdbcType=VARCHAR},#{xgrq,jdbcType=VARCHAR},#{rklx,jdbcType=CHAR},#{cxcs,jdbcType=INTEGER},#{dycs,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ztesoft.web.information.db.po.TBcxrxxPO">
 		insert into T_BCXRXX
@@ -188,6 +189,9 @@
 		<if test="cxcs != null" >
 			CXCS,
 		</if>
+ 	<if test="dycs != null" >
+			DYCS,
+		</if>
  	</trim>
 	<trim prefix="values (" suffix=")" suffixOverrides="," >
 		<if test="id != null" >
@@ -229,13 +233,16 @@
 		<if test="cxcs != null" >
 			#{cxcs,jdbcType=INTEGER},
 		</if>
+ 	<if test="dycs != null" >
+			#{dycs,jdbcType=INTEGER},
+		</if>
  	</trim> 	
   </insert>	
   <insert id="insertBatch" parameterType="list"  >
-	insert into T_BCXRXX(ID,SQR_ID,ZJH,ZJLX,XM,SFZZP,SFZF,ZFLY,SFDY,BCXRQ,XGRQ,RKLX,CXCS)
+	insert into T_BCXRXX(ID,SQR_ID,ZJH,ZJLX,XM,SFZZP,SFZF,ZFLY,SFDY,BCXRQ,XGRQ,RKLX,CXCS,DYCS)
 	 values 
 	 <foreach collection="list" item="item" index="index" separator=",">
-	 		(#{item.id,jdbcType=VARCHAR},#{item.sqrId,jdbcType=VARCHAR},#{item.zjh,jdbcType=VARCHAR},#{item.zjlx,jdbcType=VARCHAR},#{item.xm,jdbcType=VARCHAR},#{item.sfzzp,jdbcType=VARCHAR},#{item.sfzf,jdbcType=CHAR},#{item.zfly,jdbcType=VARCHAR},#{item.sfdy,jdbcType=CHAR},#{item.bcxrq,jdbcType=VARCHAR},#{item.xgrq,jdbcType=VARCHAR},#{item.rklx,jdbcType=CHAR},#{item.cxcs,jdbcType=INTEGER})
+	 		(#{item.id,jdbcType=VARCHAR},#{item.sqrId,jdbcType=VARCHAR},#{item.zjh,jdbcType=VARCHAR},#{item.zjlx,jdbcType=VARCHAR},#{item.xm,jdbcType=VARCHAR},#{item.sfzzp,jdbcType=VARCHAR},#{item.sfzf,jdbcType=CHAR},#{item.zfly,jdbcType=VARCHAR},#{item.sfdy,jdbcType=CHAR},#{item.bcxrq,jdbcType=VARCHAR},#{item.xgrq,jdbcType=VARCHAR},#{item.rklx,jdbcType=CHAR},#{item.cxcs,jdbcType=INTEGER},#{item.dycs,jdbcType=INTEGER})
 	 </foreach>
   </insert>
   <update id="updateByArgSelective" parameterType="map" >
@@ -275,7 +282,10 @@
 			RKLX= #{record.rklx,jdbcType=CHAR},
 		</if>
 		<if test="record.cxcs != null" >
-			CXCS= #{record.cxcs,jdbcType=INTEGER}
+			CXCS= #{record.cxcs,jdbcType=INTEGER},
+		</if>
+		<if test="record.dycs != null" >
+			DYCS= #{record.dycs,jdbcType=INTEGER}
 		</if>
     </set>
     <if test="_parameter != null" >
@@ -297,7 +307,8 @@
 		BCXRQ = #{record.bcxrq,jdbcType=VARCHAR},
 		XGRQ = #{record.xgrq,jdbcType=VARCHAR},
 		RKLX = #{record.rklx,jdbcType=CHAR},
-		CXCS = #{record.cxcs,jdbcType=INTEGER}
+		CXCS = #{record.cxcs,jdbcType=INTEGER},
+		DYCS = #{record.dycs,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Arg_Where_Clause" />
     </if>
@@ -339,7 +350,10 @@
 		RKLX = #{rklx,jdbcType=CHAR},
 	</if>
 	<if test="cxcs != null" >
-		CXCS = #{cxcs,jdbcType=INTEGER}
+		CXCS = #{cxcs,jdbcType=INTEGER},
+	</if>
+	<if test="dycs != null" >
+		DYCS = #{dycs,jdbcType=INTEGER}
 	</if>
 	</set >
 	 where ID = #{id,jdbcType=VARCHAR}
@@ -358,7 +372,8 @@
 			BCXRQ = #{bcxrq,jdbcType=VARCHAR},
 			XGRQ = #{xgrq,jdbcType=VARCHAR},
 			RKLX = #{rklx,jdbcType=CHAR},
-			CXCS = #{cxcs,jdbcType=INTEGER}
+			CXCS = #{cxcs,jdbcType=INTEGER},
+			DYCS = #{dycs,jdbcType=INTEGER}
 	 where ID = #{id,jdbcType=VARCHAR}
    </update>
   <delete id="deleteByArg" parameterType="com.ztesoft.web.information.db.arg.TBcxrxxArg" >

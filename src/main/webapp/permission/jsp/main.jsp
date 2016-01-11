@@ -5,7 +5,7 @@
 
 <html>
 	<head>
-		<title>人口信息查询服务管理系统</title>
+		<title>厦门市人口信息查询服务管理系统</title>
 		<script type="text/javascript" src="${ctx}/permission/app/app.js">
 </script>
 	</head>

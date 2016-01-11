@@ -158,14 +158,9 @@ Ext.onReady(function() {
     
     
     
-    
-    
-    
-    
-    
-    function openCZRKinfo(idCard,bcxrxxId,populationType){
+    function openZZRKinfo(idCard,bcxrxxId,populationType){
     	var config = {
-	            url : '10'==reqOjb.cxbs?'plates/queryCZRKinfo.do':'information/queryCZRKinfo.do',
+    			url : '10'==reqOjb.cxbs?'plates/queryZZRKinfo.do':'information/queryZZRKinfo.do',
 	            params : {
 	            	//申请人信息表主键uuid
 					sqrxxId : reqOjb.sqrxxId,
@@ -173,29 +168,97 @@ Ext.onReady(function() {
 					idCardNum : idCard,
 	            	//被查询人信息主键
 	            	bcxrxxId : bcxrxxId||'',
-	            	populationType : populationType||'户籍人口'
+	            	populationType : populationType||'暂住人口'
 	            },
 	            callback : function(data){
 	            	//把页面的查询标识，塞到数据项中，为了展示用
 	            	data.page_cxbs=reqOjb.cxbs;
 	            	//重写绑定模板 
-	            	changzhuWinTp.overwrite(czrkPanel.down('panel').getEl().getById("changzhuDetailDiv"), data);
-	            	//合并单元格
-	            	$("#familyInfoTable").rowspan({td:1}); 
-	            	//家庭关系的连接，都要能点击
-	            	$("#part2TableCZ a").on('click',function(){
+	            	zanzhuWinTp.overwrite(zzrkPanel.down('panel').getEl().getById("zanzhuDetailDiv"), data);
+	            	//单击查看暂住证信息，第三方系统
+	            	$("#part2Div a").on('click',function(){
 //	            		console.log(arguments);
-//	            		alert($(this).attr("pid"));
-	            		console.log($(this).attr("pid"));
-	            		//openCZRKinfo($(this).attr("pid"));
-	            		openNewPage($(this).attr("pid"));
+	            		
+	            		
+	            		//终端，才需要记录打印状态，并判断是否能打印
+	            		if('10'==reqOjb.cxbs){
+		            		//记录打印状态
+							var params = {
+				        		//被查询人信息主键，记录打印次数用
+		                    	bcxrxxId : reqOjb.bcxrxxId,
+		                    	//cxbs 10：终端，20：pc端,30:网上查询
+		                    	cxbs : reqOjb.cxbs,
+		                    	//身份证编号
+								idCardNum : reqOjb.idCardNum
+								
+				        	};
+			        		var config = {
+			            		url : 'information/tbcxrxx/canPrint.do',
+					            params : params,
+					            callback : function(canPrintResult){
+					            	if(canPrintResult.canPrint){
+					            		//可以打开连接
+					            		openNewPage(reqOjb.idCardNum);
+					            		
+			            			}else{
+					            		ExtUtils.error(canPrintResult.message);
+					            	}
+					            }
+					        };
+					        ExtUtils.doAjax(config);
+	            		}else{
+	            			//其他的状态，都可以直接打开,只要后面记录下打印即可
+	            			openNewPage(reqOjb.idCardNum);
+	            			
+	            			
+	            			//记录打印状态
+							var params = {
+				        		//被查询人信息主键，记录打印次数用
+		                    	bcxrxxId : reqOjb.bcxrxxId,
+		                    	//cxbs 10：终端，20：pc端,30:网上查询
+		                    	cxbs : reqOjb.cxbs,
+		                    	//身份证编号
+								idCardNum : reqOjb.idCardNum
+								
+				        	};
+			        		var config = {
+			            		url : 'information/tbcxrxx/canPrint.do',
+					            params : params,
+					            callback : function(canPrintResult){
+					            	if(canPrintResult.canPrint){
+					            		//可以打开连接
+					            		
+			            			}else{
+			            				
+					            	}
+					            }
+					        };
+					        ExtUtils.doAjax(config);
+					        
+	            		}
+	            		
+	            		
+	            		
+	            		
 	            	});
 	            }
 	        };
 	        ExtUtils.doAjax(config);
     }
     
-    function openNewPage(idCard){
+    function openNewPage(idCardTmp){
+    	//TODO @惜帅，20151230 调用外部接口，打开新页面
+		var width = screen.availWidth-3;
+		var height = screen.availHeight-20;
+		var left = -4;
+		var top = -4;  
+		
+		var url = baseUrl + idCardTmp+"&a="+new Date();
+		var zankouMainWin = window.open(url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
+		//zankouMainWin.moveTo(left, top);
+		zankouMainWin.focus();
+							
+    	/**
     	var width = screen.availWidth-3;
 		var height = screen.availHeight-20;
 		var left = -4;
@@ -208,140 +271,102 @@ Ext.onReady(function() {
 		var changkouMainWin = window.open(url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
 		changkouMainWin.moveTo(left, top);
 		changkouMainWin.focus();
+		*/
     }
     
     
-    ////创建常住人口模板
-    var changzhuWinTp = new Ext.XTemplate(
+    ////创建暂住人口模板
+    var zanzhuWinTp = new Ext.XTemplate(
 	'<div class="frame_normal" id="allDiv">',
 	'	<div class="div_title" id="titleDiv">',
-	'		<span style="FONT-SIZE: 20px!important; ">本市户籍人口信息</span>',
+	'		<span style="FONT-SIZE: 20px!important; ">本市暂住人口信息查询表<span>',
 	'	</div>',
 	'	<div class="div_second_title" id="part1Div">',
 	'		人员基本信息',
 	'	</div>',
-	'	<div id="part1TableCZ">',
+	'	<div id="part1Table">',
 	'		<table class="tbl" width=100%>',
 	'			<tr>',
-	'				<td colspan=1 width=100 class="NoNewline">公民身份证号码</td>',
-	'				<td colspan=2 class="textInfoLeft NoNewline"  >{[values.baseInfo.idCardNum]}</td>',
-	'				<td colspan=1 >姓名</td>',
-	'				<td colspan=2 class="textInfoLeft NoNewline">{[values.baseInfo.name]}</td>',
-	'				<td colspan=2 rowspan=6 width=162px  height=199px>' ,
+	'				<td>公民身份证号码</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.idCardNum]}</td>',
+	'				<td width=100>姓名</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.name]}</td>',
+	'				<td colspan=2 rowspan=6 width=162px  height=199px> ',
 	'					<div style="width:160px; height:197px" >',
-	'					<img alt="照片" style="width:100%; height:100%" ',
-	'						src="'+ctx+"/personImages/"+'{[values.baseInfo.photoGif]}"></div></td>',
+	'						<img alt="照片" style="width:100%; height:100%" ',
+	'							src="'+ctx+"/personImages/"+'{[values.baseInfo.photoGif]}"></div> </td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>曾用名</td>',
-	'				<td colspan=2 class="textInfoLeft">{[values.baseInfo.aliaName]}</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.aliaName]}</td>',
 	'				<td>性别</td>',
-	'				<td colspan=2 class="textInfoLeft">{[values.baseInfo.sex]}</td>',
-
+	'				<td class="textInfoLeft">{[values.baseInfo.sex]}</td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>民族</td>',
-	'				<td colspan=2 class="textInfoLeft">{[values.baseInfo.nation]}</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.nation]}</td>',
 	'				<td>出生日期</td>',
-	'				<td colspan=2 class="textInfoLeft">{[values.baseInfo.birthDate]}</td>',
-
-	'			</tr>',
-	'			<tr>',
-	'				<td class="NoNewline">身份证签发机关</td>',
-	'				<td colspan=2 class="textInfoLeft">{[values.baseInfo.idCardIssuneOffice]}</td>',
-	'				<td colspan=2>身份证有效期限</td>',
-	'				<td colspan=1 class="textInfoLeft" colspan=2>{[values.baseInfo.idCardExciptyTime]}</td>',
-	'			</tr>',
-	'			<tr>',
-	'				<td>住址</td>',
-	'				<td class="textInfoLeft" colspan=5>{[values.baseInfo.liveAddress]}</td>',
-	'			</tr>',
-	'			<tr>',
-	'				<td>派出所</td>',
-	'				<td class="textInfoLeft" colspan=5>{[values.baseInfo.policeStation]}</td>',
-	'			</tr>',
-	'			<tr>',
-	'				<td>&nbsp;&nbsp;</td>',
-	'				<td colspan=2>国家(地区)</td>',
-	'				<td colspan=2>省市县(区)</td>',
-	'				<td colspan=3>详址</td>',
+	'				<td class="textInfoLeft">{[values.baseInfo.birthDate]}</td>',
 	'			</tr>',
 	'			<tr>',
 	'				<td>籍贯</td>',
-	'				<td colspan=2 class="textInfoLeft NoNewline">{[values.baseInfo.nativePlaceNation]}</td>',
-	'				<td colspan=2 class="textInfoLeft NoNewline">{[values.baseInfo.nativePlaceProvince]}</td>',
-	'				<td colspan=3 class="textInfoLeft NoNewline" >{[values.baseInfo.nativePlaceDetailAddress]}</td>',
+	'				<td class="textInfoLeft" colspan=3>{[values.baseInfo.nativePlace]}</td>',
 	'			</tr>',
 	'			<tr>',
-	'				<td>出生地</td>',
-	'				<td colspan=2 class="textInfoLeft NoNewline">{[values.baseInfo.birthPlaceNation]}</td>',
-	'				<td colspan=2 class="textInfoLeft NoNewline" >{[values.baseInfo.birthPlaceProvince]}</td>',
-	'				<td colspan=3 class="textInfoLeft NoNewline" >{[values.baseInfo.birthPlaceDetailAddress]}</td>',
+	'				<td>户籍地址省市县（区）</td>',
+	'				<td class="textInfoLeft" colspan=3>{[values.baseInfo.householdRegisterProviceAddress]}</td>',
 	'			</tr>',
-
+	'			<tr>',
+	'				<td>户籍详细地址</td>',
+	'				<td class="textInfoLeft" colspan=3>{[values.baseInfo.householdRegisterDetailAddress]}</td>',
+	'			</tr>',
+	'			<tr>',
+	'				<td>填报日期</td>',
+	'				<td class="textInfoLeft" colspan=5>{[values.baseInfo.fillDate]}</td>',
+	'			</tr>',
 	'		</table>',
 	'	</div>',
   '',
 	'	<div class="div_second_title" id="part2Div">',
-	'		家庭关系及联系人信息',
+	'		<a href="#">查看暂住信息</a>',
 	'	</div>',
-	'	<div id="part2TableCZ">',
-	'		<table class="tbl" width=100% id="familyInfoTable">',
+/**
+	'	<div id="part2Table">',
+	'		<table class="tbl" width=100%>',
 	'			<tr>',
-	'				<td  width=60>&nbsp;&nbsp;</td>',
-	'				<td>关系</td>',
-	'				<td width=130>公民身份证号码</td>',
-	'				<td>姓名</td>',
-	'				<td>证件种类</td>',
-	'				<td width=130>证件号码</td>',
-	'				<td>外文姓</td>',
-	'				<td>外文名</td>',
-	'				<td>联系电话</td>',
+	'				<td width=35>序号</td>',
+	'				<td width=125>暂住证编号</td>',
+	'				<td width=70>起始日期</td>',
+	'				<td width=70>截止日期</td>',
+	'				<td width=60>间隔时间</td>',
+	'				<td>签发机构</td>',
+	'				<td>登记单位</td>',
+	'				<td>暂住地址</td>',
 	'			</tr>',
-	'			<tpl for="familyInfoList">',
-	'			<tr action="{relationType}">',
-	'				<td>{relationType}</td>',
-	'				<td>{relationShip}</td>',
-	'				<td>{idCardNum}</td>',
-	'				<td>{name}</td>',
-	'				<td>{certificateType}</td>',
-	'				<td>{certificateNum}</td>',
-	'				<td>{foreignLastName}</td>',
-	'				<td>{foreignFirstName}</td>',
-	'				<td>{telephoneNum}</td>',
+	'			<tpl for="trInfoList">',
+	'			<tr>',
+	'				<td>{#}</td>',	
+	'				<td class="NoNewline">{trNum}</td>',
+	'				<td>{startDate}</td>',
+	'				<td>{endDate}</td>',
+	'				<td>{intervalTime}</td>',
+	'				<td>{trCardIssuneOffice}</td>',
+	'				<td>{trCardCompany}</td>',
+	'				<td>{trAddress}</td>',
 	'			</tr>',
 	'			</tpl>',
 	'		</table>',
 	'	</div>',
-  '',
-/** TODO @惜帅 隐藏迁移信息  
-	'	<div class="div_second_title" id="part3Div">',
-	'		迁移信息',
-	'	</div>',
-	'	<div id="part3TableCZ">',
-	'		<table class="tbl" width=100%>',
-	'			<tr>',
-	'				<td width=170>何时何因由何地迁来本市(县)</td>',
-	'				<td colspan=7 class="textInfoLeft">{[values.migrateInfo.timeAndResultForMigrateLocal]}</td>',
-	'			</tr>',
-	'			<tr>',
-	'				<td width=170>何时何因由何地迁来本址</td>',
-	'				<td colspan=7 class="textInfoLeft">{[values.migrateInfo.timeAndResultForMigrateLocal]}</td>',
-	'			</tr>',
-	'			<tr>',
-	'				<td width=170>何时何因迁往何地</td>',
-	'				<td colspan=7 class="textInfoLeft">{[values.migrateInfo.timeAndResultForMigrateOtherPlace]}</td>',
-	'			</tr>',
-	'		</table>',
-	'	</div>',
 **/
   '',
-	'	<div id="part4Div">',
-
+  '',
+	'	<div id="part3Div">',
 	'	<table class="tb2" width=100%>',
+/**
 	'		<tr>',
 	'			<td colspan=18  class="textInfoLeft">{[values.tipMessage]}</td>',
 	'		</tr>',
+**/
 	'<tpl if="page_cxbs &lt; 15"> ',
 	'		<tr>',
 	'			<td colspan=4 class="textInfoRight">&nbsp;</td>',
@@ -365,26 +390,25 @@ Ext.onReady(function() {
 	'		</tr>',
 	'</tpl> ',
 	'	</table>',
-
 	'	</div>',
 	'</div>'
 	);
-	//changzhuWinTp.compile() ;
+	
     
-	//本市户籍人口信息 常住
-	czrkPanel = Ext.create('Ext.Panel', { 
+	//本市户籍人口信息 暂住
+	zzrkPanel = Ext.create('Ext.Panel', { 
 		region : "center",
 		layout : 'border',
 		items : [Ext.create('Ext.panel.Panel',{
 	        	overflowY :'scroll',
 	        	region : "center",
-	        	html : '<div id="changzhuDetailDiv"></div>'
+	        	html : '<div id="zanzhuDetailDiv"></div>'
         	}
         )],
         listeners : {
         	'afterrender' : function( thiz, eOpts ){
         		console.log("panel afterrender");
-        		openCZRKinfo(reqOjb.idCardNum,reqOjb.bcxrxxId,reqOjb.populationType);
+        		openZZRKinfo(reqOjb.idCardNum,reqOjb.bcxrxxId,reqOjb.populationType);
         	}
         },
         buttons: [{ 
@@ -413,56 +437,40 @@ Ext.onReady(function() {
 			            	if(canPrintResult.canPrint){
 			            		//可以打印
 			            		//console.log("dayin");
-					            var html = preHtml + czrkPanel.down('panel').getEl().getById("changzhuDetailDiv").getHTML()+'</body></html>';
+					            var html = preHtml + zzrkPanel.down('panel').getEl().getById("zanzhuDetailDiv").getHTML()+'</body></html>';
 					            var printHtml = "";
 					            var htmlArray = $.parseHTML(html);
-			//		            console.log("htmlArray");
-			//		            console.log(htmlArray);
+					            console.log("htmlArray");
+					            console.log(htmlArray);
 					            try{
 						            $.each( htmlArray, function( i, item ) {
 						            	
-									    
-						            	var aEls = $(item).find("#part2TableCZ a");
+						            	var aEls = $(item).find("#part2Div a");
 						            	
 						            	if(aEls.length>0){
 						            		console.log(aEls);
-						            		$.each( aEls, function( j, aItem ) {
-						            			var pid = $(aItem).attr('pid');
-							            		$(aItem).after('<span>'+pid+'</span>');
-							            		$(aItem).remove();
-				//			            		console.log(aEls);console.log("pid:"+pid);
-						            			
-						            		});
-						            		
+						            		aEls.remove();
 						            	}
-						            	
-						            	var delEls = $(item).find("table tr[action=子女]");
-						            	if(delEls.length>0){
-						            		delEls.remove();
-						            	}
-						            	//console.log(delEls);
-									    //console.log($(item));
-						            	
 						            	var divEls = $(item).find("div");
 						            	if(divEls.length>0){
 						            		printHtml += $(item).html();
 						            	}
 						            	
 									});
-					            }catch (e){
+								}catch (e){
 					            	console.log(e);
 					            }
+					            
 								console.log("printHtml");console.log(printHtml);
 								
 								
 					            //console.log(printHtml);
-					            /////console.log(czrkPanel.down('panel').getEl().getById("changzhuDetailDiv").getHTML());
+					            /////console.log(zzrkPanel.down('panel').getEl().getById("zanzhuDetailDiv").getHTML());
 								
 					            printHtml = preHtml +'<div class="frame_normal" id="allDiv">'+ printHtml+'</div></body></html>';
 					            //console.log(html);
 					            createPrintPage(printHtml);
 					            LODOP.PREVIEW();
-			            		
 			            	}else{
 			            		ExtUtils.error(canPrintResult.message);
 			            	}
@@ -492,7 +500,7 @@ Ext.onReady(function() {
     // 整体页面布局
     Ext.create('Ext.container.Viewport', {
         layout : 'border',
-        items : [czrkPanel]
+        items : [zzrkPanel]
     });
     
 

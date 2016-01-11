@@ -1356,6 +1356,95 @@ public class TBcxrxxArg {
             addCriterion("CXCS not between ", value1, value2, "CXCS");
             return (TBcxrxxCriteria) this;
         }
+        public TBcxrxxCriteria andDycsIsNull() {
+            addCriterion("DYCS is null");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andDycsIsNotNull() {
+            addCriterion("DYCS is not null");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andDycsEqualTo(Integer value) {
+            addCriterion("DYCS =", value, "DYCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andDycsNotEqualTo(Integer value) {
+            addCriterion("DYCS <>", value, "DYCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andDycsGreaterThan(Integer value) {
+            addCriterion("DYCS >", value, "DYCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andDycsGreaterThanOrEqualTo(Integer value) {
+            addCriterion("DYCS >=", value, "DYCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andDycsLessThan(Integer value) {
+            addCriterion("DYCS <", value, "DYCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andDycsLessThanOrEqualTo(Integer value) {
+            addCriterion("DYCS <=", value, "DYCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andDycsLike(Integer value) {
+            addCriterion("DYCS like ", value, "DYCS", 1);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andDycsNotLike(Integer value) {
+            addCriterion("DYCS  not like ", value, "DYCS", 1);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andDycsLeftLike(Integer value) {
+            addCriterion("DYCS like ", value, "DYCS", 0);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andDycsNotLeftLike(Integer value) {
+            addCriterion("DYCS  not like ", value, "DYCS", 0);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andDycsRightLike(Integer value) {
+            addCriterion("DYCS like ", value, "DYCS", 2);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andDycsNotRightLike(Integer value) {
+            addCriterion("DYCS  not like ", value, "DYCS", 2);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andDycsIn(List<Integer> values) {
+            addCriterion("DYCS  in ", values, "DYCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andDycsNotIn(List<Integer> values) {
+            addCriterion("DYCS not in ", values, "DYCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andDycsBetween(Integer value1, Integer value2) {
+            addCriterion("DYCS between ", value1, value2, "DYCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andDycsNotBetween(Integer value1, Integer value2) {
+            addCriterion("DYCS not between ", value1, value2, "DYCS");
+            return (TBcxrxxCriteria) this;
+        }
 
     }
 

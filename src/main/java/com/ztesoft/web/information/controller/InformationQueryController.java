@@ -150,6 +150,30 @@ public class InformationQueryController {
         view.addObject("cxbs", cxbs);
         return view;
     }
+    
+    /**
+     * 暂住人口详情页面（新开页面）兼容PC\网上查询等
+     * @param idCardNum
+     * @param sqrxxId
+     * @param bcxrxxId
+     * @param cxbs
+     * @return
+     */
+    @RequestMapping("zzrkDetail")
+    public ModelAndView zczrkDetail(@RequestParam(value="idCardNum", required=true)String idCardNum,
+            @RequestParam(value="sqrxxId", required=true)String sqrxxId,
+            @RequestParam(value="bcxrxxId", required=true)String bcxrxxId,
+            @RequestParam(value="cxbs", required=true)String cxbs ) {
+        String populationType = "暂住人口";
+        ModelAndView view = new ModelAndView("/information/jsp/zzrkDetail");
+        view.addObject("thirdPartyZzrkUrl", MessageResourceUtils.getMessage("ThirdParty.zzrk.url"));
+        view.addObject("idCardNum", idCardNum);
+        view.addObject("sqrxxId", sqrxxId);
+        view.addObject("bcxrxxId", bcxrxxId);
+        view.addObject("populationType", populationType);
+        view.addObject("cxbs", cxbs);
+        return view;
+    }
 
     /**
      * 1、申请人请求查询界面 记录查询日志，返回view
@@ -279,6 +303,7 @@ public class InformationQueryController {
                                 DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));// 被查询日期
                         bcxrxxPO.setRklx("1");// 人口类型（1：户籍人口，2：暂住人口）
                         bcxrxxPO.setCxcs(0);// 查询次数
+                        bcxrxxPO.setDycs(0);// 打印次数
                         // 记录日志
                         bcxrxxService.add(bcxrxxPO);
                     }
@@ -357,6 +382,7 @@ public class InformationQueryController {
                             DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));// 被查询日期
                     bcxrxxPO.setRklx("2");// 人口类型（1：户籍人口，2：暂住人口）
                     bcxrxxPO.setCxcs(0);// 查询次数
+                    bcxrxxPO.setDycs(0);// 打印次数
                     // 记录日志
                     bcxrxxService.add(bcxrxxPO);
                 }

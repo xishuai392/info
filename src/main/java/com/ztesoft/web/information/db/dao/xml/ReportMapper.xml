@@ -62,9 +62,9 @@
 	
 	<!--按 操作人（终端：终端名）分组统计 查询次数 打印次数-->
 	<select id="queryPlatesQryPrint" resultMap="BaseResultMap" parameterType="com.ztesoft.web.information.domain.req.ReportQueryDto" >
-		select czr,sum(sfdy) dycs,sum(cxcs) cxcs
+		select czr,sum(dycs) dycs,sum(cxcs) cxcs
 		FROM(
-			select bc.SFDY, bc.SFZF, bc.XGRQ, bc.RKLX, bc.CXCS, bc.BCXRQ, sq.CZDW, sq.CZR, sq.CXBS
+			select bc.SFDY, bc.SFZF, bc.XGRQ, bc.RKLX, bc.CXCS, bc.BCXRQ, sq.CZDW, sq.CZR, sq.CXBS,bc.DYCS 
 			FROM
 		    	t_bcxrxx bc left join t_sqrxx sq on sq.ID=bc.SQR_ID
 			where bc.SFZF='0' 

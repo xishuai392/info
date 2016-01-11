@@ -1417,6 +1417,23 @@ Ext.onReady(function() {
                     	}
                     	
                     	if('暂住人口'==grid.getStore().getAt(rowIndex).data.populationType){
+                    		var width = screen.availWidth-3;
+							var height = screen.availHeight-20;
+							var left = -4;
+							var top = -4; 
+		
+                    		var url = ctx + '/information/zzrkDetail.do?idCardNum='+grid.getStore().getAt(rowIndex).data.idCardNum;
+                    		url += "&bcxrxxId="+grid.getStore().getAt(rowIndex).data.bcxrxxId;
+                    		url += "&sqrxxId="+sqrxxPanel.getForm().findField('mainId').getValue();
+                    		url += "&cxbs=20";
+                    		url += "&a="+ new Date();
+                    		var zanzhuMainWin = window.open(url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
+							zanzhuMainWin.focus();
+                    		
+                    	}
+                    	
+                    	/**
+                    	if('暂住人口'==grid.getStore().getAt(rowIndex).data.populationType){
                     		//TODO @惜帅，20151230 调用外部接口，打开新页面
                     		var width = screen.availWidth-3;
 							var height = screen.availHeight-20;
@@ -1431,6 +1448,7 @@ Ext.onReady(function() {
 							//window.onfocus=function (){zankouMainWin.focus();};
       						//window.onclick=function (){zankouMainWin.focus();};
                     	}
+                    	**/
                     	
                     	/**
                     	if('暂住人口'==grid.getStore().getAt(rowIndex).data.populationType){
@@ -1728,31 +1746,35 @@ Ext.onReady(function() {
 		            var htmlArray = $.parseHTML(html);
 //		            console.log("htmlArray");
 //		            console.log(htmlArray);
-		            $.each( htmlArray, function( i, item ) {
-		            	
-					    
-		            	var aEls = $(item).find("#part2TableCZ a");
-		            	
-		            	if(aEls.length>0){
-		            		console.log(aEls);
-		            		$.each( aEls, function( j, aItem ) {
-		            			var pid = $(aItem).attr('pid');
-			            		$(aItem).after('<span>'+pid+'</span>');
-			            		$(aItem).remove();
-//			            		console.log(aEls);console.log("pid:"+pid);
-		            			
-		            		});
-		            		
-		            	}
-		            	
-		            	var delEls = $(item).find("table tr[action=子女]");
-		            	if(delEls.length>0){
-		            		delEls.remove();
-		            		printHtml = $(item).html();
-		            	}
-		            	//console.log(delEls);
-					    //console.log($(item));
-					});
+		            try{
+			            $.each( htmlArray, function( i, item ) {
+			            	
+						    
+			            	var aEls = $(item).find("#part2TableCZ a");
+			            	
+			            	if(aEls.length>0){
+			            		console.log(aEls);
+			            		$.each( aEls, function( j, aItem ) {
+			            			var pid = $(aItem).attr('pid');
+				            		$(aItem).after('<span>'+pid+'</span>');
+				            		$(aItem).remove();
+	//			            		console.log(aEls);console.log("pid:"+pid);
+			            			
+			            		});
+			            		
+			            	}
+			            	
+			            	var delEls = $(item).find("table tr[action=子女]");
+			            	if(delEls.length>0){
+			            		delEls.remove();
+			            		printHtml = $(item).html();
+			            	}
+			            	//console.log(delEls);
+						    //console.log($(item));
+						});
+					}catch (e){
+		            	console.log(e);
+		            }
 					
 					console.log("printHtml");console.log(printHtml);
 					
