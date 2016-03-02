@@ -49,6 +49,22 @@ Ext.define('component.operateRecord.model.TSqrxxModel', {
        		{
 	            name : 'cxbs',
 	            type : 'auto'
-        	}        
+        	},
+       		{
+	            name : 'zjmc',
+	            type : 'auto'
+        	},
+       		{
+	            name : 'vdef1',
+	            type : 'auto'
+        	},
+       		{
+	            name : 'vdef2',
+	            type : 'auto'
+        	},
+       		{
+	            name : 'mainId',
+	            type : 'auto'
+        	}         
 			]
 });

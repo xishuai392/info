@@ -39,14 +39,16 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
         	me.formPanel = me.createFormPanel();
         }
         
-        if(null==me.tsqrxxfjStore){
+        if(null==me.getTsqrxxfjStore()){
         	//图片store
-        	me.tsqrxxfjStore = me.createImageStore();
+        	me.setTsqrxxfjStore( me.createImageStore());
+        	console.log("TSqrxxDetailWin.tsqrxxfjStore is null");
         }
 
         if(null==me.imagePanel){
         	// 创建附件展示
         	me.imagePanel = me.createImagePanel();
+        	console.log("TSqrxxDetailWin.imagePanel is null");
         }
         
 
@@ -61,7 +63,7 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
         }
         Ext.applyIf(config, {
             width : 600,
-            height : 450,
+            height : 400,
             layout : 'border',
             maximizable : true,
             items : [me.formPanel, me.imagePanel],
@@ -113,12 +115,12 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
 //                ExtUtils.doAjax(config);
             });
             
-            me.tsqrxxfjStore.getProxy().extraParams = {
+            me.getTsqrxxfjStore().getProxy().extraParams = {
 	            // TODO 自定义业务条件：带业务条件查询
 	            sqrId : me.pkFiledId
 	        };
 	        
-	         me.tsqrxxfjStore.load();
+	         me.getTsqrxxfjStore().load();
         }
         this.callParent();
     },
@@ -251,7 +253,7 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
         var me = this;
         
         var imagePanel = Ext.create('Ext.Panel', {
-            id : 'images-view',
+            id : 'images-view_detail',
             region : 'center',
             layout : 'fit',
             frame : false,
@@ -259,13 +261,13 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
                 text : '刷新',
                 iconCls : 'arrow_refresh',
                 handler : function() {
-                    Ext.getCmp('scanImagesView').getStore().load();
+                    Ext.getCmp('scanImagesView_detail').getStore().load();
                 }
             },'->','<span style="color:red">提示：双击可以打开原始图片.</span>'],
             items : Ext.create('Ext.view.View', {
-	            id : 'scanImagesView',
+	            id : 'scanImagesView_detail',
 	            store : me.tsqrxxfjStore,
-	            tpl : ['<tpl for=".">', '<div class="thumb-wrap" id="{id}_div">', '<div class="thumb"><img src="',ctx+'/scanImages{dz}" id="{id}_img" title="{mc}"></div>',
+	            tpl : ['<tpl for=".">', '<div class="thumb-wrap" id="{id}_detail_div">', '<div class="thumb"><img src="',ctx+'/scanImages{dz}" id="{id}_detail_img" title="{mc}"></div>',
 	                '<div style="padding-left: 3px;"><span class="x-editable">{mc}</span></div>', '</div>', '</tpl>', '<div class="x-clear"></div>'],
 	            multiSelect : true,
 	            height : 310,
@@ -304,7 +306,7 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
 	                    // console.log(item);
 	                    var id = record.data.id;
 	
-	                    window.open(Ext.getDom(id + '_img').src);
+	                    window.open(Ext.getDom(id + '_detail_img').src);
 	
 	                }
 	            }

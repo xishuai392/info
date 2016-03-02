@@ -6,12 +6,12 @@
   	<result column="SQR_ID" property="sqrId" jdbcType="VARCHAR" />
   	<result column="MC" property="mc" jdbcType="VARCHAR" />
   	<result column="DZ" property="dz" jdbcType="VARCHAR" />
-  <result column="FJLX" property="fjlx" jdbcType="VARCHAR" />
+  	<result column="FJLX" property="fjlx" jdbcType="VARCHAR" />
   	<result column="VDEF1" property="vdef1" jdbcType="VARCHAR" />
   	<result column="VDEF2" property="vdef2" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-  	ID,SQR_ID,MC,DZ
+  	ID,SQR_ID,MC,DZ,FJLX,VDEF1,VDEF2
   </sql>
   <sql id="Arg_Where_Clause" >
     <where >
@@ -129,8 +129,10 @@
 	where ID = #{id,jdbcType=VARCHAR}
   </select>
   <insert id="insert" parameterType="com.ztesoft.web.information.db.po.TSqrxxfjPO"  >
-		insert into T_SQRXXFJ(ID,SQR_ID,MC,DZ)
-		values (#{id,jdbcType=VARCHAR},#{sqrId,jdbcType=VARCHAR},#{mc,jdbcType=VARCHAR},#{dz,jdbcType=VARCHAR})
+		insert into T_SQRXXFJ(ID,SQR_ID,MC,DZ,FJLX,VDEF1,VDEF2)
+		values (#{id,jdbcType=VARCHAR},#{sqrId,jdbcType=VARCHAR},#{mc,jdbcType=VARCHAR},#{dz,jdbcType=VARCHAR},
+			#{fjlx,jdbcType=VARCHAR},#{vdef1,jdbcType=VARCHAR},#{vdef2,jdbcType=VARCHAR}
+		)
   </insert>
   <insert id="insertSelective" parameterType="com.ztesoft.web.information.db.po.TSqrxxfjPO">
 		insert into T_SQRXXFJ
@@ -182,10 +184,12 @@
  	</trim> 	
   </insert>	
   <insert id="insertBatch" parameterType="list"  >
-	insert into T_SQRXXFJ(ID,SQR_ID,MC,DZ)
+	insert into T_SQRXXFJ(ID,SQR_ID,MC,DZ,FJLX,VDEF1,VDEF2)
 	 values 
 	 <foreach collection="list" item="item" index="index" separator=",">
-	 		(#{item.id,jdbcType=VARCHAR},#{item.sqrId,jdbcType=VARCHAR},#{item.mc,jdbcType=VARCHAR},#{item.dz,jdbcType=VARCHAR})
+	 		(#{item.id,jdbcType=VARCHAR},#{item.sqrId,jdbcType=VARCHAR},#{item.mc,jdbcType=VARCHAR},#{item.dz,jdbcType=VARCHAR},
+	 			#{fjlx,jdbcType=VARCHAR},#{vdef1,jdbcType=VARCHAR},#{vdef2,jdbcType=VARCHAR}
+	 		)
 	 </foreach>
   </insert>
   <update id="updateByArgSelective" parameterType="map" >

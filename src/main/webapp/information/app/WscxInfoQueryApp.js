@@ -311,7 +311,7 @@ Ext.onReady(function() {
         	id : 'fjlxId'
         }],
         // 重置 和下一步 按钮.
-	    buttons: [{
+	    tbar: [{
 	        text: '重置',
 	        icon : ctx + '/common/images/icons/arrow_rotate_anticlockwise.png',
 	        handler: function() {
@@ -432,7 +432,7 @@ Ext.onReady(function() {
 		                   	method : "POST",
 		                    waitMsg: '正在上传...',  
 		                    success: function(thizform, action) {  
-		                    	console.log(action.result);console.log(action);
+		                    	//console.log(action.result);console.log(action);
 		                    	//加载图片
 				            	var thizImageModel = Ext.create("component.information.model.ImageModel");
 				            	thizImageModel.data.id = action.result.id;
@@ -1033,7 +1033,7 @@ Ext.onReady(function() {
 			}]
 	    }
 	    ],
-	    buttons: [{
+	    tbar: [{
 	        text: '第一步',
 	        iconCls: "x-tbar-page-first",
 	        handler: function() {
@@ -1216,11 +1216,28 @@ Ext.onReady(function() {
         {
             fieldLabel : "身份证号码",
             xtype : "textfield",
-            vtype : 'idcard',
+            vtype : 'identityCard',
             afterSubTpl : WEBConstants.REQUIRED,
             allowBlank : false,
             width: 500,
-            name : "idCardNum"
+            name : "idCardNum",
+            listeners: {
+                specialkey: function(field, e){
+                    // e.HOME, e.END, e.PAGE_UP, e.PAGE_DOWN,
+                    // e.TAB, e.ESC, arrow keys: e.LEFT, e.RIGHT, e.UP, e.DOWN
+                    if (e.getKey() == e.ENTER) {
+                    	//触发查询按钮事件
+                    	//console.log(field.up('form').down('button[name=query]'));
+                        field.up('form').down('button[name=query]').fireEvent('click');
+                        console.log("触发查询按钮事件");
+                    }
+                },
+                'focus':function(){  
+                	//console.log("focus ..");
+                    this.selectText();  
+                    //console.log("focus .....");
+                } 
+            }
         },{
 			xtype : 'tbspacer',
 			width : 5
@@ -1230,6 +1247,27 @@ Ext.onReady(function() {
 			name : 'query',
 			text : '&nbsp;&nbsp;查&nbsp;&nbsp;&nbsp;&nbsp;询&nbsp;&nbsp;',
 			formBind: true,
+			listeners : {
+				"click": function() {
+					var form = this.up('form').getForm();
+		            if (form.isValid()) {
+		            	
+		            	//通过表单校验
+		            	var layout = infoMainPanel.getLayout();
+		            	layout.setActiveItem(4);//下一步：显示查询结果
+		            	
+		            	bcxrStore.getProxy().extraParams = {
+				        	//申请人信息表主键uuid
+							sqrxxId : sqrxxPanel.getForm().findField('mainId').getValue(),
+							//被查询人的身份证信息
+							idCardNum : bcxrxxPanel.getForm().findField("idCardNum").getValue()
+					
+				        };
+				        bcxrStore.load();
+		            }
+				}
+			}
+			/**
 			handler : function() {
 	            var form = this.up('form').getForm();
 	            if (form.isValid()) {
@@ -1248,9 +1286,10 @@ Ext.onReady(function() {
 			        bcxrStore.load();
 	            }
 	        }
+	        **/
 		}],
         // 重置 和下一步 按钮.
-	    buttons: [{
+	    tbar: [{
 	        text: '第一步',
 	        iconCls: "x-tbar-page-first",
 	        handler: function() {
@@ -1483,7 +1522,7 @@ Ext.onReady(function() {
             ]  
         } 
         ],
-        buttons: [{
+        tbar: [{
 	        text: '第一步',
 	        iconCls: "x-tbar-page-first",
 	        handler: function() {
@@ -1618,7 +1657,7 @@ Ext.onReady(function() {
 	'				<td width=130>证件号码</td>',
 	'				<td>外文姓</td>',
 	'				<td>外文名</td>',
-	'				<td>联系电话</td>',
+	//'				<td>联系电话</td>',
 	'			</tr>',
 	'			<tpl for="familyInfoList">',
 	'			<tr action="{relationType}">',
@@ -1630,7 +1669,7 @@ Ext.onReady(function() {
 	'				<td>{certificateNum}</td>',
 	'				<td>{foreignLastName}</td>',
 	'				<td>{foreignFirstName}</td>',
-	'				<td>{telephoneNum}</td>',
+	//'				<td>{telephoneNum}</td>',
 	'			</tr>',
 	'			</tpl>',
 	'		</table>',

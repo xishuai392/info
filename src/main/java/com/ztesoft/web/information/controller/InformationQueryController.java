@@ -215,7 +215,7 @@ public class InformationQueryController {
     }
 
     /**
-     * 被查询人信息列表，对应 《常暂住人多查询结果页面》的表格
+     * 被查询人信息列表，对应 《常暂住人口查询结果页面》的表格
      * 
      * @param reqInfo
      * @param request
@@ -325,6 +325,20 @@ public class InformationQueryController {
             resultInfo.setPopulationType("暂住人口");
             queryResultInfoList.add(resultInfo);
         }*/
+        
+        
+        /**
+         * 20160225需求，如果有常口信息的，就不查暂口信息了，就只显示常口信息
+         */
+        if ("false".equals(MessageResourceUtils.getMessage("isBothQuery")) && czrkbaseInfoList.size() > 0) {
+            logger.info(String.format("查到常口信息的，就不查暂口信息了，就只显示常口信息.pid=[%s]", pid));
+            return queryResultInfoList;
+        }
+        
+        
+        
+        
+        
         
         /**
          * 查询有办理过暂居住证的

@@ -5,7 +5,7 @@
 <link rel="stylesheet" href="${ctx}/common/jslibs/extjs/ext-4.2.1/resources/css/ext-all.css" type="text/css"/>
 <link rel="stylesheet" href="${ctx}/common/css/customer.ext.css" type="text/css"/>
 <link rel="stylesheet" type="text/css" href="${ctx}/common/css/ext-ie-patch.css">
-<script type="text/javascript" src="${ctx}/common/jslibs/extjs/ext-4.2.1/ext-all-debug.js"></script>
+<script type="text/javascript" src="${ctx}/common/jslibs/extjs/ext-4.2.1/ext-all.js"></script>
 <script type="text/javascript" src="${ctx}/common/jslibs/extjs/ext-4.2.1/locale/ext-lang-zh_CN.js"></script>
 
 <script type="text/javascript" src="${ctx}/common/public/ztesoft/override/CustomExtDataProxyAjax.js"></script>

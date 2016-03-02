@@ -70,3 +70,72 @@
     position:relative;
     overflow:hidden;
 }
+
+
+
+
+
+
+
+
+
+
+#images-view_detail .x-panel-body{
+    background: white;
+    font: 11px Arial, Helvetica, sans-serif;
+}
+#images-view_detail .thumb{
+    background: #dddddd;
+    padding: 3px;
+    padding-bottom: 0;
+}
+
+.x-quirks #images-view_detail .thumb {
+    padding-bottom: 3px;
+}
+
+#images-view_detail .thumb img{
+    height: 113px;
+    width: 80px;
+}
+#images-view_detail .thumb-wrap{
+    float: left;
+    margin: 4px;
+    margin-right: 0;
+    padding: 5px;
+}
+#images-view_detail .thumb-wrap span {
+    
+    display: block;
+    overflow: hidden;
+    text-align: center;
+    width: 86px; /* for ie to ensure that the text is centered */
+}
+
+#images-view_detail .x-item-over{
+    border:1px solid #dddddd;
+    background: #efefef url(../images/over.gif) repeat-x left top;
+    padding: 4px;
+}
+
+#images-view_detail .x-item-selected{
+    background: #eff5fb url(../images/selected.gif) no-repeat right bottom;
+    border:1px solid #99bbe8;
+    padding: 4px;
+}
+#images-view_detail .x-item-selected .thumb{
+    background:transparent;
+}
+
+#images-view_detail .loading-indicator {
+    font-size:11px;
+    background-image:url('../jslibs/extjs/ext-4.2.1/resources/themes/images/default/grid/loading.gif');
+    background-repeat: no-repeat;
+    background-position: left;
+    padding-left:20px;
+    margin:10px;
+}
+
+
+
+

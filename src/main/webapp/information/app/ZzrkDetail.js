@@ -275,11 +275,11 @@ Ext.onReady(function() {
     }
     
     
-    ////创建暂住人口模板
+    ////创建暂住人口模板  //本市暂住人口信息查询表
     var zanzhuWinTp = new Ext.XTemplate(
 	'<div class="frame_normal" id="allDiv">',
 	'	<div class="div_title" id="titleDiv">',
-	'		<span style="FONT-SIZE: 20px!important; ">本市暂住人口信息查询表<span>',
+	'		<span style="FONT-SIZE: 20px!important; ">暂住人口基本信息表<span>',
 	'	</div>',
 	'	<div class="div_second_title" id="part1Div">',
 	'		人员基本信息',
@@ -327,7 +327,7 @@ Ext.onReady(function() {
 	'		</table>',
 	'	</div>',
   '',
-	'	<div class="div_second_title" id="part2Div">',
+	'	<div class="div_second_title" replaceString id="part2Div">',
 	'		<a href="#">查看暂住信息</a>',
 	'	</div>',
 /**
@@ -445,24 +445,39 @@ Ext.onReady(function() {
 					            try{
 						            $.each( htmlArray, function( i, item ) {
 						            	
+						            	/**
 						            	var aEls = $(item).find("#part2Div a");
 						            	
 						            	if(aEls.length>0){
 						            		console.log(aEls);
 						            		aEls.remove();
 						            	}
+						            	*/
+						            	//设置div隐藏  
+										//$("#part2Div").hide();  
+						            	
 						            	var divEls = $(item).find("div");
 						            	if(divEls.length>0){
 						            		printHtml += $(item).html();
 						            	}
 						            	
+						            	//设置div隐藏  
+						            	//$("#part2Div").show();
+						            	
 									});
 								}catch (e){
-					            	console.log(e);
+									console.log(e);
+									alert(e);
 					            }
-					            
-								console.log("printHtml");console.log(printHtml);
-								
+					            printHtml += "";
+					            //alert(typeof printHtml);
+					            //alert(printHtml);
+					            //printHtml.replace(/replaceString/,'style="display:none"');
+					            //<div class="div_second_title" id="part2Div"><a href="#">查看暂住信息</a>	</div>	
+					            //printHtml.replaceAll(/查看暂住信息/,"",false);
+					            printHtml = printHtml.replace(/查看暂住信息/,"");
+								//console.log("printHtml");console.log(printHtml);
+								//alert(printHtml);
 								
 					            //console.log(printHtml);
 					            /////console.log(zzrkPanel.down('panel').getEl().getById("zanzhuDetailDiv").getHTML());

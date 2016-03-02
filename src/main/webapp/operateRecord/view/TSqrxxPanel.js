@@ -249,11 +249,12 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
 //         var item = me.busizGrid.getSelectedItem();
 //         var pkFiledId = item.get("id");
          var sqrxxId = grid.getStore().getAt(rowIndex).data.id;
-         console.log(sqrxxId);
+        // console.log(sqrxxId);
 //         console.log("pkFiledId:"+pkFiledId);
          console.log("sqrxxId:"+sqrxxId);
          if(null==me.getDetailWin()){
-         	console.log(3);
+         	//console.log(3);
+         	console.log("me.getDetailWin() is null");
 	         var win = Ext.create('component.operateRecord.view.TSqrxxDetailWin', {
 	        	 pkFiledId : sqrxxId,
 	             winType : WEBConstants.ACTIONTYPE.VIEW
@@ -261,12 +262,12 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
 	         me.setDetailWin(win);
 	         
          }else{
-         	console.log(4);
+         	//console.log(4);
          	me.getDetailWin().pkFiledId = sqrxxId;
          	me.getDetailWin().loadData();
          }
          me.getDetailWin().show();
-         console.log(5);
+         //console.log(5);
     },
     // 新增 按钮的事件
     addBtnHandler : function() {

@@ -4,7 +4,7 @@
  
  
 Ext.onReady(function() {
-    var sqrxxPanel,zjPanel,ssxzlPanel,bcxrxxPanel,bcxrStore,bcxrGrid,changzhuWin,zanzhuWin,infoMainPanel;
+    var sqrxxPanel,zjPanel,ssxzlPanel,bcxrxxPanel,bcxrStore,bcxrGrid,changzhuWin,zanzhuWin,infoMainPanel,appendQueryWin,appendQueryGrid,appendQueryForm,appendQueryAction;
     var isClickFjlxBtn1 = false;
     var isClickFjlxBtn2 = false;
     var isClickFjlxBtn3 = false;
@@ -134,6 +134,236 @@ Ext.onReady(function() {
 	var winHeight = (parseInt(Ext.getBody().getHeight())*0.8);
 	
 	
+	appendQueryAction = Ext.create("component.operateRecord.action.TSqrxxAction");
+	
+	//追加查询——记录表格
+    appendQueryGrid = Ext.create('component.operateRecord.view.TSqrxxPanel', {
+
+        region : "center",
+        // isPage : true,
+        title : "申请人信息列表"
+    });
+
+    //追加查询——查询条件框
+    appendQueryForm = Ext.create("ZTEsoft.form.SearchForm", {
+        region : "north",
+        store : appendQueryGrid.getBusizGrid().getStore(),
+        items : [
+     	      	{
+    	            fieldLabel : "id",
+    	            xtype : "textfield",
+    	            hidden : true,
+    	            name : "id"
+            	},
+    	      	{
+    	            fieldLabel : "姓名",
+    	            xtype : "textfield",
+    	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
+    	            name : "xm"
+            	},
+    	      	{
+    	            fieldLabel : "证件号",
+    	            xtype : "textfield",
+    	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
+    	            name : "zjh"
+            	},
+    	      	{
+    	            fieldLabel : "证件类型",
+    	            xtype : "combo",
+    	            name : "zjlx",
+    	            displayField : 'text',
+    	            valueField : 'value',
+    	            value : '',
+    	            editable : false,
+    	            store : new Ext.data.ArrayStore({
+    	                fields : ['value', 'text'],
+    	                data : [['', '全部'], ['10', '身份证'],['30', '军官证'], ['20', '其他']]
+    	            })
+            	},
+    	      	{
+    	            fieldLabel : "查询类型",
+    	            xtype : "combo",
+    	            name : "cxsqrlx",
+    	            displayField : 'text',
+    	            valueField : 'value',
+    	            value : '',
+    	            editable : false,
+    	            store : new Ext.data.ArrayStore({
+    	                fields : ['value', 'text'],
+    	                data : [['', '全部'], ['10', '律师'], ['20', '党政军机关'], ['30', '司法机关'], ['40', '企事业单位'], ['50', '个人'], ['60', '人民团体']]
+    	            })
+            	},
+    	      	{
+    	            fieldLabel : "cxrdw",
+    	            xtype : "textfield",
+    	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
+    	            hidden : true,
+    	            name : "cxrdw"
+            	},
+    	      	{
+    	            fieldLabel : "cxsy",
+    	            xtype : "textfield",
+    	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
+    	            hidden : true,
+    	            name : "cxsy"
+            	},
+            	{
+		            fieldLabel : "查询起始日期",
+		            xtype : "datefield",
+		            format : 'Y-m-d',
+		            value : new Date(),
+		            afterSubTpl : WEBConstants.REQUIRED,
+		            editable : false,
+		            name : "startDate"
+		        }, {
+		            fieldLabel : "查询结束日期",
+		            xtype : "datefield",
+		            format : 'Y-m-d',
+		            value : new Date(),
+		            vtype : "compare",
+		            target : 'startDate',
+		            editable : false,
+		            name : "endDate"
+		        },
+    	      	{
+    	            fieldLabel : "czdw",
+    	            xtype : "textfield",
+    	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
+    	            hidden : true,
+    	            name : "czdw"
+            	},
+    	      	{
+    	            fieldLabel : "czr",
+    	            xtype : "textfield",
+    	            operation : WEBConstants.OPERATION.EqualTo,// 操作类型，如果不设置，默认等于(EqualTo)
+    	            value : userSession.userId,
+    	            hidden : true,
+    	            name : "czr"
+            	},
+            	{
+    	            fieldLabel : "查询来源",
+    	            xtype : "combo",
+    	            name : "cxbs",
+    	            hidden : true,
+    	            displayField : 'text',
+    	            valueField : 'value',
+    	            value : '20',
+    	            editable : false,
+    	            store : new Ext.data.ArrayStore({
+    	                fields : ['value', 'text'],
+    	                data : [['', '全部'], ['10', '终端'], ['20', '窗口']]
+    	            })
+            	}	       
+            ]
+
+    });
+
+	
+	
+	//追加查询win
+	appendQueryWin = Ext.create('Ext.window.Window',{
+    	id : 'appendQueryWin_id',
+    	title : '追加查询',
+    	width : 800,
+        height : 400,
+        layout : 'border',
+        closeAction : 'hide',
+        //overflowY :'scroll',
+        //maximized : true,
+        maximizable : true,
+        buttonAlign : 'center',
+        buttons : [
+        	{
+                text : '确定',
+                iconCls : 'accept',
+                name : 'okBtn',
+                handler: function() {  
+	                var me = this;
+	                //console.log(me.up('window').down("gridpanel"));
+	                var items = me.up('window').down("gridpanel").getSelectedItems();
+			        if (Ext.isEmpty(items)) {
+			            ExtUtils.info(StrConstants.HINT_SELECT_FIRST);
+			            return;
+			        }
+			        
+			        Ext.MessageBox.confirm(StrConstants.HINT, "确定要追加此次的查询吗?", function(btn) {
+			            if (btn == 'yes') {
+			            	clearAll();
+			                var item = items[0];
+			                var ssrxxId = item.get("id");
+			                //console.log("ssrxxId:"+ssrxxId);
+			                appendQueryAction.qryRecord(ssrxxId, function(result) {
+			                	result.mainId = ssrxxId;
+			                	//console.log("result");
+			                    //console.log(result);
+			                    var model = Ext.create("component.operateRecord.model.TSqrxxModel");
+               					model.data = result;
+               					//console.log(model);
+			                    //sqrxxPanel.getForm().loadRecord(model);
+			                    sqrxxPanel.getForm().setValues(result);
+			                });
+			                
+			                //imageStore = Ext.create('Ext.data.Store', {
+        					//model: 'component.information.model.ImageModel',
+			                
+			                var params = {};
+			                params.sqrId = ssrxxId;
+			                var config = {
+					            url : 'information/tsqrxxfj/qryList.do',
+					            params : params,
+					            callback : function(tsqrxxfjList){
+					            	//把图片都加载到列表中
+					            	//console.log(tsqrxxfjList);
+					            	//console.log(typeof tsqrxxfjList);
+					            	Ext.Array.each(tsqrxxfjList, function(record, index, countriesItSelf) {
+					            		//console.log("循环");
+					            		//console.log(record);
+					            		var thizImageModel = Ext.create("component.information.model.ImageModel");
+						            	thizImageModel.data.id = record.id;
+						            	thizImageModel.data.mc = record.mc;
+						            	thizImageModel.data.sqrId = record.sqrId;
+						            	thizImageModel.data.fjlx = record.fjlx;
+						            	thizImageModel.data.dz = record.dz;
+						            	thizImageModel.data.url = ctx+'/scanImages'+record.dz;
+						            	//console.log(thizImageModel);
+									    imageStore.add(thizImageModel);
+									});
+					            	
+									if(!checkImages()){
+						            	var layout = infoMainPanel.getLayout();
+						            	//layout.setActiveItem(1);//下一步：证件扫描
+						            	layout.setActiveItem(1);
+						            	appendQueryWin.hide();
+		        						return ;
+									}
+									
+									var layout = infoMainPanel.getLayout();
+		        					layout.setActiveItem(3);//下一步：被查询人信息
+		        						
+	        						//追加查询成功，隐藏窗口及提示
+	        						appendQueryWin.hide();
+	        						ExtUtils.tip("提示","追加成功，您可以继续查询...");
+					            }
+					        };
+					        ExtUtils.doAjax(config);
+			                
+			                
+			                
+			            }
+			        });
+			        
+	            }
+            }, {
+                text : '取消',
+                iconCls : 'arrow_undo',
+                name : 'cancelBtn',
+                handler : function(){
+                	this.up('window').close();
+                }
+            }
+        ],
+        items:[appendQueryGrid,appendQueryForm]
+	 });
 	
 	
     // 1、申请人信息填写
@@ -176,6 +406,7 @@ Ext.onReady(function() {
             listeners:{
 		         //scope: yourScope,
 		         'change': function(thiz,newValue ,oldValue ,eOpts ){
+		         		console.log('证件类型change');
 		         		//console.log(thiz);console.log(newValue);console.log(oldValue);console.log(eOpts);
 		         		//如果选择“其他”，则显示证件类型（必填），否则隐藏
 		         		if('20'==newValue){
@@ -218,9 +449,9 @@ Ext.onReady(function() {
 		         //scope: yourScope,
 		         'change': function(thiz,newValue ,oldValue ,eOpts ){
 		         		//console.log(thiz);console.log(newValue);console.log(oldValue);console.log(eOpts);
-		         		
-		         		console.log(Ext.getCmp('sqr_cxrdw').getSubTplMarkup());
-		         		console.log(Ext.getCmp('sqr_cxsy').getSubTplMarkup());
+		         		console.log('查询申请人类型change');
+		         		//console.log(Ext.getCmp('sqr_cxrdw').getSubTplMarkup());
+		         		//console.log(Ext.getCmp('sqr_cxsy').getSubTplMarkup());
 		         	
 		         		//除“个人”外，申请查询人单位、查询事由 必填
 		         		if('50'==newValue){
@@ -261,7 +492,7 @@ Ext.onReady(function() {
 		         			Ext.getCmp('fjlxBtn2').hide();
 		         			Ext.getCmp('fjlxBtn3').hide();
 		         		}
-		         		
+		         		//console.log("needFjlxStr:"+needFjlxStr);
 		         		var form = Ext.getCmp('card0').getForm();
 		         		//form.checkValidity();
 		         		form.isValid();
@@ -311,7 +542,7 @@ Ext.onReady(function() {
         	id : 'fjlxId'
         }],
         // 重置 和下一步 按钮.
-	    buttons: [{
+	    tbar: [{
 	        text: '重置',
 	        icon : ctx + '/common/images/icons/arrow_rotate_anticlockwise.png',
 	        handler: function() {
@@ -344,6 +575,14 @@ Ext.onReady(function() {
 			        ExtUtils.doAjax(config);
 	            }
 	        }
+	    },'->',{
+	    	text: '追加查询',
+	        icon : ctx + '/common/images/icons/magnifier.png',
+	        handler: function() {
+	            //console.log('追加查询');
+	            appendQueryWin.show();
+	        }
+	    	
 	    }]
 
     });
@@ -432,7 +671,7 @@ Ext.onReady(function() {
 		                   	method : "POST",
 		                    waitMsg: '正在上传...',  
 		                    success: function(thizform, action) {  
-		                    	console.log(action.result);console.log(action);
+		                    	//console.log(action.result);console.log(action);
 		                    	//加载图片
 				            	var thizImageModel = Ext.create("component.information.model.ImageModel");
 				            	thizImageModel.data.id = action.result.id;
@@ -1033,7 +1272,7 @@ Ext.onReady(function() {
 			}]
 	    }
 	    ],
-	    buttons: [{
+	    tbar: [{
 	        text: '第一步',
 	        iconCls: "x-tbar-page-first",
 	        handler: function() {
@@ -1061,45 +1300,13 @@ Ext.onReady(function() {
 	        	}
 	        	
 	        	
-	        	var needFjlxAry = needFjlxStr.split(',');
-	        	console.log(needFjlxAry.length);
-	        	var hasFjlxAry = new Array();
-	        	for(var j=0;j<needFjlxAry.length;j++){ 
-	        		hasFjlxAry[j]="false";
+	        	
+	        	
+	        	if(checkImages()){
+	        		var layout = infoMainPanel.getLayout();
+	        		layout.setActiveItem(3);//下一步：被查询人信息
 	        	}
 	        	
-	        	for(var i =0;i<imageStore.getCount();i++){
-					var model = imageStore.getAt(i); //遍历每一行
-					console.log(model);
-					console.log(i+':'+model.data.fjlx);
-					hasFjlxAry[parseInt(model.data.fjlx)-1]="true";
-				}
-				console.log(hasFjlxAry);
-	        	
-				var valid = true;
-				var msg = "按要求上传[工作证/身份证]...";
-				for(var k=0;k<needFjlxAry.length;k++){ 
-					if("false"==hasFjlxAry[k]){
-						valid = false;
-						if(k==1){
-							msg = "按要求上传[介绍信]...";
-						}
-						if(k==2){
-							msg = "按要求上传[委托协议/受理通知书]...";
-						}
-						break;
-					}
-	        	}
-	        	
-	        	if(!valid){
-	        		ExtUtils.tip("错误",msg); 
-					return false;
-	        	}
-	        	
-	        	
-	        	var layout = infoMainPanel.getLayout();
-	        	
-	        	layout.setActiveItem(3);//下一步：被查询人信息
 	        	
 	        	/** 证件扫描与介绍信及相关资料扫描合并
 			    var cxsqrlx = sqrxxPanel.getForm().findField('cxsqrlx').getValue();
@@ -1142,6 +1349,43 @@ Ext.onReady(function() {
 	    }]
     });
     
+    var checkImages = function(){
+    	var needFjlxAry = needFjlxStr.split(',');
+    	console.log(needFjlxAry.length);
+    	var hasFjlxAry = new Array();
+    	for(var j=0;j<needFjlxAry.length;j++){ 
+    		hasFjlxAry[j]="false";
+    	}
+    	
+    	for(var i =0;i<imageStore.getCount();i++){
+			var model = imageStore.getAt(i); //遍历每一行
+			//console.log(model);
+			console.log(i+':'+model.data.fjlx);
+			hasFjlxAry[parseInt(model.data.fjlx)-1]="true";
+		}
+		console.log(hasFjlxAry);
+    	
+		var valid = true;
+		var msg = "按要求上传[工作证/身份证]...";
+		for(var k=0;k<needFjlxAry.length;k++){ 
+			if("false"==hasFjlxAry[k]){
+				valid = false;
+				if(k==1){
+					msg = "按要求上传[介绍信]...";
+				}
+				if(k==2){
+					msg = "按要求上传[委托协议/受理通知书]...";
+				}
+				break;
+			}
+    	}
+    	
+    	if(!valid){
+    		ExtUtils.tip("错误",msg); 
+			return false;
+    	}
+    	return valid;
+    };
     
     //3、介绍信及相关资料扫描===没用
     ssxzlPanel = Ext.create('Ext.Panel', { 
@@ -1214,11 +1458,28 @@ Ext.onReady(function() {
         {
             fieldLabel : "身份证号码",
             xtype : "textfield",
-            vtype : 'idcard',
+            vtype : 'identityCard',
             afterSubTpl : WEBConstants.REQUIRED,
             allowBlank : false,
             width: 500,
-            name : "idCardNum"
+            name : "idCardNum",
+            listeners: {
+                specialkey: function(field, e){
+                    // e.HOME, e.END, e.PAGE_UP, e.PAGE_DOWN,
+                    // e.TAB, e.ESC, arrow keys: e.LEFT, e.RIGHT, e.UP, e.DOWN
+                    if (e.getKey() == e.ENTER) {
+                    	//触发查询按钮事件
+                    	//console.log(field.up('form').down('button[name=query]'));
+                        field.up('form').down('button[name=query]').fireEvent('click');
+                        console.log("触发查询按钮事件");
+                    }
+                },
+                'focus':function(){  
+                	//console.log("focus ..");
+                    this.selectText();  
+                    //console.log("focus .....");
+                } 
+            }
         },{
 			xtype : 'tbspacer',
 			width : 5
@@ -1228,7 +1489,31 @@ Ext.onReady(function() {
 			name : 'query',
 			text : '&nbsp;&nbsp;查&nbsp;&nbsp;&nbsp;&nbsp;询&nbsp;&nbsp;',
 			formBind: true,
+			listeners : {
+				"click": function() {
+					console.log("触发查询按钮handler事件");
+		            var form = this.up('form').getForm();
+		            if (form.isValid()) {
+		            	
+		            	//通过表单校验
+		            	var layout = infoMainPanel.getLayout();
+		            	layout.setActiveItem(4);//下一步：显示查询结果
+		            	
+		            	bcxrStore.getProxy().extraParams = {
+				        	//申请人信息表主键uuid
+							sqrxxId : sqrxxPanel.getForm().findField('mainId').getValue(),
+							//被查询人的身份证信息
+							idCardNum : bcxrxxPanel.getForm().findField("idCardNum").getValue()
+					
+				        };
+				        bcxrStore.load();
+		            }
+				}
+			}
+			/**
+			,
 			handler : function() {
+				console.log("触发查询按钮handler事件");
 	            var form = this.up('form').getForm();
 	            if (form.isValid()) {
 	            	
@@ -1246,9 +1531,10 @@ Ext.onReady(function() {
 			        bcxrStore.load();
 	            }
 	        }
+	        **/
 		}],
         // 重置 和下一步 按钮.
-	    buttons: [{
+	    tbar: [{
 	        text: '第一步',
 	        iconCls: "x-tbar-page-first",
 	        handler: function() {
@@ -1481,7 +1767,7 @@ Ext.onReady(function() {
             ]  
         } 
         ],
-        buttons: [{
+        tbar: [{
 	        text: '第一步',
 	        iconCls: "x-tbar-page-first",
 	        handler: function() {
@@ -1616,7 +1902,7 @@ Ext.onReady(function() {
 	'				<td width=130>证件号码</td>',
 	'				<td>外文姓</td>',
 	'				<td>外文名</td>',
-	'				<td>联系电话</td>',
+	//'				<td>联系电话</td>',
 	'			</tr>',
 	'			<tpl for="familyInfoList">',
 	'			<tr action="{relationType}">',
@@ -1628,7 +1914,7 @@ Ext.onReady(function() {
 	'				<td>{certificateNum}</td>',
 	'				<td>{foreignLastName}</td>',
 	'				<td>{foreignFirstName}</td>',
-	'				<td>{telephoneNum}</td>',
+	//'				<td>{telephoneNum}</td>',
 	'			</tr>',
 	'			</tpl>',
 	'		</table>',

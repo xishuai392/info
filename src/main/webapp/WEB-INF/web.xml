@@ -127,7 +127,8 @@
 		<location>/404.htm</location>
 	</error-page>
 	
+	<!--超时时间，分钟 -->
 	<session-config>
-		<session-timeout>30</session-timeout>
+		<session-timeout>240</session-timeout>
 	</session-config>
 </web-app>

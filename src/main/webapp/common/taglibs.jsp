@@ -32,11 +32,18 @@
 	    info:function(){
 	    	return false;
 	    }
+	    ,
+	    error:function(){
+	    	return false;
+	    }
 	};
 	// 用户session设置
 	var userSession = {};
 	userSession.userCode = '${sessionUserCode}';
 	userSession.userName = '${sessionUserName}';
+	userSession.userId = '${sessionuser.userId}';
+	
+	//console.log(userSession);
 
 	// 项目根路径，用于引用资源等
 	webRoot = '${ctx}/';

@@ -211,11 +211,11 @@ Ext.onReady(function() {
     }
     
     
-    ////创建常住人口模板
+    ////创建常住人口模板 //本市户籍人口信息 
     var changzhuWinTp = new Ext.XTemplate(
 	'<div class="frame_normal" id="allDiv">',
 	'	<div class="div_title" id="titleDiv">',
-	'		<span style="FONT-SIZE: 20px!important; ">本市户籍人口信息</span>',
+	'		<span style="FONT-SIZE: 20px!important; ">常住人口基本信息表</span>',
 	'	</div>',
 	'	<div class="div_second_title" id="part1Div">',
 	'		人员基本信息',
@@ -296,7 +296,7 @@ Ext.onReady(function() {
 	'				<td width=130>证件号码</td>',
 	'				<td>外文姓</td>',
 	'				<td>外文名</td>',
-	'				<td>联系电话</td>',
+	//'				<td>联系电话</td>',
 	'			</tr>',
 	'			<tpl for="familyInfoList">',
 	'			<tr action="{relationType}">',
@@ -308,7 +308,7 @@ Ext.onReady(function() {
 	'				<td>{certificateNum}</td>',
 	'				<td>{foreignLastName}</td>',
 	'				<td>{foreignFirstName}</td>',
-	'				<td>{telephoneNum}</td>',
+	//'				<td>{telephoneNum}</td>',
 	'			</tr>',
 	'			</tpl>',
 	'		</table>',
@@ -425,11 +425,12 @@ Ext.onReady(function() {
 						            	var aEls = $(item).find("#part2TableCZ a");
 						            	
 						            	if(aEls.length>0){
+						            		console.log("aEls.length:"+aEls.length);
 						            		console.log(aEls);
 						            		$.each( aEls, function( j, aItem ) {
-						            			var pid = $(aItem).attr('pid');
-							            		$(aItem).after('<span>'+pid+'</span>');
-							            		$(aItem).remove();
+						            			//var pid = $(aItem).attr('pid');
+							            		//$(aItem).after('<span>'+pid+'</span>');
+							            		//$(aItem).remove();
 				//			            		console.log(aEls);console.log("pid:"+pid);
 						            			
 						            		});
@@ -438,7 +439,8 @@ Ext.onReady(function() {
 						            	
 						            	var delEls = $(item).find("table tr[action=子女]");
 						            	if(delEls.length>0){
-						            		delEls.remove();
+						            		delEls.hide();
+						            		//delEls.remove();
 						            	}
 						            	//console.log(delEls);
 									    //console.log($(item));
@@ -451,10 +453,20 @@ Ext.onReady(function() {
 									});
 					            }catch (e){
 					            	console.log(e);
+					            	alert(e);
 					            }
 								console.log("printHtml");console.log(printHtml);
 								
+								//alert(printHtml);
+								//printHtml = printHtml.replaceAll(/&lt;a href=&quot;#&quot;/g,"<span ",false);
+								//printHtml = printHtml.replaceAll("</a>","</span> ",false);
 								
+								printHtml = printHtml.replaceAll("a href=","span test=",true);
+								
+								
+								//alert(printHtml);
+								//document.getElementById("testConsole").innerText = printHtml;
+								//document.write(printHtml);
 					            //console.log(printHtml);
 					            /////console.log(czrkPanel.down('panel').getEl().getById("changzhuDetailDiv").getHTML());
 								
