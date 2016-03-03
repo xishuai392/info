@@ -95,12 +95,12 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
 	            flex : 1
 	        },
 	        {
-	        	text : "被查询人姓名",
+	        	text : "申请人姓名",
 	            dataIndex : "xm",
 	            flex : 1
 	        },
 	        {
-	        	text : "被查询人证件号",
+	        	text : "申请人证件号",
 	            dataIndex : "zjh",
 	            flex : 1
 	        },
