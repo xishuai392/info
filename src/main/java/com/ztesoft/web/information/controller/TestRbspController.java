@@ -109,8 +109,8 @@ public class TestRbspController {
         auditUserPo.setUserCardId(MessageResourceUtils
                 .getMessage("Plates.UserCardId"));
         // 设置用户单位
-        auditUserPo.setOrgId(Long.parseLong(MessageResourceUtils
-                .getMessage("Plates.UserDeptId")));
+        auditUserPo.setOrgCode(MessageResourceUtils
+                .getMessage("Plates.UserDeptId"));
         // 设置用户名
         auditUserPo.setUserName(MessageResourceUtils
                 .getMessage("Plates.UserName"));
