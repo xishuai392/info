@@ -105,30 +105,35 @@ public class InformationQueryController {
 
     /**
      * PC端首页
+     * 
      * @param model
      * @return
      */
     @RequestMapping("index")
     public ModelAndView index(Model model) {
         ModelAndView view = new ModelAndView("/information/jsp/infoQuery");
-        view.addObject("thirdPartyZzrkUrl", MessageResourceUtils.getMessage("ThirdParty.zzrk.url"));
+        view.addObject("thirdPartyZzrkUrl",
+                MessageResourceUtils.getMessage("ThirdParty.zzrk.url"));
         return view;
     }
-    
+
     /**
      * 网上查询首页
+     * 
      * @param model
      * @return
      */
     @RequestMapping("wscxIndex")
     public ModelAndView wscxIndex(Model model) {
         ModelAndView view = new ModelAndView("/information/jsp/wscxInfoQuery");
-        view.addObject("thirdPartyZzrkUrl", MessageResourceUtils.getMessage("ThirdParty.zzrk.url"));
+        view.addObject("thirdPartyZzrkUrl",
+                MessageResourceUtils.getMessage("ThirdParty.zzrk.url"));
         return view;
     }
-    
+
     /**
      * 常住人口详情页面（新开页面）兼容PC\网上查询等
+     * 
      * @param idCardNum
      * @param sqrxxId
      * @param bcxrxxId
@@ -136,13 +141,15 @@ public class InformationQueryController {
      * @return
      */
     @RequestMapping("czrkDetail")
-    public ModelAndView czrkDetail(@RequestParam(value="idCardNum", required=true)String idCardNum,
-            @RequestParam(value="sqrxxId", required=true)String sqrxxId,
-            @RequestParam(value="bcxrxxId", required=true)String bcxrxxId,
-            @RequestParam(value="cxbs", required=true)String cxbs ) {
+    public ModelAndView czrkDetail(@RequestParam(value = "idCardNum",
+            required = true) String idCardNum, @RequestParam(value = "sqrxxId",
+            required = true) String sqrxxId, @RequestParam(value = "bcxrxxId",
+            required = true) String bcxrxxId, @RequestParam(value = "cxbs",
+            required = true) String cxbs) {
         String populationType = "户籍人口";
         ModelAndView view = new ModelAndView("/information/jsp/czrkDetail");
-        view.addObject("thirdPartyZzrkUrl", MessageResourceUtils.getMessage("ThirdParty.zzrk.url"));
+        view.addObject("thirdPartyZzrkUrl",
+                MessageResourceUtils.getMessage("ThirdParty.zzrk.url"));
         view.addObject("idCardNum", idCardNum);
         view.addObject("sqrxxId", sqrxxId);
         view.addObject("bcxrxxId", bcxrxxId);
@@ -150,9 +157,10 @@ public class InformationQueryController {
         view.addObject("cxbs", cxbs);
         return view;
     }
-    
+
     /**
      * 暂住人口详情页面（新开页面）兼容PC\网上查询等
+     * 
      * @param idCardNum
      * @param sqrxxId
      * @param bcxrxxId
@@ -160,13 +168,15 @@ public class InformationQueryController {
      * @return
      */
     @RequestMapping("zzrkDetail")
-    public ModelAndView zczrkDetail(@RequestParam(value="idCardNum", required=true)String idCardNum,
-            @RequestParam(value="sqrxxId", required=true)String sqrxxId,
-            @RequestParam(value="bcxrxxId", required=true)String bcxrxxId,
-            @RequestParam(value="cxbs", required=true)String cxbs ) {
+    public ModelAndView zczrkDetail(@RequestParam(value = "idCardNum",
+            required = true) String idCardNum, @RequestParam(value = "sqrxxId",
+            required = true) String sqrxxId, @RequestParam(value = "bcxrxxId",
+            required = true) String bcxrxxId, @RequestParam(value = "cxbs",
+            required = true) String cxbs) {
         String populationType = "暂住人口";
         ModelAndView view = new ModelAndView("/information/jsp/zzrkDetail");
-        view.addObject("thirdPartyZzrkUrl", MessageResourceUtils.getMessage("ThirdParty.zzrk.url"));
+        view.addObject("thirdPartyZzrkUrl",
+                MessageResourceUtils.getMessage("ThirdParty.zzrk.url"));
         view.addObject("idCardNum", idCardNum);
         view.addObject("sqrxxId", sqrxxId);
         view.addObject("bcxrxxId", bcxrxxId);
@@ -252,98 +262,91 @@ public class InformationQueryController {
 
         // 最终返回给前台的结果集
         List<QueryResultInfo> queryResultInfoList = new ArrayList<QueryResultInfo>();
+        // 是否查到常住人口信息
+        boolean hasCZRKBase = false;
         if (czrkbaseInfoList.size() > 0) {
 
-            // TODO @惜帅 常口最终规定只会有一条正常数据
-            // Map<String, String> rowMap = buildCZRKLastlyInfo(czrkbaseInfoList);
-            for (Map<String, String> rowMap : czrkbaseInfoList) {
-                {
-                    QueryResultInfo resultInfo = new QueryResultInfo();
-                    String uuid = UuidUtils.generatorUUID();
+            // TODO 20160309 @惜帅 常口的数据，需要进行筛选
+            Map<String, String> rowMap = buildCZRKLastlyInfo(czrkbaseInfoList);
+            if (null != rowMap)
+            // for (Map<String, String> rowMap : czrkbaseInfoList) {
+            {
+                // 查到常口数据了
+                hasCZRKBase = true;
+                QueryResultInfo resultInfo = new QueryResultInfo();
+                String uuid = UuidUtils.generatorUUID();
 
-                    resultInfo.setBcxrxxId(uuid);
-                    // resultInfo.setIdCardNum(pid);
-                    // 从接口数据获取，保证完全正确
-                    resultInfo.setIdCardNum(rowMap.get("PID"));
-                    // 出生日期
-                    String dobStr = rowMap.get("DOB");
-                    if (StringUtils.isNotBlank(dobStr)) {
-                        if (dobStr.length() > 10) {
-                            resultInfo.setBirthDate(dobStr.substring(0, 10));
-                        }
-                        else {
-                            resultInfo.setBirthDate(dobStr);
-                        }
+                resultInfo.setBcxrxxId(uuid);
+                // resultInfo.setIdCardNum(pid);
+                // 从接口数据获取，保证完全正确
+                resultInfo.setIdCardNum(rowMap.get("PID"));
+                // 出生日期
+                String dobStr = rowMap.get("DOB");
+                if (StringUtils.isNotBlank(dobStr)) {
+                    if (dobStr.length() > 10) {
+                        resultInfo.setBirthDate(dobStr.substring(0, 10));
                     }
-                    // TODO 迁往地 住址
-                    // String huId = rowMap.get("HU_ID");
-                    // String allFullAddr = buildAllFullAddr(auditUserPo, pid, huId);
-                    // resultInfo.setAddress(allFullAddr);
-
-                    resultInfo.setAddress(rowMap.get("TO_ADDR"));
-
-                    resultInfo.setIsHavingTR("");
-                    resultInfo.setName(rowMap.get("NAME"));// 姓名
-                    if (StringUtils.isNotBlank(rowMap.get("NAME")))
-                        bcxrxm = rowMap.get("NAME");// 姓名
-                    resultInfo.setPopulationType("户籍人口");
-                    queryResultInfoList.add(resultInfo);
-
-                    try {
-                        // 被查询人信息
-                        TBcxrxxPO bcxrxxPO = new TBcxrxxPO();
-                        bcxrxxPO.setId(uuid);
-                        bcxrxxPO.setSqrId(reqInfo.getSqrxxId());
-                        bcxrxxPO.setZjlx("10");// 证件类型（10：身份证，20：其他）
-                        bcxrxxPO.setZjh(pid);
-                        bcxrxxPO.setXm(bcxrxm);
-                        bcxrxxPO.setSfzf("0");// 是否作废（1：是，0：否）默认为“否”
-                        bcxrxxPO.setSfdy("0");// 是否打印（1：是，0：否）默认为“否”
-                        bcxrxxPO.setBcxrq(DateUtils.date2String(new Date(),
-                                DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));// 被查询日期
-                        bcxrxxPO.setRklx("1");// 人口类型（1：户籍人口，2：暂住人口）
-                        bcxrxxPO.setCxcs(0);// 查询次数
-                        bcxrxxPO.setDycs(0);// 打印次数
-                        // 记录日志
-                        bcxrxxService.add(bcxrxxPO);
-                    }
-                    catch (Exception e) {
-                        logger.error("插入被查询人信息时发生错误", e);
+                    else {
+                        resultInfo.setBirthDate(dobStr);
                     }
                 }
+                // TODO 迁往地 住址
+                // String huId = rowMap.get("HU_ID");
+                // String allFullAddr = buildAllFullAddr(auditUserPo, pid, huId);
+                // resultInfo.setAddress(allFullAddr);
+
+                resultInfo.setAddress(rowMap.get("TO_ADDR"));
+
+                resultInfo.setIsHavingTR("");
+                resultInfo.setName(rowMap.get("NAME"));// 姓名
+                if (StringUtils.isNotBlank(rowMap.get("NAME")))
+                    bcxrxm = rowMap.get("NAME");// 姓名
+                resultInfo.setPopulationType("户籍人口");
+                queryResultInfoList.add(resultInfo);
+
+                try {
+                    // 被查询人信息
+                    TBcxrxxPO bcxrxxPO = new TBcxrxxPO();
+                    bcxrxxPO.setId(uuid);
+                    bcxrxxPO.setSqrId(reqInfo.getSqrxxId());
+                    bcxrxxPO.setZjlx("10");// 证件类型（10：身份证，20：其他）
+                    bcxrxxPO.setZjh(pid);
+                    bcxrxxPO.setXm(bcxrxm);
+                    bcxrxxPO.setSfzf("0");// 是否作废（1：是，0：否）默认为“否”
+                    bcxrxxPO.setSfdy("0");// 是否打印（1：是，0：否）默认为“否”
+                    bcxrxxPO.setBcxrq(DateUtils.date2String(new Date(),
+                            DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));// 被查询日期
+                    bcxrxxPO.setRklx("1");// 人口类型（1：户籍人口，2：暂住人口）
+                    bcxrxxPO.setCxcs(0);// 查询次数
+                    bcxrxxPO.setDycs(0);// 打印次数
+                    // 记录日志
+                    bcxrxxService.add(bcxrxxPO);
+                }
+                catch (Exception e) {
+                    logger.error("插入被查询人信息时发生错误", e);
+                }
             }
+            // }
         }
 
-        
         /**
-        {
-            QueryResultInfo resultInfo = new QueryResultInfo();
-            resultInfo.setAddress("");// 户籍详细地址
-            resultInfo.setIdCardNum(pid);
-            resultInfo.setIsHavingTR("已办证");
-            resultInfo.setName("");// 姓名
-            resultInfo.setPopulationType("暂住人口");
-            queryResultInfoList.add(resultInfo);
-        }*/
-        
-        
+         * { QueryResultInfo resultInfo = new QueryResultInfo(); resultInfo.setAddress("");// 户籍详细地址 resultInfo.setIdCardNum(pid);
+         * resultInfo.setIsHavingTR("已办证"); resultInfo.setName("");// 姓名 resultInfo.setPopulationType("暂住人口"); queryResultInfoList.add(resultInfo); }
+         */
+
         /**
          * 20160225需求，如果有常口信息的，就不查暂口信息了，就只显示常口信息
          */
-        if ("false".equals(MessageResourceUtils.getMessage("isBothQuery")) && czrkbaseInfoList.size() > 0) {
-            logger.info(String.format("查到常口信息的，就不查暂口信息了，就只显示常口信息.pid=[%s]", pid));
+        if ("false".equals(MessageResourceUtils.getMessage("isBothQuery"))
+                && czrkbaseInfoList.size() > 0 && hasCZRKBase) {
+            logger.info(String.format("查到常口信息的，就不查暂口信息了，就只显示常口信息.身份证号=[%s]",
+                    pid));
             return queryResultInfoList;
         }
-        
-        
-        
-        
-        
-        
+
         /**
          * 查询有办理过暂居住证的
          */
-        
         String resultLDRK_JBXX = InfoRbspClient.queryLDRK_JBXXInfo(auditUserPo,
                 pid, null);
         InfoResultVO ldrk_jbxxVO = InfoXmlParser.parserXML(resultLDRK_JBXX);
@@ -406,7 +409,6 @@ public class InformationQueryController {
 
             }
         }
-        
 
         /************************ Get drag data end ********************************/
 
@@ -480,6 +482,10 @@ public class InformationQueryController {
 
         Map<String, String> czrkInfoMap = buildCZRKLastlyInfo(czrkInfoList);
 
+        if (null == czrkInfoMap) {
+            ExceptionHandler.publish("APP-01-0020", "该身份证查询不到常住人口信息！！");
+        }
+
         // 获取它的照片编号
         String photoId = czrkInfoMap.get("PHOTO_ID");
         if (StringUtils.isNotBlank(photoId)) {
@@ -501,12 +507,12 @@ public class InformationQueryController {
                 }
                 else {
                     logger.error(String.format(
-                            "常住人口信息]报文信息中没有照片编码，无法保存.身份证号[%s]", pid));
+                            "常住人口信息]报文信息中没有照片编码，无法保存.身份证号=[%s]", pid));
                 }
             }
         }
         else {
-            logger.error(String.format("常住人口信息]报文信息中没有照片编号.身份证号[%s]", pid));
+            logger.error(String.format("常住人口信息]报文信息中没有照片编号.身份证号=[%s]", pid));
         }
 
         String huId = czrkInfoMap.get("HU_ID");
@@ -586,13 +592,13 @@ public class InformationQueryController {
                 }
                 else {
                     logger.error(String.format(
-                            "常住人口信息]报文信息中没有META_ADDR_ID.身份证号[%s],HU_ID[%s]",
+                            "常住人口信息]报文信息中没有META_ADDR_ID.身份证号=[%s],HU_ID=[%s]",
                             pid, huId));
                 }
             }
         }
         else {
-            logger.error(String.format("常住人口信息]报文信息中没有HU_ID.身份证号[%s]", pid));
+            logger.error(String.format("常住人口信息]报文信息中没有HU_ID.身份证号=[%s]", pid));
         }
         return allFullAddr;
     }
@@ -683,16 +689,16 @@ public class InformationQueryController {
                         }
                     }
                     else {
-                        logger.error(String
-                                .format("[流动人口基本信息]最后有效的报文信息中没有照片编码，无法保存.身份证号[%s]",
-                                        pid));
+                        logger.error(String.format(
+                                "[流动人口基本信息]最后有效的报文信息中没有照片编码，无法保存.身份证号=[%s]",
+                                pid));
                     }
 
                 }
             }
             else {
                 logger.error(String.format(
-                        "[流动人口基本信息]最后有效的报文信息中没有照片编号.身份证号[%s]", pid));
+                        "[流动人口基本信息]最后有效的报文信息中没有照片编号.身份证号=[%s]", pid));
             }
 
             // 拼装ZK基本信息，流动人口基本信息数据查询服务
@@ -700,24 +706,16 @@ public class InformationQueryController {
                     .setBaseInfo(buildZZRKBasePopulation(ldrk_jbxxLatelyMap));
 
             /**
-             * 查询 暂（居）住证信息数据查询服务
+             * 20160309更新，过滤掉暂住证编号为空的，然后在剩余数据中选出“登记时间“为最新的 基本信息，然后将登记时间填到”填报日期“里
              */
-            String resultLDRK_ZJZZ = InfoRbspClient.queryZJZZXXInfo(
-                    auditUserPo, pid);
-            InfoResultVO ldrk_zjzzVO = InfoXmlParser.parserXML(resultLDRK_ZJZZ);
-            List<Map<String, String>> ldrk_zjzzList = InfoXmlParser
-                    .parserResultVO(ldrk_zjzzVO);
 
-            if (null != ldrk_zjzzList && ldrk_zjzzList.size() > 0) {
-                // 拼装ZK暂住信息，暂（居）住证信息数据查询服务
-                List<TRinfo> zjzzList = buildZjzzInfoList(ldrk_zjzzList);
-                trPopulationInfo.setTrInfoList(zjzzList);
-
-                // 取最新暂（居）住证信息的“填报日期”放置到基本信息中
-                TRinfo lastIRinfo = zjzzList.get(zjzzList.size() - 1);
-                trPopulationInfo.getBaseInfo().setFillDate(
-                        lastIRinfo.getFillDate());
-            }
+            /**
+             * 查询 暂（居）住证信息数据查询服务 String resultLDRK_ZJZZ = InfoRbspClient.queryZJZZXXInfo( auditUserPo, pid); InfoResultVO ldrk_zjzzVO =
+             * InfoXmlParser.parserXML(resultLDRK_ZJZZ); List<Map<String, String>> ldrk_zjzzList = InfoXmlParser .parserResultVO(ldrk_zjzzVO); if
+             * (null != ldrk_zjzzList && ldrk_zjzzList.size() > 0) { // 拼装ZK暂住信息，暂（居）住证信息数据查询服务 List<TRinfo> zjzzList =
+             * buildZjzzInfoList(ldrk_zjzzList); trPopulationInfo.setTrInfoList(zjzzList); // 取最新暂（居）住证信息的“填报日期”放置到基本信息中 TRinfo lastIRinfo =
+             * zjzzList.get(zjzzList.size() - 1); trPopulationInfo.getBaseInfo().setFillDate( lastIRinfo.getFillDate()); }
+             */
 
         }
         else {
@@ -893,7 +891,8 @@ public class InformationQueryController {
         if (StringUtils.isNotBlank(rowInfoMap.get("GURARDIAN_1_PID"))) {
             // 10：终端，20：pc端,30:网上查询
             if ("10".equals(cxbs) || "30".equals(cxbs)) {
-                familyInfoKeeper.setIdCardNum(rowInfoMap.get("GURARDIAN_1_PID"));
+                familyInfoKeeper
+                        .setIdCardNum(rowInfoMap.get("GURARDIAN_1_PID"));
             }
             else {
                 familyInfoKeeper.setIdCardNum("<a href=\"#\" pid=\""
@@ -901,7 +900,7 @@ public class InformationQueryController {
                         + rowInfoMap.get("GURARDIAN_1_PID") + "</a>");
             }
         }
-        
+
         familyInfoKeeper.setCertificateType(rowInfoMap
                 .get("GURARDIAN_1_CARD_TYPE"));
         familyInfoKeeper.setCertificateNum(rowInfoMap
@@ -919,7 +918,8 @@ public class InformationQueryController {
         if (StringUtils.isNotBlank(rowInfoMap.get("GURARDIAN_2_PID"))) {
             // 10：终端，20：pc端,30:网上查询
             if ("10".equals(cxbs) || "30".equals(cxbs)) {
-                familyInfoKeeperTwo.setIdCardNum(rowInfoMap.get("GURARDIAN_2_PID"));
+                familyInfoKeeperTwo.setIdCardNum(rowInfoMap
+                        .get("GURARDIAN_2_PID"));
             }
             else {
                 familyInfoKeeperTwo.setIdCardNum("<a href=\"#\" pid=\""
@@ -927,7 +927,7 @@ public class InformationQueryController {
                         + rowInfoMap.get("GURARDIAN_2_PID") + "</a>");
             }
         }
-        
+
         familyInfoKeeperTwo.setCertificateType(rowInfoMap
                 .get("GURARDIAN_2_CARD_TYPE"));
         familyInfoKeeperTwo.setCertificateNum(rowInfoMap
@@ -980,7 +980,8 @@ public class InformationQueryController {
                     if (StringUtils.isNotBlank(oneChildMap.get("PID"))) {
                         // 10：终端，20：pc端,30:网上查询
                         if ("10".equals(cxbs) || "30".equals(cxbs)) {
-                            familyInfoChild.setIdCardNum(oneChildMap.get("PID"));
+                            familyInfoChild
+                                    .setIdCardNum(oneChildMap.get("PID"));
                         }
                         else {
                             familyInfoChild.setIdCardNum("<a href=\"#\" pid=\""
@@ -1013,9 +1014,38 @@ public class InformationQueryController {
             Map<String, String> rowInfoMap) {
         // TODO 惜帅 迁移信息
         MigrateInfo migrateInfo = new MigrateInfo();
+        // 何时何因由何地迁来本市(县)
         migrateInfo.setTimeAndResultForMigrateLocal(rowInfoMap.get(""));
+        // 何时何因由何地迁来本址
         migrateInfo.setTimeAndResultForMigrateNative(rowInfoMap.get(""));
-        migrateInfo.setTimeAndResultForMigrateOtherPlace(rowInfoMap.get(""));
+
+        // TODO 20160310 需要根据有效户籍/死亡户籍拼装不同的 何时何因迁往何地
+        String hujiType = rowInfoMap.get("hujiType");// 自定义户籍类型：1-生效，2-死亡
+        if ("1".equals(hujiType)) {
+            // 何时何因迁往何地
+            migrateInfo
+                    .setTimeAndResultForMigrateOtherPlace(rowInfoMap.get(""));
+            // 迁移信息的div的Style样式：style="display:none;" 或者 style="display:block;"
+            migrateInfo.setQyxxDivStyleCSS("display:none;");
+        }
+        else if ("2".equals(hujiType)) {
+            // “何时何因迁往何地” 显示 When_out+“因”+ OUT_CATEGORY +“死亡注销”
+
+            String msg = "";
+            String whenOut = rowInfoMap.get("WHEN_OUT");// 迁出时间
+            if (StringUtils.isNotBlank(whenOut)) {
+                if (whenOut.length() > 10) {
+                    msg += whenOut.substring(0, 10);
+                }
+                else {
+                    msg += whenOut;
+                }
+            }
+            msg += "因" + rowInfoMap.get("OUT_CATEGORY") + "死亡注销";
+            migrateInfo.setTimeAndResultForMigrateOtherPlace(msg);
+            // 迁移信息的div的Style样式：style="display:none;" 或者 style="display:block;"
+            migrateInfo.setQyxxDivStyleCSS("display:block;");
+        }
 
         // migrateInfo.setTimeAndResultForMigrateLocal("smile forever,hhaha");
         // migrateInfo.setTimeAndResultForMigrateNative("xm");
@@ -1031,8 +1061,54 @@ public class InformationQueryController {
      */
     public Map<String, String> buildCZRKLastlyInfo(
             List<Map<String, String>> czrkbaseInfoList) {
-        // TODO 惜帅 常住人口展现最新的一条的基本信息
-        return czrkbaseInfoList.get(0);
+        // TODO 20160309 @惜帅 常口的数据，需要进行筛选
+        /**
+         * 去查巨龙的时候，带上NOW_SIGN=1，在我们这边过滤<br>
+         * 先判断<br>
+         * Zxbz=0：有效户籍人口，<br>
+         * Zxbz=1：并且Out_kind_code(迁出类别)=21 的为死亡户籍<br>
+         */
+        return filterCZRKInfo(czrkbaseInfoList);
+    }
+
+    /**
+     * 筛选常口基本信息，有效户籍或迁出或死亡人口(迁出的不需要展示)
+     * 
+     * @param czrkbaseInfoList
+     * @return
+     */
+    private Map<String, String> filterCZRKInfo(
+            List<Map<String, String>> czrkbaseInfoList) {
+        boolean isActive = false;// 是否是有效户籍
+        boolean isDeah = false;// 是否是死亡户籍
+        Map<String, String> czrk_baseLatelyMap = null;
+        for (Map<String, String> oneMap : czrkbaseInfoList) {
+            String swsj = oneMap.get("DATE_OF_DEATH");// 死亡时间
+            String zxbz = oneMap.get("ZXBZ");// 注销标识
+            String nowSign = oneMap.get("NOW_SIGN");// 数据有效唯一标识
+            String outKindCode = oneMap.get("OUT_KIND_CODE");// OUT_KIND_CODE(迁出类别) Out_kind_code(迁出类别) 死亡的Out_kind_code=21
+
+            if ("0".equals(zxbz)) {
+                // ZXBZ 有效 0 注销 1
+                isActive = true;
+                czrk_baseLatelyMap = oneMap;
+                logger.info(String.format("查询常住人口基本信息，该记录是有效户籍！身份证号=[%s]",
+                        oneMap.get("PID")));
+                czrk_baseLatelyMap.put("hujiType", "1");// 自定义户籍类型：1-生效，2-死亡
+                continue;
+            }
+            if ("1".equals(zxbz) && "21".equals(outKindCode)) {
+                // OUT_KIND_CODE(迁出类别) Out_kind_code(迁出类别) 死亡的Out_kind_code=21
+                isDeah = true;
+                czrk_baseLatelyMap = oneMap;
+                logger.info(String.format("查询常住人口基本信息，该记录是死亡户籍！身份证号=[%s]",
+                        oneMap.get("PID")));
+                czrk_baseLatelyMap.put("hujiType", "2");// 自定义户籍类型：1-生效，2-死亡
+                continue;
+            }
+        }
+
+        return czrk_baseLatelyMap;
     }
 
     /**
@@ -1047,6 +1123,10 @@ public class InformationQueryController {
         // 只显示一条信息，最新的记录
         // 记录生成时间 CREATETIME
         // 记录更新时间 UPDATETIME
+        // 登记时间 DJSJ
+        /**
+         * 20160309更新，过滤掉暂住证编号为空的，然后在剩余数据中选出“登记时间“为最新的 基本信息，然后将登记时间填到”填报日期“里
+         */
 
         Map<String, String> ldrk_jbxxLatelyMap = ldrk_jbxxList.get(0);
         // 用于比较的时间，初始化为1970-01-01
@@ -1055,19 +1135,21 @@ public class InformationQueryController {
 
         for (Map<String, String> rowMap : ldrk_jbxxList) {
             String zzzbh = rowMap.get("ZZZBH");// 暂住证编号
-            String jlscsj = rowMap.get("CREATETIME");// 记录生成时间
-            String jlgxsj = rowMap.get("UPDATETIME");// 记录更新时间
+            // String jlscsj = rowMap.get("CREATETIME");// 记录生成时间
+            // String jlgxsj = rowMap.get("UPDATETIME");// 记录更新时间
+            String djsj = rowMap.get("DJSJ");// 登记时间
             if (StringUtils.isBlank(zzzbh)) {
                 // 如果 暂住证编号为空，过滤
+                logger.info("查询流动人口基本信息，该记录暂住证编号ZZZBH为空为空，跳过！");
                 continue;
             }
-            if (StringUtils.isBlank(jlscsj)) {
+            if (StringUtils.isBlank(djsj)) {
+                logger.error("查询流动人口基本信息，该记录登记时间 DJSJ为空，跳过！");
                 continue;
             }
             try {
-                Date thizRq = DateUtils.string2Date(jlscsj,
-                        MessageResourceUtils
-                                .getMessage("T_LDRK_ZJZZXX.date.format"));
+                Date thizRq = DateUtils.string2Date(djsj, MessageResourceUtils
+                        .getMessage("T_LDRK_ZJZZXX.date.format"));
                 // 0-小于, 1-等于，2-大于
                 if (DateUtils.isCompare(latelyDate, thizRq) < 2) {
                     ldrk_jbxxLatelyMap = rowMap;
@@ -1075,7 +1157,7 @@ public class InformationQueryController {
                 }
             }
             catch (Exception e) {
-                logger.error("转换比较流动人口基本信息记录生成时间时，发生异常！", e);
+                logger.error("转换比较流动人口基本信息记录登记时间时，发生异常！", e);
             }
         }
         return ldrk_jbxxLatelyMap;
@@ -1113,6 +1195,24 @@ public class InformationQueryController {
         baseInfo.setPhotoGif(ldrk_jbxxLatelyMap.get("PID") + ".jpg");
         baseInfo.setNation(ldrk_jbxxLatelyMap.get("NATION"));// 民族(GB/T 3304)
         baseInfo.setSex(TransUtils.transSex(ldrk_jbxxLatelyMap.get("GENDER")));// 性别(GB/T 2261.1)
+
+        /**
+         * 20160309更新，过滤掉暂住证编号为空的，然后在剩余数据中选出“登记时间“为最新的 基本信息，然后将登记时间填到”填报日期“里
+         */
+        String djsj = ldrk_jbxxLatelyMap.get("DJSJ");// 登记时间
+        if (StringUtils.isNotBlank(djsj)) {
+            try {
+                baseInfo.setFillDate(djsj.substring(0, 10));
+            }
+            catch (Exception e) {
+                logger.error("截取流动人口基本信息记录登记时间日期格式时，发生异常！身份证号="
+                        + ldrk_jbxxLatelyMap.get("PID"), e);
+            }
+        }
+        else {
+            baseInfo.setFillDate("");
+        }
+
         return baseInfo;
     }
 

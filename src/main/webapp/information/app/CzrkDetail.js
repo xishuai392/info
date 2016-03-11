@@ -314,12 +314,13 @@ Ext.onReady(function() {
 	'		</table>',
 	'	</div>',
   '',
-/** TODO @惜帅 隐藏迁移信息  
-	'	<div class="div_second_title" id="part3Div">',
+
+	'	<div class="div_second_title" id="part3Div" style="{[values.migrateInfo.qyxxDivStyleCSS]}">',
 	'		迁移信息',
 	'	</div>',
-	'	<div id="part3TableCZ">',
+	'	<div id="part3TableCZ" style="{[values.migrateInfo.qyxxDivStyleCSS]}">',
 	'		<table class="tbl" width=100%>',
+/** TODO @惜帅 隐藏迁移信息  
 	'			<tr>',
 	'				<td width=170>何时何因由何地迁来本市(县)</td>',
 	'				<td colspan=7 class="textInfoLeft">{[values.migrateInfo.timeAndResultForMigrateLocal]}</td>',
@@ -328,13 +329,14 @@ Ext.onReady(function() {
 	'				<td width=170>何时何因由何地迁来本址</td>',
 	'				<td colspan=7 class="textInfoLeft">{[values.migrateInfo.timeAndResultForMigrateLocal]}</td>',
 	'			</tr>',
+**/
 	'			<tr>',
 	'				<td width=170>何时何因迁往何地</td>',
 	'				<td colspan=7 class="textInfoLeft">{[values.migrateInfo.timeAndResultForMigrateOtherPlace]}</td>',
 	'			</tr>',
 	'		</table>',
 	'	</div>',
-**/
+
   '',
 	'	<div id="part4Div">',
 

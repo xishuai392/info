@@ -33,6 +33,10 @@
           </h1>
           <!--头部右侧功导航-->
           <div class="h-l-top-nav">
+          	<a downloadtype="1" href="#">打印插件下载</a>
+          	<a downloadtype="2" href="#">高拍仪插件下载</a>
+          	<a downloadtype="3" href="#">二代证读卡器USB驱动下载</a>
+          	
             <a href="#">关于我们</a>
             <a href="#">帮助</a>
           </div>
@@ -189,5 +193,18 @@
     </div>
   </div>
 </div>
+		<script language="javascript" src="<%=request.getContextPath()%>/lodap/LodopFuncs.js"></script>
+		<!-- 打印驱动 -->
+		<object id="LODOP_OB"
+			classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
+			<embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
+		</object>
+		
+		<!-- 华视电子BS控件V4.0 身份证读卡器 -->
+		<OBJECT classid="clsid:10946843-7507-44FE-ACE8-2B3483D179B7"
+			  id="CVR_IDCard" name="CVR_IDCard" width="0" height="0" >
+		</OBJECT>
+		
+		
 </body>
 </html>

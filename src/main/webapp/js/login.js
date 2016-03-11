@@ -69,4 +69,36 @@ jQuery(document).ready(function() {
         login();
     });
 
+    // 插件下载
+    $('.h-l-top-nav a').click(function(event) {
+        // console.log(arguments);
+        // console.log(this);
+        var downloadtype = $(this).attr("downloadtype");
+        console.log(downloadtype);
+        if (1 == downloadtype) {
+            // 打印插件下载
+        	window.open(ctx + '/lodap/install_lodop32.exe');
+        	return;
+//            try {
+//                var LODOP = getLodop();
+//            } catch (err) {
+//            	
+//            }
+            //LODOP = getLodop(document.getElementById('LODOP_OB'), document.getElementById('LODOP_EM'));
+        }
+
+        if (2 == downloadtype) {
+            // 高拍仪插件下载
+            window.open(ctx + '/thirdplugins/DoccameraOcx.rar');
+            return;
+        }
+        
+        if (3 == downloadtype) {
+            // 高拍仪插件下载
+            window.open(ctx + '/thirdplugins/IdCardUsbDriverV2.exe');
+            return;
+        }
+
+    });
+
 });
