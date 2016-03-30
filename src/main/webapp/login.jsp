@@ -36,7 +36,9 @@
           	<a downloadtype="1" href="#">打印插件下载</a>
           	<a downloadtype="2" href="#">高拍仪插件下载</a>
           	<a downloadtype="3" href="#">二代证读卡器USB驱动下载</a>
-          	
+          	<a downloadtype="4" href="#">二代证B/S读卡控件下载</a>
+          	<a downloadtype="5" href="#">终端打印插件下载</a>
+          
             <a href="#">关于我们</a>
             <a href="#">帮助</a>
           </div>

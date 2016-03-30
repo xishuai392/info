@@ -4,6 +4,7 @@
  
  
 Ext.onReady(function() {
+	Ext.util.CSS.swapStyleSheet('theme',webRoot+'common/jslibs/extjs/ext-4.2.1/resources/ext-theme-gray/ext-theme-gray-all.css');
     var sqrxxPanel,zjPanel,ssxzlPanel,bcxrxxPanel,bcxrStore,bcxrGrid,changzhuWin,zanzhuWin,infoMainPanel;
     var isClickFjlxBtn1 = false;
     var isClickFjlxBtn2 = false;
@@ -11,6 +12,8 @@ Ext.onReady(function() {
     
     //暂口信息查询外部第三方接口的URL
     var baseUrl = Ext.get("thirdPartyZzrkUrl").getValue();
+    //是否测试状态，是则打开预览打印
+    var isDebug = Ext.get("isDebugId").getValue()+"";
     
     var reqOjb = {};
     reqOjb.idCardNum = Ext.get("idCardNum").getValue();
@@ -254,7 +257,8 @@ Ext.onReady(function() {
 		var top = -4;  
 		
 		var url = baseUrl + idCardTmp+"&a="+new Date();
-		var zankouMainWin = window.open(url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
+		//var zankouMainWin = window.open(url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
+		var zankouMainWin = window.open(webRoot + "information/jumpToThirdParty.do?thirdPartyUrl=" + url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
 		//zankouMainWin.moveTo(left, top);
 		zankouMainWin.focus();
 							
@@ -277,6 +281,7 @@ Ext.onReady(function() {
     
     ////创建暂住人口模板  //本市暂住人口信息查询表
     var zanzhuWinTp = new Ext.XTemplate(
+    '<div id="page1">',
 	'<div class="frame_normal" id="allDiv">',
 	'	<div class="div_title" id="titleDiv">',
 	'		<span style="FONT-SIZE: 20px!important; ">暂住人口基本信息表<span>',
@@ -327,7 +332,7 @@ Ext.onReady(function() {
 	'		</table>',
 	'	</div>',
   '',
-	'	<div class="div_second_title" replaceString id="part2Div">',
+	'	<div class="div_second_title screen-only" replaceString id="part2Div">',
 	'		<a href="#">查看暂住信息</a>',
 	'	</div>',
 /**
@@ -391,6 +396,7 @@ Ext.onReady(function() {
 	'</tpl> ',
 	'	</table>',
 	'	</div>',
+	'</div>',
 	'</div>'
 	);
 	
@@ -411,7 +417,51 @@ Ext.onReady(function() {
         		openZZRKinfo(reqOjb.idCardNum,reqOjb.bcxrxxId,reqOjb.populationType);
         	}
         },
+        tbar : ['->',{
+	    		id : 'showSeconds',
+	    		height : 80,
+	    		scale   : 'large',
+	    		text : '<span style="font-size:20px !important;font-family:microsoft yahei !important;">&nbsp;</span>'
+	    }],
         buttons: [{ 
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">打印预览</span>', 
+        		icon : ctx + '/common/images/print_32px.png',
+        		hidden : "true"===isDebug?false:true,
+				name : 'printBtn',
+				handler: function(btn) {
+					
+					//记录打印状态
+					var params = {
+		        		//被查询人信息主键，记录打印次数用
+                    	bcxrxxId : reqOjb.bcxrxxId,
+                    	//cxbs 10：终端，20：pc端,30:网上查询
+                    	cxbs : reqOjb.cxbs,
+                    	//身份证编号
+						idCardNum : reqOjb.idCardNum
+						
+		        	};
+	        		var config = {
+	            		url : 'information/tbcxrxx/canPrint.do',
+			            params : params,
+			            callback : function(canPrintResult){
+			            	if(canPrintResult.canPrint){
+			            		//利用jatoolsPrinter打印
+			            		doJatoolsPrint(0);
+			            		if(true){
+			            			return;
+			            		}
+			            	}else{
+			            		ExtUtils.error(canPrintResult.message);
+			            	}
+			            }
+			        };
+			        ExtUtils.doAjax(config);
+					
+					
+		            
+		        }
+        	},'-',{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">打印</span>', 
         		icon : ctx + '/common/images/print_32px.png',
@@ -435,6 +485,13 @@ Ext.onReady(function() {
 			            params : params,
 			            callback : function(canPrintResult){
 			            	if(canPrintResult.canPrint){
+			            		//利用jatoolsPrinter打印
+			            		doJatoolsPrint(2);
+			            		if(true){
+			            			return;
+			            		}
+			            		
+			            		
 			            		//可以打印
 			            		//console.log("dayin");
 					            var html = preHtml + zzrkPanel.down('panel').getEl().getById("zanzhuDetailDiv").getHTML()+'</body></html>';
@@ -511,6 +568,74 @@ Ext.onReady(function() {
 		]
 	});
 	
+	
+	//jatoolsPrinter 打印
+	var doJatoolsPrint = function (type) {
+       var myDoc = {
+            documents: window.document,
+            /*
+             	要打印的div 对象在本文档中，控件将从本文档中的 id 为 'page1' 的div对象，
+             	作为首页打印id 为'page2'的作为第二页打印            
+             */
+            settings:{
+            	enableScreenOnlyClass:true,   // 为了使screen-only起作用，必须设置 enableScreenOnlyClass为true                             
+                                    // 经此设置,引用screen-only样式类的对象，只在显示或预览时可见，打印时不可见. 
+            	// 指定打打印方向为横向, 1/2 = 纵向/横向 
+            	orientation : 1,
+            	topMargin:100,
+                leftMargin:50,
+                bottomMargin:100,
+                rightMargin:1
+            },   // 设置上下左距页边距为10毫米，注意，单位是 1/10毫米
+            copyrights : '杰创软件拥有版权  www.jatools.com' // 版权声明必须 
+        };
+        myDoc.done = function(){
+        	//window.close();
+        	CloseWebPage();
+        };
+        switch(type){
+        	case 0:
+        		jatoolsPrinter.printPreview(myDoc); // 打印预览
+        		break;
+        	case 1:
+        		jatoolsPrinter.print(myDoc, true); // 打印前弹出打印设置对话框
+        		break;
+        	case 2:
+        		jatoolsPrinter.print(myDoc, false); // 直接打印，不弹出打印机设置对话框 
+        		break;
+        }
+    };
+	
+	
+	
+	//TODO @惜帅  定义时间初始时间为60秒
+    var intervalTimes = 60;
+    var times = intervalTimes;
+    // 该方法用于重置时间
+    defaultTimes = function () {
+        // 测试弹出
+        times = intervalTimes;
+        Ext.getCmp('showSeconds').setText('<span style="font-size:20px !important;font-family:microsoft yahei !important;">'+times+'S</span>');
+    };
+    // 判断是否超过【intervalTimes】秒无操作。
+    timesReduce = function () {
+        times--;
+        if(times>=-1){
+        	Ext.getCmp('showSeconds').setText('<span style="font-size:20px !important;font-family:microsoft yahei !important;">'+times+'S</span>');
+        }
+        // alert(times);
+        if (times <= 0) {
+            // alert('跳转');
+            // 执行跳转
+            if(Ext.Msg.isVisible()){
+	    		Ext.Msg.hide();
+	    	}
+	    	
+	    	CloseWebPage();
+	    	//window.close();
+        }
+    };
+    window.setInterval('timesReduce()', 1000);
     
     
     // 整体页面布局

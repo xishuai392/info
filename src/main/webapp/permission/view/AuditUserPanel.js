@@ -83,12 +83,12 @@ Ext.define('component.permission.view.AuditUserPanel', {
             store : me.createStore(),
             columns : [
 	        {
-	        	text : "用户名称",
+	        	text : "姓名",
 	            dataIndex : "userName",
 	            flex : 1
 	        },
 	        {
-	        	text : "用户编码",
+	        	text : "用户名",
 	            dataIndex : "userCode",
 	            flex : 1
 	        },
@@ -99,11 +99,13 @@ Ext.define('component.permission.view.AuditUserPanel', {
 	        },
 	        {
 	        	text : "邮箱",
+	        	hidden : true,
 	            dataIndex : "email",
 	            flex : 1
 	        },
 	        {
 	        	text : "年龄",
+	        	hidden : true,
 	            dataIndex : "age",
 	            flex : 1
 	        },

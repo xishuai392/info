@@ -78,14 +78,26 @@ Ext.onReady(function() {
             operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
             allowBlank : false,
             name : "endDate"
-        }, Ext.create('ZTEsoft.form.field.OrgTreeField',{
-            fieldLabel : '上级单位',
-            labelAlign : 'right',
-            allowBlank : false,
+        }, {
+            fieldLabel : "默认上级单位",
+            xtype : "textfield",
+            value : '0',
             editable : false,
-            validateOnBlur : false,
-            name : 'czdw'
-        })]
+            hidden : true,
+            afterSubTpl : WEBConstants.REQUIRED,
+            operation : WEBConstants.OPERATION.EqualTo,// 操作类型，如果不设置，默认等于(EqualTo)
+            allowBlank : false,
+            name : "czdw"
+        }
+//        , Ext.create('ZTEsoft.form.field.OrgTreeField',{
+//            fieldLabel : '上级单位',
+//            labelAlign : 'right',
+//            allowBlank : false,
+//            editable : false,
+//            validateOnBlur : false,
+//            name : 'czdw'
+//        })
+        ]
 
     });
     

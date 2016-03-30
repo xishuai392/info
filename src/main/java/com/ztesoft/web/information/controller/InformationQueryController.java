@@ -132,7 +132,7 @@ public class InformationQueryController {
     }
 
     /**
-     * 常住人口详情页面（新开页面）兼容PC\网上查询等
+     * 常住人口详情页面（新开页面）兼容PC\网上查询\终端查询等
      * 
      * @param idCardNum
      * @param sqrxxId
@@ -145,7 +145,7 @@ public class InformationQueryController {
             required = true) String idCardNum, @RequestParam(value = "sqrxxId",
             required = true) String sqrxxId, @RequestParam(value = "bcxrxxId",
             required = true) String bcxrxxId, @RequestParam(value = "cxbs",
-            required = true) String cxbs) {
+            required = true) String cxbs,String debug) {
         String populationType = "户籍人口";
         ModelAndView view = new ModelAndView("/information/jsp/czrkDetail");
         view.addObject("thirdPartyZzrkUrl",
@@ -155,6 +155,12 @@ public class InformationQueryController {
         view.addObject("bcxrxxId", bcxrxxId);
         view.addObject("populationType", populationType);
         view.addObject("cxbs", cxbs);
+        view.addObject("debug",debug);
+        // 10：终端，20：pc端,30:网上查询
+        if ("10".equals(cxbs)) {
+            // 20160316需求：终端下，需要增加自动关闭页面功能
+            view.setViewName("/information/jsp/czrkDetail_plates");
+        }
         return view;
     }
 
@@ -172,7 +178,7 @@ public class InformationQueryController {
             required = true) String idCardNum, @RequestParam(value = "sqrxxId",
             required = true) String sqrxxId, @RequestParam(value = "bcxrxxId",
             required = true) String bcxrxxId, @RequestParam(value = "cxbs",
-            required = true) String cxbs) {
+            required = true) String cxbs,String debug) {
         String populationType = "暂住人口";
         ModelAndView view = new ModelAndView("/information/jsp/zzrkDetail");
         view.addObject("thirdPartyZzrkUrl",
@@ -182,6 +188,29 @@ public class InformationQueryController {
         view.addObject("bcxrxxId", bcxrxxId);
         view.addObject("populationType", populationType);
         view.addObject("cxbs", cxbs);
+        view.addObject("debug",debug);
+        // 10：终端，20：pc端,30:网上查询
+        if ("10".equals(cxbs)) {
+            // 20160316需求：终端下，需要增加自动关闭页面功能
+            view.setViewName("/information/jsp/zzrkDetail_plates");
+        }
+
+        return view;
+    }
+
+    /**
+     * 跳转到第三方系统
+     * 
+     * @param url
+     * @return
+     */
+    @RequestMapping("jumpToThirdParty")
+    public ModelAndView jumpToThirdParty(@RequestParam(value = "thirdPartyUrl",
+            required = true) String url) {
+        ModelAndView view = new ModelAndView(
+                "/information/jsp/thirdPartyZzrk_plates");
+        view.addObject("thirdPartyZzrkUrl", url);
+
         return view;
     }
 
@@ -947,8 +976,15 @@ public class InformationQueryController {
             familyInfoList.add(familyInfoKeeperTwo);
         }
 
+        // 10：终端，20：pc端,30:网上查询
+        if ("10".equals(cxbs)) {
+            // 20160316需求：终端下查询，不查询子女信息
+            return familyInfoList;
+        }
+
         // 查找该人的所有子女
         String whereFiled = "";
+
         if ("男".equals(TransUtils.transSex(rowInfoMap.get("GENDER")))) {
             whereFiled = "FA_PID";
         }

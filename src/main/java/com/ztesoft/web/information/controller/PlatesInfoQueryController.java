@@ -71,9 +71,10 @@ public class PlatesInfoQueryController {
     InformationQueryController informationQueryController;
 
     @RequestMapping("index")
-    public ModelAndView index(Model model) {
+    public ModelAndView index(Model model,String debug) {
         ModelAndView view = new ModelAndView("/information/jsp/platesInfoQuery");
         view.addObject("thirdPartyZzrkUrl", MessageResourceUtils.getMessage("ThirdParty.zzrk.url"));
+        view.addObject("debug",debug);
         return view;
     }
 

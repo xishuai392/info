@@ -17,6 +17,11 @@
 			/*font-weight: bold;*/
 			color: red;
 		}
+		
+		.btnIndexCls{
+			background-image: url(../../common/images/Back_light_48px.png)!important; 
+		}
+		
 		</style>
 		<script language="javascript" src="<%=request.getContextPath()%>/lodap/LodopFuncs.js"></script>
 		<script type="text/javascript">
@@ -62,6 +67,7 @@
 	</head>
 	<body style="width: 100%;height: 100%">
 		<input id="thirdPartyZzrkUrl" type="hidden" value="${thirdPartyZzrkUrl}">
+		<input id="isDebugId" type="hidden" value="${debug}">
 	</body>
 </html>
 

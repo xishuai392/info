@@ -21,13 +21,13 @@ Ext.onReady(function() {
         store : thizPanel.getBusizGrid().getStore(),
         items : [
 	      	{
-	            fieldLabel : "用户名称",
+	            fieldLabel : "姓名",
 	            xtype : "textfield",
 	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
 	            name : "userName"
         	},
 	      	{
-	            fieldLabel : "用户编码",
+	            fieldLabel : "用户名",
 	            xtype : "textfield",
 	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
 	            name : "userCode"

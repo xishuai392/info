@@ -51,13 +51,13 @@ Ext.onReady(function() {
         store : thizStore,
         items : [
 	      	{
-	            fieldLabel : "用户名称",
+	            fieldLabel : "姓名",
 	            xtype : "textfield",
 	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
 	            name : "userName"
         	},
 	      	{
-	            fieldLabel : "用户编码",
+	            fieldLabel : "用户名",
 	            xtype : "textfield",
 	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
 	            name : "userCode"
@@ -133,12 +133,12 @@ Ext.onReady(function() {
         }),
         columns : [
 	        {
-	            text : "用户名称",
+	            text : "姓名",
 	            dataIndex : "userName",
 	            flex : 1
 	        },
 	        {
-	            text : "用户编码",
+	            text : "用户名",
 	            dataIndex : "userCode",
 	            flex : 1
 	        },
@@ -160,11 +160,13 @@ Ext.onReady(function() {
 	        {
 	            text : "邮箱",
 	            dataIndex : "email",
+	            hidden : true,
 	            flex : 1
 	        },
 	        {
 	            text : "年龄",
 	            dataIndex : "age",
+	            hidden : true,
 	            flex : 1
 	        },
 	        {
@@ -323,13 +325,13 @@ Ext.onReady(function() {
 	            name : "userId"
 	        },
 	        {
-	            fieldLabel : "用户名称",
+	            fieldLabel : "姓名",
 	            xtype : "textfield",
 	            allowBlank : false,
 	            name : "userName"
 	        },
 	        {
-	            fieldLabel : "用户编码",
+	            fieldLabel : "用户名",
 	            xtype : "textfield",
 	            allowBlank : false,
 	            name : "userCode"
@@ -355,6 +357,7 @@ Ext.onReady(function() {
 	        {
 	            fieldLabel : "邮箱",
 	            xtype : "textfield",
+	            hidden : true,
 	            vtype : "email",
 	            name : "email"
 	        },
@@ -400,6 +403,7 @@ Ext.onReady(function() {
 	            fieldLabel : "年龄",
 	            xtype : "numberfield",
 	            vtype : 'age',
+	            hidden : true,
 	            name : "age"
 	        },
 	        {

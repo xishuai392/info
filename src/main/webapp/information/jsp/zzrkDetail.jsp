@@ -56,6 +56,9 @@
 			src="${ctx}/information/app/ZzrkDetail.js">
 		</script>
 		
+		<script type="text/javascript" src="${ctx}/information/app/common.js">
+		</script>
+		
 		<style>
 			* { margin:0; padding:0; }
 			img { vertical-align:bottom; border:none; }

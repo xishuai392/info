@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,10 +20,12 @@ import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
 import com.ztesoft.framework.util.DateUtils;
 import com.ztesoft.framework.util.JsonUtil;
+import com.ztesoft.web.domain.IConstants;
 import com.ztesoft.web.information.domain.req.ReportQueryDto;
 import com.ztesoft.web.information.domain.resp.ReportResultDto;
 import com.ztesoft.web.information.service.IReportService;
 import com.ztesoft.web.permission.db.po.AuditOrganizationPO;
+import com.ztesoft.web.permission.db.po.AuditUserPO;
 import com.ztesoft.web.permission.service.IAuditOrganizationService;
 
 /**
@@ -53,7 +58,7 @@ public class ReportController {
      * @return
      */
     @RequestMapping("queryCkcx")
-    public ModelAndView queryCkcx(Model model) {
+    public ModelAndView queryCkcx(Model model,HttpServletRequest request) {
         ModelAndView view = new ModelAndView("/report/jsp/ckcx");
         view.addObject("startDateInit", DateUtils.date2StringDay(DateUtils
                 .getMonthBeginday(new Date())));
@@ -63,6 +68,11 @@ public class ReportController {
 //                .getMonthBeginday(new Date())));
 //        System.out.println(DateUtils.date2StringDay(DateUtils
 //                .getMonthLastday(new Date())));
+        HttpSession session = request.getSession(true);
+        AuditUserPO auditUserPo = (AuditUserPO) session
+                .getAttribute(IConstants.SESSIONUSER);
+        view.addObject("defaultCzdw",auditUserPo.getOrgId());
+        
         return view;
     }
 

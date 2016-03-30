@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -167,6 +168,23 @@ public class ScanContorller {
 
         String imagePath = new File(path + File.separator + fileName).toURI()
                 .toString();
+
+        // 判断如果文件名为空，则自动生成
+        if (StringUtils.isBlank(reqInfo.getFileName())) {
+            // 附件类型：1=工作证/身份证；2=介绍信；3=委托协议/受理通知书
+            String tmpName = "";
+            if ("1".equals(reqInfo.getFjlx())) {
+                tmpName = "ZJ_";
+            }
+            if ("2".equals(reqInfo.getFjlx())) {
+                tmpName = "JSX_";
+            }
+            if ("3".equals(reqInfo.getFjlx())) {
+                tmpName = "XYTZ_";
+            }
+            tmpName += DateUtils.getNameFileCurrentDate();
+            reqInfo.setFileName(tmpName);
+        }
 
         TSqrxxfjPO sqrxxfjDto = new TSqrxxfjPO();
         sqrxxfjDto.setId(uuid);

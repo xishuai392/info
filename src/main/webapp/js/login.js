@@ -98,7 +98,19 @@ jQuery(document).ready(function() {
             window.open(ctx + '/thirdplugins/IdCardUsbDriverV2.exe');
             return;
         }
+        
+        if (4 == downloadtype) {
+            // 高拍仪插件下载
+            window.open(ctx + '/thirdplugins/CVRDLL.exe');
+            return;
+        }
 
+        if (5 == downloadtype) {
+            // 高拍仪插件下载
+            window.open(ctx + '/thirdplugins/jpSetup.exe');
+            return;
+        }
+        	
     });
 
 });
