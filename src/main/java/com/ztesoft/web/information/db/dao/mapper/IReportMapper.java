@@ -17,4 +17,5 @@ public interface IReportMapper {
     
     List<ReportResultDto> queryGroupByCzdw(ReportQueryDto dto);
     
+    List<ReportResultDto> queryGroupByCzdwNew(ReportQueryDto dto);
 }

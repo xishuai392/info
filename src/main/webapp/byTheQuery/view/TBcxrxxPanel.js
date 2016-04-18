@@ -85,7 +85,11 @@ Ext.define('component.byTheQuery.view.TBcxrxxPanel', {
             isPage : true,
             store : me.createStore(),
             columns : [
-	        
+	        {
+	        	text : "被查询人流水号",
+	            dataIndex : "lsh",
+	            flex : 1
+	        },
 	        {
 	        	text : "申请人姓名",
 	            dataIndex : "sqrXm",
@@ -110,7 +114,7 @@ Ext.define('component.byTheQuery.view.TBcxrxxPanel', {
 	        	text : "查询日期",
 	            dataIndex : "bcxrq",
 	            renderer : function(value) {
-	            	return value.substring(0,4)+"-"+value.substring(4,6)+"-"+value.substring(6,8);
+	            	return value.substring(0,4)+"-"+value.substring(4,6)+"-"+value.substring(6,8)+" "+value.substring(8,10)+":"+value.substring(10,12)+":"+value.substring(12,14);
 	            },
 	            flex : 1
 	        },

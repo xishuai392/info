@@ -45,4 +45,12 @@ public interface ITSqrxxService {
      * @throws BaseAppException
      */
     int countPrintByZD(TSqrxxPO record) throws BaseAppException;
+    
+    /**
+     * 获取最新的一条记录
+     * @param record
+     * @return
+     * @throws BaseAppException
+     */
+    TSqrxxPO getLatestRecord(TSqrxxPO record)throws BaseAppException;
 }

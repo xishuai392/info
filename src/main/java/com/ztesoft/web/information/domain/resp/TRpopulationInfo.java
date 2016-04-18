@@ -2,6 +2,9 @@ package com.ztesoft.web.information.domain.resp;
 
 import java.util.List;
 
+import com.ztesoft.web.information.db.po.TBcxrxxPO;
+import com.ztesoft.web.information.db.po.TSqrxxPO;
+
 /**
  * 暂住人口信息
  * 
@@ -26,6 +29,40 @@ public class TRpopulationInfo {
 
     // 打印日期
     private String dyrq;
+
+    // 申请人
+    private TSqrxxPO sqrxxPO;
+
+    // 被查询人
+    private TBcxrxxPO bcxrxxPO;
+
+    /**
+     * @return the sqrxxPO
+     */
+    public TSqrxxPO getSqrxxPO() {
+        return sqrxxPO;
+    }
+
+    /**
+     * @param sqrxxPO the sqrxxPO to set
+     */
+    public void setSqrxxPO(TSqrxxPO sqrxxPO) {
+        this.sqrxxPO = sqrxxPO;
+    }
+
+    /**
+     * @return the bcxrxxPO
+     */
+    public TBcxrxxPO getBcxrxxPO() {
+        return bcxrxxPO;
+    }
+
+    /**
+     * @param bcxrxxPO the bcxrxxPO to set
+     */
+    public void setBcxrxxPO(TBcxrxxPO bcxrxxPO) {
+        this.bcxrxxPO = bcxrxxPO;
+    }
 
     /**
      * @return the tipMessage

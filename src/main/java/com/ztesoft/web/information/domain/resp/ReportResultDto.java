@@ -29,9 +29,76 @@ public class ReportResultDto extends AbstractDto {
 
     private int totalRows;// 总行数
 
+    private int cxcsTotalRows;// 查询次数的总行数
+
+    private int cxcgcsTotalRows;// 查询成功次数的总行数
+
     private int dycs;// 打印次数
 
     private String czr;// 操作人 （终端：终端名）
+
+    private String cxsqrlx;// 查询申请人类型
+
+    private String cxsqrlxmc;// 查询申请人类型名称
+    
+    
+    
+
+    /**
+     * @return the cxcsTotalRows
+     */
+    public int getCxcsTotalRows() {
+        return cxcsTotalRows;
+    }
+
+    /**
+     * @param cxcsTotalRows the cxcsTotalRows to set
+     */
+    public void setCxcsTotalRows(int cxcsTotalRows) {
+        this.cxcsTotalRows = cxcsTotalRows;
+    }
+
+    /**
+     * @return the cxcgcsTotalRows
+     */
+    public int getCxcgcsTotalRows() {
+        return cxcgcsTotalRows;
+    }
+
+    /**
+     * @param cxcgcsTotalRows the cxcgcsTotalRows to set
+     */
+    public void setCxcgcsTotalRows(int cxcgcsTotalRows) {
+        this.cxcgcsTotalRows = cxcgcsTotalRows;
+    }
+
+    /**
+     * @return the cxsqrlx
+     */
+    public String getCxsqrlx() {
+        return cxsqrlx;
+    }
+
+    /**
+     * @param cxsqrlx the cxsqrlx to set
+     */
+    public void setCxsqrlx(String cxsqrlx) {
+        this.cxsqrlx = cxsqrlx;
+    }
+
+    /**
+     * @return the cxsqrlxmc
+     */
+    public String getCxsqrlxmc() {
+        return cxsqrlxmc;
+    }
+
+    /**
+     * @param cxsqrlxmc the cxsqrlxmc to set
+     */
+    public void setCxsqrlxmc(String cxsqrlxmc) {
+        this.cxsqrlxmc = cxsqrlxmc;
+    }
 
     /**
      * @return the dycs

@@ -1445,6 +1445,184 @@ public class TBcxrxxArg {
             addCriterion("DYCS not between ", value1, value2, "DYCS");
             return (TBcxrxxCriteria) this;
         }
+        public TBcxrxxCriteria andLshIsNull() {
+            addCriterion("LSH is null");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andLshIsNotNull() {
+            addCriterion("LSH is not null");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andLshEqualTo(String value) {
+            addCriterion("LSH =", value, "LSH");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andLshNotEqualTo(String value) {
+            addCriterion("LSH <>", value, "LSH");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andLshGreaterThan(String value) {
+            addCriterion("LSH >", value, "LSH");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andLshGreaterThanOrEqualTo(String value) {
+            addCriterion("LSH >=", value, "LSH");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andLshLessThan(String value) {
+            addCriterion("LSH <", value, "LSH");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andLshLessThanOrEqualTo(String value) {
+            addCriterion("LSH <=", value, "LSH");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andLshLike(String value) {
+            addCriterion("LSH like ", value, "LSH", 1);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andLshNotLike(String value) {
+            addCriterion("LSH  not like ", value, "LSH", 1);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andLshLeftLike(String value) {
+            addCriterion("LSH like ", value, "LSH", 0);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andLshNotLeftLike(String value) {
+            addCriterion("LSH  not like ", value, "LSH", 0);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andLshRightLike(String value) {
+            addCriterion("LSH like ", value, "LSH", 2);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andLshNotRightLike(String value) {
+            addCriterion("LSH  not like ", value, "LSH", 2);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andLshIn(List<String> values) {
+            addCriterion("LSH  in ", values, "LSH");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andLshNotIn(List<String> values) {
+            addCriterion("LSH not in ", values, "LSH");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andLshBetween(String value1, String value2) {
+            addCriterion("LSH between ", value1, value2, "LSH");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andLshNotBetween(String value1, String value2) {
+            addCriterion("LSH not between ", value1, value2, "LSH");
+            return (TBcxrxxCriteria) this;
+        }
+        public TBcxrxxCriteria andGldycsIsNull() {
+            addCriterion("GLDYCS is null");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andGldycsIsNotNull() {
+            addCriterion("GLDYCS is not null");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andGldycsEqualTo(Integer value) {
+            addCriterion("GLDYCS =", value, "GLDYCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andGldycsNotEqualTo(Integer value) {
+            addCriterion("GLDYCS <>", value, "GLDYCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andGldycsGreaterThan(Integer value) {
+            addCriterion("GLDYCS >", value, "GLDYCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andGldycsGreaterThanOrEqualTo(Integer value) {
+            addCriterion("GLDYCS >=", value, "GLDYCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andGldycsLessThan(Integer value) {
+            addCriterion("GLDYCS <", value, "GLDYCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andGldycsLessThanOrEqualTo(Integer value) {
+            addCriterion("GLDYCS <=", value, "GLDYCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andGldycsLike(Integer value) {
+            addCriterion("GLDYCS like ", value, "GLDYCS", 1);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andGldycsNotLike(Integer value) {
+            addCriterion("GLDYCS  not like ", value, "GLDYCS", 1);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andGldycsLeftLike(Integer value) {
+            addCriterion("GLDYCS like ", value, "GLDYCS", 0);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andGldycsNotLeftLike(Integer value) {
+            addCriterion("GLDYCS  not like ", value, "GLDYCS", 0);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andGldycsRightLike(Integer value) {
+            addCriterion("GLDYCS like ", value, "GLDYCS", 2);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andGldycsNotRightLike(Integer value) {
+            addCriterion("GLDYCS  not like ", value, "GLDYCS", 2);
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andGldycsIn(List<Integer> values) {
+            addCriterion("GLDYCS  in ", values, "GLDYCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andGldycsNotIn(List<Integer> values) {
+            addCriterion("GLDYCS not in ", values, "GLDYCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andGldycsBetween(Integer value1, Integer value2) {
+            addCriterion("GLDYCS between ", value1, value2, "GLDYCS");
+            return (TBcxrxxCriteria) this;
+        }
+
+        public TBcxrxxCriteria andGldycsNotBetween(Integer value1, Integer value2) {
+            addCriterion("GLDYCS not between ", value1, value2, "GLDYCS");
+            return (TBcxrxxCriteria) this;
+        }
 
     }
 

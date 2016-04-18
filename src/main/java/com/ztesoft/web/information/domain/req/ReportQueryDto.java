@@ -36,6 +36,22 @@ public class ReportQueryDto extends AbstractDto {
 
     private String czdwSplitByComma;// in条件的操作单位，以逗号分隔
 
+    private String sqrlx;// 查询申请人类型
+
+    /**
+     * @return the sqrlx
+     */
+    public String getSqrlx() {
+        return sqrlx;
+    }
+
+    /**
+     * @param sqrlx the sqrlx to set
+     */
+    public void setSqrlx(String sqrlx) {
+        this.sqrlx = sqrlx;
+    }
+
     /**
      * @return the czdwSplitByComma
      */

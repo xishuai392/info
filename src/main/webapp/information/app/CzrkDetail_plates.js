@@ -178,6 +178,10 @@ Ext.onReady(function() {
 	            	bcxrxxId : bcxrxxId||'',
 	            	populationType : populationType||'户籍人口'
 	            },
+	            // 发生异常时，关闭页面
+	            exceptionCallback : function(){
+	            	CloseWebPage();
+	            },
 	            callback : function(data){
 	            	//把页面的查询标识，塞到数据项中，为了展示用
 	            	data.page_cxbs=reqOjb.cxbs;
@@ -193,6 +197,72 @@ Ext.onReady(function() {
 	            		//openCZRKinfo($(this).attr("pid"));
 	            		openNewPage($(this).attr("pid"));
 	            	});
+	            	
+	            	//console.log("11111111111111111");
+	            	//console.log(data);
+	            	var familys = data.familyInfoList;
+	            	var znIndex = 1;//子女索引
+	            	//console.log(familys);
+	            	//console.log(Ext.isArray(familys));
+	            	if(Ext.isArray(familys)){
+	            		if(!Ext.isEmpty(familys)){
+	            			Ext.Array.each(familys, function(item , index, allItems ) {
+	            				//console.log(item);
+							    if (!Ext.isEmpty(item.relationShip)&&!Ext.isEmpty(item.idCardNum)) {
+							    	//console.log("555");
+							    	var relationShip = item.relationShip+"";
+							    	//console.log("555"+relationShip);
+							        // 与本人关系，其身份证
+							    	if('父亲'==relationShip){
+							    		var btnItem = Ext.getCmp('cfq_id');
+							    		var params = {};
+							    		params.name = item.name;
+							    		params.idCardNum = item.idCardNum;
+							    		params.relationShip = relationShip;
+							    		
+							    		btnItem.setParams(params);
+							    		
+							    		btnItem.data = params;
+							    		
+							    		btnItem.show();
+							    		
+							    		console.log(btnItem);
+							    	}else if('母亲'==relationShip){
+							    		var btnItem = Ext.getCmp('cmq_id');
+							    		var params = {};
+							    		params.name = item.name;
+							    		params.idCardNum = item.idCardNum;
+							    		params.relationShip = relationShip;
+							    		
+							    		btnItem.setParams(params);
+							    		
+							    		btnItem.data = params;
+							    		
+							    		btnItem.show();
+							    		
+							    		console.log(btnItem);
+							    	}else if('子女'==relationShip){
+							    		var btnItem = Ext.getCmp('czn_id_'+znIndex);
+							    		znIndex++;
+							    		var params = {};
+							    		params.name = item.name;
+							    		params.idCardNum = item.idCardNum;
+							    		params.relationShip = relationShip;
+							    		
+							    		btnItem.setParams(params);
+							    		
+							    		btnItem.data = params;
+							    		
+							    		btnItem.show();
+							    		
+							    		console.log(btnItem);
+							    		
+							    	}
+							    }
+							});
+	            		}
+	            	}
+	            	
 	            }
 	        };
 	        ExtUtils.doAjax(config);
@@ -207,8 +277,10 @@ Ext.onReady(function() {
 		url += "&bcxrxxId="+reqOjb.bcxrxxId;
 		url += "&sqrxxId="+reqOjb.sqrxxId;
 		url += "&cxbs="+reqOjb.cxbs;
+		url += "&relevance=relevance";
+		url += "&baseIdCardNum="+reqOjb.idCardNum;
 		url += "&a="+ new Date();
-		var changkouMainWin = window.open(url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
+		var changkouMainWin = window.open(url,"",'toolbar=no,menubar=no,status=no,location=no,scrollbars=yes,resizable=no,fullscreen=1,width='+width+',height='+height+',top=0,left=0');
 		changkouMainWin.moveTo(left, top);
 		changkouMainWin.focus();
     }
@@ -222,7 +294,13 @@ Ext.onReady(function() {
 	'		<span style="FONT-SIZE: 20px!important; ">常住人口基本信息表</span>',
 	'	</div>',
 	'	<div class="div_second_title" id="part1Div">',
-	'		人员基本信息',
+	'		<table class="tb2" width=100%>',
+	'			<tr>',
+	'			    <td colspan=4 class="textInfoLeft">人员基本信息</td>',
+	'			    <td colspan=4 class="textInfoRight">流水号:{[values.bcxrxxPO.lsh]} &nbsp;&nbsp;</td>',
+	'			</tr>',
+	'		</table>',
+	'		',
 	'	</div>',
 	'	<div id="part1TableCZ">',
 	'		<table class="tbl" width=100%>',
@@ -350,11 +428,7 @@ Ext.onReady(function() {
 	'		</tr>',
 	'<tpl if="page_cxbs &lt; 15"> ',
 	'		<tr>',
-	'			<td colspan=4 class="textInfoRight">&nbsp;</td>',
-	'			<td colspan=2 class="textInfoRight">&nbsp;</td>',
-	'			<td colspan=4 class="textInfoLeft">&nbsp;</td>',
-	'			<td colspan=2 class="textInfoRight">&nbsp;</td>',
-	'			<td colspan=2 class="textInfoLeft">&nbsp;</td>',
+	'			<td colspan=14 class="textInfoLeft">&nbsp;&nbsp;申请人类型：{[this.formater(values.sqrxxPO.cxsqrlx)]} &nbsp;&nbsp;  申请人：{[values.sqrxxPO.xm]} &nbsp;&nbsp; {[this.getCzdw(values.sqrxxPO.cxsqrlx,values.sqrxxPO.cxrdw)]} &nbsp;&nbsp;</td>',
 	'			<td colspan=2 class="textInfoRight">打印日期：</td>',
 	'			<td colspan=2 class="textInfoLeft">{[values.dyrq]}</td>',
 	'		</tr>',
@@ -374,7 +448,35 @@ Ext.onReady(function() {
 
 	'	</div>',
 	'</div>',
-	'</div>'
+	'</div>',{
+			//['10', '律师'],['20', '党政军机关'],['30', '司法机关'],['40', '企事业单位'],['50', '个人'], ['60', '人民团体']
+			formater : function(value) {
+	            	if(value == '10'){
+	            		return'律师';
+	            	}else if(value == '20'){
+	            		return'党政军机关';
+	            	}else if(value == '30'){
+	            		return'司法机关';
+	            	}else if(value == '40'){
+	            		return'企事业单位';
+	            	}else if(value == '50'){
+	            		return'个人';
+	            	}else if(value == '60'){
+	            		return'人民团体';
+	            	}else if(value == '70'){
+	            		return'其他';
+	            	}
+	            },
+	       getCzdw : function(cxsqrlx,czdw){
+	       		//申请人查询类型为个人时，查询单位 直接隐藏掉
+	       		if(cxsqrlx == '50'){
+	       			return "";
+	       		}else{
+	       			return "单位："+czdw;
+	       		}
+	       			
+	       }
+		}
 	);
 	//changzhuWinTp.compile() ;
     
@@ -391,6 +493,7 @@ Ext.onReady(function() {
         listeners : {
         	'afterrender' : function( thiz, eOpts ){
         		console.log("panel afterrender");
+        		//fullScreen();//全屏
         		openCZRKinfo(reqOjb.idCardNum,reqOjb.bcxrxxId,reqOjb.populationType);
         	}
         },
@@ -401,6 +504,262 @@ Ext.onReady(function() {
 	    		text : '<span style="font-size:20px !important;font-family:microsoft yahei !important;">&nbsp;</span>'
 	    }],
         buttons: [{ 
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查父亲</span>', 
+        		icon : ctx + '/common/images/person_people_33.png',
+        		hidden : true,
+				name : 'cfq_btn',
+				id : 'cfq_id',
+				handler : function(){
+					openNewPage(btn.data.idCardNum);
+				}
+        	},'-',{ 
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查母亲</span>', 
+        		icon : ctx + '/common/images/person_people_33.png',
+        		hidden : true,
+				name : 'cmq_btn',
+				id : 'cmq_id',
+				handler : function(btn){
+					console.log(btn);
+					openNewPage(btn.data.idCardNum);
+				}
+        	},'-',{ 
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女1</span>', 
+        		icon : ctx + '/common/images/person_people_33.png',
+        		hidden : true,
+				name : 'czn_btn1',
+				id : 'czn_id_1',
+				handler : function(btn){
+					console.log(btn);
+					openNewPage(btn.data.idCardNum);
+				}
+        	},'-',{ 
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女2</span>', 
+        		icon : ctx + '/common/images/person_people_33.png',
+        		hidden : true,
+				name : 'czn_btn2',
+				id : 'czn_id_2',
+				handler : function(btn){
+					console.log(btn);
+					openNewPage(btn.data.idCardNum);
+				}
+        	},'-',{ 
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女3</span>', 
+        		icon : ctx + '/common/images/person_people_33.png',
+        		hidden : true,
+				name : 'czn_btn3',
+				id : 'czn_id_3',
+				handler : function(btn){
+					console.log(btn);
+					openNewPage(btn.data.idCardNum);
+				}
+        	},'-',{ 
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女4</span>', 
+        		icon : ctx + '/common/images/person_people_33.png',
+        		hidden : true,
+				name : 'czn_btn4',
+				id : 'czn_id_4',
+				handler : function(btn){
+					console.log(btn);
+					openNewPage(btn.data.idCardNum);
+				}
+        	},'-',{ 
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女5</span>', 
+        		icon : ctx + '/common/images/person_people_33.png',
+        		hidden : true,
+				name : 'czn_btn5',
+				id : 'czn_id_5',
+				handler : function(btn){
+					console.log(btn);
+					openNewPage(btn.data.idCardNum);
+				}
+        	},'-',{ 
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女6</span>', 
+        		icon : ctx + '/common/images/person_people_33.png',
+        		hidden : true,
+				name : 'czn_btn6',
+				id : 'czn_id_6',
+				handler : function(btn){
+					console.log(btn);
+					openNewPage(btn.data.idCardNum);
+				}
+        	},'-',{ 
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女7</span>', 
+        		icon : ctx + '/common/images/person_people_33.png',
+        		hidden : true,
+				name : 'czn_btn7',
+				id : 'czn_id_7',
+				handler : function(btn){
+					console.log(btn);
+					openNewPage(btn.data.idCardNum);
+				}
+        	},'-',{ 
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女8</span>', 
+        		icon : ctx + '/common/images/person_people_33.png',
+        		hidden : true,
+				name : 'czn_btn8',
+				id : 'czn_id_8',
+				handler : function(btn){
+					console.log(btn);
+					openNewPage(btn.data.idCardNum);
+				}
+        	},'-',{ 
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女9</span>', 
+        		icon : ctx + '/common/images/person_people_33.png',
+        		hidden : true,
+				name : 'czn_btn9',
+				id : 'czn_id_9',
+				handler : function(btn){
+					console.log(btn);
+					openNewPage(btn.data.idCardNum);
+				}
+        	},'-',{ 
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女10</span>', 
+        		icon : ctx + '/common/images/person_people_33.png',
+        		hidden : true,
+				name : 'czn_btn10',
+				id : 'czn_id_10',
+				handler : function(btn){
+					console.log(btn);
+					openNewPage(btn.data.idCardNum);
+				}
+        	},'-',{ 
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女11</span>', 
+        		icon : ctx + '/common/images/person_people_33.png',
+        		hidden : true,
+				name : 'czn_btn11',
+				id : 'czn_id_11',
+				handler : function(btn){
+					console.log(btn);
+					openNewPage(btn.data.idCardNum);
+				}
+        	},'->',{ 
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">打印预览</span>', 
+        		icon : ctx + '/common/images/print_32px.png',
+        		hidden : "true"===isDebug?false:true,
+				name : 'printBtn',
+				handler: function(btn) {
+					
+					//记录打印状态
+					var params = {
+		        		//被查询人信息主键，记录打印次数用
+                    	bcxrxxId : reqOjb.bcxrxxId,
+                    	//cxbs 10：终端，20：pc端,30:网上查询
+                    	cxbs : reqOjb.cxbs,
+                    	//身份证编号
+						idCardNum : reqOjb.idCardNum,
+						//人口类型（1：户籍人口，2：暂住人口）
+						rklx : 1
+						
+		        	};
+	        		var config = {
+	            		url : 'information/tbcxrxx/canPrint.do',
+			            params : params,
+			            callback : function(canPrintResult){
+			            	if(canPrintResult.canPrint){
+			            		ExtUtils.tip("提示",canPrintResult.message);
+			            		//利用jatoolsPrinter打印
+			            		doJatoolsPrint(0);
+			            		
+			            		if(true){
+			            			return;
+			            		}
+			            		
+			            		
+			            		//可以打印
+			            		//console.log("dayin");
+					            var html = preHtml + czrkPanel.down('panel').getEl().getById("changzhuDetailDiv").getHTML()+'</body></html>';
+					            var printHtml = "";
+					            var htmlArray = $.parseHTML(html);
+			//		            console.log("htmlArray");
+			//		            console.log(htmlArray);
+					            try{
+						            $.each( htmlArray, function( i, item ) {
+						            	
+									    
+						            	var aEls = $(item).find("#part2TableCZ a");
+						            	
+						            	if(aEls.length>0){
+						            		console.log("aEls.length:"+aEls.length);
+						            		console.log(aEls);
+						            		$.each( aEls, function( j, aItem ) {
+						            			//var pid = $(aItem).attr('pid');
+							            		//$(aItem).after('<span>'+pid+'</span>');
+							            		//$(aItem).remove();
+				//			            		console.log(aEls);console.log("pid:"+pid);
+						            			
+						            		});
+						            		
+						            	}
+						            	
+						            	var delEls = $(item).find("table tr[action=子女]");
+						            	if(delEls.length>0){
+						            		delEls.hide();
+						            		//delEls.remove();
+						            	}
+						            	//console.log(delEls);
+									    //console.log($(item));
+						            	
+						            	var divEls = $(item).find("div");
+						            	if(divEls.length>0){
+						            		printHtml += $(item).html();
+						            	}
+						            	
+									});
+					            }catch (e){
+					            	console.log(e);
+					            	alert(e);
+					            }
+								console.log("printHtml");console.log(printHtml);
+								
+								//alert(printHtml);
+								//printHtml = printHtml.replaceAll(/&lt;a href=&quot;#&quot;/g,"<span ",false);
+								//printHtml = printHtml.replaceAll("</a>","</span> ",false);
+								
+								printHtml = printHtml.replaceAll("a href=","span test=",true);
+								
+								
+								//alert(printHtml);
+								//document.getElementById("testConsole").innerText = printHtml;
+								//document.write(printHtml);
+					            //console.log(printHtml);
+					            /////console.log(czrkPanel.down('panel').getEl().getById("changzhuDetailDiv").getHTML());
+								
+					            printHtml = preHtml +'<div class="frame_normal" id="allDiv">'+ printHtml+'</div></body></html>';
+					            //console.log(html);
+					            
+					            
+					            //利用jatoolsPrinter打印
+//			            		doJatoolsPrint();
+//			            		return;
+					            
+//					            createPrintPage(printHtml);
+//					            LODOP.PREVIEW();
+			            		
+			            	}else{
+			            		ExtUtils.error(canPrintResult.message);
+			            	}
+			            }
+			        };
+			        ExtUtils.doAjax(config);
+					
+					
+		            
+		        }
+        	},'-',{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">打印</span>', 
         		icon : ctx + '/common/images/print_32px.png',
@@ -416,7 +775,9 @@ Ext.onReady(function() {
                     	//cxbs 10：终端，20：pc端,30:网上查询
                     	cxbs : reqOjb.cxbs,
                     	//身份证编号
-						idCardNum : reqOjb.idCardNum
+						idCardNum : reqOjb.idCardNum,
+						//人口类型（1：户籍人口，2：暂住人口）
+						rklx : 1
 						
 		        	};
 	        		var config = {
@@ -424,8 +785,10 @@ Ext.onReady(function() {
 			            params : params,
 			            callback : function(canPrintResult){
 			            	if(canPrintResult.canPrint){
+			            		ExtUtils.tip("提示",canPrintResult.message);
 			            		//利用jatoolsPrinter打印
 			            		doJatoolsPrint(2);
+			            		
 			            		if(true){
 			            			return;
 			            		}

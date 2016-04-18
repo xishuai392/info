@@ -37,7 +37,9 @@ public class TransUtils {
 //        if ("1".equals(source))
 //            return "男";
 //        return "女";
-        return source;
+        if(null==source)
+            return "";
+        return source.replaceAll("/", "");
     }
 
     /**

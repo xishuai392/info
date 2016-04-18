@@ -8,8 +8,12 @@
 		<result column="cxcs" property="cxcs" jdbcType="INTEGER" />
 		<result column="cxcgcs" property="cxcgcs" jdbcType="INTEGER" />
 		<result column="totalRows" property="totalRows" jdbcType="INTEGER" />
+		<result column="cxcsTotalRows" property="cxcsTotalRows" jdbcType="INTEGER" />
+		<result column="cxcgcsTotalRows" property="cxcgcsTotalRows" jdbcType="INTEGER" />
 		<result column="dycs" property="dycs" jdbcType="INTEGER" />
 		<result column="czr" property="czr" jdbcType="VARCHAR" />
+		<result column="cxsqrlx" property="cxsqrlx" jdbcType="VARCHAR" />
+		<result column="cxsqrlxmc" property="cxsqrlxmc" jdbcType="VARCHAR" />
 		
 	</resultMap>
 	
@@ -130,6 +134,93 @@
 		        GROUP BY sq.CZDW
 		    )c
 		ON a.czdw=c.czdw
+	</select>  	
+
+	<!--全局窗口信息查询： 查询次数（原服务次数） 查询人数（原查询次数） 查询成功数-->	
+	<select id="queryGroupByCzdwNew" resultMap="BaseResultMap" parameterType="com.ztesoft.web.information.domain.req.ReportQueryDto" >
+		SELECT czdw,fwcs,cxcs,cxcgcs,cxcsTotalRows ,cxcgcsTotalRows,CXSQRLX,CXSQRLXMC,dwmc
+		FROM(
+			SELECT
+			    a.czdw,a.fwcs,b.cxcs,c.cxcgcs,b.cxcsTotalRows ,
+	    		c.cxcgcsTotalRows,lb.CXSQRLX,lb.csx as CXSQRLXMC,
+			    (SELECT ORG_NAME FROM  audit_organization o WHERE a.czdw=o.org_id ) dwmc
+			FROM
+			    (
+			        SELECT
+			            csz AS CXSQRLX,
+			            csx
+			        FROM
+			            t_xtcs
+			        WHERE
+			            CSLB='CXSQRLX'
+			        ORDER BY
+			            id
+			    )
+			    lb
+				LEFT JOIN
+			    (
+			        /**服务次数*/
+			        SELECT  COUNT(1)fwcs,  czdw,CXSQRLX
+			        FROM
+			            t_sqrxx
+			        WHERE
+			            CXBS = #{cxbs}
+			        AND CXRQ BETWEEN #{startDateStr} AND #{endDateStr}
+			        AND CZDW IN(
+			        	${czdwSplitByComma}
+			        )
+			        <if test="sqrlx!=null and sqrlx!=''" >
+			            AND SQRLX = #{sqrlx}
+					</if>
+			        GROUP BY  czdw,CXSQRLX
+			    )  a ON lb.CXSQRLX=a.CXSQRLX 
+	    		LEFT JOIN
+			    (
+			        /**查询次数*/
+			        SELECT sq.CZDW,COUNT(1)cxcsTotalRows, 
+			        SUM(bc.cxcs)cxcs,CXSQRLX
+			        FROM
+			            t_bcxrxx bc
+			        LEFT JOIN t_sqrxx sq
+			        ON sq.ID=bc.SQR_ID
+			        WHERE
+			            sq.CXBS = #{cxbs}
+			        AND bc.BCXRQ BETWEEN #{startDateStr} AND #{endDateStr}
+			        AND sq.CZDW IN(
+			        	${czdwSplitByComma}
+			        )
+			        <if test="sqrlx!=null and sqrlx!=''" >
+			            AND sq.SQRLX = #{sqrlx}
+					</if>
+			        GROUP BY sq.CZDW,CXSQRLX
+			    )
+			    b
+			ON  a.czdw=b.czdw 
+			AND a.CXSQRLX=b.CXSQRLX
+			LEFT JOIN
+			    (
+			        /**查询成功次数*/
+			        SELECT  sq.CZDW, COUNT(1)cxcgcsTotalRows,  
+			        SUM(bc.cxcs)cxcgcs,sq.CXSQRLX
+			        FROM
+			            t_bcxrxx bc
+			        LEFT JOIN t_sqrxx sq
+			        ON sq.ID=bc.SQR_ID
+			        WHERE
+			            sq.CXBS = #{cxbs}
+			        AND bc.SFZF='0'
+			        AND bc.BCXRQ BETWEEN #{startDateStr} AND #{endDateStr}
+			        AND sq.CZDW IN(
+			        	${czdwSplitByComma}
+			        )
+			        <if test="sqrlx!=null and sqrlx!=''" >
+			            AND sq.SQRLX = #{sqrlx}
+					</if>
+			        GROUP BY sq.CZDW,CXSQRLX
+			    )c
+			ON a.czdw=c.czdw
+			AND c.CXSQRLX=b.CXSQRLX
+		)tab  WHERE tab.czdw IS NOT NULL ORDER BY czdw,CXSQRLX
 	</select>  	
 	
 </mapper>  

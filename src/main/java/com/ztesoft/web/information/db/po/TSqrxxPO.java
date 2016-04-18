@@ -21,10 +21,26 @@ public class TSqrxxPO extends AbstractDto{
 	private String  cxbs;
 	private String zjmc;
     
-    private String vdef1;
+    private String vdef1;//人口类型，用于查询打印次数用
     
     private String vdef2;
     
+    private String lsh;//流水号
+    
+    
+    
+    /**
+     * @return the lsh
+     */
+    public String getLsh() {
+        return lsh;
+    }
+    /**
+     * @param lsh the lsh to set
+     */
+    public void setLsh(String lsh) {
+        this.lsh = lsh;
+    }
     public String getId() {
         return StringUtils.isBlank(id) ? id : id.trim();
     }

@@ -24,9 +24,14 @@
   	<result column="SQRCXBS" property="sqrcxbs" jdbcType="VARCHAR" />
   	<result column="SQRZJLX" property="sqrzjlx" jdbcType="VARCHAR" />
   	
+  	<result column="LSH" property="lsh" jdbcType="VARCHAR" />
+  	<result column="GLDYCS" property="gldycs" jdbcType="INTEGER" />
+  	<result column="SQRLSH" property="sqrlsh" jdbcType="VARCHAR" />
+  	
+  	
   </resultMap>
   <sql id="Base_Column_List" >
-  	ID,SQR_ID,ZJH,ZJLX,XM,SFZZP,SFZF,ZFLY,SFDY,BCXRQ,XGRQ,RKLX,CXCS,DYCS
+  	ID,SQR_ID,ZJH,ZJLX,XM,SFZZP,SFZF,ZFLY,SFDY,BCXRQ,XGRQ,RKLX,CXCS,DYCS,LSH,GLDYCS
   </sql>
   <sql id="Arg_Where_Clause" >
     <where >
@@ -144,8 +149,8 @@
 	where ID = #{id,jdbcType=VARCHAR}
   </select>
   <insert id="insert" parameterType="com.ztesoft.web.information.db.po.TBcxrxxPO"  >
-		insert into T_BCXRXX(ID,SQR_ID,ZJH,ZJLX,XM,SFZZP,SFZF,ZFLY,SFDY,BCXRQ,XGRQ,RKLX,CXCS,DYCS)
-		values (#{id,jdbcType=VARCHAR},#{sqrId,jdbcType=VARCHAR},#{zjh,jdbcType=VARCHAR},#{zjlx,jdbcType=VARCHAR},#{xm,jdbcType=VARCHAR},#{sfzzp,jdbcType=VARCHAR},#{sfzf,jdbcType=CHAR},#{zfly,jdbcType=VARCHAR},#{sfdy,jdbcType=CHAR},#{bcxrq,jdbcType=VARCHAR},#{xgrq,jdbcType=VARCHAR},#{rklx,jdbcType=CHAR},#{cxcs,jdbcType=INTEGER},#{dycs,jdbcType=INTEGER})
+		insert into T_BCXRXX(ID,SQR_ID,ZJH,ZJLX,XM,SFZZP,SFZF,ZFLY,SFDY,BCXRQ,XGRQ,RKLX,CXCS,DYCS,LSH,GLDYCS)
+		values (#{id,jdbcType=VARCHAR},#{sqrId,jdbcType=VARCHAR},#{zjh,jdbcType=VARCHAR},#{zjlx,jdbcType=VARCHAR},#{xm,jdbcType=VARCHAR},#{sfzzp,jdbcType=VARCHAR},#{sfzf,jdbcType=CHAR},#{zfly,jdbcType=VARCHAR},#{sfdy,jdbcType=CHAR},#{bcxrq,jdbcType=VARCHAR},#{xgrq,jdbcType=VARCHAR},#{rklx,jdbcType=CHAR},#{cxcs,jdbcType=INTEGER},#{dycs,jdbcType=INTEGER},#{lsh,jdbcType=VARCHAR},#{gldycs,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="com.ztesoft.web.information.db.po.TBcxrxxPO">
 		insert into T_BCXRXX
@@ -192,6 +197,12 @@
  	<if test="dycs != null" >
 			DYCS,
 		</if>
+ 	<if test="lsh != null" >
+			LSH,
+		</if>
+		<if test="gldycs != null" >
+			GLDYCS,
+		</if>
  	</trim>
 	<trim prefix="values (" suffix=")" suffixOverrides="," >
 		<if test="id != null" >
@@ -236,13 +247,19 @@
  	<if test="dycs != null" >
 			#{dycs,jdbcType=INTEGER},
 		</if>
+ 	<if test="lsh != null" >
+			#{lsh,jdbcType=VARCHAR},
+		</if>
+		<if test="gldycs != null" >
+			#{gldycs,jdbcType=INTEGER},
+		</if>
  	</trim> 	
   </insert>	
   <insert id="insertBatch" parameterType="list"  >
-	insert into T_BCXRXX(ID,SQR_ID,ZJH,ZJLX,XM,SFZZP,SFZF,ZFLY,SFDY,BCXRQ,XGRQ,RKLX,CXCS,DYCS)
+	insert into T_BCXRXX(ID,SQR_ID,ZJH,ZJLX,XM,SFZZP,SFZF,ZFLY,SFDY,BCXRQ,XGRQ,RKLX,CXCS,DYCS,LSH,GLDYCS)
 	 values 
 	 <foreach collection="list" item="item" index="index" separator=",">
-	 		(#{item.id,jdbcType=VARCHAR},#{item.sqrId,jdbcType=VARCHAR},#{item.zjh,jdbcType=VARCHAR},#{item.zjlx,jdbcType=VARCHAR},#{item.xm,jdbcType=VARCHAR},#{item.sfzzp,jdbcType=VARCHAR},#{item.sfzf,jdbcType=CHAR},#{item.zfly,jdbcType=VARCHAR},#{item.sfdy,jdbcType=CHAR},#{item.bcxrq,jdbcType=VARCHAR},#{item.xgrq,jdbcType=VARCHAR},#{item.rklx,jdbcType=CHAR},#{item.cxcs,jdbcType=INTEGER},#{item.dycs,jdbcType=INTEGER})
+	 		(#{item.id,jdbcType=VARCHAR},#{item.sqrId,jdbcType=VARCHAR},#{item.zjh,jdbcType=VARCHAR},#{item.zjlx,jdbcType=VARCHAR},#{item.xm,jdbcType=VARCHAR},#{item.sfzzp,jdbcType=VARCHAR},#{item.sfzf,jdbcType=CHAR},#{item.zfly,jdbcType=VARCHAR},#{item.sfdy,jdbcType=CHAR},#{item.bcxrq,jdbcType=VARCHAR},#{item.xgrq,jdbcType=VARCHAR},#{item.rklx,jdbcType=CHAR},#{item.cxcs,jdbcType=INTEGER},#{item.dycs,jdbcType=INTEGER},#{item.lsh,jdbcType=VARCHAR},#{item.gldycs,jdbcType=INTEGER})
 	 </foreach>
   </insert>
   <update id="updateByArgSelective" parameterType="map" >
@@ -285,7 +302,13 @@
 			CXCS= #{record.cxcs,jdbcType=INTEGER},
 		</if>
 		<if test="record.dycs != null" >
-			DYCS= #{record.dycs,jdbcType=INTEGER}
+			DYCS= #{record.dycs,jdbcType=INTEGER},
+		</if>
+		<if test="record.lsh != null" >
+			LSH= #{record.lsh,jdbcType=VARCHAR},
+		</if>
+		<if test="record.gldycs != null" >
+			GLDYCS= #{record.gldycs,jdbcType=INTEGER}
 		</if>
     </set>
     <if test="_parameter != null" >
@@ -308,7 +331,9 @@
 		XGRQ = #{record.xgrq,jdbcType=VARCHAR},
 		RKLX = #{record.rklx,jdbcType=CHAR},
 		CXCS = #{record.cxcs,jdbcType=INTEGER},
-		DYCS = #{record.dycs,jdbcType=INTEGER}
+		DYCS = #{record.dycs,jdbcType=INTEGER},
+		LSH = #{record.lsh,jdbcType=VARCHAR},
+		GLDYCS = #{record.gldycs,jdbcType=INTEGER}
     <if test="_parameter != null" >
       <include refid="Update_By_Arg_Where_Clause" />
     </if>
@@ -353,7 +378,13 @@
 		CXCS = #{cxcs,jdbcType=INTEGER},
 	</if>
 	<if test="dycs != null" >
-		DYCS = #{dycs,jdbcType=INTEGER}
+		DYCS = #{dycs,jdbcType=INTEGER},
+	</if>
+	<if test="lsh != null" >
+		LSH = #{lsh,jdbcType=VARCHAR},
+	</if>
+	<if test="gldycs != null" >
+		GLDYCS = #{gldycs,jdbcType=INTEGER}
 	</if>
 	</set >
 	 where ID = #{id,jdbcType=VARCHAR}
@@ -373,7 +404,9 @@
 			XGRQ = #{xgrq,jdbcType=VARCHAR},
 			RKLX = #{rklx,jdbcType=CHAR},
 			CXCS = #{cxcs,jdbcType=INTEGER},
-			DYCS = #{dycs,jdbcType=INTEGER}
+			DYCS = #{dycs,jdbcType=INTEGER},
+			LSH = #{lsh,jdbcType=VARCHAR},
+			GLDYCS = #{gldycs,jdbcType=INTEGER}
 	 where ID = #{id,jdbcType=VARCHAR}
    </update>
   <delete id="deleteByArg" parameterType="com.ztesoft.web.information.db.arg.TBcxrxxArg" >
@@ -394,22 +427,36 @@
     <select id="select4Page" resultMap="BaseResultMap" parameterType="com.ztesoft.web.information.db.po.TBcxrxxPO" >
     select
     	b.ID, b.ZJH, b.ZJLX, b.XM, b.SFZZP, b.SFZF, b.ZFLY, b.SFDY, b.BCXRQ, b.XGRQ, b.RKLX, b.CXCS,
-    	 s.xm as SQRXM,s.zjh as sqrzjh,s.zjlx as sqrzjlx,s.czdw as sqrczdw,s.czr as sqrczr,s.cxbs as sqrcxbs
+    	 s.xm as SQRXM,s.zjh as sqrzjh,s.zjlx as sqrzjlx,s.czdw as sqrczdw,s.czr as sqrczr,s.cxbs as sqrcxbs,
+    	 b.lsh,s.lsh as sqrlsh
 	from t_bcxrxx b, t_sqrxx s 
     where b.sqr_id = s.id  
+    <if test="sfzf != null and sfzf !=''">
+    	and b.SFZF = '${sfzf}'    
+    </if>
+    <if test="sqrcxbs != null and sqrcxbs !=''">
+    	and s.CXBS like '%${sqrcxbs}%'    
+    </if>
     <if test="zjh != null and zjh != ''">
     	and b.ZJH like '%${zjh}%'
     </if>
     <if test="xm != null and xm !=''">
     	and b.XM like '%${xm}%'  
     </if>
+    <if test="lsh != null and lsh !=''">
+    	and b.LSH like '%${lsh}%'  
+    </if>
+    <if test="sqrlsh != null and sqrlsh !=''">
+    	and s.LSH like '%${sqrlsh}%'  
+    </if>
     <if test="sqrXm != null and sqrXm !=''">
     	and s.XM like '%${sqrXm}%'    
     </if>
+    
     <if test="startDateStr != null and endDateStr != null ">
     	and b.BCXRQ BETWEEN #{startDateStr} AND #{endDateStr}
     </if>
-    order by b.BCXRQ
+    order by s.LSH DESC,b.LSH DESC
   </select>
   
   

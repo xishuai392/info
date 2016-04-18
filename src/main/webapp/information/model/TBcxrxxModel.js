@@ -65,5 +65,14 @@ Ext.define('component.information.model.TBcxrxxModel', {
     }, {
         name : 'sqrzjlx',
         type : 'auto'
+    }, {
+        name : 'sqrlsh',
+        type : 'auto'
+    }, {
+        name : 'lsh',
+        type : 'auto'
+    }, {
+        name : 'gldycs',
+        type : 'auto'
     }]
 });

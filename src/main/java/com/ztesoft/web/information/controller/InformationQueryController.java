@@ -3,7 +3,6 @@ package com.ztesoft.web.information.controller;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -45,6 +44,7 @@ import com.ztesoft.web.information.rbsp.InfoXmlParser;
 import com.ztesoft.web.information.rbsp.TransUtils;
 import com.ztesoft.web.information.service.ITBcxrxxService;
 import com.ztesoft.web.information.service.ITSqrxxService;
+import com.ztesoft.web.information.service.PrimaryGenerater;
 import com.ztesoft.web.permission.db.po.AuditUserPO;
 
 /**
@@ -102,6 +102,9 @@ public class InformationQueryController {
 
     @Autowired
     private ITSqrxxService sqrxxService;
+    
+    @Autowired
+    private PrimaryGenerater primaryGenerater;
 
     /**
      * PC端首页
@@ -133,11 +136,13 @@ public class InformationQueryController {
 
     /**
      * 常住人口详情页面（新开页面）兼容PC\网上查询\终端查询等
-     * 
      * @param idCardNum
      * @param sqrxxId
      * @param bcxrxxId
      * @param cxbs
+     * @param debug
+     * @param relevance  关联查询
+     * @param baseIdCardNum 关联查询时对应的本人身份证号
      * @return
      */
     @RequestMapping("czrkDetail")
@@ -145,7 +150,8 @@ public class InformationQueryController {
             required = true) String idCardNum, @RequestParam(value = "sqrxxId",
             required = true) String sqrxxId, @RequestParam(value = "bcxrxxId",
             required = true) String bcxrxxId, @RequestParam(value = "cxbs",
-            required = true) String cxbs,String debug) {
+            required = true) String cxbs,String debug,
+            String relevance,String baseIdCardNum) {
         String populationType = "户籍人口";
         ModelAndView view = new ModelAndView("/information/jsp/czrkDetail");
         view.addObject("thirdPartyZzrkUrl",
@@ -156,10 +162,15 @@ public class InformationQueryController {
         view.addObject("populationType", populationType);
         view.addObject("cxbs", cxbs);
         view.addObject("debug",debug);
+        view.addObject("baseIdCardNum",baseIdCardNum);
         // 10：终端，20：pc端,30:网上查询
         if ("10".equals(cxbs)) {
             // 20160316需求：终端下，需要增加自动关闭页面功能
             view.setViewName("/information/jsp/czrkDetail_plates");
+        }
+        if(StringUtils.isNotBlank(relevance)){
+            //是否关联查询
+            view.setViewName("/information/jsp/czrkDetail_plates_relevance");
         }
         return view;
     }
@@ -238,7 +249,8 @@ public class InformationQueryController {
         reqInfo.setCzdw(String.valueOf(auditUserPo.getOrgId()));
         reqInfo.setCzr(String.valueOf(auditUserPo.getUserId()));
         reqInfo.setCxrq(DateUtils.date2String(new Date(),
-                DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
+                DateUtils.STR_DEFAULT_DATE_FORMAT_WITHOUT_SPLIT));
+        reqInfo.setLsh(primaryGenerater.getNextSqrLsh());
         // 记录查询日志，生成日志操作记录信息表
         sqrxxService.add(reqInfo);
         respInfo.setUuid(uuid);
@@ -279,6 +291,11 @@ public class InformationQueryController {
         if (pid.length() == 15) {
             pid = IdentificationCodeUtil.update2eighteen(pid);
         }
+        
+        //申请人流水号
+        String srqLsh = "";
+        TSqrxxPO sqrxxPO = sqrxxService.selectByPrimaryKey(reqInfo.getSqrxxId());
+        srqLsh = sqrxxPO.getLsh();
 
         // 被查询者姓名
         String bcxrxm = "";
@@ -344,10 +361,13 @@ public class InformationQueryController {
                     bcxrxxPO.setSfzf("0");// 是否作废（1：是，0：否）默认为“否”
                     bcxrxxPO.setSfdy("0");// 是否打印（1：是，0：否）默认为“否”
                     bcxrxxPO.setBcxrq(DateUtils.date2String(new Date(),
-                            DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));// 被查询日期
+                            DateUtils.STR_DEFAULT_DATE_FORMAT_WITHOUT_SPLIT));// 被查询日期
                     bcxrxxPO.setRklx("1");// 人口类型（1：户籍人口，2：暂住人口）
                     bcxrxxPO.setCxcs(0);// 查询次数
                     bcxrxxPO.setDycs(0);// 打印次数
+                    bcxrxxPO.setGldycs(0);//关联打印次数
+                    //生成被查询人流水号
+                    bcxrxxPO.setLsh(primaryGenerater.getNextBcxrLsh(srqLsh));
                     // 记录日志
                     bcxrxxService.add(bcxrxxPO);
                 }
@@ -425,10 +445,13 @@ public class InformationQueryController {
                     bcxrxxPO.setSfzf("0");// 是否作废（1：是，0：否）默认为“否”
                     bcxrxxPO.setSfdy("0");// 是否打印（1：是，0：否）默认为“否”
                     bcxrxxPO.setBcxrq(DateUtils.date2String(new Date(),
-                            DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));// 被查询日期
+                            DateUtils.STR_DEFAULT_DATE_FORMAT_WITHOUT_SPLIT));// 被查询日期
                     bcxrxxPO.setRklx("2");// 人口类型（1：户籍人口，2：暂住人口）
                     bcxrxxPO.setCxcs(0);// 查询次数
                     bcxrxxPO.setDycs(0);// 打印次数
+                    bcxrxxPO.setGldycs(0);//关联打印次数
+                    //生成被查询人流水号
+                    bcxrxxPO.setLsh(primaryGenerater.getNextBcxrLsh(srqLsh));
                     // 记录日志
                     bcxrxxService.add(bcxrxxPO);
                 }
@@ -469,6 +492,11 @@ public class InformationQueryController {
         permanentPopulationInfo.setDyrq(DateUtils.date2String(new Date(),
                 MessageResourceUtils.getMessage("Dyrq.format")));
 
+        //申请人对象
+        permanentPopulationInfo.setSqrxxPO(sqrxxService.selectByPrimaryKey(reqInfo.getSqrxxId()));
+        //查询人对象
+        permanentPopulationInfo.setBcxrxxPO(bcxrxxService.selectByPrimaryKey(reqInfo.getBcxrxxId()));
+        
         // PC端查询 10：终端，20：pc端,30:网上查询
         buildCZRKInfo(reqInfo, request, auditUserPo, permanentPopulationInfo,
                 "20");
@@ -657,6 +685,12 @@ public class InformationQueryController {
         trPopulationInfo.setDyrq(DateUtils.date2String(new Date(),
                 MessageResourceUtils.getMessage("Dyrq.format")));
 
+        //申请人对象
+        trPopulationInfo.setSqrxxPO(sqrxxService.selectByPrimaryKey(reqInfo.getSqrxxId()));
+        //查询人对象
+        trPopulationInfo.setBcxrxxPO(bcxrxxService.selectByPrimaryKey(reqInfo.getBcxrxxId()));
+        
+        
         buildZZRKInfo(reqInfo, request, auditUserPo, trPopulationInfo);
 
         return trPopulationInfo;
@@ -806,7 +840,8 @@ public class InformationQueryController {
         baseInfo.setIdCardNum(rowInfoMap.get("PID"));
         baseInfo.setLiveAddress(allFullAddr);
         baseInfo.setName(rowInfoMap.get("NAME"));
-        baseInfo.setNation(rowInfoMap.get("NATION"));
+        String nation = rowInfoMap.get("NATION");
+        baseInfo.setNation(nation==null?"":nation.replaceAll("/", ""));
         baseInfo.setNativePlace("");
         baseInfo.setNativePlaceDetailAddress(rowInfoMap.get("NATIVE_XIANG"));
         baseInfo.setNativePlaceNation(rowInfoMap.get("NATIVE_COUNTRY"));
@@ -1229,7 +1264,8 @@ public class InformationQueryController {
         baseInfo.setNativePlace(ldrk_jbxxLatelyMap.get("NATIVE_PLACE")); // 籍贯
         // 身份证照片地址
         baseInfo.setPhotoGif(ldrk_jbxxLatelyMap.get("PID") + ".jpg");
-        baseInfo.setNation(ldrk_jbxxLatelyMap.get("NATION"));// 民族(GB/T 3304)
+        String nation = ldrk_jbxxLatelyMap.get("NATION");
+        baseInfo.setNation(nation==null? "" :nation.replaceAll("/", ""));// 民族(GB/T 3304)
         baseInfo.setSex(TransUtils.transSex(ldrk_jbxxLatelyMap.get("GENDER")));// 性别(GB/T 2261.1)
 
         /**

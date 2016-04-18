@@ -65,6 +65,10 @@ Ext.define('component.operateRecord.model.TSqrxxModel', {
        		{
 	            name : 'mainId',
 	            type : 'auto'
-        	}         
+        	},
+       		{
+	            name : 'lsh',
+	            type : 'auto'
+        	}          
 			]
 });

@@ -1,5 +1,6 @@
 package com.ztesoft.web.information.controller;
 
+import java.text.MessageFormat;
 import java.util.Date;
 
 import org.apache.commons.lang3.StringUtils;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ztesoft.core.common.Page;
 import com.ztesoft.framework.dto.AbstractDto;
 import com.ztesoft.framework.exception.BaseAppException;
-import com.ztesoft.framework.exception.ExceptionHandler;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
 import com.ztesoft.framework.util.DateUtils;
 import com.ztesoft.framework.util.MessageResourceUtils;
@@ -138,14 +138,15 @@ public class TBcxrxxController {
      * @param bcxrxxId
      * @param cxbs
      * @param idCardNum
+     * @param rklx 人口类型（1：户籍人口，2：暂住人口）
      * @return
      * @throws BaseAppException
      */
     @RequestMapping("canPrint")
     @ResponseBody
     public CanPrintResult canPrintAndMark(String bcxrxxId, String cxbs,
-            String idCardNum) throws BaseAppException {
-
+            String idCardNum, String rklx) throws BaseAppException {
+        // 20160330需求 终端常口打印10次 子女就学打印5次 分开计算
         CanPrintResult result = new CanPrintResult();
         // 先去捞库里的记录
         TBcxrxxPO record = tBcxrxxService.selectByPrimaryKey(bcxrxxId);
@@ -170,11 +171,24 @@ public class TBcxrxxController {
                 int maxPrint = Integer.parseInt(MessageResourceUtils
                         .getMessage("maxPrintByDay"));
 
+                if ("1".equals(rklx)) {
+                    maxPrint = Integer.parseInt(MessageResourceUtils
+                            .getMessage("Plates.czrk.maxPrintByDay"));
+                }
+                else if ("2".equals(rklx)) {
+                    maxPrint = Integer.parseInt(MessageResourceUtils
+                            .getMessage("Plates.znrx.maxPrintByDay"));
+                }
+                else {
+
+                }
+
                 TSqrxxPO queryVO = new TSqrxxPO();
                 queryVO.setCxbs("10");// 终端
                 queryVO.setZjh(idCardNum);
                 queryVO.setCxrq(DateUtils.date2String(new Date(),
                         DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
+                queryVO.setVdef1(rklx);// 人口类型（1：户籍人口，2：暂住人口） 区分开终端的常口及子女上学
 
                 int printTimes = tSqrxxService.countPrintByZD(queryVO);
 
@@ -182,12 +196,22 @@ public class TBcxrxxController {
                     // 不可以打印了
                     result.setCanPrint(false);
                     result.setMessage(MessageResourceUtils
-                            .getMessage("maxPrintByDay。errorMessage"));
+                            .getMessage("maxPrintByDay.errorMessage"));
                     return result;
+                }
+                else {
+                    // 还可以打印
+                    result.setCanPrint(true);
+                    String parttern = MessageResourceUtils
+                            .getMessage("Plates.PrintingMsg.format");
+                    result.setMessage(String.format(parttern, printTimes + 1,
+                            (maxPrint - printTimes - 1)));
                 }
             }
             catch (Exception e) {
                 logger.error("查询终端用户当天打印次数时发生错误。", e);
+                result.setCanPrint(false);
+                result.setMessage("系统繁忙，请稍后再试.");
             }
             TBcxrxxPO newRecord = new TBcxrxxPO();
             newRecord.setSfdy("1");
@@ -211,6 +235,7 @@ public class TBcxrxxController {
      */
     @RequestMapping("checkPrintMark")
     @ResponseBody
+    @Deprecated
     public CanPrintResult checkPrintMark(String bcxrxxId, String cxbs,
             String idCardNum) throws BaseAppException {
 
@@ -240,7 +265,7 @@ public class TBcxrxxController {
                 // 不可以打印了
                 result.setCanPrint(false);
                 result.setMessage(MessageResourceUtils
-                        .getMessage("maxPrintByDay。errorMessage"));
+                        .getMessage("maxPrintByDay.errorMessage"));
                 return result;
             }
         }
@@ -253,9 +278,9 @@ public class TBcxrxxController {
     }
 
     public class CanPrintResult extends AbstractDto {
-        private boolean canPrint = true;
+        private boolean canPrint = true;// 是否能打印
 
-        private String message = "";
+        private String message = "";// 提示信息
 
         /**
          * @return the canPrint

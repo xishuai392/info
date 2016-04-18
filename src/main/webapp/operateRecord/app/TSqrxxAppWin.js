@@ -27,6 +27,12 @@ Ext.onReady(function() {
     	            hidden : true,
     	            name : "id"
             	},
+            	{
+    	            fieldLabel : "申请人流水号",
+    	            xtype : "textfield",
+    	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
+    	            name : "lsh"
+            	},
     	      	{
     	            fieldLabel : "姓名",
     	            xtype : "textfield",
@@ -62,7 +68,7 @@ Ext.onReady(function() {
     	            editable : false,
     	            store : new Ext.data.ArrayStore({
     	                fields : ['value', 'text'],
-    	                data : [['', '全部'], ['10', '律师'], ['20', '党政军机关'], ['30', '司法机关'], ['40', '企事业单位'], ['50', '个人'], ['60', '人民团体']]
+    	                data : [['', '全部'], ['10', '律师'], ['20', '党政军机关'], ['30', '司法机关'], ['40', '企事业单位'], ['50', '个人'], ['60', '人民团体'], ['70', '其他']]
     	            })
             	},
     	      	{
@@ -80,15 +86,15 @@ Ext.onReady(function() {
     	            name : "cxsy"
             	},
             	{
-		            fieldLabel : "查询起始日期",
+		            fieldLabel : "筛选日期",
 		            xtype : "datefield",
 		            format : 'Y-m-d',
 		            value : new Date(),
-		            afterSubTpl : WEBConstants.REQUIRED,
+		            //afterSubTpl : WEBConstants.REQUIRED,
 		            editable : false,
 		            name : "startDate"
 		        }, {
-		            fieldLabel : "查询结束日期",
+		            fieldLabel : "至",
 		            xtype : "datefield",
 		            format : 'Y-m-d',
 		            value : new Date(),

@@ -8,7 +8,6 @@ import java.util.*;
 
 import com.ztesoft.core.common.Page;
 import com.ztesoft.framework.exception.BaseAppException;
-
 import com.ztesoft.web.information.db.po.TBcxrxxPO;
 
 /**
@@ -39,4 +38,12 @@ public interface ITBcxrxxService {
 
     Page<TBcxrxxPO> select4Page(TBcxrxxPO record, Page<TBcxrxxPO> resultPage)
             throws BaseAppException;
+    
+    /**
+     * 获取最新的一条记录
+     * @param record
+     * @return
+     * @throws BaseAppException
+     */
+    TBcxrxxPO getLatestRecord(TBcxrxxPO record)throws BaseAppException;
 }

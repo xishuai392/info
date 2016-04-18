@@ -43,6 +43,7 @@ import com.ztesoft.web.information.rbsp.InfoXmlParser;
 import com.ztesoft.web.information.rbsp.TransUtils;
 import com.ztesoft.web.information.service.ITBcxrxxService;
 import com.ztesoft.web.information.service.ITSqrxxService;
+import com.ztesoft.web.information.service.PrimaryGenerater;
 import com.ztesoft.web.permission.db.po.AuditUserPO;
 
 /**
@@ -66,6 +67,9 @@ public class PlatesInfoQueryController {
 
     @Autowired
     private ITSqrxxService sqrxxService;
+    
+    @Autowired
+    private PrimaryGenerater primaryGenerater;
 
     @Autowired
     InformationQueryController informationQueryController;
@@ -146,11 +150,14 @@ public class PlatesInfoQueryController {
 
             // sqrxxRecord.setCzdw(MessageResourceUtils
             // .getMessage("Plates.UserDeptId"));
-            sqrxxRecord.setCzr(getHostName(request) + "[" + getIpAddr(request)
-                    + "]");
+//            sqrxxRecord.setCzr(getHostName(request) + "[" + getIpAddr(request)
+//                    + "]");
+            sqrxxRecord.setCzr(getHostName(request));
             sqrxxRecord.setCxrq(DateUtils.date2String(new Date(),
-                    DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
-
+                    DateUtils.STR_DEFAULT_DATE_FORMAT_WITHOUT_SPLIT));
+            
+            String srqLsh = primaryGenerater.getNextSqrLsh();
+            sqrxxRecord.setLsh(srqLsh);
             // 记录查询日志，申请人信息表
             sqrxxService.add(sqrxxRecord);
 
@@ -166,10 +173,14 @@ public class PlatesInfoQueryController {
             bcxrxxRecord.setSfzf("0");// 是否作废（1：是，0：否）默认为“否”
             bcxrxxRecord.setSfdy("0");// 是否打印（1：是，0：否）默认为“否”
             bcxrxxRecord.setBcxrq(DateUtils.date2String(new Date(),
-                    DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));// 被查询日期
+                    DateUtils.STR_DEFAULT_DATE_FORMAT_WITHOUT_SPLIT));// 被查询日期
             bcxrxxRecord.setRklx(reqInfo.getPopulationType());// 人口类型（1：户籍人口，2：暂住人口）
             bcxrxxRecord.setCxcs(0);// 查询次数
             bcxrxxRecord.setDycs(0);// 打印次数
+            
+            bcxrxxRecord.setGldycs(0);//关联打印次数
+            //生成被查询人流水号
+            bcxrxxRecord.setLsh(primaryGenerater.getNextBcxrLsh(srqLsh));
 
             // 记录日志,被查询人信息表
             bcxrxxService.add(bcxrxxRecord);
@@ -193,6 +204,13 @@ public class PlatesInfoQueryController {
                 .getMessage("Detail.tipMessage"));
         permanentPopulationInfo.setDyrq(DateUtils.date2String(new Date(),
                 MessageResourceUtils.getMessage("Dyrq.format")));
+        
+        //申请人对象
+        permanentPopulationInfo.setSqrxxPO(sqrxxService.selectByPrimaryKey(reqInfo.getSqrxxId()));
+        //查询人对象
+        permanentPopulationInfo.setBcxrxxPO(bcxrxxService.selectByPrimaryKey(reqInfo.getBcxrxxId()));
+        
+        
         // PC端查询  10：终端，20：pc端,30:网上查询
         informationQueryController.buildCZRKInfo(reqInfo, request, auditUserPo,
                 permanentPopulationInfo, "10");
@@ -211,6 +229,12 @@ public class PlatesInfoQueryController {
         trPopulationInfo.setDyrq(DateUtils.date2String(new Date(),
                 MessageResourceUtils.getMessage("Dyrq.format")));
 
+        //申请人对象
+        trPopulationInfo.setSqrxxPO(sqrxxService.selectByPrimaryKey(reqInfo.getSqrxxId()));
+        //查询人对象
+        trPopulationInfo.setBcxrxxPO(bcxrxxService.selectByPrimaryKey(reqInfo.getBcxrxxId()));
+        
+        
         informationQueryController.buildZZRKInfo(reqInfo, request, auditUserPo,
                 trPopulationInfo);
         return trPopulationInfo;

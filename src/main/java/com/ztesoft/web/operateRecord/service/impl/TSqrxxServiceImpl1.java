@@ -121,12 +121,14 @@ public class TSqrxxServiceImpl1 implements ITSqrxxService {
         }
         TSqrxxCriteria criteria = arg.getOredCriteria().get(0);
         criteria.andCxrqBetween(DateUtils.date2String(record.getStartDate(),
-                DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT), DateUtils
-                .date2String(record.getEndDate(),
-                        DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
+                DateUtils.STR_DEFAULT_DATE_FORMAT_WITHOUT_SPLIT), DateUtils
+                .date2String(DateUtils.getDayEndTime(record.getEndDate()),
+                        DateUtils.STR_DEFAULT_DATE_FORMAT_WITHOUT_SPLIT));
 
-        arg.setOrderByClause("CXRQ");
+        criteria.andLshLike(record.getLsh());
         
+        arg.setOrderByClause("CXRQ DESC");
+
         resultPage = tSqrxxDao.selectByArgAndPage(arg, resultPage);
 
         return resultPage;

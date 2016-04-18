@@ -4,7 +4,7 @@
 	<groupId>com.ztesoft</groupId>
 	<artifactId>info</artifactId>
 	<packaging>war</packaging>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>info Maven Webapp</name>
 	<url>http://maven.apache.org</url>
 
@@ -24,6 +24,7 @@
 		<httpclient.version>4.3.6</httpclient.version>
 		<quartz.version>2.1.6</quartz.version>
 		<ehcache.version>2.10.0</ehcache.version>
+		<poi.version>3.10.1</poi.version>
 
 
 	</properties>
@@ -61,7 +62,7 @@
 			<version>5.1.29</version>
 		</dependency>
 
-	<!--  -->
+		<!-- -->
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc6</artifactId>
@@ -471,6 +472,25 @@
 		</dependency>
 
 		<!-- julong denpendency jars end -->
+
+
+		<!-- POI JAR -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>${poi.version}</version>
+			<scope>compile</scope>
+			<optional>true</optional>
+		</dependency>
+
+
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi-ooxml</artifactId>
+			<version>${poi.version}</version>
+			<optional>true</optional>
+		</dependency>
+
 
 	</dependencies>
 

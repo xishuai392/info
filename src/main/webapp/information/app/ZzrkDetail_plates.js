@@ -192,14 +192,16 @@ Ext.onReady(function() {
 		                    	//cxbs 10：终端，20：pc端,30:网上查询
 		                    	cxbs : reqOjb.cxbs,
 		                    	//身份证编号
-								idCardNum : reqOjb.idCardNum
-								
+								idCardNum : reqOjb.idCardNum,
+								//人口类型（1：户籍人口，2：暂住人口）
+								rklx : 2
 				        	};
 			        		var config = {
 			            		url : 'information/tbcxrxx/canPrint.do',
 					            params : params,
 					            callback : function(canPrintResult){
 					            	if(canPrintResult.canPrint){
+					            		ExtUtils.tip("提示",canPrintResult.message);
 					            		//可以打开连接
 					            		openNewPage(reqOjb.idCardNum);
 					            		
@@ -221,7 +223,9 @@ Ext.onReady(function() {
 		                    	//cxbs 10：终端，20：pc端,30:网上查询
 		                    	cxbs : reqOjb.cxbs,
 		                    	//身份证编号
-								idCardNum : reqOjb.idCardNum
+								idCardNum : reqOjb.idCardNum,
+								//人口类型（1：户籍人口，2：暂住人口）
+								rklx : 2
 								
 				        	};
 			        		var config = {
@@ -230,7 +234,7 @@ Ext.onReady(function() {
 					            callback : function(canPrintResult){
 					            	if(canPrintResult.canPrint){
 					            		//可以打开连接
-					            		
+					            		ExtUtils.tip("提示",canPrintResult.message);
 			            			}else{
 			            				
 					            	}
@@ -287,7 +291,12 @@ Ext.onReady(function() {
 	'		<span style="FONT-SIZE: 20px!important; ">暂住人口基本信息表<span>',
 	'	</div>',
 	'	<div class="div_second_title" id="part1Div">',
-	'		人员基本信息',
+	'		<table class="tb2" width=100%>',
+	'			<tr>',
+	'			    <td colspan=4 class="textInfoLeft">人员基本信息</td>',
+	'			    <td colspan=4 class="textInfoRight">流水号:{[values.bcxrxxPO.lsh]} &nbsp;&nbsp;</td>',
+	'			</tr>',
+	'		</table>',
 	'	</div>',
 	'	<div id="part1Table">',
 	'		<table class="tbl" width=100%>',
@@ -374,11 +383,7 @@ Ext.onReady(function() {
 **/
 	'<tpl if="page_cxbs &lt; 15"> ',
 	'		<tr>',
-	'			<td colspan=4 class="textInfoRight">&nbsp;</td>',
-	'			<td colspan=2 class="textInfoRight">&nbsp;</td>',
-	'			<td colspan=4 class="textInfoLeft">&nbsp;</td>',
-	'			<td colspan=2 class="textInfoRight">&nbsp;</td>',
-	'			<td colspan=2 class="textInfoLeft">&nbsp;</td>',
+	'			<td colspan=14 class="textInfoLeft">&nbsp;&nbsp;申请人类型：{[this.formater(values.sqrxxPO.cxsqrlx)]} &nbsp;&nbsp;  申请人：{[values.sqrxxPO.xm]} &nbsp;&nbsp; {[this.getCzdw(values.sqrxxPO.cxsqrlx,values.sqrxxPO.cxrdw)]} &nbsp;&nbsp;</td>',
 	'			<td colspan=2 class="textInfoRight">打印日期：</td>',
 	'			<td colspan=2 class="textInfoLeft">{[values.dyrq]}</td>',
 	'		</tr>',
@@ -397,7 +402,35 @@ Ext.onReady(function() {
 	'	</table>',
 	'	</div>',
 	'</div>',
-	'</div>'
+	'</div>',{
+			//['10', '律师'],['20', '党政军机关'],['30', '司法机关'],['40', '企事业单位'],['50', '个人'], ['60', '人民团体']
+			formater : function(value) {
+	            	if(value == '10'){
+	            		return'律师';
+	            	}else if(value == '20'){
+	            		return'党政军机关';
+	            	}else if(value == '30'){
+	            		return'司法机关';
+	            	}else if(value == '40'){
+	            		return'企事业单位';
+	            	}else if(value == '50'){
+	            		return'个人';
+	            	}else if(value == '60'){
+	            		return'人民团体';
+	            	}else if(value == '70'){
+	            		return'其他';
+	            	}
+	            },
+	       getCzdw : function(cxsqrlx,czdw){
+	       		//申请人查询类型为个人时，查询单位 直接隐藏掉
+	       		if(cxsqrlx == '50'){
+	       			return "";
+	       		}else{
+	       			return "单位："+czdw;
+	       		}
+	       			
+	       }
+		}
 	);
 	
     
@@ -438,14 +471,16 @@ Ext.onReady(function() {
                     	//cxbs 10：终端，20：pc端,30:网上查询
                     	cxbs : reqOjb.cxbs,
                     	//身份证编号
-						idCardNum : reqOjb.idCardNum
-						
+						idCardNum : reqOjb.idCardNum,
+						//人口类型（1：户籍人口，2：暂住人口）
+						rklx : 2
 		        	};
 	        		var config = {
 	            		url : 'information/tbcxrxx/canPrint.do',
 			            params : params,
 			            callback : function(canPrintResult){
 			            	if(canPrintResult.canPrint){
+			            		ExtUtils.tip("提示",canPrintResult.message);
 			            		//利用jatoolsPrinter打印
 			            		doJatoolsPrint(0);
 			            		if(true){
@@ -477,16 +512,19 @@ Ext.onReady(function() {
                     	//cxbs 10：终端，20：pc端,30:网上查询
                     	cxbs : reqOjb.cxbs,
                     	//身份证编号
-						idCardNum : reqOjb.idCardNum
-						
+						idCardNum : reqOjb.idCardNum,
+						//人口类型（1：户籍人口，2：暂住人口）
+						rklx : 2
 		        	};
 	        		var config = {
 	            		url : 'information/tbcxrxx/canPrint.do',
 			            params : params,
 			            callback : function(canPrintResult){
 			            	if(canPrintResult.canPrint){
+			            		ExtUtils.tip("提示",canPrintResult.message);
 			            		//利用jatoolsPrinter打印
 			            		doJatoolsPrint(2);
+			            		
 			            		if(true){
 			            			return;
 			            		}

@@ -159,4 +159,19 @@ public class TSqrxxServiceImpl implements ITSqrxxService {
         return tSqrxxDao.countPrintByZD(record);
     }
 
+    /* (non-Javadoc)
+     * @see com.ztesoft.web.information.service.ITSqrxxService#getLatestRecord(com.ztesoft.web.information.db.po.TSqrxxPO)
+     */
+    @Override
+    public TSqrxxPO getLatestRecord(TSqrxxPO record) throws BaseAppException {
+        TSqrxxArg arg = new TSqrxxArg();
+        arg.setOrderByClause(" LSH DESC ");
+        TSqrxxCriteria criteria = arg.createCriteria();
+        criteria.andLshLike(record.getLsh());
+        List<TSqrxxPO> result = tSqrxxDao.selectByArg(arg);
+        if (null == result || result.size() == 0)
+            return null;
+        return result.get(0);
+    }
+
 }

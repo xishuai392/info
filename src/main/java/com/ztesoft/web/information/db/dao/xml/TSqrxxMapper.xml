@@ -13,12 +13,13 @@
   	<result column="CZDW" property="czdw" jdbcType="VARCHAR" />
   	<result column="CZR" property="czr" jdbcType="VARCHAR" />
   	<result column="CXBS" property="cxbs" jdbcType="VARCHAR" />
-  <result column="ZJMC" property="zjmc" jdbcType="VARCHAR" />
+  	<result column="ZJMC" property="zjmc" jdbcType="VARCHAR" />
   	<result column="VDEF1" property="vdef1" jdbcType="VARCHAR" />
   	<result column="VDEF2" property="vdef2" jdbcType="VARCHAR" />
+  <result column="LSH" property="lsh" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
-  	ID,ZJH,ZJLX,XM,CXSQRLX,CXRDW,CXSY,CXRQ,CZDW,CZR,CXBS,ZJMC,VDEF1,VDEF2
+  	ID,ZJH,ZJLX,XM,CXSQRLX,CXRDW,CXSY,CXRQ,CZDW,CZR,CXBS,ZJMC,VDEF1,VDEF2,LSH
   </sql>
   <sql id="Arg_Where_Clause" >
     <where >
@@ -136,8 +137,8 @@
 	where ID = #{id,jdbcType=VARCHAR}
   </select>
   <insert id="insert" parameterType="com.ztesoft.web.information.db.po.TSqrxxPO"  >
-		insert into T_SQRXX(ID,ZJH,ZJLX,XM,CXSQRLX,CXRDW,CXSY,CXRQ,CZDW,CZR,CXBS,ZJMC,VDEF1,VDEF2)
-		values (#{id,jdbcType=VARCHAR},#{zjh,jdbcType=VARCHAR},#{zjlx,jdbcType=VARCHAR},#{xm,jdbcType=VARCHAR},#{cxsqrlx,jdbcType=VARCHAR},#{cxrdw,jdbcType=VARCHAR},#{cxsy,jdbcType=VARCHAR},#{cxrq,jdbcType=VARCHAR},#{czdw,jdbcType=VARCHAR},#{czr,jdbcType=VARCHAR},#{cxbs,jdbcType=VARCHAR},#{zjmc,jdbcType=VARCHAR},#{vdef1,jdbcType=VARCHAR},#{vdef2,jdbcType=VARCHAR})
+		insert into T_SQRXX(ID,ZJH,ZJLX,XM,CXSQRLX,CXRDW,CXSY,CXRQ,CZDW,CZR,CXBS,ZJMC,VDEF1,VDEF2,LSH)
+		values (#{id,jdbcType=VARCHAR},#{zjh,jdbcType=VARCHAR},#{zjlx,jdbcType=VARCHAR},#{xm,jdbcType=VARCHAR},#{cxsqrlx,jdbcType=VARCHAR},#{cxrdw,jdbcType=VARCHAR},#{cxsy,jdbcType=VARCHAR},#{cxrq,jdbcType=VARCHAR},#{czdw,jdbcType=VARCHAR},#{czr,jdbcType=VARCHAR},#{cxbs,jdbcType=VARCHAR},#{zjmc,jdbcType=VARCHAR},#{vdef1,jdbcType=VARCHAR},#{vdef2,jdbcType=VARCHAR},#{lsh,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.ztesoft.web.information.db.po.TSqrxxPO">
 		insert into T_SQRXX
@@ -184,6 +185,9 @@
 		<if test="vdef2 != null" >
 			VDEF2,
 		</if>
+ 	<if test="lsh != null" >
+			LSH,
+		</if>
  	</trim>
 	<trim prefix="values (" suffix=")" suffixOverrides="," >
 		<if test="id != null" >
@@ -228,13 +232,16 @@
 		<if test="vdef2 != null" >
 			#{vdef2,jdbcType=VARCHAR},
 		</if>
+ 	<if test="lsh != null" >
+			#{lsh,jdbcType=VARCHAR},
+		</if>
  	</trim> 	
   </insert>	
   <insert id="insertBatch" parameterType="list"  >
-	insert into T_SQRXX(ID,ZJH,ZJLX,XM,CXSQRLX,CXRDW,CXSY,CXRQ,CZDW,CZR,CXBS)
+	insert into T_SQRXX(ID,ZJH,ZJLX,XM,CXSQRLX,CXRDW,CXSY,CXRQ,CZDW,CZR,CXBS,ZJMC,VDEF1,VDEF2,LSH)
 	 values 
 	 <foreach collection="list" item="item" index="index" separator=",">
-	 		(#{item.id,jdbcType=VARCHAR},#{item.zjh,jdbcType=VARCHAR},#{item.zjlx,jdbcType=VARCHAR},#{item.xm,jdbcType=VARCHAR},#{item.cxsqrlx,jdbcType=VARCHAR},#{item.cxrdw,jdbcType=VARCHAR},#{item.cxsy,jdbcType=VARCHAR},#{item.cxrq,jdbcType=VARCHAR},#{item.czdw,jdbcType=VARCHAR},#{item.czr,jdbcType=VARCHAR},#{item.cxbs,jdbcType=VARCHAR})
+	 		(#{item.id,jdbcType=VARCHAR},#{item.zjh,jdbcType=VARCHAR},#{item.zjlx,jdbcType=VARCHAR},#{item.xm,jdbcType=VARCHAR},#{item.cxsqrlx,jdbcType=VARCHAR},#{item.cxrdw,jdbcType=VARCHAR},#{item.cxsy,jdbcType=VARCHAR},#{item.cxrq,jdbcType=VARCHAR},#{item.czdw,jdbcType=VARCHAR},#{item.czr,jdbcType=VARCHAR},#{item.cxbs,jdbcType=VARCHAR},#{item.zjmc,jdbcType=VARCHAR},#{item.vdef1,jdbcType=VARCHAR},#{item.vdef2,jdbcType=VARCHAR},#{item.lsh,jdbcType=VARCHAR})
 	 </foreach>
   </insert>
   <update id="updateByArgSelective" parameterType="map" >
@@ -277,7 +284,10 @@
 			VDEF1= #{record.vdef1,jdbcType=VARCHAR},
 		</if>
 		<if test="record.vdef2 != null" >
-			VDEF2= #{record.vdef2,jdbcType=VARCHAR}
+			VDEF2= #{record.vdef2,jdbcType=VARCHAR},
+		</if>
+		<if test="record.lsh != null" >
+			LSH= #{record.lsh,jdbcType=VARCHAR}
 		</if>
     </set>
     <if test="_parameter != null" >
@@ -300,7 +310,8 @@
 		CXBS = #{record.cxbs,jdbcType=VARCHAR},
 		ZJMC = #{record.zjmc,jdbcType=VARCHAR},
 		VDEF1 = #{record.vdef1,jdbcType=VARCHAR},
-		VDEF2 = #{record.vdef2,jdbcType=VARCHAR}
+		VDEF2 = #{record.vdef2,jdbcType=VARCHAR},
+		LSH = #{record.lsh,jdbcType=VARCHAR}
     <if test="_parameter != null" >
       <include refid="Update_By_Arg_Where_Clause" />
     </if>
@@ -345,7 +356,10 @@
 		VDEF1 = #{vdef1,jdbcType=VARCHAR},
 	</if>
 	<if test="vdef2 != null" >
-		VDEF2 = #{vdef2,jdbcType=VARCHAR}
+		VDEF2 = #{vdef2,jdbcType=VARCHAR},
+	</if>
+	<if test="lsh != null" >
+		LSH = #{lsh,jdbcType=VARCHAR}
 	</if>
 	</set >
 	 where ID = #{id,jdbcType=VARCHAR}
@@ -365,7 +379,8 @@
 			CXBS = #{cxbs,jdbcType=VARCHAR},
 			ZJMC = #{zjmc,jdbcType=VARCHAR},
 			VDEF1 = #{vdef1,jdbcType=VARCHAR},
-			VDEF2 = #{vdef2,jdbcType=VARCHAR}
+			VDEF2 = #{vdef2,jdbcType=VARCHAR},
+			LSH = #{lsh,jdbcType=VARCHAR}
 	 where ID = #{id,jdbcType=VARCHAR}
    </update>
   <delete id="deleteByArg" parameterType="com.ztesoft.web.information.db.arg.TSqrxxArg" >
@@ -384,10 +399,12 @@
    	select sum(dycs) from t_bcxrxx where SQR_ID in 
    		(select ID from t_sqrxx 
    			where zjh=#{zjh,jdbcType=VARCHAR} 
-   			and cxrq=#{cxrq,jdbcType=VARCHAR} 
    			and cxbs=#{cxbs,jdbcType=VARCHAR}
-   		) and BCXRQ=#{cxrq,jdbcType=VARCHAR} 
-   		and SFDY='1' and ZJH=#{zjh,jdbcType=VARCHAR} 
+   			and cxrq like '${cxrq}%'
+   		) 
+   		and ZJH=#{zjh,jdbcType=VARCHAR} 
+   		and rklx=#{vdef1,jdbcType=VARCHAR}
+   		and BCXRQ like '${cxrq}%'
    
   </select>
   

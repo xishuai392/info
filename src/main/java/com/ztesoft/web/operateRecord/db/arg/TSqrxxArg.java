@@ -1445,6 +1445,95 @@ public class TSqrxxArg {
             addCriterion("VDEF2 not between ", value1, value2, "VDEF2");
             return (TSqrxxCriteria) this;
         }
+        public TSqrxxCriteria andLshIsNull() {
+            addCriterion("LSH is null");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andLshIsNotNull() {
+            addCriterion("LSH is not null");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andLshEqualTo(String value) {
+            addCriterion("LSH =", value, "LSH");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andLshNotEqualTo(String value) {
+            addCriterion("LSH <>", value, "LSH");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andLshGreaterThan(String value) {
+            addCriterion("LSH >", value, "LSH");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andLshGreaterThanOrEqualTo(String value) {
+            addCriterion("LSH >=", value, "LSH");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andLshLessThan(String value) {
+            addCriterion("LSH <", value, "LSH");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andLshLessThanOrEqualTo(String value) {
+            addCriterion("LSH <=", value, "LSH");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andLshLike(String value) {
+            addCriterion("LSH like ", value, "LSH", 1);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andLshNotLike(String value) {
+            addCriterion("LSH  not like ", value, "LSH", 1);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andLshLeftLike(String value) {
+            addCriterion("LSH like ", value, "LSH", 0);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andLshNotLeftLike(String value) {
+            addCriterion("LSH  not like ", value, "LSH", 0);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andLshRightLike(String value) {
+            addCriterion("LSH like ", value, "LSH", 2);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andLshNotRightLike(String value) {
+            addCriterion("LSH  not like ", value, "LSH", 2);
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andLshIn(List<String> values) {
+            addCriterion("LSH  in ", values, "LSH");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andLshNotIn(List<String> values) {
+            addCriterion("LSH not in ", values, "LSH");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andLshBetween(String value1, String value2) {
+            addCriterion("LSH between ", value1, value2, "LSH");
+            return (TSqrxxCriteria) this;
+        }
+
+        public TSqrxxCriteria andLshNotBetween(String value1, String value2) {
+            addCriterion("LSH not between ", value1, value2, "LSH");
+            return (TSqrxxCriteria) this;
+        }
 
     }
 

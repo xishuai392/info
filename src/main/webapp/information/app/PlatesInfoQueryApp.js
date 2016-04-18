@@ -138,6 +138,7 @@ Ext.onReady(function() {
             //cls : 'btntransparent',
             width : btnWidth,
             height : btnHeight,
+            hidden : true,
             handler : function() {
                 console.log('厦门暂（居）住人口基本信息查询');
                 queryType = 2;
@@ -152,7 +153,7 @@ Ext.onReady(function() {
             //region : 'south',
             id : 'wlzzQryBtn',
             cls : 'btnQueryCls',
-            text: '<span style="font-size:26px !important;font-family:microsoft yahei !important;">外来务工子女就学证明</span><br><span style="font-size:16px !important;font-family:microsoft yahei !important;">暂住人口信息查询表打印</span>',
+            text: '<span style="font-size:26px !important;font-family:microsoft yahei !important;">外来务工子女就学</span><br><span style="font-size:16px !important;font-family:microsoft yahei !important;">暂住人口信息查询表打印</span>',
             //cls : 'btntransparent',
             width : btnWidth,
             height : btnHeight,
@@ -195,7 +196,9 @@ Ext.onReady(function() {
             xtype : 'button',
             region : 'center',
             id : 'idCardBtn',
-            text: '<span style="font-size:26px !important;font-family:microsoft yahei !important;">开始读取身份证</span><br><span style="font-size:16px !important;font-family:microsoft yahei !important;">为保护您的个人隐私，请操作完成后点击“关闭”退出操作界面。</span>',
+            text: '<span style="font-size:26px !important;font-family:microsoft yahei !important;">开始读取身份证</span><br>'
+            	+'<span style="font-size:16px !important;font-family:microsoft yahei !important;">请将身份证放入读卡区，然后点击查询。</span><br>'
+            	+'<span style="font-size:16px !important;font-family:microsoft yahei !important;">为保护您的个人隐私，请操作完成后点击“关闭”退出操作界面。</span>',
             //cls : 'btntransparent',
             width : btnWidth,
             height : btnHeight,
@@ -261,7 +264,7 @@ Ext.onReady(function() {
 	                    		url += "&cxbs=10";
 	                    		url += "&debug="+isDebug;
 	                    		url += "&a="+ new Date();
-	                    		var changkouMainWin = window.open(url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
+	                    		var changkouMainWin = window.open(url,"",'toolbar=no,menubar=no,status=no,location=no,scrollbars=yes,resizable=no,fullscreen=1,width='+width+',height='+height+',top=0,left=0');
 								//changkouMainWin.moveTo(left, top);
 								changkouMainWin.focus();
 			            		
@@ -314,7 +317,7 @@ Ext.onReady(function() {
 	                    		url += "&cxbs=10";
 	                    		url += "&debug="+isDebug;
 	                    		url += "&a="+ new Date();
-	                    		var zanzhuMainWin = window.open(url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
+	                    		var zanzhuMainWin = window.open(url,"",'toolbar=no,menubar=no,status=no,location=no,scrollbars=yes,resizable=no,fullscreen=1,width='+width+',height='+height+',top=0,left=0');
 								//zanzhuMainWin.moveTo(left, top);
 								zanzhuMainWin.focus();
 			            	}
@@ -329,7 +332,9 @@ Ext.onReady(function() {
 			                    	//cxbs 10：终端，20：pc端,30:网上查询
 			                    	cxbs : '10',
 			                    	//身份证编号
-									idCardNum : data.idCardNum
+									idCardNum : data.idCardNum,
+									//人口类型（1：户籍人口，2：暂住人口）
+									rklx : 2
 									
 					        	};
 				        		var config = {
@@ -337,6 +342,7 @@ Ext.onReady(function() {
 						            params : params,
 						            callback : function(canPrintResult){
 						            	if(canPrintResult.canPrint){
+						            		ExtUtils.tip("提示",canPrintResult.message);
 						            		//可以打开连接
 						            		//TODO @惜帅，20151230 调用外部接口，打开新页面
 				                    		var width = screen.availWidth-3;
@@ -346,7 +352,7 @@ Ext.onReady(function() {
 											
 											var url = baseUrl + data.idCardNum+"&a="+new Date();
 											//var zankouMainWin = window.open(url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
-											var zankouMainWin = window.open(webRoot + "information/jumpToThirdParty.do?thirdPartyUrl=" + url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
+											var zankouMainWin = window.open(webRoot + "information/jumpToThirdParty.do?thirdPartyUrl=" + url,"",'toolbar=no,menubar=no,status=no,location=no,scrollbars=yes,resizable=no,fullscreen=1,width='+width+',height='+height+',top=0,left=0');
 											//zankouMainWin.moveTo(left, top);
 											zankouMainWin.focus();
 						            		

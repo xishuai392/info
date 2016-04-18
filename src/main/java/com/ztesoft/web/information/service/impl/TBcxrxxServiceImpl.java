@@ -3,8 +3,7 @@
  */
 package com.ztesoft.web.information.service.impl;
 
-import java.math.*;
-import java.util.*;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -17,7 +16,6 @@ import com.ztesoft.core.idproduce.ISequenceGenerator;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
 import com.ztesoft.framework.util.DateUtils;
-import com.ztesoft.framework.util.Utils;
 import com.ztesoft.web.information.db.arg.TBcxrxxArg;
 import com.ztesoft.web.information.db.arg.TBcxrxxArg.TBcxrxxCriteria;
 import com.ztesoft.web.information.db.dao.TBcxrxxDao;
@@ -159,10 +157,26 @@ public class TBcxrxxServiceImpl implements ITBcxrxxService {
     public Page<TBcxrxxPO> select4Page(TBcxrxxPO record,
             Page<TBcxrxxPO> resultPage) throws BaseAppException {
         record.setStartDateStr(DateUtils.date2String(record.getStartDate(),
-                DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
-        record.setEndDateStr(DateUtils.date2String(record.getEndDate(),
-                DateUtils.STR_DATE_FORMAT_DAY_WITHOUT_SPLIT));
+                DateUtils.STR_DEFAULT_DATE_FORMAT_WITHOUT_SPLIT));
+        record.setEndDateStr(DateUtils.date2String(DateUtils.getDayEndTime(record.getEndDate()),
+                DateUtils.STR_DEFAULT_DATE_FORMAT_WITHOUT_SPLIT));
+        
         return tBcxrxxDao.select4Page(record, resultPage);
+    }
+
+    /* (non-Javadoc)
+     * @see com.ztesoft.web.information.service.ITBcxrxxService#getLatestRecord(com.ztesoft.web.information.db.po.TBcxrxxPO)
+     */
+    @Override
+    public TBcxrxxPO getLatestRecord(TBcxrxxPO record) throws BaseAppException {
+        TBcxrxxArg arg = new TBcxrxxArg();
+        TBcxrxxCriteria criteria = arg.createCriteria();
+        arg.setOrderByClause(" LSH DESC ");
+        criteria.andLshLike(record.getLsh());
+        List<TBcxrxxPO> result = tBcxrxxDao.selectByArg(arg);
+        if(null==result||result.size()==0)
+            return null;
+        return result.get(0);
     }
 
 }

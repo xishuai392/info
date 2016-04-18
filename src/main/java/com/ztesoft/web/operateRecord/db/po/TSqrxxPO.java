@@ -2,7 +2,9 @@ package com.ztesoft.web.operateRecord.db.po;
 
 import java.math.*;
 import java.util.*;
+
 import org.apache.commons.lang.StringUtils;
+
 import com.ztesoft.framework.dto.AbstractDto;
 
 public class TSqrxxPO extends AbstractDto {
@@ -34,9 +36,25 @@ public class TSqrxxPO extends AbstractDto {
     
     private String vdef2;
 
+    private String lsh;//流水号
+    
     private Date startDate;
 
     private Date endDate;
+
+    /**
+     * @return the lsh
+     */
+    public String getLsh() {
+        return lsh;
+    }
+
+    /**
+     * @param lsh the lsh to set
+     */
+    public void setLsh(String lsh) {
+        this.lsh = lsh;
+    }
 
     /**
      * @return the startDate

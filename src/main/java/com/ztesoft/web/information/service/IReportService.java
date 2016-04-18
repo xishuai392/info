@@ -43,4 +43,11 @@ public interface IReportService {
      * @return
      */
     public List<ReportResultDto> queryGroupByCzdw(ReportQueryDto dto);
+    
+    /**
+     * 全局窗口信息查询： 查询次数（原服务次数） 查询人数（原查询次数） 查询成功数
+     * @param dto
+     * @return
+     */
+    public List<ReportResultDto> queryGroupByCzdwNew(ReportQueryDto dto);
 }

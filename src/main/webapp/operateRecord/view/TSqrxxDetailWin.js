@@ -138,6 +138,11 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
                 hidden : true,
                 name : "id"
             }, {
+	            fieldLabel : "申请人流水号",
+	            xtype : "textfield",
+	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
+	            name : "lsh"
+        	},{
                 fieldLabel : "姓名",
                 xtype : "textfield",
                 name : "xm"

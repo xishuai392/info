@@ -88,10 +88,10 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
             isPage : true,
             store : me.createStore(),
             columns : [
+	        
 	        {
-	        	text : "id",
-	            dataIndex : "id",
-	            hidden : true,
+	        	text : "申请人流水号",
+	            dataIndex : "lsh",
 	            flex : 1
 	        },
 	        {
@@ -155,7 +155,7 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
 	        	text : "日期",
 	            dataIndex : "cxrq",
 	            renderer : function(value) {
-	            	return value.substring(0,4)+"-"+value.substring(4,6)+"-"+value.substring(6,8);
+	            	return value.substring(0,4)+"-"+value.substring(4,6)+"-"+value.substring(6,8)+" "+value.substring(8,10)+":"+value.substring(10,12)+":"+value.substring(12,14);
 	            },
 	            flex : 1
 	        },
@@ -196,7 +196,12 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
 	                }
 	            }],
 	            width: 100
-	        }    
+	        },{
+	        	text : "id",
+	            dataIndex : "id",
+	            hidden : true,
+	            flex : 1
+	        }   
 		]
 
         });

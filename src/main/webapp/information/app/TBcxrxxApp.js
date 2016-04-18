@@ -40,10 +40,22 @@ Ext.onReady(function() {
 	            name : "id"
         	},
         	{
+	            fieldLabel : "查询人流水号",
+	            xtype : "textfield",
+	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
+	            name : "sqrlsh"
+        	},
+        	{
 	            fieldLabel : "查询人姓名",
 	            xtype : "textfield",
 	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
 	            name : "sqrXm"
+        	},
+        	{
+	            fieldLabel : "被查询人流水号",
+	            xtype : "textfield",
+	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
+	            name : "lsh"
         	},
 	      	{
 	            fieldLabel : "被查询人姓名",
@@ -75,6 +87,32 @@ Ext.onReady(function() {
 	            editable : false,
 	            name : "endDate"
 	        },
+	        {
+	            fieldLabel : "查询标识",
+	            xtype : "combo",
+	            name : "sqrcxbs",
+	            displayField : 'text',
+	            valueField : 'value',
+	            value : '',
+	            editable : false,
+	            store : new Ext.data.ArrayStore({
+	                fields : ['value', 'text'],
+	                data : [['', '全部'], ['10', '终端'], ['20', 'PC端'], ['30', '网上查询']]//10：终端，20：pc端,30:网上查询
+	            })
+        	},
+	        {
+	            fieldLabel : "是否作废",
+	            xtype : "combo",
+	            name : "sfzf",
+	            displayField : 'text',
+	            valueField : 'value',
+	            value : '',
+	            editable : false,
+	            store : new Ext.data.ArrayStore({
+	                fields : ['value', 'text'],
+	                data : [['', '全部'], ['1', '是'], ['0', '否']]
+	            })
+        	},
 	      	{
 	            fieldLabel : "cxcs",
 	            xtype : "textfield",
@@ -190,6 +228,11 @@ Ext.onReady(function() {
 	            flex : 1
 	        },
 	        {
+	        	text : "被查询人流水号",
+	            dataIndex : "lsh",
+	            flex : 1
+	        },
+	        {
 	        	text : "被查询人姓名",
 	            dataIndex : "xm",
 	            flex : 1
@@ -197,6 +240,14 @@ Ext.onReady(function() {
 	        {
 	        	text : "被查询人证件号",
 	            dataIndex : "zjh",
+	            flex : 1
+	        },
+	        {
+	        	text : "查询日期",
+	            dataIndex : "bcxrq",
+	            renderer : function(value) {
+	            	return value.substring(0,4)+"-"+value.substring(4,6)+"-"+value.substring(6,8)+" "+value.substring(8,10)+":"+value.substring(10,12)+":"+value.substring(12,14);
+	            },
 	            flex : 1
 	        },
 	        {
@@ -209,7 +260,7 @@ Ext.onReady(function() {
 	            		return '否';
 	            	}
 	            },
-	            flex : 1
+	            flex : 0.5
 	        },
 	        {
 	            text : "作废理由",
@@ -226,16 +277,9 @@ Ext.onReady(function() {
 	            		return '否';
 	            	}
 	            },
-	            flex : 1
+	            flex : 0.5
 	        },
-	        {
-	        	text : "查询日期",
-	            dataIndex : "bcxrq",
-	            renderer : function(value) {
-	            	return value.substring(0,4)+"-"+value.substring(4,6)+"-"+value.substring(6,8);
-	            },
-	            flex : 1
-	        },
+	        
 	        
 	        {
 	            text : "人口类型",//人口类型（1：户籍人口，2：暂住人口）
@@ -247,6 +291,26 @@ Ext.onReady(function() {
 	            		return '暂住人口';
 	            	}
 	            },
+	            flex : 0.5
+	        },
+	        {
+	            text : "查询标识",//10：终端，20：pc端,30:网上查询
+	            dataIndex : "sqrcxbs",
+	            renderer : function(value) {
+	            	if('10'==value){
+	            		return '终端';
+	            	}else if('20'==value){
+	            		return 'PC端';
+	            	}{
+	            		return '网上查询';
+	            	}
+	            },
+	            flex : 0.5
+	        },
+	        {
+	        	text : "申请人流水号",
+	            dataIndex : "sqrlsh",
+	            hidden : true,
 	            flex : 1
 	        },
 	        {
