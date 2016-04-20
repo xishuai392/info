@@ -33,6 +33,9 @@ Ext.onReady(function() {
     var bcxrxxId;
     //图片的store
     var imageStore;
+    //按钮高度、宽度
+    var btnHeight = 80;
+    var btnWidth = 130;
     
     var preHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>人口信息打印</title><style type="text/css">html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,input	{	margin: 0;	padding: 0;	border: 0;	font-weight: inherit;	font-style: inherit;	font-size: 100%;	font-family: Arial, Microsoft Yahei;	/**vertical-align:baseline;*/}body {	line-height: 1;	font-size: 12px;}ol,ul {	list-style: none;}.color_red {	color: #ff0900;}.color_gray {	color: #9b9b9b;}.color_bule {	color: #015a9f;}.clear {	clear: both;}.font18 {	font-size: 18px;}.font14 {	font-size: 14px;}* {	font-size: 12px !important;}</style><link rel="stylesheet" type="text/css"	href="'+webRoot+'common/css/info.css"></head><body>';
     
@@ -317,6 +320,7 @@ Ext.onReady(function() {
 	//'				<td>联系电话</td>',
 	'			</tr>',
 	'			<tpl for="familyInfoList">',
+	'			<tpl if="relationTypeNum &lt; 40"> ',
 	'			<tr action="{relationType}">',
 	'				<td>{relationType}</td>',
 	'				<td>{relationShip}</td>',
@@ -328,6 +332,7 @@ Ext.onReady(function() {
 	'				<td>{foreignFirstName}</td>',
 	//'				<td>{telephoneNum}</td>',
 	'			</tr>',
+	'			</tpl>',
 	'			</tpl>',
 	'		</table>',
 	'	</div>',
@@ -364,7 +369,9 @@ Ext.onReady(function() {
 	'		</tr>',
 	'<tpl if="page_cxbs &lt; 15"> ',
 	'		<tr>',
-	'			<td colspan=14 class="textInfoLeft">&nbsp;&nbsp;申请人类型：{[this.formater(values.sqrxxPO.cxsqrlx)]} &nbsp;&nbsp;  申请人：{[values.sqrxxPO.xm]} &nbsp;&nbsp; {[this.getCzdw(values.sqrxxPO.cxsqrlx,values.sqrxxPO.cxrdw)]} &nbsp;&nbsp;</td>',
+	'			<td colspan=10 class="textInfoLeft">&nbsp;&nbsp;申请人类型：{[this.formater(values.sqrxxPO.cxsqrlx)]} &nbsp;&nbsp;  申请人：{[values.sqrxxPO.xm]} &nbsp;&nbsp; {[this.getCzdw(values.sqrxxPO.cxsqrlx,values.sqrxxPO.cxrdw)]} &nbsp;&nbsp;</td>',
+	'			<td colspan=2 class="textInfoRight">操作人：</td>',
+	'			<td colspan=2 class="textInfoLeft">自助终端</td>',
 	'			<td colspan=2 class="textInfoRight">打印日期：</td>',
 	'			<td colspan=2 class="textInfoLeft">{[values.dyrq]}</td>',
 	'		</tr>',
@@ -435,15 +442,18 @@ Ext.onReady(function() {
         },
         tbar : ['->',{
 	    		id : 'showSeconds',
-	    		height : 80,
+	    		height : 50,
 	    		scale   : 'large',
 	    		text : '<span style="font-size:20px !important;font-family:microsoft yahei !important;">&nbsp;</span>'
 	    }],
-        buttons: ['->',{ 
+	    buttonAlign : 'center',
+        buttons: [{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">打印预览</span>', 
         		icon : ctx + '/common/images/print_32px.png',
         		hidden : "true"===isDebug?false:true,
+        		height : btnHeight,
+        		width : btnWidth,
 				name : 'printBtn',
 				handler: function(btn) {
 					
@@ -559,6 +569,8 @@ Ext.onReady(function() {
         		icon : ctx + '/common/images/print_32px.png',
         		//text: '打印' ,
         		//icon : ctx + '/common/images/icons/printer.png',
+        		height : btnHeight,
+        		width : btnWidth,
 				name : 'printBtn',
 				handler: function(btn) {
 					
@@ -674,6 +686,8 @@ Ext.onReady(function() {
         		icon : ctx + '/common/images/X_close_32px.png',
         		//text : '关闭',
 				//iconCls : 'close',
+        		height : btnHeight,
+        		width : btnWidth,
 				name : 'closeBtn',
 				handler : function(){
 //					window.close();

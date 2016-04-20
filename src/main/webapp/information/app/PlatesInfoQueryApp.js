@@ -187,18 +187,25 @@ Ext.onReady(function() {
             type : 'vbox',
             pack : 'center',
             align : 'center',
-            padding : 10
+            padding : 2
         },
         defaults : {
 	        margins : '0 0 10 0'
 	    },
 	    items: [{
+	    	xtype : 'label',
+	    	html: '<span style="font-size:25px !important;font-family:microsoft yahei !important;">请将身份证放入读卡区，然后点击查询。</span><br>'
+            	+'<span style="font-size:25px !important;font-family:microsoft yahei !important;">为保护您的个人隐私，请操作完成后点击“关闭”退出操作界面。</span>',
+            //cls : 'btntransparent',
+            width : btnWidth+5,
+            height : 60
+	    },{
             xtype : 'button',
             region : 'center',
             id : 'idCardBtn',
-            text: '<span style="font-size:26px !important;font-family:microsoft yahei !important;">开始读取身份证</span><br>'
-            	+'<span style="font-size:16px !important;font-family:microsoft yahei !important;">请将身份证放入读卡区，然后点击查询。</span><br>'
-            	+'<span style="font-size:16px !important;font-family:microsoft yahei !important;">为保护您的个人隐私，请操作完成后点击“关闭”退出操作界面。</span>',
+            text: '<span style="font-size:36px !important;font-family:microsoft yahei !important;">查询</span><br>',
+            	//+'<span style="font-size:16px !important;font-family:microsoft yahei !important;">请将身份证放入读卡区，然后点击查询。</span><br>'
+            	//+'<span style="font-size:16px !important;font-family:microsoft yahei !important;">为保护您的个人隐私，请操作完成后点击“关闭”退出操作界面。</span>',
             //cls : 'btntransparent',
             width : btnWidth,
             height : btnHeight,
@@ -414,7 +421,7 @@ Ext.onReady(function() {
 	    tbar: [ {
 	    	id : 'backIndexBtn',
 	    	scale   : 'large',
-	    	height : 80,
+	    	height : 60,
 	    	width : 200,
 	        text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;"><<<返回首页</span>', 
 	        //icon : ctx + '/common/images/back_48px.png',

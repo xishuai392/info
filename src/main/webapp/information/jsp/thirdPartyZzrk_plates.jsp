@@ -28,18 +28,21 @@
                 var zzrkPanel,thirdPanel;
                 Ext.util.CSS.swapStyleSheet('theme', webRoot + 'common/jslibs/extjs/ext-4.2.1/resources/ext-theme-gray/ext-theme-gray-all.css');
 
+                //按钮高度、宽度
+                var btnHeight = 80;
+                var btnWidth = 130;
                 
                 //本市人口信息 暂住
                 zzrkPanel = Ext.create('Ext.panel.Panel', {
                     region : "north",
                     //title: '暂住信息',
                     layout: 'border',
-                    height : 80,
+                    height : 50,
                     tbar: [
                         '->', {
                             id: 'showSeconds',
                             scale: 'large',
-                            height: 80,
+                            height: 50,
                             text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">&nbsp;</span>'
                         }
                     ]
@@ -57,13 +60,16 @@
                                 html: '<iframe id="frame1" src="'+Ext.get("thirdPartyZzrkUrl").dom.value+'" frameborder="0" width="100%" height="100%"></iframe>'
                             })
                     ],
+                    buttonAlign : 'center',
                     buttons: [
-                        '->', { 
+                        { 
                     		scale   : 'large',
             	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">关闭</span>', 
                     		icon : ctx + '/common/images/X_close_32px.png',
                     		//text : '关闭',
             				//iconCls : 'close',
+            				height : btnHeight,
+        					width : btnWidth,
             				name : 'closeBtn',
             				handler : function(){
             					window.close();

@@ -31,6 +31,9 @@ Ext.onReady(function() {
     var bcxrxxId;
     //图片的store
     var imageStore;
+    //按钮高度、宽度
+    var btnHeight = 80;
+    var btnWidth = 130;
     
     var preHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>人口信息打印</title><style type="text/css">html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,input	{	margin: 0;	padding: 0;	border: 0;	font-weight: inherit;	font-style: inherit;	font-size: 100%;	font-family: Arial, Microsoft Yahei;	/**vertical-align:baseline;*/}body {	line-height: 1;	font-size: 12px;}ol,ul {	list-style: none;}.color_red {	color: #ff0900;}.color_gray {	color: #9b9b9b;}.color_bule {	color: #015a9f;}.clear {	clear: both;}.font18 {	font-size: 18px;}.font14 {	font-size: 14px;}* {	font-size: 12px !important;}</style><link rel="stylesheet" type="text/css"	href="'+webRoot+'common/css/info.css"></head><body>';
     
@@ -220,6 +223,8 @@ Ext.onReady(function() {
 							    		params.idCardNum = item.idCardNum;
 							    		params.relationShip = relationShip;
 							    		
+							    		btnItem.setText('<span style="font-size:20px !important;font-family:microsoft yahei !important;">查父亲</span><br>'+item.name+'');
+							    		
 							    		btnItem.setParams(params);
 							    		
 							    		btnItem.data = params;
@@ -234,6 +239,8 @@ Ext.onReady(function() {
 							    		params.idCardNum = item.idCardNum;
 							    		params.relationShip = relationShip;
 							    		
+							    		btnItem.setText('<span style="font-size:20px !important;font-family:microsoft yahei !important;">查母亲</span><br>'+item.name+'');
+							    		
 							    		btnItem.setParams(params);
 							    		
 							    		btnItem.data = params;
@@ -241,9 +248,27 @@ Ext.onReady(function() {
 							    		btnItem.show();
 							    		
 							    		console.log(btnItem);
-							    	}else if('子女'==relationShip){
+							    	}else if('妻子'==relationShip||'丈夫'==relationShip){
+							    		var btnItem = Ext.getCmp('cpo_id');
+							    		var params = {};
+							    		params.name = item.name;
+							    		params.idCardNum = item.idCardNum;
+							    		params.relationShip = relationShip;
+							    		
+							    		btnItem.setText('<span style="font-size:20px !important;font-family:microsoft yahei !important;">查配偶</span><br>'+item.name+'');
+							    		
+							    		btnItem.setParams(params);
+							    		
+							    		btnItem.data = params;
+							    		
+							    		btnItem.show();
+							    		
+							    		console.log(btnItem);
+							    	
+							    	}else if('儿子'==relationShip||'女儿'==relationShip){
 							    		var btnItem = Ext.getCmp('czn_id_'+znIndex);
 							    		znIndex++;
+							    		btnItem.setText('<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女</span><br>'+item.name+'');
 							    		var params = {};
 							    		params.name = item.name;
 							    		params.idCardNum = item.idCardNum;
@@ -381,6 +406,7 @@ Ext.onReady(function() {
 	//'				<td>联系电话</td>',
 	'			</tr>',
 	'			<tpl for="familyInfoList">',
+	'			<tpl if="relationTypeNum &lt; 40"> ',
 	'			<tr action="{relationType}">',
 	'				<td>{relationType}</td>',
 	'				<td>{relationShip}</td>',
@@ -392,6 +418,7 @@ Ext.onReady(function() {
 	'				<td>{foreignFirstName}</td>',
 	//'				<td>{telephoneNum}</td>',
 	'			</tr>',
+	'			</tpl>',
 	'			</tpl>',
 	'		</table>',
 	'	</div>',
@@ -428,7 +455,9 @@ Ext.onReady(function() {
 	'		</tr>',
 	'<tpl if="page_cxbs &lt; 15"> ',
 	'		<tr>',
-	'			<td colspan=14 class="textInfoLeft">&nbsp;&nbsp;申请人类型：{[this.formater(values.sqrxxPO.cxsqrlx)]} &nbsp;&nbsp;  申请人：{[values.sqrxxPO.xm]} &nbsp;&nbsp; {[this.getCzdw(values.sqrxxPO.cxsqrlx,values.sqrxxPO.cxrdw)]} &nbsp;&nbsp;</td>',
+	'			<td colspan=10 class="textInfoLeft">&nbsp;&nbsp;申请人类型：{[this.formater(values.sqrxxPO.cxsqrlx)]} &nbsp;&nbsp;  申请人：{[values.sqrxxPO.xm]} &nbsp;&nbsp; {[this.getCzdw(values.sqrxxPO.cxsqrlx,values.sqrxxPO.cxrdw)]} &nbsp;&nbsp;</td>',
+	'			<td colspan=2 class="textInfoRight">操作人：</td>',
+	'			<td colspan=2 class="textInfoLeft">自助终端</td>',
 	'			<td colspan=2 class="textInfoRight">打印日期：</td>',
 	'			<td colspan=2 class="textInfoLeft">{[values.dyrq]}</td>',
 	'		</tr>',
@@ -499,155 +528,197 @@ Ext.onReady(function() {
         },
         tbar : ['->',{
 	    		id : 'showSeconds',
-	    		height : 80,
+	    		height : 50,
 	    		scale   : 'large',
 	    		text : '<span style="font-size:20px !important;font-family:microsoft yahei !important;">&nbsp;</span>'
 	    }],
+	    buttonAlign : 'center',
         buttons: [{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查父亲</span>', 
         		icon : ctx + '/common/images/person_people_33.png',
         		hidden : true,
+        		height : btnHeight,
+        		width : btnWidth,
 				name : 'cfq_btn',
 				id : 'cfq_id',
-				handler : function(){
+				handler : function(btn){
 					openNewPage(btn.data.idCardNum);
 				}
-        	},'-',{ 
+        	},{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查母亲</span>', 
         		icon : ctx + '/common/images/person_people_33.png',
         		hidden : true,
+        		height : btnHeight,
+        		width : btnWidth,
 				name : 'cmq_btn',
 				id : 'cmq_id',
 				handler : function(btn){
 					console.log(btn);
 					openNewPage(btn.data.idCardNum);
 				}
-        	},'-',{ 
+        	},{ 
+        		scale   : 'large',
+	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查配偶</span>', 
+        		icon : ctx + '/common/images/person_people_33.png',
+        		hidden : true,
+        		height : btnHeight,
+        		width : btnWidth,
+				name : 'cpo_btn',
+				id : 'cpo_id',
+				handler : function(btn){
+					console.log(btn);
+					openNewPage(btn.data.idCardNum);
+				}
+        	},{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女1</span>', 
         		icon : ctx + '/common/images/person_people_33.png',
         		hidden : true,
+        		height : btnHeight,
+        		width : btnWidth,
 				name : 'czn_btn1',
 				id : 'czn_id_1',
 				handler : function(btn){
 					console.log(btn);
 					openNewPage(btn.data.idCardNum);
 				}
-        	},'-',{ 
+        	},{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女2</span>', 
         		icon : ctx + '/common/images/person_people_33.png',
         		hidden : true,
+        		height : btnHeight,
+        		width : btnWidth,
 				name : 'czn_btn2',
 				id : 'czn_id_2',
 				handler : function(btn){
 					console.log(btn);
 					openNewPage(btn.data.idCardNum);
 				}
-        	},'-',{ 
+        	},{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女3</span>', 
         		icon : ctx + '/common/images/person_people_33.png',
         		hidden : true,
+        		height : btnHeight,
+        		width : btnWidth,
 				name : 'czn_btn3',
 				id : 'czn_id_3',
 				handler : function(btn){
 					console.log(btn);
 					openNewPage(btn.data.idCardNum);
 				}
-        	},'-',{ 
+        	},{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女4</span>', 
         		icon : ctx + '/common/images/person_people_33.png',
         		hidden : true,
+        		height : btnHeight,
+        		width : btnWidth,
 				name : 'czn_btn4',
 				id : 'czn_id_4',
 				handler : function(btn){
 					console.log(btn);
 					openNewPage(btn.data.idCardNum);
 				}
-        	},'-',{ 
+        	},{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女5</span>', 
         		icon : ctx + '/common/images/person_people_33.png',
         		hidden : true,
+        		height : btnHeight,
+        		width : btnWidth,
 				name : 'czn_btn5',
 				id : 'czn_id_5',
 				handler : function(btn){
 					console.log(btn);
 					openNewPage(btn.data.idCardNum);
 				}
-        	},'-',{ 
+        	},{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女6</span>', 
         		icon : ctx + '/common/images/person_people_33.png',
         		hidden : true,
+        		height : btnHeight,
+        		width : btnWidth,
 				name : 'czn_btn6',
 				id : 'czn_id_6',
 				handler : function(btn){
 					console.log(btn);
 					openNewPage(btn.data.idCardNum);
 				}
-        	},'-',{ 
+        	},{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女7</span>', 
         		icon : ctx + '/common/images/person_people_33.png',
         		hidden : true,
+        		height : btnHeight,
+        		width : btnWidth,
 				name : 'czn_btn7',
 				id : 'czn_id_7',
 				handler : function(btn){
 					console.log(btn);
 					openNewPage(btn.data.idCardNum);
 				}
-        	},'-',{ 
+        	},{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女8</span>', 
         		icon : ctx + '/common/images/person_people_33.png',
         		hidden : true,
+        		height : btnHeight,
+        		width : btnWidth,
 				name : 'czn_btn8',
 				id : 'czn_id_8',
 				handler : function(btn){
 					console.log(btn);
 					openNewPage(btn.data.idCardNum);
 				}
-        	},'-',{ 
+        	},{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女9</span>', 
         		icon : ctx + '/common/images/person_people_33.png',
         		hidden : true,
+        		height : btnHeight,
+        		width : btnWidth,
 				name : 'czn_btn9',
 				id : 'czn_id_9',
 				handler : function(btn){
 					console.log(btn);
 					openNewPage(btn.data.idCardNum);
 				}
-        	},'-',{ 
+        	},{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女10</span>', 
         		icon : ctx + '/common/images/person_people_33.png',
         		hidden : true,
+        		height : btnHeight,
+        		width : btnWidth,
 				name : 'czn_btn10',
 				id : 'czn_id_10',
 				handler : function(btn){
 					console.log(btn);
 					openNewPage(btn.data.idCardNum);
 				}
-        	},'-',{ 
+        	},{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">查子女11</span>', 
         		icon : ctx + '/common/images/person_people_33.png',
         		hidden : true,
+        		height : btnHeight,
+        		width : btnWidth,
 				name : 'czn_btn11',
 				id : 'czn_id_11',
 				handler : function(btn){
 					console.log(btn);
 					openNewPage(btn.data.idCardNum);
 				}
-        	},'->',{ 
+        	},{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">打印预览</span>', 
+	       		height : btnHeight,
+        		width : btnWidth,
         		icon : ctx + '/common/images/print_32px.png',
         		hidden : "true"===isDebug?false:true,
 				name : 'printBtn',
@@ -759,10 +830,12 @@ Ext.onReady(function() {
 					
 		            
 		        }
-        	},'-',{ 
+        	},{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">打印</span>', 
         		icon : ctx + '/common/images/print_32px.png',
+        		height : btnHeight,
+        		width : btnWidth,
         		//text: '打印' ,
         		//icon : ctx + '/common/images/icons/printer.png',
 				name : 'printBtn',
@@ -874,10 +947,12 @@ Ext.onReady(function() {
 					
 		            
 		        }
-        	},'-',{ 
+        	},{ 
         		scale   : 'large',
 	       		text: '<span style="font-size:20px !important;font-family:microsoft yahei !important;">关闭</span>', 
         		icon : ctx + '/common/images/X_close_32px.png',
+        		height : btnHeight,
+        		width : btnWidth,
         		//text : '关闭',
 				//iconCls : 'close',
 				name : 'closeBtn',

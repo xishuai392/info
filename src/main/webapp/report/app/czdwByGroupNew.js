@@ -148,147 +148,176 @@ Ext.onReady(function() {
 		  		url += params;
 		  		console.log(params);
 		  		console.log(url);
-	            window.open();
+		  		var w  = window.open(url,'_blank');   
+     			w.location.href = url;   
+	            //window.open();
 		  	}
         }],
         columns : [{
             text : "操作单位",
+            align : 'center',
             dataIndex : "dwmc",
-            flex : 1
+            width : 180
+//            ,
+//            flex : 1
         },{
             text: '查询次数',
             menuDisabled : true,
-            flex : 8,
+            //flex : 8,
             columns: [{
 	            text : "律师",
 	            menuDisabled : true,
-	            dataIndex : "fwcs10",
-	            flex : 1
+	            dataIndex : "fwcs10"
+//	            ,
+//	            flex : 1
 	        },{
 	            text : "党政军机关",
 	            menuDisabled : true,
-	            dataIndex : "fwcs20",
-	            flex : 1
+	            dataIndex : "fwcs20"
+//	            ,
+//	            flex : 1
 	        }, {
 	            text : "司法机关",
 	            menuDisabled : true,
-	            dataIndex : "fwcs30",
-	            flex : 1
+	            dataIndex : "fwcs30"
+//	            ,
+//	            flex : 1
 	        }, {
 	            text : "企事业单位",
 	            menuDisabled : true,
-	            dataIndex : "fwcs40",
-	            flex : 1
+	            dataIndex : "fwcs40"
+//	            ,
+//	            flex : 1
 	        }, {
 	            text : "个人",
 	            menuDisabled : true,
-	            dataIndex : "fwcs50",
-	            flex : 1
+	            dataIndex : "fwcs50"
+//	            ,
+//	            flex : 1
 	        }, {
 	            text : "人民团体",
 	            menuDisabled : true,
-	            dataIndex : "fwcs60",
-	            flex : 1
+	            dataIndex : "fwcs60"
+//	            ,
+//	            flex : 1
 	        }, {
 	            text : "其他",
 	            menuDisabled : true,
-	            dataIndex : "fwcs70",
-	            flex : 1
+	            dataIndex : "fwcs70"
+//	            ,
+//	            flex : 1
 	        }, {
 	            text : "小计",
 	            menuDisabled : true,
-	            dataIndex : "fwcssum",
-	            flex : 1
+	            dataIndex : "fwcssum"
+//	            ,
+//	            flex : 1
 	        }]
         },{
             text: '查询人数',
             menuDisabled : true,
-            flex : 8,
+            //flex : 8,
             columns: [{
 	            text : "律师",
 	            menuDisabled : true,
-	            dataIndex : "cxcs10",
-	            flex : 1
+	            dataIndex : "cxcs10"
+//	            ,
+//	            flex : 1
 	        },{
 	            text : "党政军机关",
 	            menuDisabled : true,
-	            dataIndex : "cxcs20",
-	            flex : 1
+	            dataIndex : "cxcs20"
+//	            ,
+//	            flex : 1
 	        }, {
 	            text : "司法机关",
 	            menuDisabled : true,
-	            dataIndex : "cxcs30",
-	            flex : 1
+	            dataIndex : "cxcs30"
+//	            ,
+//	            flex : 1
 	        }, {
 	            text : "企事业单位",
 	            menuDisabled : true,
-	            dataIndex : "cxcs40",
-	            flex : 1
+	            dataIndex : "cxcs40"
+//	            ,
+//	            flex : 1
 	        }, {
 	            text : "个人",
 	            menuDisabled : true,
-	            dataIndex : "cxcs50",
-	            flex : 1
+	            dataIndex : "cxcs50"
+//	            ,
+//	            flex : 1
 	        }, {
 	            text : "人民团体",
 	            menuDisabled : true,
-	            dataIndex : "cxcs60",
-	            flex : 1
+	            dataIndex : "cxcs60"
+//	            ,
+//	            flex : 1
 	        }, {
 	            text : "其他",
 	            menuDisabled : true,
-	            dataIndex : "cxcs70",
-	            flex : 1
+	            dataIndex : "cxcs70"
+//	            ,
+//	            flex : 1
 	        }, {
 	            text : "小计",
 	            menuDisabled : true,
-	            dataIndex : "cxcssum",
-	            flex : 1
+	            dataIndex : "cxcssum"
+//	            ,
+//	            flex : 1
 	        }]
         },{
             text: '查询成功次数',
             menuDisabled : true,
-            flex : 8,
+            //flex : 8,
             columns: [{
 	            text : "律师",
 	            menuDisabled : true,
-	            dataIndex : "cxcgcs10",
-	            flex : 1
+	            dataIndex : "cxcgcs10"
+//	            ,
+//	            flex : 1
 	        },{
 	            text : "党政军机关",
 	            menuDisabled : true,
-	            dataIndex : "cxcgcs20",
-	            flex : 1
+	            dataIndex : "cxcgcs20"
+//	            ,
+//	            flex : 1
 	        }, {
 	            text : "司法机关",
 	            menuDisabled : true,
-	            dataIndex : "cxcgcs30",
-	            flex : 1
+	            dataIndex : "cxcgcs30"
+//	            ,
+//	            flex : 1
 	        }, {
 	            text : "企事业单位",
 	            menuDisabled : true,
-	            dataIndex : "cxcgcs40",
-	            flex : 1
+	            dataIndex : "cxcgcs40"
+//	            ,
+//	            flex : 1
 	        }, {
 	            text : "个人",
 	            menuDisabled : true,
-	            dataIndex : "cxcgcs50",
-	            flex : 1
+	            dataIndex : "cxcgcs50"
+//	            ,
+//	            flex : 1
 	        }, {
 	            text : "人民团体",
 	            menuDisabled : true,
-	            dataIndex : "cxcgcs60",
-	            flex : 1
+	            dataIndex : "cxcgcs60"
+//	            ,
+//	            flex : 1
 	        }, {
 	            text : "其他",
 	            menuDisabled : true,
-	            dataIndex : "cxcgcs70",
-	            flex : 1
+	            dataIndex : "cxcgcs70"
+//	            ,
+//	            flex : 1
 	        }, {
 	            text : "小计",
 	            menuDisabled : true,
-	            dataIndex : "cxcgcssum",
-	            flex : 1
+	            dataIndex : "cxcgcssum"
+//	            ,
+//	            flex : 1
 	        }]
         }
         ]

@@ -1011,11 +1011,14 @@ public class InformationQueryController {
             familyInfoList.add(familyInfoKeeperTwo);
         }
 
+        /**
+         * 该逻辑，改成在前台处理
+         */
         // 10：终端，20：pc端,30:网上查询
-        if ("10".equals(cxbs)) {
-            // 20160316需求：终端下查询，不查询子女信息
-            return familyInfoList;
-        }
+//        if ("10".equals(cxbs)) {
+//            // 20160316需求：终端下查询，不查询子女信息
+//            return familyInfoList;
+//        }
 
         // 查找该人的所有子女
         String whereFiled = "";
@@ -1038,6 +1041,7 @@ public class InformationQueryController {
                 for (Map<String, String> oneChildMap : czrkInfoList) {
                     FamilyInfo familyInfoChild = new FamilyInfo();
                     familyInfoChild.setRelationType("子女");
+                    familyInfoChild.setRelationTypeNum("40");
                     if ("男".equals(TransUtils.transSex(oneChildMap
                             .get("GENDER")))) {
                         familyInfoChild.setRelationShip("儿子");
