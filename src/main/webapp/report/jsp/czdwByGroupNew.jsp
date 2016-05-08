@@ -13,6 +13,30 @@
 			classid="clsid:2105C259-1E0C-4534-8141-A753534CB4CA" width=0 height=0>
 			<embed id="LODOP_EM" type="application/x-print-lodop" width=0 height=0></embed>
 		</object>
+		<style type="text/css">
+			.frame_normal_hx {
+				margin-top: 5px;
+				margin-left: 10px;
+				margin-right: 10px;
+				margin-bottom: 10px;
+				padding-left: 10px;
+				padding-right: 10px;
+				padding-top: 10px;
+				padding-bottom: 10px;
+				width: 960px;
+			}
+			
+			.tbl {
+				font-size: 12px;
+				color: #000;
+				table-layout: fixed; /**固定宽度*/
+				text-align: center;
+				border-collapse: collapse;
+				border-top: 1px solid #000;
+				border-left: 1px solid #000;
+				margin: 5 5 5 5;
+			}
+		</style>
 		<script type="text/javascript"
 			src="${ctx}/report/app/czdwByGroupNew.js">
 		</script>

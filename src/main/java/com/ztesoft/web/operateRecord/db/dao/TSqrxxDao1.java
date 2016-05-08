@@ -56,6 +56,20 @@ public class TSqrxxDao1 extends SqlSessionDaoSupport {
         return resultPage;
     }
 
+    /**
+     * 追加查询。。。去除没有附件的记录
+     * @param arg
+     * @param resultPage
+     * @return
+     */
+    public Page<TSqrxxPO> selectByArgAndPage4AppendQry(TSqrxxArg arg,
+            Page<TSqrxxPO> resultPage) {
+        List<TSqrxxPO> resultList = getMapper().selectByArgAndPage4AppendQry(arg,
+                resultPage);
+        resultPage.setResultList(resultList);
+        return resultPage;
+    }
+    
     public int insert(TSqrxxPO record) {
         return getMapper().insert(record);
     }

@@ -3,10 +3,13 @@
  */
 package com.ztesoft.web.operateRecord.service.impl;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -127,9 +130,22 @@ public class TSqrxxServiceImpl1 implements ITSqrxxService {
 
         criteria.andLshLike(record.getLsh());
         
+        //操作单位不为空
+        if(StringUtils.isNotBlank(record.getCzdw())){
+            List<String> czdwList = new ArrayList<String>();
+            String[] czdwAry = record.getCzdw().split(",");
+            czdwList = Arrays.asList(czdwAry);
+            criteria.andCzdwIn(czdwList);
+        }
+        
         arg.setOrderByClause("CXRQ DESC");
 
-        resultPage = tSqrxxDao.selectByArgAndPage(arg, resultPage);
+        if("1".equals(record.getQryType())){
+            resultPage = tSqrxxDao.selectByArgAndPage4AppendQry(arg, resultPage);
+        }else{
+            resultPage = tSqrxxDao.selectByArgAndPage(arg, resultPage);
+        }
+        
 
         return resultPage;
     }

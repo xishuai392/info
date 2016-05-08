@@ -132,6 +132,7 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
             itemId : 'editForm',
             region : 'north',
             columnNum : 2,
+            labelWidth:100,
             items : [{
                 fieldLabel : "id",
                 xtype : "textfield",
@@ -197,15 +198,13 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
                 hidden : true,
                 name : "cxsy"
             }, {
-                fieldLabel : "czdw",
+                fieldLabel : "操作单位",
                 xtype : "textfield",
-                hidden : true,
-                name : "czdw"
+                name : "czdwmc"
             }, {
-                fieldLabel : "czr",
+                fieldLabel : "操作人",
                 xtype : "textfield",
-                hidden : true,
-                name : "czr"
+                name : "czrmc"
             }]
         });
         return formPanel;

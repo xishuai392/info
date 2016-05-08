@@ -95,6 +95,19 @@ Ext.onReady(function() {
 		  	handler: function(btn) {
 	            printGrid();
 		  	}
+        },{
+        	text: '导出Excel',
+        	iconCls : 'excel16x16',
+		  	handler: function(btn) {
+		  		var url = webRoot + '/report/doPlatesExcelExport4EXTJS.do?';
+		  		var params = searchForm.getForm().getValues(true);
+		  		url += params;
+		  		console.log(params);
+		  		console.log(url);
+		  		var w  = window.open(url,'_blank');   
+     			w.location.href = url;   
+	            //window.open();
+		  	}
         }],
         columns : [{
             text : "终端名称",

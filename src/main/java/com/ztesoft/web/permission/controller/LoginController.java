@@ -63,6 +63,8 @@ public class LoginController implements IConstants {
 
             HttpSession session = request.getSession(true);
             logger.info("用户登录userInfo:=" + userInfo);
+            
+            session.setAttribute(SESSIONUSERORG, orgInfo);
             session.setAttribute(SESSIONUSER, userInfo);
             session.setAttribute(SESSIONUSERNAME, userInfo.getUserName());
             session.setAttribute(SESSIONUSERCODE, userInfo.getUserCode());

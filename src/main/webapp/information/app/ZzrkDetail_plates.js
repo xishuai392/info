@@ -383,9 +383,9 @@ Ext.onReady(function() {
 **/
 	'<tpl if="page_cxbs &lt; 15"> ',
 	'		<tr>',
-	'			<td colspan=14 class="textInfoLeft">&nbsp;&nbsp;申请人类型：{[this.formater(values.sqrxxPO.cxsqrlx)]} &nbsp;&nbsp;  申请人：{[values.sqrxxPO.xm]} &nbsp;&nbsp; {[this.getCzdw(values.sqrxxPO.cxsqrlx,values.sqrxxPO.cxrdw)]} &nbsp;&nbsp;</td>',
+	'			<td colspan=12 class="textInfoLeft">&nbsp;&nbsp;申请人类型：{[this.formater(values.sqrxxPO.cxsqrlx)]} &nbsp;&nbsp;  申请人：{[values.sqrxxPO.xm]} &nbsp;&nbsp; {[this.getCzdw(values.sqrxxPO.cxsqrlx,values.sqrxxPO.cxrdw)]} &nbsp;&nbsp;</td>',
 	'			<td colspan=2 class="textInfoRight">打印日期：</td>',
-	'			<td colspan=2 class="textInfoLeft">{[values.dyrq]}</td>',
+	'			<td colspan=4 class="textInfoLeft">{[values.dyrq]}</td>',
 	'		</tr>',
 	'</tpl> ',
 	'<tpl if="page_cxbs &gt; 15"> ',

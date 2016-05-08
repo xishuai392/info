@@ -537,7 +537,7 @@ Ext.onReady(function() {
     imageStore = Ext.create('Ext.data.Store', {
         model: 'component.information.model.ImageModel',
         proxy: {
-            type: 'localstorage'
+            type: 'memory'
         }
     });
     
@@ -747,7 +747,7 @@ Ext.onReady(function() {
     var x = 22;
 	var y = 20;
 						
-    var widthJudge = function widthJudge(e){
+    var widthJudge = function (e){
 		var marginRight = document.documentElement.clientWidth - e.pageX; 
 		var imageWidth = $("#bigimage").width()||400;
 		//alert(document.documentElement.clientWidth +"   "+e.pageX+"  "+marginRight+"  "+imageWidth);
@@ -1386,8 +1386,9 @@ Ext.onReady(function() {
 		            if (form.isValid()) {
 		            	
 		            	//通过表单校验
-		            	var layout = infoMainPanel.getLayout();
-		            	layout.setActiveItem(4);//下一步：显示查询结果
+		            	//20160507修改，不展示grid表格，直接打开第一条记录
+		            	//var layout = infoMainPanel.getLayout();
+		            	//layout.setActiveItem(4);//下一步：显示查询结果
 		            	
 		            	bcxrStore.getProxy().extraParams = {
 				        	//申请人信息表主键uuid
@@ -1474,7 +1475,24 @@ Ext.onReady(function() {
 	    ]
     });
     
-    bcxrStore = Ext.create('component.information.store.QueryResultInfoStore');
+    bcxrStore = Ext.create('component.information.store.QueryResultInfoStore',{
+        listeners : {
+            // 载入的时候默认选中第一条；触发查看操作，如果没有任何记录，则不处理
+            "load" : function(thiz, records) {
+                if (Ext.isEmpty(records)) {
+                	ExtUtils.error("无法查询到数据...");
+                } else {
+                	bcxrGrid.getSelectionModel().select(0);
+                	//bcxrGrid.getSelectionModel().fireEvent('selectionchange', null, items);
+                    // 已经获取的grid的对象是 grid  
+			        var selModel = bcxrGrid.getSelectionModel() ;  
+			        var isGridSelected = selModel.hasSelection() ;  
+			        //console.log(isGridSelected);
+			        operateColumnClick(bcxrGrid,0,6);
+                }
+            }
+        }
+    });
     
     //5、显示被查询人表格信息
     bcxrGrid = Ext.create('Ext.grid.Panel', {
@@ -1539,7 +1557,37 @@ Ext.onReady(function() {
                     	//console.log("colIndex:"+colIndex);
                     	//console.log(grid.getStore().getAt(rowIndex).data.populationType);
                     	
-                    	//被查询人信息主键，记录打印次数用
+                    	operateColumnClick(grid, rowIndex, colIndex);
+                    	
+                    } 
+                }
+            ]  
+        } 
+        ],
+        tbar: [{
+	        text: '第一步',
+	        iconCls: "x-tbar-page-first",
+	        handler: function() {
+	            var layout = infoMainPanel.getLayout();
+	            layout.setActiveItem(0);//第一步：填写申请人信息
+	            clearAll();
+	        }
+	    },{
+	        text: '上一步',
+	        iconCls : 'x-btn-icon-el x-tbar-page-prev',
+	        handler: function() {
+	            var layout = infoMainPanel.getLayout();
+	            layout.setActiveItem(3);//上一步：被查询人信息
+	        }
+	    }]
+    });
+    
+    
+    //被查询人操作列点击
+    var operateColumnClick = function (grid, rowIndex, colIndex){
+    	//console.log(rowIndex);
+    	//console.log(colIndex);
+    	//被查询人信息主键，记录打印次数用
                     	bcxrxxId = grid.getStore().getAt(rowIndex).data.bcxrxxId;
                     	if('户籍人口'==grid.getStore().getAt(rowIndex).data.populationType){
                     		
@@ -1649,30 +1697,7 @@ Ext.onReady(function() {
                     	}
                     	**/
         
-                    	
-                    } 
-                }
-            ]  
-        } 
-        ],
-        tbar: [{
-	        text: '第一步',
-	        iconCls: "x-tbar-page-first",
-	        handler: function() {
-	            var layout = infoMainPanel.getLayout();
-	            layout.setActiveItem(0);//第一步：填写申请人信息
-	            clearAll();
-	        }
-	    },{
-	        text: '上一步',
-	        iconCls : 'x-btn-icon-el x-tbar-page-prev',
-	        handler: function() {
-	            var layout = infoMainPanel.getLayout();
-	            layout.setActiveItem(3);//上一步：被查询人信息
-	        }
-	    }]
-    });
-    
+    };
     
     function openCZRKinfo(idCard,bcxrxxId,populationType){
     	var config = {
@@ -1701,7 +1726,7 @@ Ext.onReady(function() {
 	            }
 	        };
 	        ExtUtils.doAjax(config);
-    }
+    };
     
     
     

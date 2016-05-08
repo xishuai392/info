@@ -24,4 +24,7 @@ public interface IConstants {
     /** 当前session中的(String)userCode,用户代码 */
     public final static String SESSIONUSERCODE = "sessionUserCode";
 
+    /** 当前session中的(AuditOrganizationPO)org,当前登录用户所属的组织机构对象 */
+    public final static String SESSIONUSERORG = "sessionuserOrg";
+    
 }

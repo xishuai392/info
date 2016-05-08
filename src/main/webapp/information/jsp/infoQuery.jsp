@@ -10,7 +10,7 @@
 			href="<%=request.getContextPath()%>/common/css/info.css">
 		<link rel="stylesheet" type="text/css"
 			href="<%=request.getContextPath()%>/common/css/data-view.css">
-		<script language="javascript" src="<%=request.getContextPath()%>/lodap/LodopFuncs.js"></script>
+		
 		
 		<script type="text/javascript">
 			!function($) {

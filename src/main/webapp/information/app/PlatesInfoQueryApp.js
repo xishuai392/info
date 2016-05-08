@@ -194,11 +194,12 @@ Ext.onReady(function() {
 	    },
 	    items: [{
 	    	xtype : 'label',
-	    	html: '<span style="font-size:25px !important;font-family:microsoft yahei !important;">请将身份证放入读卡区，然后点击查询。</span><br>'
-            	+'<span style="font-size:25px !important;font-family:microsoft yahei !important;">为保护您的个人隐私，请操作完成后点击“关闭”退出操作界面。</span>',
+	    	html: '<span style="font-size:30px !important;font-family:microsoft yahei !important;color:red;line-height：17pt">操作提醒</span><br>'
+	    		+ '<span style="font-size:20px !important;font-family:microsoft yahei !important;line-height：17pt">请将身份证放入读卡区，然后点击查询。</span><br>'
+            	+'<span style="font-size:20px !important;font-family:microsoft yahei !important;line-height：17pt">为保护您的个人隐私，请操作完成后点击“关闭”退出操作界面。</span>',
             //cls : 'btntransparent',
             width : btnWidth+5,
-            height : 60
+            height : 90
 	    },{
             xtype : 'button',
             region : 'center',

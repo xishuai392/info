@@ -649,7 +649,7 @@ public class ReportController {
     }
 
     /**
-     * 通过EXTJS 导出
+     * 通过EXTJS 导出，全局窗口信息查询统计报表
      * 
      * @author: panxb
      * @date: 2012-6-27 上午09:17:51
@@ -752,25 +752,75 @@ public class ReportController {
 
     
     public static void main(String[] args){
-      try {
-        //InputStream  fs =   new FileInputStream("config/logback.xml");
-          //config/quanju_ck.xls
-        File f = new File("config/logback.xml");
-        File ff = new File(ReportController.class.getClassLoader().getResource("").getPath());
-        System.out.println(ff.getParentFile().getPath());
-        System.out.println(ReportController.class.getClassLoader().getResource(""));
-        System.out.println(ReportController.class.getResource(""));
-        System.out.println(f.getPath());
-        System.out.println(f.getCanonicalPath());
-        System.out.println(f.getAbsolutePath());
+          try {
+            //InputStream  fs =   new FileInputStream("config/logback.xml");
+              //config/quanju_ck.xls
+            File f = new File("config/logback.xml");
+            File ff = new File(ReportController.class.getClassLoader().getResource("").getPath());
+            System.out.println(ff.getParentFile().getPath());
+            System.out.println(ReportController.class.getClassLoader().getResource(""));
+            System.out.println(ReportController.class.getResource(""));
+            System.out.println(f.getPath());
+            System.out.println(f.getCanonicalPath());
+            System.out.println(f.getAbsolutePath());
+            
+        }
+        catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+      
+    }
+    
+    /**
+     * 
+     * @param response
+     * @param reqInfo
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("doPlatesExcelExport4EXTJS")
+    public String doPlatesExcelExport4EXTJS(HttpServletResponse response,
+            ReportQueryDto reqInfo) throws Exception {
         
+        List<ReportResultDto> resultList = queryPlatesQryPrintData(reqInfo);
+
+        // 数据中的key
+        String keys[] = {
+                "czr", "cxcs", "dycs"
+        };
+
+        Workbook wb = null;
+        OutputStream ouputStream = null;
+        try {
+            
+            String tplPath = ReportController.class.getClassLoader().getResource("").getPath()
+                    + "zhongduan.xls";
+            logger.info(""+ReportController.class.getClassLoader().getResource("").getPath());
+            logger.info("excel模板路径：" + tplPath);
+            wb = ExcelUtils.createWorkBookByTpl(new File(tplPath), 1, 0,
+                    resultList, keys, keys);
+            response.setContentType("application/vnd.ms-excel");
+            response.setHeader("Content-Disposition", "attachment;filename="
+                  + new String(("report_Plates_"+DateUtils.getCurrentDate() + ".xls").getBytes(), "iso-8859-1"));
+            ouputStream = response.getOutputStream();
+            wb.write(ouputStream);
+            ouputStream.flush();
+//            ouputStream.close();
+        }
+        catch (Exception e) {
+            logger.error("导出Excel时发生异常：" + e.getMessage(), e);
+        }finally{
+            try {
+              if (ouputStream != null )
+                  ouputStream.close();
+          }
+          catch (Exception e) {
+              logger.error("导出Excel关闭流抛异常：", e);
+          }
+        }
+
+        return null;
     }
-    catch (Exception e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-    }
-      
-      
-      
-    }
+    
 }

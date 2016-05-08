@@ -497,7 +497,7 @@
 	<repositories>
 		<repository>
 			<id>Nexus</id>
-			<url>http://10.45.45.7:8081/nexus/content/groups/public</url>
+			<url>http://10.45.45.200:8081/nexus/content/groups/public</url>
 		</repository>
 	</repositories>
 

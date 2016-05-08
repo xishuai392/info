@@ -19,6 +19,7 @@ Ext.onReady(function() {
     // 查询条件框
     thizSearchForm = Ext.create("ZTEsoft.form.SearchForm", {
         region : "north",
+        labelWidth:100,
         store : thizPanel.getBusizGrid().getStore(),
         items : [
      	      	{

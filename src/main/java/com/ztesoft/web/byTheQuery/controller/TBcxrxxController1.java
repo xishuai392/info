@@ -3,6 +3,9 @@ package com.ztesoft.web.byTheQuery.controller;
 import java.math.*;
 import java.util.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,9 +16,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ztesoft.core.common.Page;
 import com.ztesoft.framework.exception.BaseAppException;
 import com.ztesoft.framework.log.ZTEsoftLogManager;
+import com.ztesoft.web.information.controller.ReportController;
 import com.ztesoft.web.information.db.po.TBcxrxxPO;
+import com.ztesoft.web.permission.db.po.AuditOrganizationPO;
+import com.ztesoft.web.permission.db.po.AuditUserPO;
 import com.ztesoft.web.byTheQuery.service.ITBcxrxxService;
-
+import com.ztesoft.web.domain.IConstants;
 
 /**
  * <Description>tbcxrxx管理 <br>
@@ -37,6 +43,9 @@ public class TBcxrxxController1 {
 
     @Autowired
     private ITBcxrxxService tBcxrxxService;
+
+    @Autowired
+    private ReportController reportController;
 
     @RequestMapping("index")
     public String index(Model model) {
@@ -81,8 +90,9 @@ public class TBcxrxxController1 {
 
     @RequestMapping("qryRecordInfo")
     @ResponseBody
-    public TBcxrxxPO qryRecordInfo(@RequestParam(value = "id",
-            required = true) String id) throws BaseAppException {
+    public TBcxrxxPO qryRecordInfo(
+            @RequestParam(value = "id", required = true) String id)
+            throws BaseAppException {
         TBcxrxxPO record = tBcxrxxService.selectByPrimaryKey(id);
         return record;
     }
@@ -90,9 +100,37 @@ public class TBcxrxxController1 {
     @RequestMapping("select4Page")
     @ResponseBody
     public Page<TBcxrxxPO> select4Page(TBcxrxxPO record,
-            Page<TBcxrxxPO> resultPage) throws BaseAppException {
+            Page<TBcxrxxPO> resultPage, HttpServletRequest request)
+            throws BaseAppException {
+        HttpSession session = request.getSession(true);
+        AuditUserPO auditUserPo = (AuditUserPO) session
+                .getAttribute(IConstants.SESSIONUSER);
+        AuditOrganizationPO orgInfo = (AuditOrganizationPO) session
+                .getAttribute(IConstants.SESSIONUSERORG);
+
+        if (orgInfo.getOrgId() > 1L) {
+
+            // 只查询本登录用户所属的机构，及其所有子机构
+            Long thizOrgId = auditUserPo.getOrgId();
+            List<Long> allOrgIdList = new ArrayList<Long>();
+            reportController.getChildrenOrgId(thizOrgId, allOrgIdList);
+
+            String czdwSplitByComma = "";
+            for (Long orgId : allOrgIdList) {
+                czdwSplitByComma += String.valueOf(orgId) + ",";
+            }
+            if (czdwSplitByComma.length() > 0) {
+                record.setSqrczdw(czdwSplitByComma.substring(0,
+                        czdwSplitByComma.length() - 1));
+            }
+            else {
+                record.setSqrczdw(czdwSplitByComma);
+            }
+
+        }
+
         resultPage = tBcxrxxService.select4Page(record, resultPage);
         return resultPage;
     }
-    
+
 }

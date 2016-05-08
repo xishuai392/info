@@ -305,6 +305,7 @@ Ext.onReady(function() {
 		url += "&relevance=relevance";
 		url += "&baseIdCardNum="+reqOjb.idCardNum;
 		url += "&a="+ new Date();
+		times += 40;
 		var changkouMainWin = window.open(url,"",'toolbar=no,menubar=no,status=no,location=no,scrollbars=yes,resizable=no,fullscreen=1,width='+width+',height='+height+',top=0,left=0');
 		changkouMainWin.moveTo(left, top);
 		changkouMainWin.focus();
@@ -455,11 +456,11 @@ Ext.onReady(function() {
 	'		</tr>',
 	'<tpl if="page_cxbs &lt; 15"> ',
 	'		<tr>',
-	'			<td colspan=10 class="textInfoLeft">&nbsp;&nbsp;申请人类型：{[this.formater(values.sqrxxPO.cxsqrlx)]} &nbsp;&nbsp;  申请人：{[values.sqrxxPO.xm]} &nbsp;&nbsp; {[this.getCzdw(values.sqrxxPO.cxsqrlx,values.sqrxxPO.cxrdw)]} &nbsp;&nbsp;</td>',
+	'			<td colspan=8 class="textInfoLeft">&nbsp;&nbsp;申请人类型：{[this.formater(values.sqrxxPO.cxsqrlx)]} &nbsp;&nbsp;  申请人：{[values.sqrxxPO.xm]} &nbsp;&nbsp; {[this.getCzdw(values.sqrxxPO.cxsqrlx,values.sqrxxPO.cxrdw)]} &nbsp;&nbsp;</td>',
 	'			<td colspan=2 class="textInfoRight">操作人：</td>',
 	'			<td colspan=2 class="textInfoLeft">自助终端</td>',
 	'			<td colspan=2 class="textInfoRight">打印日期：</td>',
-	'			<td colspan=2 class="textInfoLeft">{[values.dyrq]}</td>',
+	'			<td colspan=4 class="textInfoLeft">{[values.dyrq]}</td>',
 	'		</tr>',
 	'</tpl> ',
 	'<tpl if="page_cxbs &gt; 15"> ',

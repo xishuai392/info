@@ -254,10 +254,11 @@ Ext.onReady(function() {
 		var top = -4;  
 		
 		var url = baseUrl + idCardTmp+"&a="+new Date();
-		var zankouMainWin = window.open(url,"",'toolbar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
-		//zankouMainWin.moveTo(left, top);
+		var zankouMainWin = window.open(url,"",'toolbar=no,menubar=no,status=no,location=no,scrollbars=yes,resizable=no,width='+width+',height='+height+',top=0,left=0');
+		zankouMainWin.moveTo(left, top);
 		zankouMainWin.focus();
-							
+		
+		
     	/**
     	var width = screen.availWidth-3;
 		var height = screen.availHeight-20;
@@ -390,13 +391,13 @@ Ext.onReady(function() {
 	'</tpl> ',
 	'<tpl if="page_cxbs &gt; 15"> ',
 	'		<tr>',
-	'			<td colspan=4 class="textInfoRight">&nbsp;</td>',
+	'			<td colspan=2 class="textInfoRight">&nbsp;</td>',
 	'			<td colspan=2 class="textInfoRight">操作单位：</td>',
 	'			<td colspan=4 class="textInfoLeft">{[values.czdw]}</td>',
 	'			<td colspan=2 class="textInfoRight">操作人：</td>',
 	'			<td colspan=2 class="textInfoLeft">{[values.czr]}</td>',
 	'			<td colspan=2 class="textInfoRight">打印日期：</td>',
-	'			<td colspan=2 class="textInfoLeft">{[values.dyrq]}</td>',
+	'			<td colspan=4 class="textInfoLeft">{[values.dyrq]}</td>',
 	'		</tr>',
 	'</tpl> ',
 	'	</table>',

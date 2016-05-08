@@ -16,7 +16,9 @@
     <result column="ZJMC" property="zjmc" jdbcType="VARCHAR" />
   	<result column="VDEF1" property="vdef1" jdbcType="VARCHAR" />
   	<result column="VDEF2" property="vdef2" jdbcType="VARCHAR" />
-  <result column="LSH" property="lsh" jdbcType="VARCHAR" />
+  	<result column="LSH" property="lsh" jdbcType="VARCHAR" />
+  	<result column="CZRXM" property="czrxm" jdbcType="VARCHAR" />
+  	<result column="CZDWMC" property="czdwmc" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Base_Column_List" >
   	ID,ZJH,ZJLX,XM,CXSQRLX,CXRDW,CXSY,CXRQ,CZDW,CZR,CXBS,ZJMC,VDEF1,VDEF2,LSH
@@ -104,7 +106,9 @@
     <if test="columns != null" >
     	${columns}
    	</if>
-    from T_SQRXX
+   	,(select ORG_NAME from audit_organization org where org.ORG_ID=sqr.czdw ) czdwmc,
+   	(select USER_NAME from audit_user usr where usr.USER_ID=sqr.CZR) czrmc
+    from T_SQRXX sqr
     <if test="_parameter != null" >
       <include refid="Arg_Where_Clause" />
     </if>
@@ -115,6 +119,34 @@
       order by ${orderByClause}
     </if>
   </select>
+  
+   <!--追加查询。。。去除没有附件的记录-->
+   <select id="selectByArgAndPage4AppendQry" resultMap="BaseResultMap" parameterType="com.ztesoft.web.operateRecord.db.arg.TSqrxxArg" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+     <if test="columns == null" >
+    	<include refid="Base_Column_List" />
+    </if>
+    <if test="columns != null" >
+    	${columns}
+   	</if>
+   	,(select ORG_NAME from audit_organization org where org.ORG_ID=sqr.czdw ) czdwmc,
+   	(select USER_NAME from audit_user usr where usr.USER_ID=sqr.CZR) czrmc
+    from T_SQRXX sqr
+    <if test="_parameter != null" >
+      <include refid="Arg_Where_Clause" />
+    </if>
+    and (select count(*) from T_sqrxxfj sqrfj where sqrfj.SQR_ID=sqr.ID)>0 
+	<if test="groupByClause != null" >
+      group by ${groupByClause}
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  
   <select id="countByArg" parameterType="com.ztesoft.web.operateRecord.db.arg.TSqrxxArg" resultType="java.lang.Integer" >
     <if test="countsql1 != null" >
     	${countsql1}
@@ -133,7 +165,9 @@
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
 	select
 	<include refid="Base_Column_List" />
-	from T_SQRXX
+	,(select ORG_NAME from audit_organization org where org.ORG_ID=sqr.czdw ) czdwmc,
+   	(select USER_NAME from audit_user usr where usr.USER_ID=sqr.CZR) czrmc
+    from T_SQRXX sqr
 	where ID = #{id,jdbcType=VARCHAR}
   </select>
   <insert id="insert" parameterType="com.ztesoft.web.operateRecord.db.po.TSqrxxPO"  >

@@ -46,6 +46,14 @@ Ext.define('component.operateRecord.model.TSqrxxModel', {
 	            name : 'czr',
 	            type : 'auto'
         	},
+        	{
+	            name : 'czdwmc',
+	            type : 'auto'
+        	},
+       		{
+	            name : 'czrmc',
+	            type : 'auto'
+        	},
        		{
 	            name : 'cxbs',
 	            type : 'auto'

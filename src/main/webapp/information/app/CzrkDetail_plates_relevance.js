@@ -1,5 +1,5 @@
 /**
- * 人口信息查询首页
+ * 常住人口，关联查询
  */
  
  
@@ -369,11 +369,11 @@ Ext.onReady(function() {
 	'		</tr>',
 	'<tpl if="page_cxbs &lt; 15"> ',
 	'		<tr>',
-	'			<td colspan=10 class="textInfoLeft">&nbsp;&nbsp;申请人类型：{[this.formater(values.sqrxxPO.cxsqrlx)]} &nbsp;&nbsp;  申请人：{[values.sqrxxPO.xm]} &nbsp;&nbsp; {[this.getCzdw(values.sqrxxPO.cxsqrlx,values.sqrxxPO.cxrdw)]} &nbsp;&nbsp;</td>',
+	'			<td colspan=8 class="textInfoLeft">&nbsp;&nbsp;申请人类型：{[this.formater(values.sqrxxPO.cxsqrlx)]} &nbsp;&nbsp;  申请人：{[values.sqrxxPO.xm]} &nbsp;&nbsp; {[this.getCzdw(values.sqrxxPO.cxsqrlx,values.sqrxxPO.cxrdw)]} &nbsp;&nbsp;</td>',
 	'			<td colspan=2 class="textInfoRight">操作人：</td>',
 	'			<td colspan=2 class="textInfoLeft">自助终端</td>',
 	'			<td colspan=2 class="textInfoRight">打印日期：</td>',
-	'			<td colspan=2 class="textInfoLeft">{[values.dyrq]}</td>',
+	'			<td colspan=4 class="textInfoLeft">{[values.dyrq]}</td>',
 	'		</tr>',
 	'</tpl> ',
 	'<tpl if="page_cxbs &gt; 15"> ',

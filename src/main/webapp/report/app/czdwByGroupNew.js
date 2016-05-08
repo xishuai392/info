@@ -6,13 +6,13 @@ Ext.onReady(function() {
     var LODOP;
     
 	var preHtml = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>统计报表</title><style type="text/css">html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,input	{	margin: 0;	padding: 0;	border: 0;	font-weight: inherit;	font-style: inherit;	font-size: 100%;	font-family: Arial, Microsoft Yahei;	/**vertical-align:baseline;*/}body {	line-height: 1;	font-size: 12px;}ol,ul {	list-style: none;}.color_red {	color: #ff0900;}.color_gray {	color: #9b9b9b;}.color_bule {	color: #015a9f;}.clear {	clear: both;}.font18 {	font-size: 18px;}.font14 {	font-size: 14px;}* {	font-size: 12px !important;}</style><link rel="stylesheet" type="text/css"	href="'+webRoot+'common/css/info.css"></head><body>';
-	preHtml += '<div class="frame_normal" id="allDiv">'+
+	preHtml += '<div class="frame_normal_hx" id="allDiv">'+
     '	<div class="div_title" id="titleDiv">'+
-	'		<span style="FONT-SIZE: 20px!important; ">全局窗口信息查询统计报表<span>'+
+	'		<span style="FONT-SIZE: 20px!important; ">窗口信息查询统计报表<span>'+
 	'	</div>';
 	var part1TableHtml = 
-    '	<div id="part1Table">'+
-	'		<table class="tbl" width=100%>';
+    '	<div id="part1Table" >'+
+	'		<table class="tbl" width=99%>';
     
     
     var lastHtml = "</table></div></div></body></html>";
@@ -22,11 +22,11 @@ Ext.onReady(function() {
 				document.getElementById('LODOP_EM'));
 		LODOP.SET_PREVIEW_WINDOW(1,3,1,0,0, "预览查看.开始打印");
 		
-		LODOP.PRINT_INIT("全局窗口信息查询统计报表打印");
+		LODOP.PRINT_INIT("窗口信息查询统计报表打印");
 		LODOP.SET_PRINT_STYLE("FontSize", 12);
 		LODOP.SET_PRINT_STYLE("Bold", 1);
-		LODOP.SET_PRINT_PAGESIZE(1,0,0,"A4") ; //A4纸张纵向打印
-		LODOP.ADD_PRINT_HTM("0%", "0%", "100%", "100%", html);
+		LODOP.SET_PRINT_PAGESIZE(2,0,0,"A4") ; //A4纸张纵向打印
+		LODOP.ADD_PRINT_HTM(5, 5, "100%", "100%", html);
 		
 		LODOP.SET_SHOW_MODE("HIDE_SBUTTIN_PREVIEW",true);
 		//LODOP.SET_SHOW_MODE("HIDE_QBUTTIN_PREVIEW",true);
@@ -90,8 +90,10 @@ Ext.onReady(function() {
 	//            name : "czdw"
 	//        }, 
 	        Ext.create('ZTEsoft.form.field.OrgTreeField',{
-	            fieldLabel : '上级单位',
+	            fieldLabel : '单位',
 	            labelAlign : 'right',
+	            labelWidth : 50,
+	            width : 300,
 	            allowBlank : false,
 	            editable : false,
 	            validateOnBlur : false,
@@ -104,6 +106,7 @@ Ext.onReady(function() {
 	            displayField : 'text',
 	            valueField : 'value',
 	            editable : false,
+	            hidden : true,
 	            value : '',
 	            store : new Ext.data.ArrayStore({
 	                fields : ['value', 'text'],
@@ -134,7 +137,6 @@ Ext.onReady(function() {
         isPage : false,
         tbar : [{
         	text: '打印',
-        	hidden : true,
         	iconCls : 'printer',
 		  	handler: function(btn) {
 	            printGrid();
@@ -344,10 +346,26 @@ Ext.onReady(function() {
 			}
 		}
 		//	        tableStr = tableStr + '<tr><td>序号</td>';  
+		
+		//拼接标题第一行
+		//操作单位
+		tableStr = tableStr + '<td width=100 rowspan=2 >' + temp_obj[0].text+ '</td>';
+		tableStr = tableStr + '<td colspan=8  width=320>查询次数</td>';
+		tableStr = tableStr + '<td colspan=8  width=320>查询人数</td>';
+		tableStr = tableStr + '<td colspan=8  width=320>查询成功次数</td>';
+		tableStr = tableStr + '</tr><tr>';
+		
 		for (var i = 0; i < temp_obj.length; i++) {
 			// 显示列的列标题  
-			tableStr = tableStr + '<td>' + temp_obj[i].text
+			if(i==0){
+				//第一列宽一点
+//				tableStr = tableStr + '<td width=120>' + temp_obj[i].text
+//					+ '</td>';
+			}else{
+				tableStr = tableStr + '<td width=40>' + temp_obj[i].text
 					+ '</td>';
+			}
+			
 		}
 		tableStr = tableStr + '</tr>';
 		var store = grid.getStore();
@@ -381,7 +399,7 @@ Ext.onReady(function() {
 	'			<td class="textInfoLeft">&nbsp;</td>'+
 	'			<td class="textInfoLeft">&nbsp;</td>'+
 	'			<td class="textInfoLeft">&nbsp;</td>'+
-	'			<td colspan=2 class="textInfoRight">上级单位：</td>'+
+	'			<td colspan=2 class="textInfoRight">单位：</td>'+
 	'			<td colspan=4 class="textInfoLeft">'+searchForm.getForm().findField('czdw').getRawValue()+'</td>'+
 	'		</tr>' +
 	'	</table>' +

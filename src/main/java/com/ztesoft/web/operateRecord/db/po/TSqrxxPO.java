@@ -41,6 +41,57 @@ public class TSqrxxPO extends AbstractDto {
     private Date startDate;
 
     private Date endDate;
+    
+    private String qryType;//查询类型，1：追加查询，其余值：普通查询
+    
+    private String czrmc;//操作人姓名
+    
+    private String czdwmc;///操作单位名称
+
+    
+    
+
+    /**
+     * @return the czrmc
+     */
+    public String getCzrmc() {
+        return czrmc;
+    }
+
+    /**
+     * @param czrmc the czrmc to set
+     */
+    public void setCzrmc(String czrmc) {
+        this.czrmc = czrmc;
+    }
+
+    /**
+     * @return the czdwmc
+     */
+    public String getCzdwmc() {
+        return czdwmc;
+    }
+
+    /**
+     * @param czdwmc the czdwmc to set
+     */
+    public void setCzdwmc(String czdwmc) {
+        this.czdwmc = czdwmc;
+    }
+
+    /**
+     * @return the qryType
+     */
+    public String getQryType() {
+        return qryType;
+    }
+
+    /**
+     * @param qryType the qryType to set
+     */
+    public void setQryType(String qryType) {
+        this.qryType = qryType;
+    }
 
     /**
      * @return the lsh

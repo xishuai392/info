@@ -18,6 +18,10 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
     constructor : function(config) {
         var me = this;
         config = config || {};
+        
+        // 是否隐藏操作列
+        var hiddenOperCol = false || config.hiddenOper;
+        me.hiddenOperCol = hiddenOperCol;
 
         // TODO 设置额外的参数
          me.pkFiledId = config.pkFiledId;
@@ -184,8 +188,19 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
 	            flex : 1
 	        },
 	        {
+	        	text : "操作单位",
+	            dataIndex : "czdwmc",
+	            flex : 1
+	        },
+	        {
+	        	text : "操作人",
+	            dataIndex : "czrmc",
+	            flex : 1
+	        },
+	        {
 	        	text : "操作",
 	        	xtype : 'actioncolumn',
+	        	hidden : me.hiddenOperCol,
 	            items :[{
 	            	icon: ctx + '/common/images/icons/application_view_detail.png',
 	            	tooltip: '查看',

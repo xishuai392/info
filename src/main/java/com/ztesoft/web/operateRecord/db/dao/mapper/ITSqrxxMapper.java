@@ -18,6 +18,8 @@ public interface ITSqrxxMapper {
     TSqrxxPO selectByPrimaryKey(String id);
 
     List<TSqrxxPO> selectByArgAndPage(TSqrxxArg arg, RowBounds rowBound);
+    
+    List<TSqrxxPO> selectByArgAndPage4AppendQry(TSqrxxArg arg, RowBounds rowBound);
 
     int insert(TSqrxxPO record);
 

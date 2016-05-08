@@ -452,6 +452,9 @@
     <if test="sqrXm != null and sqrXm !=''">
     	and s.XM like '%${sqrXm}%'    
     </if>
+    <if test="sqrczdw != null and sqrczdw !=''">
+    	and s.czdw in(${sqrczdw})  
+    </if>
     
     <if test="startDateStr != null and endDateStr != null ">
     	and b.BCXRQ BETWEEN #{startDateStr} AND #{endDateStr}
