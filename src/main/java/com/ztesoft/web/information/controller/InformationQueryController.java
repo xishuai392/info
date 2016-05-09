@@ -569,6 +569,10 @@ public class InformationQueryController {
             }
         }
         else {
+            
+            //没有照片
+            saveBlankPhoto(request, pid);
+            
             logger.error(String.format("常住人口信息]报文信息中没有照片编号.身份证号=[%s]", pid));
         }
 
@@ -760,6 +764,10 @@ public class InformationQueryController {
                 }
             }
             else {
+                
+                //没有照片
+                saveBlankPhoto(request, pid);
+                
                 logger.error(String.format(
                         "[流动人口基本信息]最后有效的报文信息中没有照片编号.身份证号=[%s]", pid));
             }
@@ -1441,4 +1449,28 @@ public class InformationQueryController {
         TransUtils.base64String2Image(imagePath, imageStr.trim());
     }
 
+    public void saveBlankPhoto(HttpServletRequest request, String pid) {
+        try{
+            // 空白照片存储的位置
+            String blankImgPath = request.getSession().getServletContext()
+                    .getRealPath("/")
+                    + System.getProperty("file.separator") 
+                    + "blank.jpg";
+            
+            String targetPath = request.getSession().getServletContext()
+                    .getRealPath("/")
+                    + System.getProperty("file.separator")
+                    + "personImages"
+                    + System.getProperty("file.separator")
+                    + pid
+                    + MessageResourceUtils.getMessage("idCard.image.format");
+            
+            com.ztesoft.framework.util.FileUtils fileUtils = new com.ztesoft.framework.util.FileUtils();
+            
+            fileUtils.copyFile(blankImgPath,targetPath);
+        }catch (Exception e){
+            logger.error("复制空白身份证头像时发生异常:" + e.getMessage(),e);
+        }
+        
+    }
 }
