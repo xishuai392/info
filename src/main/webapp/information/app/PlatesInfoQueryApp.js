@@ -79,6 +79,36 @@ Ext.onReady(function() {
           }
 					
 	}
+	
+	/**
+	 * 清理读卡状态
+	 */
+	function ClearIDCard() {
+	   CVR_IDCard.Name="";
+	   CVR_IDCard.NameL="";
+	   CVR_IDCard.Sex="";   
+	   //CVR_IDCard.SexL="";   
+	   CVR_IDCard.Nation="";
+	   //CVR_IDCard.NationL="";
+	   CVR_IDCard.Born="";
+	   //CVR_IDCard.BornL="";
+	   CVR_IDCard.Address="";
+	   CVR_IDCard.CardNo="";
+	   CVR_IDCard.Police="";
+	   CVR_IDCard.Activity="";
+	   CVR_IDCard.NewAddr="";
+	  
+	   return true;
+	}
+	
+	/**
+	 * 停止读卡
+	 */
+	function DoStopRead() {
+	   CVR_IDCard.DoStopRead; 
+	   ClearIDCard(); 
+	   return true;
+	}
 
 	//首页按钮宽高
 	var btnHeight = (parseInt(Ext.getBody().getHeight())/5);
@@ -220,13 +250,15 @@ Ext.onReady(function() {
                 //TODO
                 //TODO
                 //TODO
-                var CVR_IDCard = document.getElementById("CVR_IDCard");		
-                //设置超时时间
-                //CVR_IDCard.TimeOut=3;
-				var strReadResult = CVR_IDCard.ReadCard();
+//                ClearIDCard();
+//                var CVR_IDCard = document.getElementById("CVR_IDCard");		
+//                //设置超时时间
+//                CVR_IDCard.TimeOut=3;
+//				var strReadResult = CVR_IDCard.ReadCard();
+				
 				
 				//TODO  @惜帅  调试隐藏
-//				strReadResult = "0";
+				strReadResult = "0";
 				
 				if(strReadResult == "0"){
 	              var config = {
@@ -238,8 +270,8 @@ Ext.onReady(function() {
 				            "born" : CVR_IDCard.Born,     //出生日期
 				            "address" : CVR_IDCard.Address, //地址
 				            //TODO  @惜帅  调试隐藏
-				            "cardNo" : CVR_IDCard.CardNo, //身份号码
-//				            "cardNo" : CVR_IDCard.CardNo||"35020419811021103X", //身份号码
+//				            "cardNo" : CVR_IDCard.CardNo, //身份号码
+				            "cardNo" : CVR_IDCard.CardNo||"35020419811021103X", //身份号码
 				            
 				            "issuedAt" : CVR_IDCard.IssuedAt,  //签发机关
 				            "effectedDate" : CVR_IDCard.EffectedDate,  //生效期限
@@ -345,7 +377,7 @@ Ext.onReady(function() {
 									rklx : 2
 									
 					        	};
-				        		var config = {
+				        		var configTmp = {
 				            		url : 'information/tbcxrxx/canPrint.do',
 						            params : params,
 						            callback : function(canPrintResult){
@@ -369,7 +401,7 @@ Ext.onReady(function() {
 						            	}
 						            }
 						        };
-						        ExtUtils.doAjax(config);
+						        ExtUtils.doAjax(configTmp);
 			            		
 			            		
 			            		
@@ -414,7 +446,13 @@ Ext.onReady(function() {
 	          }
                 
 	          
+	          //TODO  @惜帅  调试隐藏
+              //TODO
+              //TODO
+              //TODO
+              //TODO
 	          //关闭读卡器
+	          DoStopRead();
 	          //CVR_IDCard.DoStopRead; 
             }
 

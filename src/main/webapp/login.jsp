@@ -8,7 +8,7 @@
 <title></title>
 <meta name="description" content="HSIT-UI">
 <meta name="keywords" content="HSIT-UI">
-<meta name="author" content="design4u,QQ:66383210,Email:caixfm@gmail.com;admin@design4u.cn">
+<meta name="author" content="design4u,QQ:290115709,Email:xishuai392@gmail.com;">
 <meta name="Copyright" Content="xx信息技术有限公司 版权所有">
 <script type="text/javascript" src="${ctx}/js/jquery.royalslider.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/login.js"></script>
