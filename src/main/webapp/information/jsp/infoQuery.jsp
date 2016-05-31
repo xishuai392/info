@@ -69,6 +69,14 @@
 			ul#gallery li a.smallimage { background:#333; display:block; width:200px; height:200px; }
 			#bigimage { position:absolute; display:none; }
 			#bigimage img { width:400px; height:400px; padding:5px; background:#fff; border:1px solid #e3e3e3; }
+			
+			.x-btn-text-icon .x-btn-icon-small-left .x-btn-text{ 
+				background-position: 0 center;/*默认*/ 
+				background-repeat: no-repeat;/*默认*/ 
+				padding-left:18px;/*默认*/ 
+				height:16px;/*默认*/ 
+				font-size:15px;/*字体大小设置*/ 
+				} 
 		</style>
 
 

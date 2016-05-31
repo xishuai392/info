@@ -178,6 +178,7 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
 	        {
 	        	text : "查询类型",
 	            dataIndex : "cxbs",
+	            hidden : true,
 	            renderer : function(value) {
 	            	if(value == '10'){
 	            		return'终端查询';
@@ -189,6 +190,7 @@ Ext.define('component.operateRecord.view.TSqrxxPanel', {
 	        },
 	        {
 	        	text : "操作单位",
+	        	hidden : true,
 	            dataIndex : "czdwmc",
 	            flex : 1
 	        },

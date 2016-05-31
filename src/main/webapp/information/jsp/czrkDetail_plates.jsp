@@ -9,6 +9,65 @@
             <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/common/css/info.css">
             <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/common/css/data-view.css">
             <script language="javascript" src="<%=request.getContextPath()%>/lodap/LodopFuncs.js"></script>
+            <style type="text/css">
+		.btnQueryCls {
+			background-image: url(../common/images/btn_bg.jpg) !important;
+			line-height: 17px;
+			font-family:"Microsoft Yahei";
+			font-size: 14px;
+			font-style: normal;
+			/*font-weight: bold;*/
+			color: red;
+		}
+		
+		/* 设置button透明 */
+		.btntransparent {
+			filter: alpha(opacity = 0);
+			-moz-opacity: 0;
+			-khtml-opacity: 0;
+			opacity: 0.5;
+			width: 76px;
+			height: 32.8px;
+			z-index: 11;
+		}
+
+		.bgbtn {
+            background-image: url(../common/images/btn_bg.jpg) !important;
+            width: 320px;
+            height: 50px;
+            border-width: 0;
+            background-color: transparent;
+        }
+ 
+        .btnQueryCls .x-frame-ml, .btnQueryCls .x-frame-mc, .btnQueryCls .x-frame-mr,
+        .btnQueryCls .x-frame-tl, .btnQueryCls .x-frame-tc, .btnQueryCls .x-frame-tr,
+        .btnQueryCls .x-frame-bl, .btnQueryCls .x-frame-bc, .btnQueryCls .x-frame-br {
+            background-image: none;
+            background-color: transparent;
+        }
+        
+        .tbarCls{
+			background-image: none; 
+			filter: alpha(opacity = 0);
+			-moz-opacity: 0;
+			-khtml-opacity: 0;
+			opacity: 0.9;
+		}
+        
+		.btnIndexCls{
+			background-image: url(../../common/images/Back_light_48px.png)!important; 
+		}
+		
+		.platesbgimage { 
+		   background:url(../common/images/plates_bg.jpg ) no-repeat left top; 
+		   position:absolute; 
+		   height:282px; 
+		   width:960px;
+		} 
+		.ex-panel{border-style:solid;border-color:transparent;border-width:0;} 
+		
+		</style>
+            
             <script type="text/javascript">
             !function($) {
                 $.fn.rowspan = function(options) {

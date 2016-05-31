@@ -354,5 +354,37 @@ Ext.define('ZTEsoft.common.ExtUtils', {
     randomSort : function (a, b) {
     	// 用Math.random()函数生成0~1之间的随机数与0.5比较，返回-1或1
         return Math.random()>.5 ? -1 : 1;
-	}
+	},
+	
+	/**
+     * 将15位身份证号码转换为18位
+     * @param {} idCardNo
+     */
+    transformatIdFrom15To18 : function(idCardNo) {
+        var v = new Array(2, 4, 8, 5, 10, 9, 7, 3, 6, 1, 2, 4, 8, 5, 10, 9, 7);
+        var vs = "10X98765432";
+        if (idCardNo == null ||  idCardNo.getLength() != 15) {
+            return "";
+        }
+        idCardNo = Ext.String.trim(idCardNo);
+        // 将15位的号码转换位17位
+        var cardID17 = idCardNo.substring(0, 6) + "19" + idCardNo.substring(6);
+        var N = 0;
+        var R = -1;
+        var T = '0';// 储存最后一个数字
+        var j = 0;
+        var cardID18 = "";
+        // 计数出第18位数字
+        for (var i = 16; i >= 0; i--) {
+            N += parseInt(cardID17.substring(i, i + 1)) * v[j];
+            j++;
+        }
+        R = N % 11;
+        T = vs.charAt(R);
+        cardID18 = cardID17 + T;
+        return cardID18;
+    }
+	
+	
+	
 });

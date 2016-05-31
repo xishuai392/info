@@ -8,6 +8,7 @@ Ext.onReady(function() {
     var isClickFjlxBtn1 = false;
     var isClickFjlxBtn2 = false;
     var isClickFjlxBtn3 = false;
+    var isClickFjlxBtn4 = false;
     
     //暂口信息查询外部第三方接口的URL
     var baseUrl = Ext.get("thirdPartyZzrkUrl").getValue();
@@ -521,31 +522,44 @@ Ext.onReady(function() {
 		         			
 		         		}
 		         		
+		         		//20160527 查询时，查询人为律师的事由默认为“诉讼”，
+		         		if('10'==newValue){
+		         			Ext.getCmp('sqr_cxsy').setValue('诉讼');
+		         		}else{
+		         			if('诉讼'==Ext.getCmp('sqr_cxsy').getValue()){
+		         				Ext.getCmp('sqr_cxsy').setValue('');
+		         			}
+		         		}
+		         		
 		         		//根据不同申请人类型，需要上传不同的附件，展示不同的按钮
 		         		if('20'==newValue||'40'==newValue||'60'==newValue){
 		         			//大类1
 		         			needFjlxStr = "1,2";
 		         			Ext.getCmp('fjlxBtn2').show();
 		         			Ext.getCmp('fjlxBtn3').hide();
+		         			Ext.getCmp('fjlxBtn4').hide();
 		         		}
 		         		if('30'==newValue){
 		         			//大类2
 		         			needFjlxStr = "1,2";
 		         			Ext.getCmp('fjlxBtn2').show();
 		         			Ext.getCmp('fjlxBtn3').hide();
+		         			Ext.getCmp('fjlxBtn4').hide();
 		         		}
 		         		if('10'==newValue){
 		         			//大类3
 		         			needFjlxStr = "1,2,3";
 		         			Ext.getCmp('fjlxBtn2').show();
 		         			Ext.getCmp('fjlxBtn3').show();
+		         			Ext.getCmp('fjlxBtn4').hide();
 		         		}
 		         		
 		         		if('50'==newValue){
 		         			//大类4
-		         			needFjlxStr = "1";
+		         			needFjlxStr = "1,4";
 		         			Ext.getCmp('fjlxBtn2').hide();
 		         			Ext.getCmp('fjlxBtn3').hide();
+		         			Ext.getCmp('fjlxBtn4').show();
 		         		}
 		         		//console.log("needFjlxStr:"+needFjlxStr);
 		         		var form = Ext.getCmp('card0').getForm();
@@ -566,6 +580,7 @@ Ext.onReady(function() {
             xtype : "textfield",
             grow      : true,
             id : 'sqr_cxsy',
+            value : '诉讼',
             allowBlank : false,
             afterSubTpl : WEBConstants.REQUIRED,
             width: sqrxxPanelFieldWidth,
@@ -614,6 +629,7 @@ Ext.onReady(function() {
 	        }
 	    }, {
 	        text: '下一步',
+	        hidden : true,
 	        iconCls : 'x-btn-icon-el x-tbar-page-next',
 	        formBind: true, //only enabled once the form is valid
 	        handler: function() {
@@ -653,6 +669,22 @@ Ext.onReady(function() {
 			        ExtUtils.doAjax(config);
 	            }
 	        }
+	    },{
+	        text: '转换成18位身份证',
+	        icon : ctx + '/common/images/icons/arrow_rotate_anticlockwise.png',
+	        handler: function() {
+	            var zjh = sqrxxPanel.getForm().findField('zjh').getValue();
+	            //如果已经是18位了，就不转换了
+	            if(zjh.getLength()==18){
+	            	return ;
+	            }
+	            
+	            var newZjh = ExtUtils.transformatIdFrom15To18(zjh);
+	            if(''==newZjh){
+	            	return ;
+	            }
+	            sqrxxPanel.getForm().findField('zjh').setValue(newZjh);
+	        }
 	    },'->',{
 	    	text: '追加查询',
 	        icon : ctx + '/common/images/icons/magnifier.png',
@@ -661,7 +693,51 @@ Ext.onReady(function() {
 	            appendQueryWin.show();
 	        }
 	    	
-	    }]
+	    }],
+	    fbar : [{
+                text : '下一步',
+                scale   : 'large',
+                icon : ctx + '/common/images/go_next_view_32px.png',
+                formBind: true, //only enabled once the form is valid
+                handler : function(){
+                	var form = this.up('form').getForm();
+		            if (form.isValid()) {
+		            	var params = {};
+		            	Ext.apply(params,form.getValues());
+		            	//this.setParams(this.store.proxy.extraParams,this.getForm().getValues());
+		            	var config = {
+				            url : 'information/applicantQuery.do',
+				            params : params,
+				            callback : function(jsonData){
+				            		var uuid = jsonData.uuid;
+					            	if(uuid.length==32){
+					            		//ExtUtils.info('通过表单校验');
+					            		sqrxxPanel.getForm().findField('mainId').setValue(uuid);//申请人主键
+					            		sqrxxPanel.getForm().findField('sqrlsh').setValue(jsonData.lsh);//申请人流水号
+					            		
+						            	var layout = infoMainPanel.getLayout();
+						            	//layout.setActiveItem(1);//下一步：证件扫描
+						            	layout.setActiveItem(1);
+						            	
+						            	
+						            	var cxsqrlx = sqrxxPanel.getForm().findField('cxsqrlx').getValue();
+						            	if('50'==cxsqrlx){
+						            		//“个人”类型查询时 在输入身份证查询页面直接把第一步查询申请人的身份证号码带过来
+						            		if('10'==sqrxxPanel.getForm().findField('zjlx').getValue()){
+						            			var zjh = sqrxxPanel.getForm().findField('zjh').getValue();
+						            			bcxrxxPanel.getForm().findField('idCardNum').setValue(zjh);
+						            		}
+						            		
+						            	}
+						            	
+					            	}
+				            }
+				        };
+				        ExtUtils.doAjax(config);
+		            }
+                }
+            }
+	    ]
 
     });
     
@@ -1048,6 +1124,7 @@ Ext.onReady(function() {
 			        		isClickFjlxBtn1 = true;
 			        		Ext.getCmp('fjlxBtn2').removeCls('index-redFlag-btn-custom');
 			        		Ext.getCmp('fjlxBtn3').removeCls('index-redFlag-btn-custom');
+			        		Ext.getCmp('fjlxBtn4').removeCls('index-redFlag-btn-custom');
 			        	}else{
 			        		//已经选中过了，取消
 			        		sqrxxPanel.getForm().findField('fjlx').setValue('');
@@ -1071,6 +1148,7 @@ Ext.onReady(function() {
 			        		isClickFjlxBtn2 = true;
 			        		Ext.getCmp('fjlxBtn1').removeCls('index-redFlag-btn-custom');
 			        		Ext.getCmp('fjlxBtn3').removeCls('index-redFlag-btn-custom');
+			        		Ext.getCmp('fjlxBtn4').removeCls('index-redFlag-btn-custom');
 			        	}else{
 			        		//已经选中过了，取消
 			        		sqrxxPanel.getForm().findField('fjlx').setValue('');
@@ -1094,11 +1172,36 @@ Ext.onReady(function() {
 			        		isClickFjlxBtn3 = true;
 			        		Ext.getCmp('fjlxBtn1').removeCls('index-redFlag-btn-custom');
 			        		Ext.getCmp('fjlxBtn2').removeCls('index-redFlag-btn-custom');
+			        		Ext.getCmp('fjlxBtn4').removeCls('index-redFlag-btn-custom');
 			        	}else{
 			        		//已经选中过了，取消
 			        		sqrxxPanel.getForm().findField('fjlx').setValue('');
 			        		Ext.getCmp('fjlxBtn3').removeCls('index-redFlag-btn-custom');
 			        		isClickFjlxBtn3 = false;
+			        	}
+			        }
+			    },'-',{
+			    	text: '其他材料', 
+			    	id : "fjlxBtn4",
+			    	hidden : true,
+			    	scale   : 'large',
+			    	icon: ctx + '/common/images/Folder_Images_32px.png',
+			    	handler: function(){
+			        	//个人查询他人信息，需要增加其他材料
+			    		
+			    		if(!isClickFjlxBtn4){
+			        		//还没有选中
+			    			sqrxxPanel.getForm().findField('fjlx').setValue('4');
+			        		Ext.getCmp('fjlxBtn4').addCls('index-redFlag-btn-custom');
+			        		isClickFjlxBtn4 = true;
+			        		Ext.getCmp('fjlxBtn1').removeCls('index-redFlag-btn-custom');
+			        		Ext.getCmp('fjlxBtn2').removeCls('index-redFlag-btn-custom');
+			        		Ext.getCmp('fjlxBtn3').removeCls('index-redFlag-btn-custom');
+			        	}else{
+			        		//已经选中过了，取消
+			        		sqrxxPanel.getForm().findField('fjlx').setValue('');
+			        		Ext.getCmp('fjlxBtn4').removeCls('index-redFlag-btn-custom');
+			        		isClickFjlxBtn4 = false;
 			        	}
 			        }
 			    }
@@ -1505,7 +1608,63 @@ Ext.onReady(function() {
 	    }]
     });
     
+    
+    var fjlxLength = 4;//附件类型总长度
+    //检查附件是否都上传
     var checkImages = function(){
+    	var needFjlxAry = needFjlxStr.split(',');
+    	console.log(needFjlxAry.length);
+    	var hasFjlxAry = new Array();
+    	var tipFjlxAry = new Array();//提示用的数组
+    	//初始化空数组
+    	for(var j=0;j<fjlxLength;j++){
+    		hasFjlxAry[j]="";
+    	}
+    	
+    	for(var j=0;j<needFjlxAry.length;j++){ 
+    		hasFjlxAry[needFjlxAry[j]-1]="false";
+    		tipFjlxAry[j]=needFjlxAry[j];
+    	}
+    	
+    	for(var i =0;i<imageStore.getCount();i++){
+			var model = imageStore.getAt(i); //遍历每一行
+			//console.log(model);
+			console.log(i+':'+model.data.fjlx);
+			hasFjlxAry[parseInt(model.data.fjlx)-1]="true";
+		}
+		console.log(hasFjlxAry);
+		console.log(tipFjlxAry);
+    	
+		var valid = true;
+		var msg = "按要求上传[工作证/身份证]...";
+		for(var k=0;k< fjlxLength ;k++){ 
+			if("false"==hasFjlxAry[k]){
+				valid = false;
+				//var tipfjlx = tipFjlxAry[k];
+				//附件类型：1=工作证/身份证；2=介绍信；3=委托协议/受理通知书；4=其他材料
+				if(k==1){
+					msg = "按要求上传[介绍信]...";
+				}
+				if(k==2){
+					msg = "按要求上传[委托协议/受理通知书]...";
+				}
+				if(k==3){
+					msg = "按要求上传[其他材料]...";
+				}
+				break;
+			}
+    	}
+    	
+    	if(!valid){
+    		ExtUtils.tip("错误",msg); 
+			return false;
+    	}
+    	return valid;
+    };
+    
+    
+    //检查附件是否都上传
+    var checkImages2 = function(){
     	var needFjlxAry = needFjlxStr.split(',');
     	console.log(needFjlxAry.length);
     	var hasFjlxAry = new Array();
@@ -1531,6 +1690,9 @@ Ext.onReady(function() {
 				}
 				if(k==2){
 					msg = "按要求上传[委托协议/受理通知书]...";
+				}
+				if(k==3){
+					msg = "按要求上传[其他材料]...";
 				}
 				break;
 			}
@@ -1716,6 +1878,15 @@ Ext.onReady(function() {
 	        handler: function() {
 	            this.up('form').getForm().reset();
 	        }
+	    },{
+	        text: '查询完毕',
+	        iconCls : 'arrow_undo',
+	        //icon : ctx + '/common/images/icons/magnifier.png',
+	        handler: function() {
+	            var layout = infoMainPanel.getLayout();
+	            layout.setActiveItem(0);//第一步：填写申请人信息
+	            clearAll();
+	        }
 	    }
 	    /**,{
 	        text: '查询',
@@ -1859,7 +2030,7 @@ Ext.onReady(function() {
                     	if('户籍人口'==grid.getStore().getAt(rowIndex).data.populationType){
                     		
                     		var width = screen.availWidth-3;
-							var height = screen.availHeight-20;
+							var height = screen.availHeight-50;
 							var left = -4;
 							var top = -4; 
 		
@@ -1907,7 +2078,7 @@ Ext.onReady(function() {
                     	
                     	if('暂住人口'==grid.getStore().getAt(rowIndex).data.populationType){
                     		var width = screen.availWidth-3;
-							var height = screen.availHeight-20;
+							var height = screen.availHeight-50;
 							var left = -4;
 							var top = -4; 
 		
@@ -2488,12 +2659,14 @@ Ext.onReady(function() {
     	isClickFjlxBtn1 = false;
     	isClickFjlxBtn2 = false;
     	isClickFjlxBtn3 = false;
+    	isClickFjlxBtn4 = false;
     	
 //    	Ext.getCmp('fjlxBtn2').hide();
 //		Ext.getCmp('fjlxBtn3').hide();
 		Ext.getCmp('fjlxBtn1').removeCls('index-redFlag-btn-custom');
 		Ext.getCmp('fjlxBtn2').removeCls('index-redFlag-btn-custom');
 		Ext.getCmp('fjlxBtn3').removeCls('index-redFlag-btn-custom');
+		Ext.getCmp('fjlxBtn4').removeCls('index-redFlag-btn-custom');
 //		Ext.getCmp('fjlxBtn2').hide();
 //		Ext.getCmp('fjlxBtn3').hide();
     };

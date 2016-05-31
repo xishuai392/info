@@ -250,15 +250,15 @@ Ext.onReady(function() {
                 //TODO
                 //TODO
                 //TODO
-//                ClearIDCard();
-//                var CVR_IDCard = document.getElementById("CVR_IDCard");		
-//                //设置超时时间
-//                CVR_IDCard.TimeOut=3;
-//				var strReadResult = CVR_IDCard.ReadCard();
+                ClearIDCard();
+                var CVR_IDCard = document.getElementById("CVR_IDCard");		
+                //设置超时时间
+                CVR_IDCard.TimeOut=3;
+				var strReadResult = CVR_IDCard.ReadCard();
 				
 				
 				//TODO  @惜帅  调试隐藏
-				strReadResult = "0";
+//				strReadResult = "0";
 				
 				if(strReadResult == "0"){
 	              var config = {
@@ -270,8 +270,8 @@ Ext.onReady(function() {
 				            "born" : CVR_IDCard.Born,     //出生日期
 				            "address" : CVR_IDCard.Address, //地址
 				            //TODO  @惜帅  调试隐藏
-//				            "cardNo" : CVR_IDCard.CardNo, //身份号码
-				            "cardNo" : CVR_IDCard.CardNo||"35020419811021103X", //身份号码
+				            "cardNo" : CVR_IDCard.CardNo, //身份号码
+//				            "cardNo" : CVR_IDCard.CardNo||"35020419811021103X", //身份号码
 				            
 				            "issuedAt" : CVR_IDCard.IssuedAt,  //签发机关
 				            "effectedDate" : CVR_IDCard.EffectedDate,  //生效期限
