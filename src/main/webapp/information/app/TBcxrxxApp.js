@@ -39,24 +39,14 @@ Ext.onReady(function() {
 	            hidden : true,
 	            name : "id"
         	},
-        	{
-	            fieldLabel : "查询人流水号",
-	            xtype : "textfield",
-	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
-	            name : "sqrlsh"
-        	},
+        	
         	{
 	            fieldLabel : "查询人姓名",
 	            xtype : "textfield",
 	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
 	            name : "sqrXm"
         	},
-        	{
-	            fieldLabel : "被查询人流水号",
-	            xtype : "textfield",
-	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
-	            name : "lsh"
-        	},
+        	
 	      	{
 	            fieldLabel : "被查询人姓名",
 	            xtype : "textfield",
@@ -118,6 +108,16 @@ Ext.onReady(function() {
 	            xtype : "textfield",
 	            hidden : true,
 	            name : "cxcs"
+        	},{
+	            fieldLabel : "查询人流水号",
+	            xtype : "textfield",
+	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
+	            name : "sqrlsh"
+        	},{
+	            fieldLabel : "被查询人流水号",
+	            xtype : "textfield",
+	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
+	            name : "lsh"
         	}	       
         ]
     });

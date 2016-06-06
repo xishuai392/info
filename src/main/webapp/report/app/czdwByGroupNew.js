@@ -155,10 +155,14 @@ Ext.onReady(function() {
 	            //window.open();
 		  	}
         }],
+        defaults: { // defaults are applied to items, not the container
+		    width: 50
+		},
         columns : [{
             text : "操作单位",
             align : 'center',
             dataIndex : "dwmc",
+            
             width : 180
 //            ,
 //            flex : 1
@@ -166,6 +170,9 @@ Ext.onReady(function() {
             text: '查询次数',
             menuDisabled : true,
             //flex : 8,
+            defaults: { // defaults are applied to items, not the container
+			    width: 70
+			},
             columns: [{
 	            text : "律师",
 	            menuDisabled : true,
@@ -173,6 +180,12 @@ Ext.onReady(function() {
 //	            ,
 //	            flex : 1
 	        },{
+	            text : "个人",
+	            menuDisabled : true,
+	            dataIndex : "fwcs50"
+//	            ,
+//	            flex : 1
+	        }, {
 	            text : "党政军机关",
 	            menuDisabled : true,
 	            dataIndex : "fwcs20"
@@ -188,12 +201,6 @@ Ext.onReady(function() {
 	            text : "企事业单位",
 	            menuDisabled : true,
 	            dataIndex : "fwcs40"
-//	            ,
-//	            flex : 1
-	        }, {
-	            text : "个人",
-	            menuDisabled : true,
-	            dataIndex : "fwcs50"
 //	            ,
 //	            flex : 1
 	        }, {
@@ -219,6 +226,9 @@ Ext.onReady(function() {
             text: '查询人数',
             menuDisabled : true,
             //flex : 8,
+            defaults: { // defaults are applied to items, not the container
+			    width: 70
+			},
             columns: [{
 	            text : "律师",
 	            menuDisabled : true,
@@ -226,6 +236,12 @@ Ext.onReady(function() {
 //	            ,
 //	            flex : 1
 	        },{
+	            text : "个人",
+	            menuDisabled : true,
+	            dataIndex : "cxcs50"
+//	            ,
+//	            flex : 1
+	        }, {
 	            text : "党政军机关",
 	            menuDisabled : true,
 	            dataIndex : "cxcs20"
@@ -241,12 +257,6 @@ Ext.onReady(function() {
 	            text : "企事业单位",
 	            menuDisabled : true,
 	            dataIndex : "cxcs40"
-//	            ,
-//	            flex : 1
-	        }, {
-	            text : "个人",
-	            menuDisabled : true,
-	            dataIndex : "cxcs50"
 //	            ,
 //	            flex : 1
 	        }, {
@@ -272,6 +282,9 @@ Ext.onReady(function() {
             text: '查询成功次数',
             menuDisabled : true,
             //flex : 8,
+            defaults: { // defaults are applied to items, not the container
+			    width: 70
+			},
             columns: [{
 	            text : "律师",
 	            menuDisabled : true,
@@ -279,6 +292,12 @@ Ext.onReady(function() {
 //	            ,
 //	            flex : 1
 	        },{
+	            text : "个人",
+	            menuDisabled : true,
+	            dataIndex : "cxcgcs50"
+//	            ,
+//	            flex : 1
+	        }, {
 	            text : "党政军机关",
 	            menuDisabled : true,
 	            dataIndex : "cxcgcs20"
@@ -294,12 +313,6 @@ Ext.onReady(function() {
 	            text : "企事业单位",
 	            menuDisabled : true,
 	            dataIndex : "cxcgcs40"
-//	            ,
-//	            flex : 1
-	        }, {
-	            text : "个人",
-	            menuDisabled : true,
-	            dataIndex : "cxcgcs50"
 //	            ,
 //	            flex : 1
 	        }, {

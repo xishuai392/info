@@ -28,12 +28,7 @@ Ext.onReady(function() {
     	            hidden : true,
     	            name : "id"
             	},
-            	{
-    	            fieldLabel : "申请人流水号",
-    	            xtype : "textfield",
-    	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
-    	            name : "lsh"
-            	},
+            	
     	      	{
     	            fieldLabel : "姓名",
     	            xtype : "textfield",
@@ -131,7 +126,13 @@ Ext.onReady(function() {
     	                fields : ['value', 'text'],
     	                data : [['', '全部'], ['10', '终端'], ['20', '窗口']]
     	            })
-            	}	       
+            	},
+            	{
+    	            fieldLabel : "申请人流水号",
+    	            xtype : "textfield",
+    	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
+    	            name : "lsh"
+            	}
             ]
 
     });

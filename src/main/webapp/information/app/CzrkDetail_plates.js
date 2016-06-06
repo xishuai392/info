@@ -148,7 +148,10 @@ Ext.onReady(function() {
 	var winHeight = (parseInt(Ext.getBody().getHeight())*0.8);
 	
 	
-	
+	//打印后，隔3秒自动关闭页面
+	var CloseAfterPrint = function(){
+		window.setTimeout('CloseWebPage()', 100);
+	};
 	
     
     
@@ -743,6 +746,9 @@ Ext.onReady(function() {
 			            callback : function(canPrintResult){
 			            	if(canPrintResult.canPrint){
 			            		ExtUtils.tip("提示",canPrintResult.message);
+			            		
+			            		
+			            		
 			            		//利用jatoolsPrinter打印
 			            		doJatoolsPrint(0);
 			            		
@@ -860,6 +866,9 @@ Ext.onReady(function() {
 			            callback : function(canPrintResult){
 			            	if(canPrintResult.canPrint){
 			            		ExtUtils.tip("提示",canPrintResult.message);
+			            		ExtUtils.info("请等待打印结果出来再离开，并确定打印结果都已经取走",CloseAfterPrint,window);
+			            		window.setTimeout('CloseWebPage()', 3000);
+			            		
 			            		//利用jatoolsPrinter打印
 			            		doJatoolsPrint(2);
 			            		
@@ -1014,13 +1023,13 @@ Ext.onReady(function() {
     defaultTimes = function () {
         // 测试弹出
         times = intervalTimes;
-        Ext.getCmp('showSeconds').setText('<span style="font-size:20px !important;font-family:microsoft yahei !important;">'+times+'S</span>');
+        Ext.getCmp('showSeconds').setText('<span style="font-size:20px !important;font-family:microsoft yahei !important;">距退出系统还有'+times+'秒</span>');
     };
     // 判断是否超过【intervalTimes】秒无操作。
     timesReduce = function () {
         times--;
         if(times>=-1){
-        	Ext.getCmp('showSeconds').setText('<span style="font-size:20px !important;font-family:microsoft yahei !important;">'+times+'S</span>');
+        	Ext.getCmp('showSeconds').setText('<span style="font-size:20px !important;font-family:microsoft yahei !important;">距退出系统还有'+times+'秒</span>');
         }
         // alert(times);
         if (times <= 0) {

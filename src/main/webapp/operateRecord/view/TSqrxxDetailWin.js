@@ -138,12 +138,7 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
                 xtype : "textfield",
                 hidden : true,
                 name : "id"
-            }, {
-	            fieldLabel : "申请人流水号",
-	            xtype : "textfield",
-	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
-	            name : "lsh"
-        	},{
+            },{
                 fieldLabel : "姓名",
                 xtype : "textfield",
                 name : "xm"
@@ -205,7 +200,12 @@ Ext.define('component.operateRecord.view.TSqrxxDetailWin', {
                 fieldLabel : "操作人",
                 xtype : "textfield",
                 name : "czrmc"
-            }]
+            }, {
+	            fieldLabel : "申请人流水号",
+	            xtype : "textfield",
+	            operation : WEBConstants.OPERATION.Like,// 操作类型，如果不设置，默认等于(EqualTo)
+	            name : "lsh"
+        	}]
         });
         return formPanel;
     },

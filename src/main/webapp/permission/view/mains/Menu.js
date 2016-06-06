@@ -54,6 +54,54 @@ Ext.define('PM.view.mains.Menu', {
                     dataIndex : 'text'
                 }],
                 listeners : {
+                	'render' : function(view, record) {
+                		view.expandAll();
+                	},
+                	'afteritemexpand' : function(node, index, item, eOpts ) {
+                		if(2!=node.data.attributeMap.menuId){
+                			return;
+                		}
+                		console.log(node.data.attributeMap.menuId);
+                		console.log(node.data.attributeMap.menuIconPath);
+                		var record = node;
+                		
+                		var contentPanel = Ext.getCmp('main_content_panel');
+                        var pnl = contentPanel.getComponent('ZTEtab-' + record.data.attributeMap.menuId);
+                        var hasIcon = false;
+                        if(record.data.attributeMap.menuIconPath!=null||record.data.attributeMap.menuIconPath!=""){
+                        	hasIcon = true;
+                        }
+                        if (!pnl) {
+                            pnl = contentPanel.add({
+                                xtype : 'component',
+                                id : 'ZTEtab-' + record.data.attributeMap.menuId,
+                                icon : hasIcon?(webRoot + record.data.attributeMap.menuIconPath):null,
+                                title : record.data.attributeMap.menuTitle,
+                                closable : true,
+                                layout : 'fit',
+                                border : false,
+                                autoEl : {
+                                    tag : 'iframe',
+                                    name : 'ZTEtab-' + record.data.attributeMap.menuId,
+                                    style : 'height: 100%; width: 100%; border: none;',
+                                    src : webRoot + record.data.attributeMap.urlString
+                                },
+                                listeners : {
+                                    load : {
+                                        element : 'el',
+                                        fn : function() {
+                                            Ext.getBody().unmask();
+                                        }
+                                    },
+                                    render : function() {
+                                        Ext.getBody().mask('页面载入中......');
+                                    }
+                                }
+                            });
+                        }
+                        contentPanel.setActiveTab(pnl);
+                	},
+                	
                     'itemclick' : function(view, record) {
                     	//console.log("menu click");
                     	//console.log(record);

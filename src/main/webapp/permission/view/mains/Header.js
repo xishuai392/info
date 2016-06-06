@@ -16,7 +16,7 @@ Ext.define('PM.view.mains.Header', {
             dockedItems : [{
                 xtype : 'toolbar',
                 height : 80,
-                style : 'background-image: url(' + ctx + '/common/images/logo.jpg) !important; background-repeat: no-repeat;background-position:center left;background-size:100% 100%;background-size:  cover;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader( src="' + ctx + '/common/images/logo.jpg",sizingMethod="scale");',
+                style : 'background-image: url(' + ctx + '/common/images/logo_1900_80.jpg) !important; background-repeat: no-repeat;background-position:center left;background-size:100% 100%;background-size:  cover;filter:progid:DXImageTransform.Microsoft.AlphaImageLoader( src="' + ctx + '/common/images/logo.jpg",sizingMethod="scale");',
                 // filter:progid:DXImageTransform.Microsoft.AlphaImageLoader( src=' + ctx + '/common/images/logo.jpg,sizingMethod='scale');
                 dock : 'top',
                 items : ['->', {
@@ -24,13 +24,15 @@ Ext.define('PM.view.mains.Header', {
                     scale : 'medium',
                     textAlign : 'left',
                     text : '修改密码',
+                    hidden : true,
                     handler : me.updPassword,
                     scope : me
-                },'-', {
+                },{
                     iconCls : 'loginOut',
                     scale : 'medium',
                     textAlign : 'left',
                     text : '退出系统',
+                    hidden : true,
                     handler : me.loginOut,
                     scope : me
                 }]

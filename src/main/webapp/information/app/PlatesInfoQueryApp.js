@@ -4,6 +4,9 @@
 Ext.onReady(function() {
 	
 	Ext.util.CSS.swapStyleSheet('theme',webRoot+'common/jslibs/extjs/ext-4.2.1/resources/ext-theme-gray/ext-theme-gray-all.css');
+//	Ext.util.CSS.swapStyleSheet('theme',webRoot+'common/jslibs/extjs/ext-4.2.1/resources/ext-theme-neptune/ext-theme-neptune-all.css');
+//	Ext.util.CSS.swapStyleSheet('theme',webRoot+'common/jslibs/extjs/ext-4.2.1/resources/ext-theme-access/ext-theme-access-all.css');
+	
 	
 	Ext.Ajax.timeout = 180000; //3分钟超时 
 	
@@ -163,7 +166,7 @@ Ext.onReady(function() {
             xtype : 'button',
             //region : 'center',
             id : 'zzQryBtn',
-            cls : 'btnQueryCls',
+            //cls : 'btnQueryCls',
             text: '<span style="font-size:26px !important;font-family:microsoft yahei !important;">'+btnTitle2+'</span>',
             //cls : 'btntransparent',
             width : btnWidth,
@@ -182,7 +185,7 @@ Ext.onReady(function() {
             xtype : 'button',
             //region : 'south',
             id : 'wlzzQryBtn',
-            cls : 'btnQueryCls',
+            //cls : 'btnQueryCls',
             text: '<span style="font-size:26px !important;font-family:microsoft yahei !important;">外来务工子女就学</span><br><span style="font-size:16px !important;font-family:microsoft yahei !important;">暂住人口信息查询表打印</span>',
             //cls : 'btntransparent',
             width : btnWidth,
@@ -224,12 +227,12 @@ Ext.onReady(function() {
 	    },
 	    items: [{
 	    	xtype : 'label',
-	    	html: '<span style="font-size:30px !important;font-family:microsoft yahei !important;color:red;line-height：17pt">操作提醒</span><br>'
-	    		+ '<span style="font-size:20px !important;font-family:microsoft yahei !important;line-height：17pt">请将身份证放入读卡区，然后点击查询。</span><br>'
-            	+'<span style="font-size:20px !important;font-family:microsoft yahei !important;line-height：17pt">为保护您的个人隐私，请操作完成后点击“关闭”退出操作界面。</span>',
+	    	html: '<span style="line-height:1.5;font-size:30px !important;font-family:microsoft yahei !important;color:red;line-height：17pt">操作提醒</span><br>'
+	    		+ '<span style="line-height:1.5;font-size:20px !important;font-family:microsoft yahei !important;line-height：17pt">请将身份证放入读卡区，然后点击查询。</span><br>'
+            	+'<span style="line-height:1.5;font-size:20px !important;font-family:microsoft yahei !important;line-height：17pt">为保护您的个人隐私，请操作完成后点击“关闭”退出操作界面。</span>',
             //cls : 'btntransparent',
             width : btnWidth+5,
-            height : 90
+            height : 100
 	    },{
             xtype : 'button',
             region : 'center',
@@ -515,13 +518,13 @@ Ext.onReady(function() {
     defaultTimes = function () {
         // 测试弹出
         times = intervalTimes;
-        Ext.getCmp('showSeconds').setText('<span style="font-size:20px !important;font-family:microsoft yahei !important;">'+times+'S</span>');
+        Ext.getCmp('showSeconds').setText('<span style="font-size:20px !important;font-family:microsoft yahei !important;">距退出系统还有'+times+'秒</span>');
     };
     // 判断是否超过【intervalTimes】秒无操作。
     timesReduce = function () {
         times--;
         if(times>=-1){
-        	Ext.getCmp('showSeconds').setText('<span style="font-size:20px !important;font-family:microsoft yahei !important;">'+times+'S</span>');
+        	Ext.getCmp('showSeconds').setText('<span style="font-size:20px !important;font-family:microsoft yahei !important;">距退出系统还有'+times+'秒</span>');
         }
         // alert(times);
         if (times <= 0) {

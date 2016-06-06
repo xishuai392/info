@@ -12,9 +12,13 @@
     padding-bottom: 3px;
 }
 
+/* height:113px;
+	width: 80px;
+ */
+
 #images-view .thumb img{
-    height: 113px;
-    width: 80px;
+    height: 170px;
+    width: 120px;
 }
 #images-view .thumb-wrap{
     float: left;
@@ -27,7 +31,7 @@
     display: block;
     overflow: hidden;
     text-align: center;
-    width: 86px; /* for ie to ensure that the text is centered */
+    width: 130px; /* for ie to ensure that the text is centered, default 86px*/
 }
 
 #images-view .x-item-over{
