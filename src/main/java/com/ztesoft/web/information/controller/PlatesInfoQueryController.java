@@ -28,6 +28,7 @@ import com.ztesoft.framework.util.UuidUtils;
 import com.ztesoft.web.domain.IConstants;
 import com.ztesoft.web.information.db.po.TBcxrxxPO;
 import com.ztesoft.web.information.db.po.TSqrxxPO;
+import com.ztesoft.web.information.domain.req.print.PrintReqInfo;
 import com.ztesoft.web.information.domain.req.query.QueryByOtherPeopleReqInfo;
 import com.ztesoft.web.information.domain.req.query.QueryByPlatesReqInfo;
 import com.ztesoft.web.information.domain.resp.FamilyInfo;
@@ -240,6 +241,18 @@ public class PlatesInfoQueryController {
         return trPopulationInfo;
     }
 
+    /**
+     * 保持终端与服务端的通讯
+     * @param reqInfo
+     */
+    @RequestMapping("keepActive")
+    @ResponseBody
+    public String keepActive() {
+        long ts = System.currentTimeMillis();
+        logger.debug("this ts:"+ts);
+        return "{active:true,ts:"+ts+"}";
+    }
+    
     /**
      * 获取客户端的IP
      * 

@@ -3,7 +3,7 @@
  */
 Ext.onReady(function() {
 	
-	Ext.util.CSS.swapStyleSheet('theme',webRoot+'common/jslibs/extjs/ext-4.2.1/resources/ext-theme-gray/ext-theme-gray-all.css');
+//	Ext.util.CSS.swapStyleSheet('theme',webRoot+'common/jslibs/extjs/ext-4.2.1/resources/ext-theme-gray/ext-theme-gray-all.css');
 //	Ext.util.CSS.swapStyleSheet('theme',webRoot+'common/jslibs/extjs/ext-4.2.1/resources/ext-theme-neptune/ext-theme-neptune-all.css');
 	Ext.util.CSS.swapStyleSheet('theme',webRoot+'common/jslibs/extjs/ext-4.2.1/resources/ext-theme-access/ext-theme-access-all.css');
 	
@@ -16,7 +16,8 @@ Ext.onReady(function() {
     //按钮名称
     var btnTitle1="厦门户籍人口基本信息查询";
     var btnTitle2="厦门暂（居）住人口基本信息查询";
-    var btnTitle3="外来务工子女就学-暂住人口信息查询表";
+    //var btnTitle3="外来务工子女就学-暂住人口信息查询表";
+    var btnTitle3="暂住人口信息查询";
 	
     //暂口信息查询外部第三方接口的URL
     var baseUrl = Ext.get("thirdPartyZzrkUrl").getValue();
@@ -186,7 +187,7 @@ Ext.onReady(function() {
             //region : 'south',
             id : 'wlzzQryBtn',
             //cls : 'btnQueryCls',
-            text: '<span style="font-size:26px !important;font-family:microsoft yahei !important;">外来务工子女就学</span><br><span style="font-size:16px !important;font-family:microsoft yahei !important;">暂住人口信息查询表打印</span>',
+            text: '<span style="font-size:26px !important;font-family:microsoft yahei !important;;color:red">暂住人口信息查询</span><br><span style="font-size:16px !important;font-family:microsoft yahei !important;color:red">外来务工子女就学、暂住证办理年限</span>',
             //cls : 'btntransparent',
             width : btnWidth,
             height : btnHeight,
@@ -550,7 +551,28 @@ Ext.onReady(function() {
     };
     window.setInterval('timesReduce()', 1000);
     
+    var ajaxLoad = function(){
+    	var params = {};
+    	Ext.Ajax.request({    
+	       url : webRoot + 'plates/keepActive.do', 
+	       method : 'post',
+	       timeout:120000,
+	       params:{ 
+	       		querynoticetype : '1'
+	       }, 
+	       success: function(response,opts) { 
+	        	console.log(response);
+	       }
+    	});
+    	
+    };
     
+    //自动加载数据
+	loadDataTimer = setInterval(ajaxLoad,3*60*1000);
+    
+	
+	
+	
     //键盘事件
 	//document.onkeydown=defaultTimes;
 	//document.onkeypress=defaultTimes;
