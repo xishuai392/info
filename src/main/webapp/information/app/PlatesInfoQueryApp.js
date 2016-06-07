@@ -5,7 +5,7 @@ Ext.onReady(function() {
 	
 	Ext.util.CSS.swapStyleSheet('theme',webRoot+'common/jslibs/extjs/ext-4.2.1/resources/ext-theme-gray/ext-theme-gray-all.css');
 //	Ext.util.CSS.swapStyleSheet('theme',webRoot+'common/jslibs/extjs/ext-4.2.1/resources/ext-theme-neptune/ext-theme-neptune-all.css');
-//	Ext.util.CSS.swapStyleSheet('theme',webRoot+'common/jslibs/extjs/ext-4.2.1/resources/ext-theme-access/ext-theme-access-all.css');
+	Ext.util.CSS.swapStyleSheet('theme',webRoot+'common/jslibs/extjs/ext-4.2.1/resources/ext-theme-access/ext-theme-access-all.css');
 	
 	
 	Ext.Ajax.timeout = 180000; //3分钟超时 

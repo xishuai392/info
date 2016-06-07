@@ -49,13 +49,6 @@
 		<OBJECT classid="clsid:10946843-7507-44FE-ACE8-2B3483D179B7"
 			  id="CVR_IDCard" name="CVR_IDCard" width="0" height="0" >
 		</OBJECT>
-		
-		
-		
-		<script type="text/javascript"
-			src="${ctx}/information/app/InfoQueryApp.js">
-		</script>
-		
 		<style>
 			* { margin:0; padding:0; }
 			img { vertical-align:bottom; border:none; }
@@ -78,6 +71,13 @@
 				font-size:15px;/*字体大小设置*/ 
 				} 
 		</style>
+		
+		
+		<script type="text/javascript"
+			src="${ctx}/information/app/InfoQueryApp.js">
+		</script>
+		
+
 
 
 	</head>
