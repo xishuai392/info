@@ -8,7 +8,7 @@
 <title></title>
 <meta name="description" content="HSIT-UI">
 <meta name="keywords" content="HSIT-UI">
-<meta name="author" content="design4u,QQ:290115709,Email:xishuai392@gmail.com;">
+<meta name="author" content="">
 <meta name="Copyright" Content="xx信息技术有限公司 版权所有">
 <script type="text/javascript" src="${ctx}/js/jquery.royalslider.min.js"></script>
 <script type="text/javascript" src="${ctx}/js/login.js"></script>
@@ -38,9 +38,9 @@
           	<a downloadtype="3" href="#">二代证读卡器USB驱动下载</a>
           	<a downloadtype="4" href="#">二代证B/S读卡控件下载</a>
           	<a downloadtype="5" href="#">终端打印插件下载</a>
-          
+          <!-- 
             <a href="#">关于我们</a>
-            <a href="#">帮助</a>
+            <a href="#">帮助</a> -->
           </div>
         </div>
       </div>
@@ -136,12 +136,13 @@
               <div class="rsABlock" data-fade-effect="" data-move-offset="100" data-move-effect="left" data-speed="800"><img style="margin-left:-400px;" src="" alt=""/></div>
                -->
             </div>
+            <!-- 
             <div class="rsContent" style="background:#2a95bb; height:500px;">
               <div style="position:absolute; left:50%; width:2000px; height:500px; top:0; margin-left:-1000px;"><img src="${ctx}/resources/images/banner/1-0.jpg" alt=""/></div>
-			  <!-- 
+			  
               <div class="rsABlock" data-fade-effect="" data-move-offset="100" data-move-effect="left" data-speed="800"><img style="margin-left:-400px;" src="" alt=""/></div>
-               -->
-            </div>
+               
+            </div>-->
             
             
           </div>
@@ -179,18 +180,7 @@
       </div>
       <!--footer-->
       <div class="h-l-footer">
-        <div class="h-l-wrapper-in">
-          <div class="h-l-logo-bt"><!--
-            <img src="${ctx}/resources/images/logo-hs.png" alt=""/> -->
-          </div>
-          <div class="h-l-copyRight">
-          	<!--
-            <p>Copyright &copy; 2015-2017
-              <a href="http://www.baidu.com" title="点击进入xx官网">BAIDU.COM</a>
-              |  技术支持：xx信息技术有限公司</p>
-             -->
-          </div>
-        </div>
+        <p>厦门市公安局科技通信处&nbsp;&nbsp;&nbsp;&nbsp;联系电话:2262277</p>
       </div>
     </div>
   </div>
