@@ -66,7 +66,7 @@
 		<dependency>
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc6</artifactId>
-			<version>11.2.0.3.0</version>
+			<version>11.2.0.3</version>
 		</dependency>
 
 
@@ -496,8 +496,8 @@
 
 	<repositories>
 		<repository>
-			<id>Nexus</id>
-			<url>http://10.45.45.200:8081/nexus/content/groups/public</url>
+			<id>repository-master.mulesoft.org</id>
+			<url>https://repository-master.mulesoft.org/nexus/content/groups/public/</url>
 		</repository>
 	</repositories>
 
