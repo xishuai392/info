@@ -1264,7 +1264,7 @@ Ext.onReady(function() {
 			        		isClickFjlxBtn4 = false;
 			        	}
 			        }
-			    },'<span style="color:red">请先点击按钮选择附件类型（红色字体为选择状态） -> </span>',
+			    },'<span style="color:red">请先点击按钮选择附件类型（红色字体为选择状态） </span>',
 	    		'-'
 	    	],
 	    	items : [{ 
@@ -1561,7 +1561,9 @@ Ext.onReady(function() {
 				        }
 			 		}] 
                 }]
-			},
+			}
+			
+			,
 			items : [{
 				xtype:"component",
                 border:false,
@@ -1581,13 +1583,15 @@ Ext.onReady(function() {
 					id : 'captrue'
 	            }
 	            */
+                /**
                 autoEl: {
                 	html : '<div id="preview_doccamera" style="text-align:center;width:100%;height:100%" >'
 					+ '<object classid="clsid:454C18E2-8B7D-43C6-8C17-B1825B49D7DE" id="captrue"  width="480" height="360" ></object>'
 					+ '</div>'
                 }
-                
+                **/
 				//renderTo : 'preview_doccamera'
+				contentEl : 'preview_doccamera'
 			
 			}]
 	    }

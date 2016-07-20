@@ -85,12 +85,12 @@
 		<input id="thirdPartyZzrkUrl" type="hidden" value="${thirdPartyZzrkUrl}">
 		<div style="width: 100%;height: 100%"></div>
 		<div id="doccameraOcx" >
-		<!-- 捷易拍DoccameraOcx控件_V3.7.1500802 ----
-			<div id="preview_doccamera"  >
+		<!-- 捷易拍DoccameraOcx控件_V3.7.1500802 ---- -->
+			<div id="preview_doccamera"  style="">
 				<object classid="clsid:454C18E2-8B7D-43C6-8C17-B1825B49D7DE" id="captrue"  width="480" height="360" ></object>
 			</div>
 		</div>
-		-->
+		
 	</body>
 </html>
 
