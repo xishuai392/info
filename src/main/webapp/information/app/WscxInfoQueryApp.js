@@ -4,10 +4,11 @@
  
  
 Ext.onReady(function() {
-    var sqrxxPanel,zjPanel,ssxzlPanel,bcxrxxPanel,bcxrStore,bcxrGrid,changzhuWin,zanzhuWin,infoMainPanel;
+    var sqrxxPanel,zjPanel,ssxzlPanel,bcxrxxPanel,bcxrStore,bcxrGrid,changzhuWin,zanzhuWin,infoMainPanel,appendQueryWin,appendQueryGrid,appendQueryForm,appendQueryAction;
     var isClickFjlxBtn1 = false;
     var isClickFjlxBtn2 = false;
     var isClickFjlxBtn3 = false;
+    var isClickFjlxBtn4 = false;
     
     //暂口信息查询外部第三方接口的URL
     var baseUrl = Ext.get("thirdPartyZzrkUrl").getValue();
@@ -160,6 +161,20 @@ Ext.onReady(function() {
             width: sqrxxPanelFieldWidth,
             name : "zjh",
             listeners:{
+            	'blur' : function(thiz,the,opts){
+            	 		var zjh = sqrxxPanel.getForm().findField('zjh').getValue();
+            	 		console.log(zjh.getLength());
+			            //如果不是15位了，就不转换了
+			            if(zjh.getLength()!=15){
+			            	return ;
+			            }
+			            
+			            var newZjh = ExtUtils.transformatIdFrom15To18(zjh);
+			            if(''==newZjh){
+			            	return ;
+			            }
+			            sqrxxPanel.getForm().findField('zjh').setValue(newZjh);
+            	 },
 		         //scope: yourScope,
 		         'change': function(thiz,newValue ,oldValue ,eOpts ){
             			// 申请查询人身份证号码校验
@@ -265,33 +280,47 @@ Ext.onReady(function() {
 		         			
 		         		}
 		         		
+		         		//20160527 查询时，查询人为律师的事由默认为“诉讼”，
+		         		//20160604 所有的查询事由，默认为“诉讼”
+//		         		if('10'==newValue){
+//		         			Ext.getCmp('sqr_cxsy').setValue('诉讼');
+//		         		}else{
+//		         			if('诉讼'==Ext.getCmp('sqr_cxsy').getValue()){
+//		         				Ext.getCmp('sqr_cxsy').setValue('');
+//		         			}
+//		         		}
+		         		
 		         		//根据不同申请人类型，需要上传不同的附件，展示不同的按钮
 		         		if('20'==newValue||'40'==newValue||'60'==newValue){
 		         			//大类1
 		         			needFjlxStr = "1,2";
 		         			Ext.getCmp('fjlxBtn2').show();
 		         			Ext.getCmp('fjlxBtn3').hide();
+		         			Ext.getCmp('fjlxBtn4').hide();
 		         		}
 		         		if('30'==newValue){
 		         			//大类2
 		         			needFjlxStr = "1,2";
 		         			Ext.getCmp('fjlxBtn2').show();
 		         			Ext.getCmp('fjlxBtn3').hide();
+		         			Ext.getCmp('fjlxBtn4').hide();
 		         		}
 		         		if('10'==newValue){
 		         			//大类3
 		         			needFjlxStr = "1,2,3";
 		         			Ext.getCmp('fjlxBtn2').show();
 		         			Ext.getCmp('fjlxBtn3').show();
+		         			Ext.getCmp('fjlxBtn4').hide();
 		         		}
 		         		
 		         		if('50'==newValue){
 		         			//大类4
-		         			needFjlxStr = "1";
+		         			needFjlxStr = "1,4";
 		         			Ext.getCmp('fjlxBtn2').hide();
 		         			Ext.getCmp('fjlxBtn3').hide();
+		         			Ext.getCmp('fjlxBtn4').show();
 		         		}
-		         		
+		         		//console.log("needFjlxStr:"+needFjlxStr);
 		         		var form = Ext.getCmp('card0').getForm();
 		         		//form.checkValidity();
 		         		form.isValid();
@@ -310,9 +339,10 @@ Ext.onReady(function() {
             xtype : "textfield",
             grow      : true,
             id : 'sqr_cxsy',
-            width: sqrxxPanelFieldWidth,
+            value : '诉讼',
             allowBlank : false,
             afterSubTpl : WEBConstants.REQUIRED,
+            width: sqrxxPanelFieldWidth,
             name : "cxsy"
         },{
             fieldLabel : "证件名称",
@@ -349,6 +379,50 @@ Ext.onReady(function() {
         	fieldLabel : "附件类型",
         	hidden : true,
         	id : 'fjlxId'
+        },{
+                text : '下一步',
+                xtype : 'button',
+                //scale   : 'large',
+                //icon : ctx + '/common/images/go_next_view_32px.png',
+                iconCls : 'x-btn-icon-el x-tbar-page-next',
+                formBind: true, //only enabled once the form is valid
+                handler : function(){
+                	var form = this.up('form').getForm();
+		            if (form.isValid()) {
+		            	var params = {};
+		            	Ext.apply(params,form.getValues());
+		            	//this.setParams(this.store.proxy.extraParams,this.getForm().getValues());
+		            	var config = {
+				            url : 'information/applicantQuery.do',
+				            params : params,
+				            callback : function(jsonData){
+				            		var uuid = jsonData.uuid;
+					            	if(uuid.length==32){
+					            		//ExtUtils.info('通过表单校验');
+					            		sqrxxPanel.getForm().findField('mainId').setValue(uuid);//申请人主键
+					            		sqrxxPanel.getForm().findField('sqrlsh').setValue(jsonData.lsh);//申请人流水号
+					            		
+						            	var layout = infoMainPanel.getLayout();
+						            	//layout.setActiveItem(1);//下一步：证件扫描
+						            	layout.setActiveItem(1);
+						            	
+						            	
+						            	var cxsqrlx = sqrxxPanel.getForm().findField('cxsqrlx').getValue();
+						            	if('50'==cxsqrlx){
+						            		//“个人”类型查询时 在输入身份证查询页面直接把第一步查询申请人的身份证号码带过来
+						            		if('10'==sqrxxPanel.getForm().findField('zjlx').getValue()){
+						            			var zjh = sqrxxPanel.getForm().findField('zjh').getValue();
+						            			bcxrxxPanel.getForm().findField('idCardNum').setValue(zjh);
+						            		}
+						            		
+						            	}
+						            	
+					            	}
+				            }
+				        };
+				        ExtUtils.doAjax(config);
+		            }
+                }
         }],
         // 重置 和下一步 按钮.
 	    tbar: [{
@@ -359,6 +433,7 @@ Ext.onReady(function() {
 	        }
 	    }, {
 	        text: '下一步',
+	        hidden : true,
 	        iconCls : 'x-btn-icon-el x-tbar-page-next',
 	        formBind: true, //only enabled once the form is valid
 	        handler: function() {
@@ -771,8 +846,7 @@ Ext.onReady(function() {
 	    	xtype : 'panel',
 	    	region : 'center',
 	    	layout : 'border',
-	    	tbar: ['<span style="color:red">请先点击按钮选择附件类型（红色字体为选择状态） -> </span>',
-	    		'-',{
+	    	tbar: ['-',{
 			        text: '工作证/身份证', 
 			        id : "fjlxBtn1",
 			        scale   : 'large',
@@ -786,6 +860,7 @@ Ext.onReady(function() {
 			        		isClickFjlxBtn1 = true;
 			        		Ext.getCmp('fjlxBtn2').removeCls('index-redFlag-btn-custom');
 			        		Ext.getCmp('fjlxBtn3').removeCls('index-redFlag-btn-custom');
+			        		Ext.getCmp('fjlxBtn4').removeCls('index-redFlag-btn-custom');
 			        	}else{
 			        		//已经选中过了，取消
 			        		sqrxxPanel.getForm().findField('fjlx').setValue('');
@@ -809,6 +884,7 @@ Ext.onReady(function() {
 			        		isClickFjlxBtn2 = true;
 			        		Ext.getCmp('fjlxBtn1').removeCls('index-redFlag-btn-custom');
 			        		Ext.getCmp('fjlxBtn3').removeCls('index-redFlag-btn-custom');
+			        		Ext.getCmp('fjlxBtn4').removeCls('index-redFlag-btn-custom');
 			        	}else{
 			        		//已经选中过了，取消
 			        		sqrxxPanel.getForm().findField('fjlx').setValue('');
@@ -832,6 +908,7 @@ Ext.onReady(function() {
 			        		isClickFjlxBtn3 = true;
 			        		Ext.getCmp('fjlxBtn1').removeCls('index-redFlag-btn-custom');
 			        		Ext.getCmp('fjlxBtn2').removeCls('index-redFlag-btn-custom');
+			        		Ext.getCmp('fjlxBtn4').removeCls('index-redFlag-btn-custom');
 			        	}else{
 			        		//已经选中过了，取消
 			        		sqrxxPanel.getForm().findField('fjlx').setValue('');
@@ -839,7 +916,32 @@ Ext.onReady(function() {
 			        		isClickFjlxBtn3 = false;
 			        	}
 			        }
+			    },'-',{
+			    	text: '其他材料', 
+			    	id : "fjlxBtn4",
+			    	hidden : true,
+			    	scale   : 'large',
+			    	icon: ctx + '/common/images/Folder_Images_32px.png',
+			    	handler: function(){
+			        	//个人查询他人信息，需要增加其他材料
+			    		
+			    		if(!isClickFjlxBtn4){
+			        		//还没有选中
+			    			sqrxxPanel.getForm().findField('fjlx').setValue('4');
+			        		Ext.getCmp('fjlxBtn4').addCls('index-redFlag-btn-custom');
+			        		isClickFjlxBtn4 = true;
+			        		Ext.getCmp('fjlxBtn1').removeCls('index-redFlag-btn-custom');
+			        		Ext.getCmp('fjlxBtn2').removeCls('index-redFlag-btn-custom');
+			        		Ext.getCmp('fjlxBtn3').removeCls('index-redFlag-btn-custom');
+			        	}else{
+			        		//已经选中过了，取消
+			        		sqrxxPanel.getForm().findField('fjlx').setValue('');
+			        		Ext.getCmp('fjlxBtn4').removeCls('index-redFlag-btn-custom');
+			        		isClickFjlxBtn4 = false;
+			        	}
 			    }
+			    },'<span style="color:red">请先点击按钮选择附件类型（红色字体为选择状态） </span>',
+	    		'-'
 	    	],
 	    	items : [{ 
 		    	xtype : 'panel',
@@ -1154,14 +1256,16 @@ Ext.onReady(function() {
 	                classid: 'clsid:454C18E2-8B7D-43C6-8C17-B1825B49D7DE',
 					id : 'captrue'
 	            }
-	            */
+	            */ 
+				/**
                 autoEl: {
                 	html : '<div id="preview_doccamera" style="text-align:center;width:100%;height:100%" >'
 					+ '<object classid="clsid:454C18E2-8B7D-43C6-8C17-B1825B49D7DE" id="captrue"  width="480" height="360" ></object>'
 					+ '</div>'
                 }
-                
+                 */ 
 				//renderTo : 'preview_doccamera'
+				contentEl : 'preview_doccamera'
 			
 			}]
 	    }
@@ -1169,6 +1273,7 @@ Ext.onReady(function() {
 	    tbar: [{
 	        text: '第一步',
 	        iconCls: "x-tbar-page-first",
+	        hidden : true,
 	        handler: function() {
 	            var layout = infoMainPanel.getLayout();
 	            layout.setActiveItem(0);//第一步：填写申请人信息
@@ -1365,6 +1470,20 @@ Ext.onReady(function() {
                         console.log("触发查询按钮事件");
                     }
                 },
+                'blur' : function(thiz,the,opts){
+            	 		var zjh = bcxrxxPanel.getForm().findField('idCardNum').getValue();
+            	 		//console.log(zjh.getLength());
+			            //如果不是15位了，就不转换了
+			            if(zjh.getLength()!=15){
+			            	return ;
+			            }
+			            
+			            var newZjh = ExtUtils.transformatIdFrom15To18(zjh);
+			            if(''==newZjh){
+			            	return ;
+			            }
+			            bcxrxxPanel.getForm().findField('idCardNum').setValue(newZjh);
+            	 },
                 'focus':function(){  
                 	//console.log("focus ..");
                     this.selectText();  
@@ -1447,6 +1566,15 @@ Ext.onReady(function() {
 	        icon : ctx + '/common/images/icons/arrow_rotate_anticlockwise.png',
 	        handler: function() {
 	            this.up('form').getForm().reset();
+	        }
+	    },{
+	        text: '查询完毕',
+	        iconCls : 'arrow_undo',
+	        //icon : ctx + '/common/images/icons/magnifier.png',
+	        handler: function() {
+	            var layout = infoMainPanel.getLayout();
+	            layout.setActiveItem(0);//第一步：填写申请人信息
+	            clearAll();
 	        }
 	    }
 	    /**,{
@@ -1592,7 +1720,7 @@ Ext.onReady(function() {
                     	if('户籍人口'==grid.getStore().getAt(rowIndex).data.populationType){
                     		
                     		var width = screen.availWidth-3;
-							var height = screen.availHeight-20;
+							var height = screen.availHeight-50;
 							var left = -4;
 							var top = -4; 
 		
@@ -1640,7 +1768,7 @@ Ext.onReady(function() {
                     	
                     	if('暂住人口'==grid.getStore().getAt(rowIndex).data.populationType){
                     		var width = screen.availWidth-3;
-							var height = screen.availHeight-20;
+							var height = screen.availHeight-50;
 							var left = -4;
 							var top = -4; 
 		
@@ -2221,12 +2349,14 @@ Ext.onReady(function() {
     	isClickFjlxBtn1 = false;
     	isClickFjlxBtn2 = false;
     	isClickFjlxBtn3 = false;
+    	isClickFjlxBtn4 = false;
     	
 //    	Ext.getCmp('fjlxBtn2').hide();
 //		Ext.getCmp('fjlxBtn3').hide();
 		Ext.getCmp('fjlxBtn1').removeCls('index-redFlag-btn-custom');
 		Ext.getCmp('fjlxBtn2').removeCls('index-redFlag-btn-custom');
 		Ext.getCmp('fjlxBtn3').removeCls('index-redFlag-btn-custom');
+		Ext.getCmp('fjlxBtn4').removeCls('index-redFlag-btn-custom');
 //		Ext.getCmp('fjlxBtn2').hide();
 //		Ext.getCmp('fjlxBtn3').hide();
     };
