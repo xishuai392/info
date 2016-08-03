@@ -217,6 +217,11 @@ public class TBcxrxxController {
             newRecord.setSfdy("1");
             newRecord.setId(bcxrxxId);
             newRecord.setDycs(record.getDycs() + 1);
+            if ("2".equals(rklx)) {
+                //人口类型（1：户籍人口，2：暂住人口）
+                //20160803 对于暂住人口查询-外来务工子女入学的，需要更新查询次数+1
+                newRecord.setCxcs(record.getCxcs()+1);
+            }
             tBcxrxxService.update(newRecord);
         }
 
