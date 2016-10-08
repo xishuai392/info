@@ -7,7 +7,6 @@
         <head>
             <title>人口信息查询</title>
             <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/common/css/info.css">
-            <link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/common/css/data-view.css">
             
       <style type="text/css">
 		.btnQueryCls {
@@ -68,10 +67,6 @@
 		
 		</style>
             
-            <!-- 插入jatoolsPrinter打印控件 -->
-            <OBJECT ID="jatoolsPrinter" CLASSID="CLSID:B43D3361-D075-4BE2-87FE-057188254255" codebase="jatoolsPrinter.cab#version=8,6,0,0"></OBJECT>
-            <!-- 华视电子BS控件V4.0 身份证读卡器 -->
-            <OBJECT classid="clsid:10946843-7507-44FE-ACE8-2B3483D179B7" id="CVR_IDCard" name="CVR_IDCard" width="0" height="0"> </OBJECT>
             <script type="text/javascript" language="javascript">
             function iFrameHeight() {
                 var ifm = document.getElementById("iframepage");
@@ -93,7 +88,7 @@
                 var btnWidth = 130;
                 
                 var topTbar = Ext.create('Ext.toolbar.Toolbar', {
-            	    cls : 'tbarCls',
+            	    //cls : 'tbarCls',
             	    items: ['->', {
                         id: 'showSeconds',
                         scale: 'large',
@@ -116,7 +111,7 @@
                 
                 thirdPanel = Ext.create('Ext.panel.Panel', {
                     region : "center",
-                    title: '暂住信息',
+                    //title: '暂住信息',
                     layout: 'border',
                     cls : 'platesbgimage',//设置页面背景的CSS
                    	baseCls : 'ex-panel',//设置透明FORM 嵌入页面
@@ -125,7 +120,7 @@
                                 overflowY: 'scroll',
                                 region: "center",
                                 fitToFrame: true, 
-                                html: '<iframe id="frame1" src="'+Ext.get("thirdPartyZzrkUrl").dom.value+'" frameborder="0" width="100%" height="100%"></iframe>'
+                                html: '<iframe id="zzrkIframe" src="'+Ext.get("thirdPartyZzrkUrl").dom.value+'" frameborder="0" width="100%" height="100%"></iframe>'
                             })
                     ],
                     buttonAlign : 'center',
@@ -161,15 +156,31 @@
                 defaultTimes = function() {
                     // 测试弹出
                     times = intervalTimes;
-                    Ext.getCmp('showSeconds').setText('<span style="font-size:20px !important;font-family:microsoft yahei !important;">' + times + 'S</span>');
+                    Ext.getCmp('showSeconds').setText('<span style="font-size:20px !important;font-family:microsoft yahei !important;">距退出系统还有' + times + '秒</span>');
                 };
                 // 判断是否超过【intervalTimes】秒无操作。
                 timesReduce = function() {
                     times--;
                     console.log(times);
                     if(times>=-1){
-                    	Ext.getCmp('showSeconds').setText('<span style="font-size:20px !important;font-family:microsoft yahei !important;">' + times + 'S</span>');
+                    	Ext.getCmp('showSeconds').setText('<span style="font-size:20px !important;font-family:microsoft yahei !important;">距退出系统还有' + times + '秒</span>');
                     }
+                    
+                    //每5秒，主动释放一次内存
+                    if(times%5==2){
+                    	if(times <= 2){
+                    		var frame = document.getElementById("zzrkIframe");
+                    		frame.src = 'about:blank';
+                    	}
+                    	
+                    	if (navigator.userAgent.indexOf('MSIE') >= 0) {
+                        	if (CollectGarbage) {
+                        	//alert(1)
+                        	CollectGarbage(); //IE 特有 释放内存
+                        	}
+                        }
+                    }
+                    
                     // alert(times);
                     if (times <= 0) {
                         // alert('跳转');
@@ -177,6 +188,7 @@
                         if (Ext.Msg.isVisible()) {
                             Ext.Msg.hide();
                         }
+                        
                         //window.close();
                         //CloseBrowser();
                         CloseWebPage();
