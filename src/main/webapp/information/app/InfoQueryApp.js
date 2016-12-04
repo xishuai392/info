@@ -1176,12 +1176,21 @@ Ext.onReady(function() {
 			        scale   : 'large',
 			        icon: ctx + '/common/images/Folder_Images_32px.png',
 			        handler: function(){
+			        	console.log("工作证/身份证");
+			        	console.log(isClickFjlxBtn1);
+			        	console.log(isClickFjlxBtn2);
+			        	console.log(isClickFjlxBtn3);
+			        	console.log(isClickFjlxBtn4);
+			        	
 			        	//工作证/身份证
 			        	if(!isClickFjlxBtn1){
 			        		//还没有选中
 			        		sqrxxPanel.getForm().findField('fjlx').setValue('1');
 			        		Ext.getCmp('fjlxBtn1').addCls('index-redFlag-btn-custom');
 			        		isClickFjlxBtn1 = true;
+			        		isClickFjlxBtn2 = false;
+			        		isClickFjlxBtn3 = false;
+			        		isClickFjlxBtn4 = false;
 			        		Ext.getCmp('fjlxBtn2').removeCls('index-redFlag-btn-custom');
 			        		Ext.getCmp('fjlxBtn3').removeCls('index-redFlag-btn-custom');
 			        		Ext.getCmp('fjlxBtn4').removeCls('index-redFlag-btn-custom');
@@ -1190,6 +1199,9 @@ Ext.onReady(function() {
 			        		sqrxxPanel.getForm().findField('fjlx').setValue('');
 			        		Ext.getCmp('fjlxBtn1').removeCls('index-redFlag-btn-custom');
 			        		isClickFjlxBtn1 = false;
+			        		isClickFjlxBtn2 = false;
+			        		isClickFjlxBtn3 = false;
+			        		isClickFjlxBtn4 = false;
 			        	}
 			        } 
 			    },'-',{
@@ -1200,12 +1212,19 @@ Ext.onReady(function() {
 			    	icon: ctx + '/common/images/Folder_Images_32px.png',
 			    	handler: function(){
 			        	//介绍信
-			    		
+			    		console.log("介绍信");
+			        	console.log(isClickFjlxBtn1);
+			        	console.log(isClickFjlxBtn2);
+			        	console.log(isClickFjlxBtn3);
+			        	console.log(isClickFjlxBtn4);
 			    		if(!isClickFjlxBtn2){
 			        		//还没有选中
 			    			sqrxxPanel.getForm().findField('fjlx').setValue('2');
 			        		Ext.getCmp('fjlxBtn2').addCls('index-redFlag-btn-custom');
 			        		isClickFjlxBtn2 = true;
+			        		isClickFjlxBtn1 = false;
+			        		isClickFjlxBtn3 = false;
+			        		isClickFjlxBtn4 = false;
 			        		Ext.getCmp('fjlxBtn1').removeCls('index-redFlag-btn-custom');
 			        		Ext.getCmp('fjlxBtn3').removeCls('index-redFlag-btn-custom');
 			        		Ext.getCmp('fjlxBtn4').removeCls('index-redFlag-btn-custom');
@@ -1214,6 +1233,9 @@ Ext.onReady(function() {
 			        		sqrxxPanel.getForm().findField('fjlx').setValue('');
 			        		Ext.getCmp('fjlxBtn2').removeCls('index-redFlag-btn-custom');
 			        		isClickFjlxBtn2 = false;
+			        		isClickFjlxBtn1 = false;
+			        		isClickFjlxBtn3 = false;
+			        		isClickFjlxBtn4 = false;
 			        	}
 			        }
 			    },'-',{
@@ -1224,12 +1246,19 @@ Ext.onReady(function() {
 			    	icon: ctx + '/common/images/Folder_Images_32px.png',
 			    	handler: function(){
 			        	//委托协议/受理通知书
-			    		
+			    		console.log("委托协议/受理通知书");
+			        	console.log(isClickFjlxBtn1);
+			        	console.log(isClickFjlxBtn2);
+			        	console.log(isClickFjlxBtn3);
+			        	console.log(isClickFjlxBtn4);
 			    		if(!isClickFjlxBtn3){
 			        		//还没有选中
 			    			sqrxxPanel.getForm().findField('fjlx').setValue('3');
 			        		Ext.getCmp('fjlxBtn3').addCls('index-redFlag-btn-custom');
 			        		isClickFjlxBtn3 = true;
+			        		isClickFjlxBtn1 = false;
+			        		isClickFjlxBtn2 = false;
+			        		isClickFjlxBtn4 = false;
 			        		Ext.getCmp('fjlxBtn1').removeCls('index-redFlag-btn-custom');
 			        		Ext.getCmp('fjlxBtn2').removeCls('index-redFlag-btn-custom');
 			        		Ext.getCmp('fjlxBtn4').removeCls('index-redFlag-btn-custom');
@@ -1238,6 +1267,9 @@ Ext.onReady(function() {
 			        		sqrxxPanel.getForm().findField('fjlx').setValue('');
 			        		Ext.getCmp('fjlxBtn3').removeCls('index-redFlag-btn-custom');
 			        		isClickFjlxBtn3 = false;
+			        		isClickFjlxBtn1 = false;
+			        		isClickFjlxBtn2 = false;
+			        		isClickFjlxBtn4 = false;
 			        	}
 			        }
 			    },'-',{
@@ -1254,6 +1286,9 @@ Ext.onReady(function() {
 			    			sqrxxPanel.getForm().findField('fjlx').setValue('4');
 			        		Ext.getCmp('fjlxBtn4').addCls('index-redFlag-btn-custom');
 			        		isClickFjlxBtn4 = true;
+			        		isClickFjlxBtn1 = false;
+			        		isClickFjlxBtn2 = false;
+			        		isClickFjlxBtn3 = false;
 			        		Ext.getCmp('fjlxBtn1').removeCls('index-redFlag-btn-custom');
 			        		Ext.getCmp('fjlxBtn2').removeCls('index-redFlag-btn-custom');
 			        		Ext.getCmp('fjlxBtn3').removeCls('index-redFlag-btn-custom');
@@ -1262,6 +1297,9 @@ Ext.onReady(function() {
 			        		sqrxxPanel.getForm().findField('fjlx').setValue('');
 			        		Ext.getCmp('fjlxBtn4').removeCls('index-redFlag-btn-custom');
 			        		isClickFjlxBtn4 = false;
+			        		isClickFjlxBtn1 = false;
+			        		isClickFjlxBtn2 = false;
+			        		isClickFjlxBtn3 = false;
 			        	}
 			        }
 			    },'<span style="color:red">请先点击按钮选择附件类型（红色字体为选择状态） </span>',

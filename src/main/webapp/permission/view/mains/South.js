@@ -50,6 +50,7 @@ Ext.define('PM.view.mains.South',{
                     scale : 'medium',
                     textAlign : 'left',
                     text : '修改密码',
+                    hidden : true,
                     handler : me.updPassword,
                     scope : me
                 }]

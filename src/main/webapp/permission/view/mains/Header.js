@@ -24,7 +24,7 @@ Ext.define('PM.view.mains.Header', {
                     scale : 'medium',
                     textAlign : 'left',
                     text : '修改密码',
-                    hidden : true,
+                    hidden : false,
                     handler : me.updPassword,
                     scope : me
                 },{
